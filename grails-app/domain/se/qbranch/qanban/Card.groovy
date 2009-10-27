@@ -7,6 +7,7 @@ class Card {
 
     static constraints = {
         caseNumber(blank: true, nullable: true)
+		prio(blank: true, nullable: true)
         cardCreated(blank: true, nullable: true)
         cardDone(blank: true, nullable: true)
         asignee(blank: true, nullable: true)
@@ -19,6 +20,7 @@ class Card {
 
     String description
     Integer caseNumber
+	Integer prio
     //TODO: Varför fungerar inte Joda-Time?
     //DateTime cardCreated
     //DateTime cardDone
