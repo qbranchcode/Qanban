@@ -20,4 +20,11 @@ class CardControllerTests extends ControllerUnitTestCase {
         assertEquals 2, model.cardInstanceTotal
 
     }
+
+    void testSave() {
+        mockDomain(Card)
+
+        def model = controller.save()
+
+    }
 }

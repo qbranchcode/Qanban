@@ -13,14 +13,17 @@ class Card {
     }
 
     static mapping = {
-        cardCreated type: PersistentDuration
-        cardDone type: PersistentDuration
+        //cardCreated type: PersistentDuration
+        //cardDone type: PersistentDuration
     }
 
     String description
     Integer caseNumber
-    DateTime cardCreated = new DateTime()
-    DateTime cardDone
+    //TODO: Varför fungerar inte Joda-Time?
+    //DateTime cardCreated
+    //DateTime cardDone
+    Date cardCreated = new Date()
+    Date cardDone
     //TODO: Ska vara AD-User sen
     String asignee
 
