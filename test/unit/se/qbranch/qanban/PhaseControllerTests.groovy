@@ -23,7 +23,9 @@ class PhaseControllerTests extends ControllerUnitTestCase {
 
     void testSave() {
         mockDomain(Phase)
+        mockDomain(Board)
         mockParams.name = "myPhase"
+        mockParams.board = new Board()
 
         controller.save()
 
