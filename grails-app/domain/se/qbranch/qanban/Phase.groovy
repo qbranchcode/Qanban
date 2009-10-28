@@ -11,4 +11,5 @@ class Phase {
 
     String name
     Board board
+    List cards = []
 }

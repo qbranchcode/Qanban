@@ -12,15 +12,6 @@ class CardControllerTests extends ControllerUnitTestCase {
         super.tearDown()
     }
 
-    void testList() {
-        mockDomain(Card, [ new Card(description: "Mattis card"),
-                new Card(description: "PGs card")] )
-
-        def model = controller.list()
-        assertEquals 2, model.cardInstanceTotal
-
-    }
-
     void testSave() {
         mockDomain(Card)
 

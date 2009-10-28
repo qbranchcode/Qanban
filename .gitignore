@@ -2,3 +2,4 @@ stacktrace.log
 web-app/WEB-INF/tld/
 test/reports
 Qanban*.war
+web-app/plugins/
