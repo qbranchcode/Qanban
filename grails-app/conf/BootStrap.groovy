@@ -1,5 +1,7 @@
 import se.qbranch.qanban.*
 
+import grails.util.GrailsUtil
+
 class BootStrap {
 
      def init = { servletContext ->
