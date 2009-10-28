@@ -17,6 +17,8 @@ class MainViewController {
         def card = Card.get(params.id)
         def cards = card.phase.cards
         if(card && moveTo < cards.size()) {
+            def oldCardIndex = cards.indexOf(card)
+            cards.remove(oldCardIndex)
             cards.add(moveTo, card)
         }
         

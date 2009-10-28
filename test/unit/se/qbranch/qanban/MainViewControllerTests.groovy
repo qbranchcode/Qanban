@@ -52,6 +52,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         assertTrue "Expected move to return true", response.result
 
         assertEquals 3, b.phases[0].cards[0].id
+        assertEquals 3, b.phases[0].cards.size()
 
         // TODO: add tests for not setting moveTo, moving to an illegal pos
     }
