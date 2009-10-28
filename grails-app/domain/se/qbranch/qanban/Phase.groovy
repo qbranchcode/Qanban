@@ -9,7 +9,6 @@ class Phase {
     //TODO: Titta mer på det här!
     static hasMany = [cards:Card]
 
-
-
     String name
+    Board board
 }

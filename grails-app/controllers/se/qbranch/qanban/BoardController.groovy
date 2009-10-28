@@ -99,9 +99,4 @@ class BoardController {
         }
     }
 
-    def moveCard = {
-        //Flytta card från x till y i fasen
-        //Ta emot card och position card ska till
-
-    }
 }
