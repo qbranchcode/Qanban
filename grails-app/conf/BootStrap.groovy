@@ -1,3 +1,5 @@
+import se.qbranch.qanban.*
+
 class BootStrap {
 
      def init = { servletContext ->
