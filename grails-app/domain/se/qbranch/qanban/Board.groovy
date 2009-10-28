@@ -6,4 +6,6 @@ class Board {
     }
 
     static hasMany = [phases:Phase]
+
+    List phases = []
 }

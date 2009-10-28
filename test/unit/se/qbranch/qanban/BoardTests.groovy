@@ -11,7 +11,9 @@ class BoardTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
-    void testSomething() {
-
+    void testHasPhases() {
+        mockDomain(Board)
+        def b = new Board().save()
+        assertEquals 0, b.phases.size()
     }
 }
