@@ -10,12 +10,15 @@ class Card {
         cardCreated(blank: true, nullable: true)
         cardDone(blank: true, nullable: true)
         asignee(blank: true, nullable: true)
+        phase(blank: true, nullable: true)
     }
 
     static mapping = {
         //cardCreated type: PersistentDuration
         //cardDone type: PersistentDuration
     }
+
+    static belongsTo = [phase:Phase]
 
     String description
     Integer caseNumber
@@ -26,5 +29,5 @@ class Card {
     Date cardDone
     //TODO: Ska vara AD-User sen
     String asignee
-
+    Phase phase
 }

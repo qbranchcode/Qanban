@@ -1,0 +1,15 @@
+package se.qbranch.qanban
+
+class Phase {
+
+    static constraints = {
+
+    }
+
+    //TODO: Titta mer på det här!
+    static hasMany = [cards:Card]
+
+
+
+    String name
+}
