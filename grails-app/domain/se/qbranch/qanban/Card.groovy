@@ -18,8 +18,6 @@ class Card {
         //cardDone type: PersistentDuration
     }
 
-    static belongsTo = [phase:Phase]
-
     String description
     Integer caseNumber
     //TODO: Varför fungerar inte Joda-Time?
