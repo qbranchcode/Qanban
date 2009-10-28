@@ -29,14 +29,6 @@
                 <span class="dateCreated">${fieldValue(bean:cardInstance, field:'cardCreated')}</span>
               </div>
               <div class="content">
-                <div class="prio">
-                  <span class="name">
-                    Prio:
-                  </span>
-                  <span class="value">
-                    ${fieldValue(bean:cardInstance, field:'prio')}
-                  </span>
-                </div>
                 <div class="description">
                   <p>
                     ${fieldValue(bean:cardInstance, field:'description')}
@@ -50,7 +42,6 @@
                     ${fieldValue(bean:cardInstance, field:'asignee')}
                   </span>
                 </div>
-
               </div>
             </div>
         </div>
