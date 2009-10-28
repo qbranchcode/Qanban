@@ -16,7 +16,7 @@ class Card {
 
     // Auto timestamps (changed when db is updated)
     Date dateCreated
-    Date lastUpdate
+    Date lastUpdated
 
     //TODO: Ska vara AD-User sen
     String assignee
