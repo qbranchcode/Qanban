@@ -1,31 +1,24 @@
 package se.qbranch.qanban
 
-import org.joda.time.*
-import org.joda.time.contrib.hibernate.*
-
 class Card {
 
     static constraints = {
-        caseNumber(blank: true, nullable: true)
-        cardCreated(blank: true, nullable: true)
-        cardDone(blank: true, nullable: true)
-        asignee(blank: true, nullable: true)
-        phase(blank: true, nullable: true)
+        title(blank:false, length:1..50)
+        caseNumber(blank: true)
+        description(length:1..300)
+        assignee(blank: true, nullable: true)
+        phase(nullable: true)
     }
 
-    static mapping = {
-        //cardCreated type: PersistentDuration
-        //cardDone type: PersistentDuration
-    }
-
+    String title
     String description
     Integer caseNumber
-    //TODO: Varför fungerar inte Joda-Time?
-    //DateTime cardCreated
-    //DateTime cardDone
-    Date cardCreated = new Date()
-    Date cardDone
+
+    // Auto timestamps (changed when db is updated)
+    Date dateCreated
+    Date lastUpdate
+
     //TODO: Ska vara AD-User sen
-    String asignee
+    String assignee
     Phase phase
 }
