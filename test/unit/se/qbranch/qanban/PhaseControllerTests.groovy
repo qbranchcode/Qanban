@@ -2,7 +2,7 @@ package se.qbranch.qanban
 
 import grails.test.*
 
-class PhaseControllerTestsTests extends ControllerUnitTestCase {
+class PhaseControllerTests extends ControllerUnitTestCase {
     
     protected void setUp() {
         super.setUp()
@@ -18,6 +18,17 @@ class PhaseControllerTestsTests extends ControllerUnitTestCase {
         def model = controller.list()
 
         assertEquals 1, model.phaseInstanceTotal
+    }
+
+
+    void testSave() {
+        mockDomain(Phase)
+        mockParams.name = "myPhase"
+
+        controller.save()
+
+        assertEquals 1, redirectArgs.id
+        assertEquals controller.show, redirectArgs.action
     }
 
 }
