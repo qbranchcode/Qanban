@@ -1,0 +1,195 @@
+
+
+		
+#header h1{ 
+ font-size: 10.2em; 
+}
+
+#header h1 * { 
+ font-size: 1em;
+}	
+
+
+
+#header{ 
+ background-image: url(../images/head_fade.png);
+ background-repeat: repeat-x; 
+ position: relative; 
+ height: 180px; 
+ color: #fdfdfd;
+ border-bottom: 1px solid red;
+}
+
+.wrap{
+ position: relative;
+ width: 800px;
+ margin: auto;
+}
+
+#header .wrap { height: 100%;}
+
+
+#logo{ 
+ padding: 30px 0 0 0;
+}
+
+#mainmenu {
+ position: absolute;
+ bottom: 3px;
+}
+
+/* Not visible for safari */
+#mainmenu { bottom: 2px; #}
+
+#mainmenu ul{
+ list-style-type: none; 
+ list-style-image: none; 
+ margin: 0px;
+ padding: 0px; 
+}
+
+#mainmenu li{
+ float: left;
+ background-color: #fff;
+ color: #444;
+ display: inline-block;
+ height: 28px;
+ margin-right: 3px;
+ font-weight: bold;
+ -webkit-border-top-left-radius: 6px;
+ -webkit-border-top-right-radius: 6px;
+ -moz-border-radius-topleft:6px;
+ -moz-border-radius-topright:6px;
+}
+
+#mainmenu li a {
+ padding: 0 18px;
+ line-height: 30px;
+ display: inline-block;
+ outline: none;
+}
+
+#mainmenu a:hover{
+ cursor: pointer;
+}
+
+#mainmenu a.active{ 
+ color: #000; 
+ background-color: #f2f2f2;
+ cursor: default; 
+ -webkit-border-top-left-radius: 6px;
+ -webkit-border-top-right-radius: 6px;
+ -moz-border-radius-topleft:6px;
+ -moz-border-radius-topright:6px;
+ border-top: 1px solid red;
+ border-right: 1px solid red;
+ border-left: 1px solid red;
+}
+
+#content {
+overflow-x: hidden; 
+min-height: 400px;
+}
+
+#tabs { width: 2400px; position: relative;}
+
+#tabs .tab{
+ width: 800px;
+ float: left;
+}
+
+.col-1, .col-2, .wideCol{ padding: 40px 0 0 0;}
+.col-1{ 
+ float: left;
+ width: 310px;  
+}
+.col-2{
+text-align: justify;
+}
+
+.framed {
+ border: 1px solid #fff;
+}
+
+input[type='text'], input[type='password']{ border: 1px solid #000; }
+
+#login {
+ padding: 10px;
+ width: 288px;
+ height: 158px;
+}
+
+.big{ font-size: 1.4em; }
+#login form { margin-top: 30px; }
+#login input{ margin-bottom: 10px;}
+#login input[type='submit']{ float: right;}
+#login input[type='text'], #login input[type='password'] { width: 150px; margin: 0; position: relative; top: -3px;}
+#login label { font-weight: bold; font-size: 2em; width: 1.3em; display: inline-block; padding-top: 3px; line-height: 0.7em; text-align: right;}
+#login .fieldWrapper{ width: 190px; margin: auto;  }
+#login .checkboxWrapper { width: 190px; margin: 0 auto;}
+#login .checkboxWrapper label { font-size: 1.3em; width: 160px; }
+#login .checkboxWrapper input { position: relative; top: 1px; right: 1px;}
+.col-2{ width: 482px; float: left; margin-left: 8px;}
+
+/*
+.ui-tabs .ui-tabs-hide {
+     display: none;
+}
+*/
+
+.huge{
+ font-size: 100em;
+ display: block;
+ z-index: -1;
+ position: absolute;
+ font-weight: bold;
+ top: -600px;
+ left: 450px;
+ opacity: 0.2;
+ height: 1000px;
+ margin: 0;
+ overflow: hidden;
+}
+
+.solid {
+width: 500px;
+margin: 30px auto;
+border: 1px solid #fff;
+height: 250px;
+}
+.solid .bg{
+width: 500px;
+height: 250px;
+background-color: #fff;
+opacity: 0.4;
+position: absolute;
+z-index: -1;
+}
+
+.solid .content{
+ padding: 10px;
+}
+
+.solid ul{
+ margin: 10px 0;
+ padding: 0;
+ list-style-type: none;
+ list-style-image: none;
+}
+.solid li{
+ text-align: right;
+ padding-right: 100px;
+ margin-top: 3px;
+}
+.solid li input[type='text'], .solid li input[type='password'] { width: 200px;}
+
+.solid label {
+font-weight: bold;
+font-size: 1.2em;
+display:
+inline-block;
+padding-top: 3px;
+line-height: 0.7em;
+text-align: right;
+text-transform:uppercase;
+}
