@@ -12,14 +12,18 @@ class MainViewController {
     }
 
     def moveCard = {
-        def moveTo = params.moveTo
-        
+        def moveTo = params.moveTo        
         def card = Card.get(params.id)
         def cards = card.phase.cards
-        if(card && moveTo < cards.size()) {
+
+        //TODO: Hur hanteras nullvärde på moveTo ? Som integer?
+        if(card && moveTo < cards.size() && moveTo != null) {
             def oldCardIndex = cards.indexOf(card)
             cards.remove(oldCardIndex)
             cards.add(moveTo, card)
+        }
+        else {
+            render([result: false] as JSON)
         }
         
         render([result: true] as JSON)

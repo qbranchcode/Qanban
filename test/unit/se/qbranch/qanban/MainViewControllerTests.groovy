@@ -4,6 +4,9 @@ import grails.test.*
 import grails.converters.*
 
 class MainViewControllerTests extends ControllerUnitTestCase {
+
+    def b
+
     protected void setUp() {
         super.setUp()
          mockDomain(Card, [ new Card(title: "TestCard",
@@ -21,16 +24,8 @@ class MainViewControllerTests extends ControllerUnitTestCase {
                                     assignee: "xls")])
         mockDomain(Board)
         mockDomain(Phase)
-    }
 
-    protected void tearDown() {
-        super.tearDown()
-    }
-
-    void testMoveCard() {
-
-       
-        def b = new Board().addToPhases(new Phase(name: "test")).save()
+        b = new Board().addToPhases(new Phase(name: "test")).save()
         for(card in Card.list()) {
             def phase = b.phases[0]
             phase.cards.add(card)
@@ -38,8 +33,13 @@ class MainViewControllerTests extends ControllerUnitTestCase {
             phase.save()
             card.save()
         }
+    }
 
-        assertEquals 3, b.phases[0].cards.size()
+    protected void tearDown() {
+        super.tearDown()
+    }
+
+    void testMoveCardSuccess() {
 
         // Ta card med id 3 och flytta från pos 2 till pos 0
         // om det funkar får man true och domänmodellen ser annorlunda ut, verifiera
@@ -54,6 +54,22 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         assertEquals 3, b.phases[0].cards[0].id
         assertEquals 3, b.phases[0].cards.size()
 
-        // TODO: add tests for not setting moveTo, moving to an illegal pos
+        
+    }
+
+    void testMoveCardToIllegalPosition() {
+        mockParams.id = 3
+        mockParams.moveTo = 3
+        controller.moveCard()
+        def response = JSON.parse(controller.response.contentAsString)
+        assertFalse "Expected move to return false", response.result
+
+    }
+
+    void testNotSettingMoveTo() {
+        mockParams.id = 3
+        controller.moveCard()
+        def response = JSON.parse(controller.response.contentAsString)
+        assertFalse "Expected move to return false", response.result
     }
 }
