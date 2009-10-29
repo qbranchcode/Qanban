@@ -13,15 +13,22 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     
     <g:javascript library="jquery"/>
-    
+ 
     <script type="text/javascript" src="/Qanban/js/jquery/jquery.ui.core.js"></script>
     <script type="text/javascript" src="/Qanban/js/jquery/jquery.ui.sortable.js"></script>
     <jq:jquery>
 
-      $('.phase').sortable({ connectWith: '.phase'});
+      $('.phase').sortable({ 
+        connectWith: '.phase', 
+        update: function(event,ui){
+          var newPos = ui.item.prevAll().length;
+          var cardId = ui.item.attr('id').split('_')[1];
+          $.post('moveCard',{'id': cardId , 'moveTo' : newPos },"json");
+        }  
+      });
       
-
     </jq:jquery>
+    
     <style type="text/css">
 
       
@@ -100,36 +107,6 @@ ul.phase {
         </div>
 
       </div>
-
-
-<%--
-      <table>
-        <tbody>
-          <tr>
-            <g:each var="phase" in="${board.phases}">
-              <td class="title widthForcer">${phase.name}</td>
-            </g:each>
-          </tr>
-          <tr>
-            <g:each var="phase" in="${board.phases}">
-              <td>
-                <ul class="column" id="phase_${phase.id}">
-                  <g:each var="card" in="${phase.cards}">
-                    <li class="card" id="card_${card.id}">
-                      <div>
-                        ${card.title}
-                      </div>
-                    </li>
-                  </g:each>
-                </ul>
-              </td>
-            </g:each>
-          </tr>
-
-        </tbody>
-      </table>
---%>
-
 
   </body>
 </html>

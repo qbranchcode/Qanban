@@ -12,20 +12,24 @@ class MainViewController {
     }
 
     def moveCard = {
-        def moveTo = params.moveTo        
+
+        // TODO: Strunta i JSON-svar på denna och returnera error-kod vid fel istället?
+
+        if( !params.id || !params.moveTo )
+            return render([result: false] as JSON)
+
+        def moveTo = params.moveTo as Integer
         def card = Card.get(params.id)
         def cards = card.phase.cards
 
-        //TODO: Hur hanteras nullvärde på moveTo ? Som integer?
-        if(card && moveTo < cards.size() && moveTo != null) {
-            def oldCardIndex = cards.indexOf(card)
-            cards.remove(oldCardIndex)
-            cards.add(moveTo, card)
-        }
-        else {
-            render([result: false] as JSON)
+        if( moveTo != null && card && moveTo < cards.size() ) {
+                def oldCardIndex = cards.indexOf(card)
+                cards.remove(oldCardIndex)
+                cards.add(moveTo, card)
+                return render([result: true] as JSON)
         }
         
-        render([result: true] as JSON)
+        render([result: false] as JSON)
+
     }
 }
