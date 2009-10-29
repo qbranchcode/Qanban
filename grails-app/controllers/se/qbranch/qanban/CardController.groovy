@@ -86,6 +86,8 @@ class CardController {
 
     def save = {
         def cardInstance = new Card(params)
+        def phase = Phase.get(1)
+        phase.addToCards(cardInstance).save()
         if(!cardInstance.hasErrors() && cardInstance.save()) {
             flash.message = "Card ${cardInstance.id} created"
             redirect(action:show,id:cardInstance.id)

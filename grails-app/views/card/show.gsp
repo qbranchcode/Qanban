@@ -18,15 +18,15 @@
 
             <div class="note">
 
-              <g:if test="${cardInstance.cardDone}">
+              <g:if test="${cardInstance.lastUpdated}">
                 <div class="cardIsDone">
-                  ${fieldValue(bean:cardInstance, field:'cardDone')}
+                  ${fieldValue(bean:cardInstance, field:'lastUpdated')}
                 </div>
               </g:if>
 
               <div class="head">
                 <span class="caseNumber">#${fieldValue(bean:cardInstance, field:'caseNumber')}</span>
-                <span class="dateCreated">${fieldValue(bean:cardInstance, field:'cardCreated')}</span>
+                <span class="dateCreated">${fieldValue(bean:cardInstance, field:'dateCreated')}</span>
               </div>
               <div class="content">
                 <div class="description">
@@ -34,12 +34,12 @@
                     ${fieldValue(bean:cardInstance, field:'description')}
                   </p>
                 </div>
-                <div class="asignee">
+                <div class="assignee">
                   <span class="name">
-                    Asigned to:
+                    Assigned to:
                   </span>
                   <span class="value">
-                    ${fieldValue(bean:cardInstance, field:'asignee')}
+                    ${fieldValue(bean:cardInstance, field:'assignee')}
                   </span>
                 </div>
               </div>

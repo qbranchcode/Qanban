@@ -33,6 +33,15 @@
                                 <td valign="top" class="value ${hasErrors(bean:cardInstance,field:'caseNumber','errors')}">
                                     <input type="text" id="caseNumber" name="caseNumber" value="${fieldValue(bean:cardInstance,field:'caseNumber')}" />
                                 </td>
+                            </tr>
+
+                            <tr class="prop">
+                                <td valign="top" class="name">
+                                    <label for="title">Title:</label>
+                                </td>
+                                <td valign="top" class="value ${hasErrors(bean:cardInstance,field:'title','errors')}">
+                                    <input type="text" id="title" name="title" value="${fieldValue(bean:cardInstance,field:'title')}"/>
+                                </td>
                             </tr> 
                                                  
                             <tr class="prop">

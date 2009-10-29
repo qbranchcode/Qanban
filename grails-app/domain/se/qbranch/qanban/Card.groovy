@@ -18,6 +18,6 @@ class Card {
     Date lastUpdated
 
     //TODO: Ska vara AD-User sen
-    String assignee
+    User assignee
     Phase phase
 }
