@@ -45,8 +45,8 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         // om det funkar får man true och domänmodellen ser annorlunda ut, verifiera
 
         // Making request to moveCard
-        mockParams.id = 3
-        mockParams.moveTo = 0
+        mockParams.id = "3"
+        mockParams.moveTo = "0"
         controller.moveCard()
         def response = JSON.parse(controller.response.contentAsString)
         assertTrue "Expected move to return true", response.result
