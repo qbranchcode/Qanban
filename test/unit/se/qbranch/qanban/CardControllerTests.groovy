@@ -3,9 +3,11 @@ package se.qbranch.qanban
 import grails.test.*
 
 class CardControllerTests extends ControllerUnitTestCase {
-   
+
     protected void setUp() {
         super.setUp()
+        mockDomain(Phase)
+        mockDomain(Card)
     }
 
     protected void tearDown() {
@@ -13,9 +15,7 @@ class CardControllerTests extends ControllerUnitTestCase {
     }
 
     void testSave() {
-        mockDomain(Card)
-
-        def model = controller.save()
-
+        def c = new Card(title: "Title", caseNumber: 1, description: "Desc")
+        c.save()
     }
 }
