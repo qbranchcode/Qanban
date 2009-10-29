@@ -5,25 +5,33 @@
 
 <%@ page contentType="text/html;charset=UTF-8" %>
 
-
-<%@ import="se.qbranch.qanban.Card" %>
-<%@ import="se.qbranch.qanban.Phase" %>
 <%@ import="se.qbranch.qanban.Board" %>
 
 <html>
   <head>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
     <g:javascript library="jquery"/>
+    
+    <script type="text/javascript" src="/Qanban/js/jquery/jquery.ui.core.js"></script>
+    <script type="text/javascript" src="/Qanban/js/jquery/jquery.ui.sortable.js"></script>
     <jq:jquery>
 
+      $('.phase').sortable({ connectWith: '.phase'});
       
 
     </jq:jquery>
     <style type="text/css">
+
+      
+
 * {
  margin: 0px;
  padding: 0px;
 }
+
+.leveler{ clear: both; }
 
 body {
  background-color: #f2f2f2;
@@ -32,7 +40,11 @@ body {
 }
 
 #container{
- background-color: aqua;
+}
+
+#board {
+ width: 80em;
+ margin: 0 auto;
 }
 
 .phaseHolder {
@@ -48,6 +60,16 @@ body {
  font-weight: bold;
  text-align: center;
 }
+
+ul.phase {
+ list-style: none;
+ height: 100px;
+}
+
+.card{ border: 1px solid; margin: 1px 2px 0 2px; background-color: yellow; text-align: center;}
+
+.widthForcer { width:${100/board.phases.size()-1}%; margin: 0 0.5%;}
+
     </style>
     <title>Qanban</title>
   </head>
@@ -55,8 +77,9 @@ body {
 
       <div id="container">
         <div id="board">
+
           <g:each var="phase" in="${board.phases}">
-            <div class="phaseHolder">
+            <div class="phaseHolder widthForcer">
               <h2>${phase.name}</h2>
               <ul class="phase" id="phase_${phase.id}">
 
@@ -72,10 +95,41 @@ body {
 
           </g:each>
 
+          <div class="leveler"></div>
+
         </div>
 
-
       </div>
+
+
+<%--
+      <table>
+        <tbody>
+          <tr>
+            <g:each var="phase" in="${board.phases}">
+              <td class="title widthForcer">${phase.name}</td>
+            </g:each>
+          </tr>
+          <tr>
+            <g:each var="phase" in="${board.phases}">
+              <td>
+                <ul class="column" id="phase_${phase.id}">
+                  <g:each var="card" in="${phase.cards}">
+                    <li class="card" id="card_${card.id}">
+                      <div>
+                        ${card.title}
+                      </div>
+                    </li>
+                  </g:each>
+                </ul>
+              </td>
+            </g:each>
+          </tr>
+
+        </tbody>
+      </table>
+--%>
+
 
   </body>
 </html>

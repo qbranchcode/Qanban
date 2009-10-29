@@ -11,6 +11,7 @@ class BootStrap {
             
                 Phase p1 = new Phase(name:'Backlog')
                 p1.addToCards(new Card(title:"Card #1",caseNumber:1,description:'blalbblalbabla'))
+                  .addToCards(new Card(title:"Card #2",caseNumber:2,description:'blöblöblöblöbl'))
 
                 Board b = new Board()
                             .addToPhases(p1)
