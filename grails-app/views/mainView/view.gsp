@@ -1,112 +1,82 @@
-<!--
-  To change this template, choose Tools | Templates
-  and open the template in the editor.
--->
-
-<%@ page contentType="text/html;charset=UTF-8" %>
-
 <%@ import="se.qbranch.qanban.Board" %>
 
-<html>
-  <head>
+<head>
 
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    
-    <g:javascript library="jquery"/>
- 
-    <script type="text/javascript" src="/Qanban/js/jquery/jquery.ui.core.js"></script>
-    <script type="text/javascript" src="/Qanban/js/jquery/jquery.ui.sortable.js"></script>
-    <jq:jquery>
+  <meta name='layout' content='inside'/>
 
-      $('.phase').sortable({ 
-        connectWith: '.phase', 
-        update: function(event,ui){
-          var newPos = ui.item.prevAll().length;
-          var cardId = ui.item.attr('id').split('_')[1];
-          $.post('moveCard',{'id': cardId , 'moveTo' : newPos },"json");
-        }  
-      });
-      
-    </jq:jquery>
-    
-    <style type="text/css">
+<g:javascript library="jquery"/>
 
-      
+<script type="text/javascript" src="/Qanban/js/jquery/jquery.ui.core.js"></script>
+<script type="text/javascript" src="/Qanban/js/jquery/jquery.ui.sortable.js"></script>
 
-* {
- margin: 0px;
- padding: 0px;
-}
+<jq:jquery>
 
-.leveler{ clear: both; }
+  var sort = false;
 
-body {
- background-color: #f2f2f2;
- font-size: 62.5%;
- font-family: Arial;
-}
+  $('.phase').sortable({
+  //connectWith: '.phase',
+  //delay: 100,
+  start: function(event,ui){
+    sort = true;
+  },
+  update: function(event,ui){
+  var newPos = ui.item.prevAll().length;
+  var cardId = ui.item.attr('id').split('_')[1];
+  $.post('${createLink(controller:'mainView',action:'moveCard')}',{'id': cardId , 'moveTo' : newPos },"json");
+  }
+  });
 
-#container{
-}
+  $('.card').click(function(){
+    showCard( $(this).attr('id').split('_')[1] );
+  });
 
-#board {
- width: 80em;
- margin: 0 auto;
-}
 
-.phaseHolder {
- width: 18em;
- float: left;
- margin-right: 3px;
- background-color: #fff;
-}
+  function showCard(id){
+    if( !sort ){
+      //alert('klick on card #' + id);
+    }
+    sort = false;
+  }
+  
+</jq:jquery>
 
-.phaseHolder h2 {
- line-height: 1.1em;
- font-size: 1.4em;
- font-weight: bold;
- text-align: center;
-}
+<style type="text/css">
+  .widthForcer { width:${100/board.phases.size()-1}%; margin: 0 0.5%;}
+</style>
 
-ul.phase {
- list-style: none;
- height: 100px;
-}
+<title>Qanban</title>
 
-.card{ border: 1px solid; margin: 1px 2px 0 2px; background-color: yellow; text-align: center;}
+</head>
 
-.widthForcer { width:${100/board.phases.size()-1}%; margin: 0 0.5%;}
+<body>
 
-    </style>
-    <title>Qanban</title>
-  </head>
-  <body>
 
-      <div id="container">
-        <div id="board">
 
-          <g:each var="phase" in="${board.phases}">
-            <div class="phaseHolder widthForcer">
-              <h2>${phase.name}</h2>
-              <ul class="phase" id="phase_${phase.id}">
+  <div id="wrapper">
+    <div id="board">
 
-               <g:each var="card" in="${phase.cards}">
+      <g:each var="phase" in="${board.phases}">
+        <div class="phaseHolder widthForcer">
+          <h3>${phase.name}</h3>
+          <ul class="phase" id="phase_${phase.id}">
 
-                 <li class="card" id="card_${card.id}">${card.title}</li>
+            <g:each var="card" in="${phase.cards}">
 
-               </g:each>
+              <li class="card" id="card_${card.id}">${card.title}</li>
 
-              </ul>
+            </g:each>
 
-            </div>
-
-          </g:each>
-
-          <div class="leveler"></div>
+          </ul>
 
         </div>
 
-      </div>
+      </g:each>
 
-  </body>
-</html>
+      <div class="leveler"></div>
+
+    </div>
+
+  </div>
+
+</body>
+

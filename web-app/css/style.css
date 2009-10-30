@@ -1,171 +1,159 @@
-		/***********/
-		/* GENERAL */
-		/***********/
-		
-		body{
-		
- 			margin: 0px; 
- 			padding: 0px;
- 			background-color: #f2f2f2;
- 			
- 			/* 
- 				Sets the font 'medium' / standard browser font size to 10px instead of 16px to ez the use of em units 
- 				1.2 em = 12px
- 				...
- 			*/
- 			
-			font-size: 62.5%;
-			
-			
-			font-family: Arial;
-			
-			/*
-				font-family: Tahoma,Verdana,Arial,Helvetica; code.qb.se
-				font-family: Verdana; qb.se 
-			*/
-		}
-		
-		
+/***********/
+/* GENERAL */
+/***********/
 
-		a {
-			font-size: 1.2em;
- 			color: #333;
-	 		text-decoration: none;
-		}
 
-		a:hover {
-			color: red;
-		}
-		
-		.red {
-			color: red;
-		}
-		
-		.leveler{ clear: both; }
-		
-		p { font-size: 1.2em;}
-		p a { /*cascadefix*/ font-size: 1em;}
-		
-		h1,h2,h3,h4,span,label{ 
-			margin: 0; 
- 			padding: 0; 
- 		}
- 		
-		h1{}
-		h2  { font-size: 3.1em; }
-		h2 *{ font-size: 1em; }
-		h3{}
-		h4{}
-		
-		
-		/********/
-		/* MENU */
-		/********/
-		
-		#menu { 
- 			background-color: #666; 
-			width: 100%;
-			border-bottom: 2px solid #000; 
-			position: fixed;
-			z-index: 999;
-		}
+* {
+ margin: 0px;
+ padding: 0px;
+}
 
-		#menu ul { 
- 			list-style-type: none; 
- 			list-style-image: none; 
- 			margin: 0px;
-			padding: 0px; 
-		}
-		
-		#menu li {
-			display: inline;	
-		}
-		
-		#menu li.right {
-			float: right; 
-		}
-		
-		#menu a, #menu span { 
-			line-height: 30px; 
-			display: inline-block; 
-			padding: 0 18px; 
-			color: #fdfdfd;
-		}
-		
-		#menu a {
-			font-weight: bold;
-		}
-		
-		#menu a:hover { 
-			background-color: #888; 
-			color: #fff;
-		}
-		
-		#wrapper {
-			position: relative;
-			padding-top: 40px;
-		}
-				
-		#board table { 
-			border: solid 1px #000; 
-			margin: auto;
-			background-color: #fff;
-		}
-		
-		#board td{ 
-			min-width: 180px;
-		}
-		
-		#board tr.titleRow { 
-			text-align: center;
-			background-color: #e1e1e1;
-			border-bottom: 1px solid #000;
-			padding: 2px 0 2px 0;	
-			margin: 1px 0;
-			font-weight: bold;
-		}
 
-		.slot { 
-			width: 100%;
-			height: 100px;
-			background-color: pink; 
-			margin: 2px 0;
-		}
-		
-		#done {
-			
-		}
-		
-		.splitter {
-			height: 1px;
-			background-color: #000;
-				
-		}
-		
-		.card {
-			position: relative;
-			background-color: yellow;
-			width: 100%;
-			max-width: 100%;
-			height: 100%;	
-		}
-		
-		
-		.card h4 { 
-			margin: 0;
-			text-align: center;
-			border-bottom: 1px solid #000;
-			position: relative;
-			height: 20%;
 
-		}
-		
-		.card .desc {
-			display: inline-block;
-			width: 100%;
-			height: 80%;
-			position: relative;
-			
-		}
-		
-		.hover { background-color: aqua; }
+body{
+
+    background-color: #f2f2f2;
+
+    /*
+ 	Sets the font 'medium' / standard browser font size to 10px instead of 16px to ez the use of em units
+ 	1.2 em = 12px
+ 	...
+    */
+
+    font-size: 62.5%;
+
+
+
+    
+    font-family: Arial;
+
+    /*
+        font-family: Tahoma,Verdana,Arial,Helvetica; code.qb.se
+	font-family: Verdana; qb.se
+    */
+}
+
+
+
+a {
+    font-size: 1.2em;
+    color: #333;
+    text-decoration: none;
+}
+
+a:hover {
+    color: red;
+}
+
+.red {
+    color: red !important;
+}
+
+.background {  position: absolute; width: 100%; height: 100%; z-index: -1; }
+
+.leveler{ clear: both; }
+
+p { font-size: 1.2em;}
+p a { /*cascadefix*/ font-size: 1em;}
+
+
+
+h1{}
+h2  { font-size: 3.1em; }
+h2 *{ font-size: 1em; }
+h3  { font-size: 1.4em; }
+h3 *{ font-size: 1em; }
+h4{}
+
+
+/********/
+/* MENU */
+/********/
+
+
+#menu .background { text-align: center; font-weight: bold; font-size: 1.4em; top: 5px;}
+#menu {
+    background-color: #666;
+    width: 100%;
+    border-bottom: 2px solid #000;
+    position: fixed;
+    z-index: 999;
+}
+
+#menu ul {
+    list-style-type: none;
+    list-style-image: none;
+}
+
+#menu li {
+    display: inline;
+}
+
+#menu li.right {
+    float: right;
+}
+
+#menu ul a, #menu ul span {
+    line-height: 30px;
+    display: inline-block;
+    padding: 0 18px;
+    color: #fdfdfd;
+}
+
+#menu a {
+    font-weight: bold;
+}
+
+#menu a:hover {
+    background-color: #888;
+    color: #fff;
+}
+
+#wrapper {
+    position: relative;
+    padding-top: 100px;
+
+}
+
+.splitter {
+    height: 1px;
+    background-color: #000;
+
+}
+
+
+/*********/
+/* BOARD */
+/*********/
+
+
+
+
+
+#board {
+    width: 80em;
+    margin: 0 auto;
+}
+
+.phaseHolder {
+    float: left;
+    background-color: #fff;
+}
+
+.phaseHolder h3 {
+    text-align: center;
+    line-height: 1.1em;
+    font-weight: bold;
+}
+
+ul.phase {
+    list-style: none;
+    height: 100px;
+}
+
+.card {
+    border: 1px solid;
+    margin: 1px 2px 0 2px; 
+    background-color: yellow;
+    text-align: center;
+}
