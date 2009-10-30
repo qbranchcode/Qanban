@@ -16,7 +16,7 @@
 
     <ul>
       <li><a href="#">Add Card</a></li>
-      <li><a href="#">Log Out</a></li>
+      <li><a href="${createLink(controller:'logout')}">Log Out</a></li>
       <li><span id="debug"></span></li>
     </ul>
 
