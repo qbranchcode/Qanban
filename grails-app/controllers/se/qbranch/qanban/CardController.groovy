@@ -4,9 +4,15 @@ package se.qbranch.qanban
 
 class CardController {
     
-    def index = { redirect(action:create,params:params) }
+    def index = { redirect(action:list,params:params) }
 
-    static allowedMethods = [save:'POST']
+    // the delete, save and update actions only accept POST requests
+    static allowedMethods = [delete:'POST', save:'POST', update:'POST']
+
+    def list = {
+        params.max = Math.min( params.max ? params.max.toInteger() : 10,  100)
+        [ cardInstanceList: Card.list( params ), cardInstanceTotal: Card.count() ]
+    }
 
     def show = {
         def cardInstance = Card.get( params.id )
@@ -17,8 +23,7 @@ class CardController {
         }
         else { return [ cardInstance : cardInstance ] }
     }
-    
-/*
+
     def delete = {
         def cardInstance = Card.get( params.id )
         if(cardInstance) {
@@ -76,7 +81,6 @@ class CardController {
             redirect(action:list)
         }
     }
-     */
 
     def create = {
         def cardInstance = new Card()
@@ -86,8 +90,6 @@ class CardController {
 
     def save = {
         def cardInstance = new Card(params)
-        def phase = Phase.get(1)
-        phase.addToCards(cardInstance).save()
         if(!cardInstance.hasErrors() && cardInstance.save()) {
             flash.message = "Card ${cardInstance.id} created"
             redirect(action:show,id:cardInstance.id)
