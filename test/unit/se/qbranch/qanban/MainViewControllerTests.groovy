@@ -11,17 +11,14 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         super.setUp()
          mockDomain(Card, [ new Card(title: "TestCard",
                                     description: "This is a description",
-                                    caseNumber: 1,
-                                    assignee: "Mattias"),
+                                    caseNumber: 1),
 
                            new Card(title: "OtherCard",
                                     description: "This is the other card",
-                                    caseNumber: 2,
-                                    assignee: "PG"),
+                                    caseNumber: 2),
                            new Card(title: "Card three",
                                     description: "This is the third card",
-                                    caseNumber: 5,
-                                    assignee: "xls")])
+                                    caseNumber: 5)])
         mockDomain(Board)
         mockDomain(Phase)
 

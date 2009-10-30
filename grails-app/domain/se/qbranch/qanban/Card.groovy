@@ -5,8 +5,9 @@ class Card {
     static constraints = {
         title(blank:false, length:1..50)
         description(length:1..300)
-        assignee(blank: true, nullable: true)
-        phase(nullable: true)
+        caseNumber()
+        assignee(nullable: true)
+        phase()
     }
 
     String title
@@ -17,7 +18,6 @@ class Card {
     Date dateCreated
     Date lastUpdated
 
-    //TODO: Ska vara AD-User sen
-    String assignee
+    User assignee
     Phase phase
 }

@@ -17,9 +17,15 @@ class BootStrap {
             map.save()
 
             def md5pass = authenticateService.passwordEncoder("test")
-            User user = new User(username:"testuser",userRealName:"Mr Test",passwd:md5pass,enabled:true,description:"testing, testing...",email:"test@test.com",authorities:role)
+            User user = new User(username: "testuser",
+                                 userRealName:"Mr Test",
+                                 passwd:md5pass,
+                                 enabled:true,
+                                 description:"testing, testing...",
+                                 email:"test@test.com",
+                                 authorities:role)
+
             if(user.save()) {
-                println "User saved: $user"
                 role.addToPeople(user)
             }
 
