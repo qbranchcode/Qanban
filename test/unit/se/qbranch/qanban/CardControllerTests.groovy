@@ -6,7 +6,7 @@ class CardControllerTests extends ControllerUnitTestCase {
 
     protected void setUp() {
         super.setUp()
-        mockDomain(Phase)
+        mockDomain(Phase, [ new Phase(name:'Phasendeluxe') ])
         mockDomain(Card)
     }
 
@@ -24,11 +24,26 @@ class CardControllerTests extends ControllerUnitTestCase {
         def card = model.cardInstance
 
         assertEquals 'create', renderArgs.view
-        assertTrue card.hasErrors()
+        assertTrue 'Should have had errors', card.hasErrors()
         assertEquals "nullable", card.errors.phase
     }
 
-//    void testSaveWithFilledFormAndPhaseParams()
+    void testCardShouldSaveWithPhase() {
+        mockParams.title = "Title"
+        mockParams.caseNumber = "1"
+        mockParams.description = "My testcard"
+        mockParams."phase.id" = "1"
+
+        def model = controller.save()
+        def card = Card.findByTitle("Title")
+
+        assertEquals "My testcard" ,card.description
+        assertEquals "Phasendeluxe", card.phase.name
+        assertEquals "Title", Phase.get(1).cards[0].title
+
+       // assertEquals controller.show, redirect
+
+    }
 
 
     void testSaveWithEmptyForm() {
