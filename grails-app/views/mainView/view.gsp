@@ -17,7 +17,7 @@
   //connectWith: '.phase',
   //delay: 100,
   start: function(event,ui){
-    sort = true;
+  sort = true;
   },
   update: function(event,ui){
   var newPos = ui.item.prevAll().length;
@@ -27,18 +27,24 @@
   });
 
   $('.card').click(function(){
-    showCard( $(this).attr('id').split('_')[1] );
+  showCard( $(this).attr('id').split('_')[1] );
   });
 
 
   function showCard(id){
-    if( !sort ){
-      //alert('klick on card #' + id);
-    }
-    sort = false;
+  if( !sort ){
+  //alert('klick on card #' + id);
   }
-  
+  sort = false;
+  }
+
+
 </jq:jquery>
+
+<g:javascript>
+    function updateBoard(){
+    $('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}');
+</g:javascript>
 
 <style type="text/css">
   .widthForcer { width:${100/board.phases.size()-1}%; margin: 0 0.5%;}
@@ -50,30 +56,14 @@
 
 <body>
 
-
-
   <div id="wrapper">
-    <div id="board">
 
-      <g:each var="phase" in="${board.phases}">
-        <div class="phaseHolder widthForcer">
-          <h3>${phase.name}</h3>
-          <ul class="phase" id="phase_${phase.id}">
+    <div id="boardWrapper">
+      <g:render template="/board/board" bean="${board}" />
+    </div>
 
-            <g:each var="card" in="${phase.cards}">
-
-              <li class="card" id="card_${card.id}">${card.title}</li>
-
-            </g:each>
-
-          </ul>
-
-        </div>
-
-      </g:each>
-
-      <div class="leveler"></div>
-
+    <div id="cardFormWrapper" class="dialog">
+      <g:render template="/card/cardForm"/>
     </div>
 
   </div>

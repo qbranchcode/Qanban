@@ -22,11 +22,11 @@ class MainViewController {
         def card = Card.get(params.id)
         def cards = card.phase.cards
 
-        if( moveTo != null && card && moveTo < cards.size() ) {
-                def oldCardIndex = cards.indexOf(card)
-                cards.remove(oldCardIndex)
-                cards.add(moveTo, card)
-                return render([result: true] as JSON)
+        if(moveTo != null && card && moveTo < cards.size()) {
+            def oldCardIndex = cards.indexOf(card)
+            cards.remove(oldCardIndex)
+            cards.add(moveTo, card)
+            return render([result: true] as JSON)
         }
         
         render([result: false] as JSON)
@@ -37,5 +37,7 @@ class MainViewController {
         
     }
 
-
+    def showBoard = {
+        render(template: "/board/board", bean: Board.get(1))
+    }
 }

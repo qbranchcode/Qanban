@@ -91,8 +91,6 @@ class CardController {
     def save = {
         def cardInstance = new Card(params)
         def phase = Phase.get(params."phase.id")
- 
-
         if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
             flash.message = "Card ${cardInstance.id} created"
             redirect(controller: 'mainView', action: 'view')
@@ -100,5 +98,17 @@ class CardController {
         else {
             render(view:'create',model:[cardInstance:cardInstance])
         }
+    }
+
+    def ajaxSave = {
+        def cardInstance = new Card(params)
+        def phase = Phase.get(params."phase.id")
+        if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
+            flash.message = "Card ${cardInstance.title} registered"
+        }
+        else {
+            flash.message = null
+        }
+        render(template:'cardForm',model:[cardInstance:cardInstance])
     }
 }
