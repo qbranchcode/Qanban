@@ -51,7 +51,9 @@
                                 <td valign="top" class="value ${hasErrors(bean:cardInstance,field:'description','errors')}">
                                     <input type="text" id="description" name="description" value="${fieldValue(bean:cardInstance,field:'description')}"/>
                                 </td>
-                            </tr> 
+                            </tr>
+
+                        <input type="hidden" name="phase.id" value="1" />
                         
                         </tbody>
                     </table>
