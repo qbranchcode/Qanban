@@ -95,7 +95,7 @@ class CardController {
 
         if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
             flash.message = "Card ${cardInstance.id} created"
-            redirect(action:show,id:cardInstance.id)
+            redirect(controller: 'mainView', action: 'view')
         }
         else {
             render(view:'create',model:[cardInstance:cardInstance])
