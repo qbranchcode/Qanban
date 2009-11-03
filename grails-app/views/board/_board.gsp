@@ -8,7 +8,9 @@
 <div id="board">
 
   <g:each var="phase" in="${it.phases}">
+
     <div class="phaseHolder widthForcer">
+
       <h3>${phase.name}</h3>
       <ul class="phase" id="phase_${phase.id}">
 
