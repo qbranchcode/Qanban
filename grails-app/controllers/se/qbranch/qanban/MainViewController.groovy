@@ -13,7 +13,7 @@ class MainViewController {
 
     def moveCard = {
 
-        // TODO: Strunta i JSON-svar på denna och returnera error-kod vid fel istället?
+        // TODO: Return something other than JSON? Maybe HTTP error code?
 
         if( !params.id || !params.moveTo )
         return render([result: false] as JSON)
