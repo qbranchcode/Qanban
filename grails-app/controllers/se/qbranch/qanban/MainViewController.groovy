@@ -42,17 +42,20 @@ class MainViewController {
     }
 
     def moveCardToPhase = {
-        if (!params.id || !params.moveTo)
+        if (!params.id || !params.moveTo){
             return render([result: false] as JSON)
+        }
 
         def moveTo = params.moveTo as Integer
         def card = Card.get(params.id)
         def phases = card.phase.board.phases
-        def allowedPhase = card.phase.board.phases.indexOf(card.phase).plus(2)        
-        
-        if(moveTo != null && card && moveTo < phases.size() && moveTo == allowedPhase) {
-            def board = Board.get(1)
-            def newPhaseIndex = allowedPhase.minus(1)
+        def allowedPhase = card.phase.board.phases.indexOf(card.phase).plus(2)
+        def newPhaseIndex = allowedPhase.minus(1)
+        def board = Board.get(1)
+        def cardsInPhase = board.phases[newPhaseIndex].cards.size()
+        def cardLimit = board.phases[newPhaseIndex].cardLimit
+
+        if(moveTo != null && card && moveTo < phases.size() && moveTo == allowedPhase && cardsInPhase < cardLimit ) {
             card.phase.cards.remove(card)
             board.phases[newPhaseIndex].cards.add(0, card)
             return render([result: true] as JSON)

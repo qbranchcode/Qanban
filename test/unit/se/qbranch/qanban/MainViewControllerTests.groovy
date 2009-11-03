@@ -10,22 +10,22 @@ class MainViewControllerTests extends ControllerUnitTestCase {
     protected void setUp() {
         super.setUp()
         mockDomain(Card, [ new Card(title: "TestCard",
-                                    description: "This is a description",
-                                    caseNumber: 1),
+                    description: "This is a description",
+                    caseNumber: 1),
 
-                           new Card(title: "OtherCard",
-                                    description: "This is the other card",
-                                    caseNumber: 2),
-                           new Card(title: "Card three",
-                                    description: "This is the third card",
-                                    caseNumber: 5)])
+                new Card(title: "OtherCard",
+                    description: "This is the other card",
+                    caseNumber: 2),
+                new Card(title: "Card three",
+                    description: "This is the third card",
+                    caseNumber: 5)])
   
         mockDomain(Board)
         mockDomain(Phase)
 
-        b = new Board().addToPhases(new Phase(name: "test"))
-        .addToPhases(new Phase(name: "other phase"))
-        .addToPhases(new Phase(name: "thid phase"))
+        b = new Board().addToPhases(new Phase(name: "test", cardLimit: 5))
+        .addToPhases(new Phase(name: "other phase", cardLimit: 3))
+        .addToPhases(new Phase(name: "thid phase", cardLimit: 3))
         .save()
         for(card in Card.list()) {
             def phase = b.phases[0]
@@ -127,6 +127,21 @@ class MainViewControllerTests extends ControllerUnitTestCase {
     void testNotSettingPhaseMoveTo() {
         mockParams.id = 3
         controller.moveCardToPhase()
+        def response = JSON.parse(controller.response.contentAsString)
+        assertFalse "Expected move to return false", response.result
+    }
+
+    void testMoveCardToFullPhase() {
+        b.phases[1].addToCards(new Card(title: "p1c1", description: "p1c1DESC", caseNumber: 9))
+        b.phases[1].addToCards(new Card(title: "p1c2", description: "p1c2DESC", caseNumber: 8))
+        b.phases[1].addToCards(new Card(title: "p1c3", description: "p1c3DESC", caseNumber: 7))
+        b.save()
+        mockParams.id = 3
+        mockParams.moveTo = 2
+        controller.moveCardToPhase()
+        b.save()
+
+        assertEquals 3, b.phases[1].cards.size()
         def response = JSON.parse(controller.response.contentAsString)
         assertFalse "Expected move to return false", response.result
     }

@@ -4,6 +4,7 @@ class Phase {
 
     static constraints = {
         name(nullable: false, blank: false)
+        cardLimit(nullable: true)
     }
 
     //TODO: Titta mer på det här!
@@ -12,4 +13,5 @@ class Phase {
     String name
     Board board
     List cards = []
+    Integer cardLimit
 }
