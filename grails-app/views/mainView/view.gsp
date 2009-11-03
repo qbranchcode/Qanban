@@ -4,53 +4,65 @@
 
   <meta name='layout' content='inside'/>
 
-<g:javascript library="jquery"/>
+  <title>Qanban</title>
 
-<script type="text/javascript" src="/Qanban/js/jquery/jquery.ui.core.js"></script>
-<script type="text/javascript" src="/Qanban/js/jquery/jquery.ui.sortable.js"></script>
+  <g:javascript library="jquery"/>
+  <g:javascript src="jquery/jquery.ui.core.js"/>
+  <g:javascript src="jquery/jquery.ui.sortable.js"/>
+  <g:javascript src="jquery/jquery.ui.draggable.js"/>
+  <g:javascript src="jquery/jquery.ui.dialog.js"/>
 
-<jq:jquery>
+  <jq:jquery>
 
-  var sort = false;
+    /*****
+    * Board logic
+    */
 
-  $('.phase').sortable({
-  //connectWith: '.phase',
-  //delay: 100,
-  start: function(event,ui){
-  sort = true;
-  },
-  update: function(event,ui){
-  var newPos = ui.item.prevAll().length;
-  var cardId = ui.item.attr('id').split('_')[1];
-  $.post('${createLink(controller:'mainView',action:'moveCard')}',{'id': cardId , 'moveTo' : newPos },"json");
-  }
-  });
+    var sort = false;
 
-  $('.card').click(function(){
-  showCard( $(this).attr('id').split('_')[1] );
-  });
+    $('.phase').sortable({
+      //connectWith: '.phase',
+      //delay: 100,
+      start: function(event,ui){
+        sort = true;
+      },
+      update: function(event,ui){
+        var newPos = ui.item.prevAll().length;
+        var cardId = ui.item.attr('id').split('_')[1];
+        $.post('${createLink(controller:'mainView',action:'moveCard')}',{'id': cardId , 'moveTo' : newPos },"json");
+      }
+    });
 
-
-  function showCard(id){
-  if( !sort ){
-  //alert('klick on card #' + id);
-  }
-  sort = false;
-  }
+    $('.card').click(function(){
+      showCard( $(this).attr('id').split('_')[1] );
+    });
 
 
-</jq:jquery>
+    function showCard(id){
+      if( !sort ){
+        //alert('klick on card #' + id);
+      }
+      sort = false;
+    }
 
-<g:javascript>
+
+  </jq:jquery>
+
+  <g:javascript>
+
     function updateBoard(){
-    $('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}');
-</g:javascript>
+      $('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}');
+    }
 
-<style type="text/css">
-  .widthForcer { width:${100/board.phases.size()-1}%; margin: 0 0.5%;}
-</style>
+  </g:javascript>
 
-<title>Qanban</title>
+  <style type="text/css">
+
+    .widthForcer { width:${100/board.phases.size()-1}%; margin: 0 0.5%;}
+    
+  </style>
+
+
 
 </head>
 
