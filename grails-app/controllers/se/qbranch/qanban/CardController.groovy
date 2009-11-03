@@ -111,4 +111,8 @@ class CardController {
         }
         render(template:'cardForm',model:[cardInstance:cardInstance])
     }
+
+    def ajaxShowForm = {
+         render(template:'cardForm')
+    }
 }
