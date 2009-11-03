@@ -1,6 +1,7 @@
 <html>
   <head>
     <title><g:layoutTitle default="Grails" /></title>
+    <link rel="stylesheet" href="${resource(dir:'css/jq_theme_blitzer',file:'jquery-ui.css')}"
     <link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}" />
     <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
   <g:layoutHead />
@@ -15,7 +16,7 @@
     </div>
 
     <ul>
-      <li><a href="${createLink(controller:'card',action:'create')}">Add Card</a></li>
+      <li><a href="${createLink(controller:'card',action:'create')}" class="addCardLink">Add Card</a></li>
       <li><a href="${createLink(controller:'logout')}">Log Out</a></li>
       <li><span id="debug"></span></li>
     </ul>

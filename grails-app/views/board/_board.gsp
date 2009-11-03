@@ -7,25 +7,32 @@
 
 <div id="board">
 
-  <g:each var="phase" in="${it.phases}">
+  <ul id="phaseList">
+    
+    <g:each var="phase" in="${it.phases}">
 
-    <div class="phaseHolder widthForcer">
+      <li class="phaseWrapper widthForcer">
 
-      <h3>${phase.name}</h3>
-      <ul class="phase" id="phase_${phase.id}">
+        <div class="phaseHolder">
 
-        <g:each var="card" in="${phase.cards}">
+          <h3>${phase.name}</h3>
+          <ul class="phase" id="phase_${phase.id}">
 
-          <li class="card" id="card_${card.id}">${card.title}</li>
+            <g:each var="card" in="${phase.cards}">
 
-        </g:each>
+              <li class="card" id="card_${card.id}">${card.title}</li>
 
-      </ul>
+            </g:each>
 
-    </div>
+          </ul>
 
-  </g:each>
+        </div>
 
+      </li>
+
+    </g:each>
+
+  </ul>
   <div class="leveler"></div>
 
 </div>

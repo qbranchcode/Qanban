@@ -12,8 +12,7 @@
       <g:renderErrors bean="${cardInstance}" as="list" />
     </div>
   </g:hasErrors>
-  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="cardFormWrapper" name="cardForm"
-           onSuccess="updateBoard()" >
+  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="createCard" name="cardForm">
     <ul>
 
       <li class="prop">
@@ -35,9 +34,16 @@
                value="${fieldValue(bean:cardInstance,field:'description')}"/>
         <input type="hidden" name="phase.id" value="1" />
       </li>
+ 
       <li class="buttons">
-        <input class="save" type="submit" value="Create" />
+        
       </li>
+     
 
     </ul>
+
+    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+        <input class="save ui-state-default ui-corner-all" type="submit" value="Create" />
+        <button class="ui-state-default ui-corner-all" type="button" onclick="closeAddCard()">Close</button>
+    </div>
   </g:formRemote>
