@@ -87,7 +87,6 @@
           {'id': cardId , 'movePosition' : newPos , 'movePhase' : newPhase},
           function(data){
             if( !data.result ){
-              alert('Mattis kan inte reglementet');
               $('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}',function(){setupSortable();});
 
             }
