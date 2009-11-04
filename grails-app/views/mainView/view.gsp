@@ -14,7 +14,20 @@
 
   <jq:jquery>
 
-    $createCardDialog = $('<div id="createCard" class="dialog">dialog</div>');
+    $editPhaseDialog = $('<div id="editPhase" class="dialog"></div>');
+    $editPhaseDialog.dialog({
+      autoOpen: false,
+      modal: true,
+      title: "Change card limit"
+    });
+
+    $('.editPhaseLink').click(function(event){
+      $editPhaseDialog.dialog('open');
+      $editPhaseDialog.load('${createLink(controller:'phase',action:'ajaxEditDialog')}');
+      event.preventDefault();
+    });
+
+    $createCardDialog = $('<div id="createCard" class="dialog"></div>');
     $createCardDialog.dialog({
       autoOpen: false,
       modal: true,
@@ -22,8 +35,9 @@
     });
 
     $('.addCardLink').click(function(event){
+    var phaseId = this.attr('id').split('_')[1];
       $createCardDialog.dialog('open');
-      $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}');
+      $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'id' : phaseId});
       event.preventDefault();
     });
 
@@ -39,21 +53,6 @@
     });
     */
 
-       $('.phase').sortable({
-      connectWith: '.phase',
-      //delay: 100,
-      start: function(event,ui){
-        sort = true;
-      },
-      //update: function(event,ui){
-      stop: function(event,ui){
-        var newPos = ui.item.prevAll().length;
-        var cardId = ui.item.attr('id').split('_')[1];
-        var newPhase = ui.item.parent().attr('id').split('_')[1];
-        $.post('${createLink(controller:'mainView',action:'moveCard')}',{'id': cardId , 'movePosition' : newPos , 'movePhase' : newPhase},"json");
-      }
-    });
-
     $('.card').click(function(){
       showCard( $(this).attr('id').split('_')[1] );
     });
@@ -66,10 +65,37 @@
       sort = false;
     }
 
+    setupSortable();
+
 
   </jq:jquery>
 
   <g:javascript>
+
+  function setupSortable(){
+     $('.phase').sortable({
+      connectWith: '.phase',
+      start: function(event,ui){
+        sort = true;
+      },
+      stop: function(event,ui){
+        var newPos = ui.item.prevAll().length;
+        var cardId = ui.item.attr('id').split('_')[1];
+        var newPhase = ui.item.parent().attr('id').split('_')[1];
+        $.post(
+          '${createLink(controller:'mainView',action:'moveCard')}',
+          {'id': cardId , 'movePosition' : newPos , 'movePhase' : newPhase},
+          function(data){
+            if( !data.result ){
+              alert('Mattis kan inte reglementet');
+              $('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}',function(){setupSortable();});
+
+            }
+          },
+          "json");
+      }
+    });
+    }
 
     function updateBoard(){
       /*
