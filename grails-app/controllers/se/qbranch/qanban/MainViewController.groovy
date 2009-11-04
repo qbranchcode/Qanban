@@ -12,6 +12,30 @@ class MainViewController {
     }
 
     def moveCard = {
+        if (!params.id || !params.movePosition || !params.movePhase)
+            return render([result: false] as JSON)
+
+        def card = Card.get(params.id)
+        def board = Board.get(1)
+        def movePhaseParam = params.movePhase as Integer
+        def oldPhaseId = card.phase.id
+        def oldPhase = Phase.get(oldPhaseId)
+        def movePhase = Phase.get(params.movePhase)
+        def oldPhaseIndex = board.phases.indexOf(oldPhase)
+        def newPhaseIndex = board.phases.indexOf(movePhase)
+        def cardLimit = board.phases[newPhaseIndex].cardLimit
+
+        if( newPhaseIndex < oldPhaseIndex ||
+            newPhaseIndex > oldPhaseIndex.plus(1) ||
+            ( board.phases[newPhaseIndex].cards.size() == cardLimit && oldPhaseIndex != newPhaseIndex ) )
+            return render([result: false] as JSON)
+
+        board.phases[oldPhaseIndex].cards.remove(card)
+        board.phases[newPhaseIndex].cards.add(params.movePosition as Integer, card)
+        return render([result: true] as JSON)
+    }
+
+    def moveCardToPosition = {
 
         // TODO: Return something other than JSON? Maybe HTTP error code?
 

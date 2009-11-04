@@ -39,16 +39,18 @@
     });
     */
 
-    $('.phase').sortable({
-      //connectWith: '.phase',
+       $('.phase').sortable({
+      connectWith: '.phase',
       //delay: 100,
       start: function(event,ui){
         sort = true;
       },
-      update: function(event,ui){
+      //update: function(event,ui){
+      stop: function(event,ui){
         var newPos = ui.item.prevAll().length;
         var cardId = ui.item.attr('id').split('_')[1];
-        $.post('${createLink(controller:'mainView',action:'moveCard')}',{'id': cardId , 'moveTo' : newPos },"json");
+        var newPhase = ui.item.parent().attr('id').split('_')[1];
+        $.post('${createLink(controller:'mainView',action:'moveCard')}',{'id': cardId , 'movePosition' : newPos , 'movePhase' : newPhase},"json");
       }
     });
 
