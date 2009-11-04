@@ -20,8 +20,9 @@
 
             <g:each var="card" in="${phase.cards}">
 
-              <li class="card" id="card_${card.id}">${card.title}</li>
-
+              <g:if test="${card}">
+                <li class="card" id="card_${card.id}">${card.title}</li>
+              </g:if>
             </g:each>
 
           </ul>
