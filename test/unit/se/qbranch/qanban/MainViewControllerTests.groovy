@@ -65,7 +65,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         // Making request to moveCard
         mockParams.id = "3"
         mockParams.moveTo = "0"
-        controller.moveCard()
+        controller.moveCardToPosition()
         def response = JSON.parse(controller.response.contentAsString)
         assertTrue "Expected move to return true", response.result
 
@@ -78,7 +78,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
     void testMoveCardToIllegalPosition() {
         mockParams.id = 3
         mockParams.moveTo = 3
-        controller.moveCard()
+        controller.moveCardToPosition()
         def response = JSON.parse(controller.response.contentAsString)
         assertFalse "Expected move to return false", response.result
 
@@ -86,7 +86,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
 
     void testNotSettingMoveTo() {
         mockParams.id = 3
-        controller.moveCard()
+        controller.moveCardToPosition()
         def response = JSON.parse(controller.response.contentAsString)
         assertFalse "Expected move to return false", response.result
     }
@@ -145,4 +145,44 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         def response = JSON.parse(controller.response.contentAsString)
         assertFalse "Expected move to return false", response.result
     }
+
+    void testMoveCardInPhaseAndToNewPhase() {
+        mockParams.id = "3"
+        mockParams.movePosition = "0"
+        mockParams.movePhase = "1"
+
+        controller.moveCard()
+        def response = JSON.parse(controller.response.contentAsString)
+        assertTrue "Expected move to return true", response.result
+        assertEquals 1, b.phases[1].cards.size()
+    }
+
+    void testMoveCardBackPhase() {
+        def card = new Card(title: "p1c3", description: "p1c3DESC", caseNumber: 7)
+        b.phases[2].addToCards(card)
+        b.save()
+        card.phase = b.phases[1]
+        card.save()
+
+        mockParams.id = "4"
+        mockParams.movePosition = "0"
+        mockParams.movePhase = "0"
+        
+        controller.moveCard()
+        def response = JSON.parse(controller.response.contentAsString)
+        assertFalse "Expected move to return false", response.result
+        assertEquals 3, b.phases[0].cards.size()
+    }
+
+//    void testMoveCardTwoPhases() {
+//        mockParams.id = "3"
+//        mockParams.movePosition = "0"
+//        mockParams.movePhase = "2"
+//
+//        controller.moveCard()
+//        def response = JSON.parse(controller.response.contentAsString)
+//        assertFalse "Expected move to return false", response.result
+//        assertEquals 3, b.phases[0].cards.size()
+//    }
+    
 }
