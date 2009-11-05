@@ -168,7 +168,9 @@ class PhaseController {
             if( phase ){
 
                 if( phase.cards.size() == 0 ){
+                    phase.board.phases.remove(phase)
                     phase.delete()
+
                     return render(status: 200, text: "Phase with id $params.id deleted")
                 }else{
                     return render(status: 400, text: "You can't delete a phase that holds cards")
