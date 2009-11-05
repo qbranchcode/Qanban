@@ -27,7 +27,7 @@
       event.preventDefault();
     });
 
-    $createCardDialog = $('<div id="createCard" class="dialog"></div>');
+    $createCardDialog = $('<div id="createCard" class="dialog">as</div>');
     $createCardDialog.dialog({
       autoOpen: false,
       modal: true,
@@ -35,9 +35,8 @@
     });
 
     $('.addCardLink').click(function(event){
-    var phaseId = this.attr('id').split('_')[1];
       $createCardDialog.dialog('open');
-      $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'id' : phaseId});
+      $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}');
       event.preventDefault();
     });
 
@@ -87,8 +86,7 @@
           {'id': cardId , 'movePosition' : newPos , 'movePhase' : newPhase},
           function(data){
             if( !data.result ){
-              $('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}',function(){setupSortable();});
-
+              updateBoard();
             }
           },
           "json");
@@ -97,10 +95,7 @@
     }
 
     function updateBoard(){
-      /*
-       *Kills the sortable 
-       *$('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}');
-       */
+      $('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}',function(){setupSortable();});
     }
 
     function closeAddCard(){

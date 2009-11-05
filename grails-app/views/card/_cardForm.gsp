@@ -12,7 +12,7 @@
       <g:renderErrors bean="${cardInstance}" as="list" />
     </div>
   </g:hasErrors>
-  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="createCard" name="cardForm">
+  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="createCard" name="cardForm" onSuccess="updateBoard()">
     <ul>
 
       <li class="prop">
