@@ -68,6 +68,11 @@ class PhaseControllerTests extends ControllerUnitTestCase {
     }
 
     void testAjaxDelete(){
+        def board = Board.get(1)
+        def phase = Phase.get(1)
+        phase.board = board
+        phase.save()
+
         mockParams.id = "1"
         
         controller.ajaxDelete()
