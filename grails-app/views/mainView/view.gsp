@@ -22,8 +22,9 @@
     });
 
     $('.editPhaseLink').click(function(event){
+      var phaseId = $(this).attr('id').split('_')[1];
       $editPhaseDialog.dialog('open');
-      $editPhaseDialog.load('${createLink(controller:'phase',action:'ajaxEditPhase')}');
+      $editPhaseDialog.load('${createLink(controller:'phase',action:'ajaxPhaseForm')}',{'id': phaseId });
       event.preventDefault();
     });
 
@@ -100,6 +101,10 @@
 
     function closeAddCard(){
         $createCardDialog.dialog('close');
+    }
+
+    function closeEditPhaseDialog(){
+        $editPhaseDialog.dialog('close');
     }
 
   </g:javascript>

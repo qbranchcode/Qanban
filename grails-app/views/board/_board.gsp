@@ -15,7 +15,7 @@
 
         <div class="phaseHolder">
 
-          <h3>${phase.name}</h3>
+          <h3><a href="${createLink(controller:'phase',action:'create')}" class="editPhaseLink" id="phaseLink_${phase.id}">${phase.name}</a></h3>
           <ul class="phase" id="phase_${phase.id}">
 
             <g:each var="card" in="${phase.cards}">

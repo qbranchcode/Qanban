@@ -98,4 +98,60 @@ class PhaseController {
             render(view:'create',model:[phaseInstance:phaseInstance])
         }
     }
+
+    def ajaxPhaseForm = {
+        render(template:'editPhaseDialog', model:[ phaseInstance: Phase.get(params.id)])
+    }
+
+    /****
+     *  Temporary ajax call actions
+     ****/
+
+    def ajaxSaveOrUpdate = {
+
+        def phaseInstance
+
+        if( params.id ){
+            phaseInstance = Phase.get(params.id)
+
+            if(phaseInstance) {
+                def board = Board.get(params."board.id")
+
+                if(params.version) {
+                    def version = params.version.toLong()
+
+                    if(phaseInstance.version > version) {
+
+                        phaseInstance.errors.rejectValue("version", "phase.optimistic.locking.failure", "Another user has updated this Phase while you were editing.")
+                        return render(template:'editPhaseDialog',model:[phaseInstance:phaseInstance])
+                        
+                    }
+                }
+
+                phaseInstance.properties = params
+               
+                if(phaseInstance.validate() && board && phaseInstance.save()) {
+                    flash.message = "Phase ${params.id} updated"              
+                }
+                
+                return render(template:'editPhaseDialog',model:[phaseInstance:phaseInstance])
+                
+            }
+            else {
+                flash.message = "Phase not found with id ${params.id}"
+                return render(template:'editPhaseDialog',model:[phaseInstance:phaseInstance])
+            }
+
+        }else{
+            phaseInstance = new Phase(params)
+        
+            if(phaseInstance.validate() && phaseInstance.save()) {
+                flash.message = "Phase ${phaseInstance.name} saved successfully"
+            }
+            else {
+                flash.message = null
+            }
+            render(template:'editPhaseDialog',model:[phaseInstance:phaseInstance])
+        }
+    }
 }
