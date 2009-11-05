@@ -14,19 +14,6 @@
 
   <jq:jquery>
 
-    $editPhaseDialog = $('<div id="editPhase" class="dialog"></div>');
-    $editPhaseDialog.dialog({
-      autoOpen: false,
-      modal: true,
-      title: "Change Card Limit"
-    });
-
-    $('.editPhaseLink').click(function(event){
-      var phaseId = $(this).attr('id').split('_')[1];
-      $editPhaseDialog.dialog('open');
-      $editPhaseDialog.load('${createLink(controller:'phase',action:'ajaxPhaseForm')}',{'id': phaseId });
-      event.preventDefault();
-    });
 
     $createCardDialog = $('<div id="createCard" class="dialog">as</div>');
     $createCardDialog.dialog({
@@ -41,6 +28,19 @@
       event.preventDefault();
     });
 
+    $createPhaseDialog = $('<div id="createPhase" class="dialog"></div>');
+    $createPhaseDialog.dialog({
+      autoOpen: false,
+      modal: true,
+      title: "Add new phase"
+    });
+
+    $('.addPhaseLink').click(function(event){
+      $createPhaseDialog.dialog('open');
+      $createPhaseDialog.load('${createLink(controller:'phase',action:'ajaxPhaseForm')}');
+      event.preventDefault();
+    });
+    
     /*****
     * Board logic
     */
@@ -72,6 +72,37 @@
 
   <g:javascript>
 
+   function deletePhaseDialog(id){
+    $('<div><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to delete the phase?</p></div>').dialog({
+        resizable: false,
+        height:140,
+        modal: true,
+        buttons: {
+            Yes: function() {
+                    $.ajax({  url: '${createLink(controller:'phase',action:'ajaxDelete')}',
+                              data: {'id': id},
+                              type: 'POST',
+                              error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                 $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>The phase can not be deleted!</p></div>').dialog({
+                                  modal: true,
+                                  buttons: {
+                                    Ok: function() {
+                                      $(this).dialog('close');
+                                    }
+                                  }
+                                });
+                              }});
+                    $(this).dialog('close');
+                    updateBoard();
+            },
+            No: function() {
+                    $(this).dialog('close');
+            }
+        }
+      });
+   }
+
+
   function setupSortable(){
      $('.phase').sortable({
       connectWith: '.phase',
@@ -87,31 +118,54 @@
           {'id': cardId , 'movePosition' : newPos , 'movePhase' : newPhase},
           function(data){
             if( !data.result ){
-              updateBoard();
+              $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>Illegal move!</p></div>').dialog({
+                modal: true,
+                buttons: {
+                  Ok: function() {
+                    $(this).dialog('close');
+                    updateBoard();
+                  }
+                }
+              });
+
+              
             }
           },
           "json");
       }
     });
+
+
+    $editPhaseDialog = $('<div id="editPhase" class="dialog"></div>');
+    $editPhaseDialog.dialog({
+      autoOpen: false,
+      modal: true,
+      title: "Change Card Limit"
+    });
+
+    $('.editPhaseLink').click(function(event){
+
+      var phaseId = $(this).attr('id').split('_')[1];
+      $editPhaseDialog.dialog('open');
+      $editPhaseDialog.load('${createLink(controller:'phase',action:'ajaxPhaseForm')}',{'id': phaseId });
+      event.preventDefault();
+    });
+
+    
     }
 
     function updateBoard(){
       $('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}',function(){setupSortable();});
     }
 
-    function closeAddCard(){
-        $createCardDialog.dialog('close');
-    }
-
-    function closeEditPhaseDialog(){
-        $editPhaseDialog.dialog('close');
+    function closeDialog(){
+        $('.dialog').dialog('close');
     }
 
   </g:javascript>
 
   <style type="text/css">
 
-    .widthForcer { width:${100/board.phases.size()-1}%; margin: 0 0.5%;}
   </style>
 
 

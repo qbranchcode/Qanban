@@ -7,7 +7,7 @@ class PhaseControllerTests extends ControllerUnitTestCase {
     protected void setUp() {
         super.setUp()
         mockDomain(Phase, [new Phase(name:'PhaseTest')])
-        mockDomain(Board)
+        mockDomain(Board, [new Board()])
     }
 
     protected void tearDown() {
@@ -48,7 +48,7 @@ class PhaseControllerTests extends ControllerUnitTestCase {
     void testSuccessfulAjaxSaveOrUpdateWithoutId() {
         
         mockParams.name = "New Phase"
-        mockParams.board = new Board()
+        mockParams."board.id" = "1"
 
         controller.ajaxSaveOrUpdate()
           
@@ -64,6 +64,15 @@ class PhaseControllerTests extends ControllerUnitTestCase {
         controller.ajaxSaveOrUpdate()
       
         assertEquals null, renderArgs.model.phaseInstance
+
+    }
+
+    void testAjaxDelete(){
+        mockParams.id = "1"
+        
+        controller.ajaxDelete()
+
+        assertEquals 0, Phase.list().size()
 
     }
 

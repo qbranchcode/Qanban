@@ -44,6 +44,6 @@
 
     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
         <input class="save ui-state-default ui-corner-all" type="submit" value="Create" />
-        <button class="ui-state-default ui-corner-all" type="button" onclick="closeAddCard()">Close</button>
+        <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog()">Close</button>
     </div>
   </g:formRemote>

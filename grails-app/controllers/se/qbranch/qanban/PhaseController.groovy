@@ -2,6 +2,8 @@
 
 package se.qbranch.qanban
 
+import grails.converters.*
+
 class PhaseController {
     
     def index = { redirect(action:list,params:params) }
@@ -110,12 +112,13 @@ class PhaseController {
     def ajaxSaveOrUpdate = {
 
         def phaseInstance
+        def board = Board.get(params."board.id")
 
         if( params.id ){
             phaseInstance = Phase.get(params.id)
 
             if(phaseInstance) {
-                def board = Board.get(params."board.id")
+                
 
                 if(params.version) {
                     def version = params.version.toLong()
@@ -144,8 +147,9 @@ class PhaseController {
 
         }else{
             phaseInstance = new Phase(params)
-        
-            if(phaseInstance.validate() && phaseInstance.save()) {
+
+            if(phaseInstance.validate() && board && board.addToPhases(phaseInstance) && phaseInstance.save()) {
+                
                 flash.message = "Phase ${phaseInstance.name} saved successfully"
             }
             else {
@@ -154,4 +158,29 @@ class PhaseController {
             render(template:'editPhaseDialog',model:[phaseInstance:phaseInstance])
         }
     }
+
+    def ajaxDelete = {
+
+        if( params.id ){
+
+            def phase = Phase.get(params.id)
+
+            if( phase ){
+
+                if( phase.cards.size() == 0 ){
+                    phase.delete()
+                    return render(status: 200, text: "Phase with id $params.id deleted")
+                }else{
+                    return render(status: 400, text: "You can't delete a phase that holds cards")
+                }
+
+            }else{
+                return render(status: 404, text: "There is no phase with id $params.id")
+            }
+
+        }else{
+            return render(status: 400, text: "You must specify an id")
+        }
+    }
+
 }

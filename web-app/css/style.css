@@ -144,6 +144,7 @@ h4{}
     text-align: center;
     line-height: 1.1em;
     font-weight: bold;
+    overflow: hidden; /* TODO: A nicer way to do this... */
 }
 
 ul.phase {
