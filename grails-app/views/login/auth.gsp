@@ -40,13 +40,13 @@
         <div id="mainmenu">
           <ul>
             <li>
-              <a href="#tabs-1" class="tabLink active">Logga in</a>
+              <a href="#tabs-1" class="tabLink active"><g:message code="loginPage.tab.1"/></a>
             </li>
             <li>
-              <a href="#tabs-2" class="tabLink">Skapa konto</a>
+              <a href="#tabs-2" class="tabLink"><g:message code="loginPage.tab.2"/></a>
             </li>
             <li>
-              <a href="#tabs-3" class="tabLink">Om <span class="red">Q</span>ANBAN</a>
+              <a href="#tabs-3" class="tabLink"><g:message code="loginPage.tab.3"/></a>
             </li>
           </ul>
         </div>
@@ -67,26 +67,32 @@
           </g:if>
           <div id="login" class="framed">
 
-            <h2>LOGGA IN<span class="big red">:</span></h2>
+            <h2><g:message code="loginPage.auth.form.title"/></h2>
             <form action='${postUrl}' method='POST' id='loginForm'>
               <div class="fieldWrapper">
-                <label for='j_username'>U<span class="big red">:</span></label>
+                <label for='j_username'>
+                  <g:message code="loginPage.auth.form.label.username"/>
+                </label>
                 <input type='text' class='text_' name='j_username' id='j_username' value='${request.remoteUser}' />
               </div>
               <div class="fieldWrapper">
-                <label for='j_password'>P<span class="big red">:</span></label>
+                <label for='j_password'>
+                  <g:message code="loginPage.auth.form.label.password"/>
+                </label>
                 <input type='password' class='text_' name='j_password' id='j_password' />
               </div>
 
               <div class="checkboxWrapper">
                 
-                <label for='remember_me'>Kom ihåg mig</label>
+                <label for='remember_me'>
+                  <g:message code="loginPage.auth.form.label.remember"/>
+                </label>
 
                 <input type='checkbox' class='chk' name='_spring_security_remember_me' id='remember_me'
                      <g:if test='${hasCookie}'>checked='checked'</g:if> />
               </div>
 
-              <input type='submit' value='Login' />
+              <input type='submit' value='<g:message code="loginPage.auth.form.button.login"/>' />
 
             </form>
           </div>
@@ -94,15 +100,14 @@
 
         <div class="col-2">
           <h2>
-            <span class="red">Q</span>ANBAN
+            <g:message code="lorem.qanban"/>
           </h2>
           <p>
-            <span class="red">Q</span>anban är ett hjälpverktyg för att underlätta arbetet med projekt som nyttjar metoden kanban, där man får möjligheten att sköta hanteringen av sina kanban-kort, och få en strukturerad vy av sin tavla. Man kan även hämta ut information baserad på historiken av projektet så som var flaskhalsarna uppstått, i vilka situationer och hur teamet sett ut under den perioden och vart det krävts mera arbetskraft.
+            <g:message code="lorem.paragraph"/>
           </p>
           <p>
-							öoiashdoiöashdöoasidh oais doöiash dahls diluashilughdsifgu dsiufg sdgk iusdg fiudgs fiu ldsf gdsfk sdfk sdfk <a href="#">hej</a>							</p>
-
-
+            <g:message code="lorem.paragraph"/>
+          </p>
         </div>
       </div>
 
@@ -113,32 +118,32 @@
           <div class="solid">
             <div class="bg"></div>
             <div class="content">
-              <h2>REGRISTRERA ANVÄNDARE<span class="big red">:</span> </h2>
+              <h2><g:message code="loginPage.addUser.form.title"/></h2>
               <form>
                 <ul>
                   <li>
-                    <label for="firstName">Förnamn</label>
+                    <label for="firstName"><g:message code="loginPage.addUser.form.label.firstName"/></label>
                     <input name="firstName" type="text"/>
                   </li>
 
                   <li>
-                    <label for="lastName">Efternamn</label>
+                    <label for="lastName"><g:message code="loginPage.addUser.form.label.lastName"/></label>
                     <input name="lastName" type="text"/>
                   </li>
                   <li>
-                    <label for="email">E-mail</label>
+                    <label for="email"><g:message code="loginPage.addUser.form.label.eMail"/></label>
                     <input name="email" type="text"/>
                   </li>
                   <li>
-                    <label for="passwd1">Lösenord</label>
+                    <label for="passwd1"><g:message code="loginPage.addUser.form.label.password1"/></label>
                     <input name="passwd1" type="password"/>
                   </li>
                   <li>
-                    <label for="passwd2">Repetera lösenord</label>
+                    <label for="passwd2"><g:message code="loginPage.addUser.form.label.password2"/></label>
                     <input name="passwd2" type="password"/>
                   </li>
                   <li>
-                    <input type="button" value="OK"/>
+                    <input type="button" value="<g:message code="loginPage.addUser.form.button.submit"/>"/>
                   </li>
                 </ul>
               </form>
@@ -151,15 +156,14 @@
       <div id="tabs-3" class="tab">
         <div class="col-2">
           <h2>
-            <span class="red">Q</span>ANBAN
+            <g:message code="lorem.qanban"/>
           </h2>
           <p>
-            <span class="red">Q</span>anban är ett hjälpverktyg för att underlätta arbetet med projekt som nyttjar metoden kanban, där man får möjligheten att sköta hanteringen av sina kanban-kort, och få en strukturerad vy av sin tavla. Man kan även hämta ut information baserad på historiken av projektet så som var flaskhalsarna uppstått, i vilka situationer och hur teamet sett ut under den perioden och vart det krävts mera arbetskraft.
+            <g:message code="lorem.paragraph"/>
           </p>
           <p>
-							öoiashdoiöashdöoasidh oais doöiash dahls diluashilughdsifgu dsiufg sdgk iusdg fiudgs fiu ldsf gdsfk sdfk sdfk <a href="#">hej</a>							</p>
-
-
+            <g:message code="lorem.paragraph"/>
+          </p>
         </div>
       </div>
 

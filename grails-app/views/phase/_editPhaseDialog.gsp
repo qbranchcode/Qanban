@@ -24,14 +24,14 @@
 
       <li class="prop">
 
-        <label for="name">Name:</label>
+        <label for="name"><g:message code="_phaseForm.label.name"/></label>
         <input type="text" id="name" name="name"
                class="value ${hasErrors(bean:phaseInstance,field:'name','errors')}"
                value="${fieldValue(bean:phaseInstance,field:'name')}"/>
       </li>
 
       <li class="prop">
-        <label for="cardLimit">Card Limit:</label>
+        <label for="cardLimit"><g:message code="_phaseForm.label.cardLimit"/></label>
         <input type="text" id="cardLimit" name="cardLimit"
                class="${hasErrors(bean:phaseInstance,field:'cardLimit','errors')}"
                value="${fieldValue(bean:phaseInstance,field:'cardLimit')}" />
@@ -45,9 +45,9 @@
     <input type="hidden" name="board.id" value="1" />
 
     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <input class="save ui-state-default ui-corner-all" type="submit" value="Update" />
-      <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog(); deletePhaseDialog('${phaseInstance.id}')">Delete</button>
-      <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog()">Close</button>
+      <input class="save ui-state-default ui-corner-all" type="submit" value="<g:message code="_phaseForm.button.update"/>" />
+      <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog(); deletePhaseDialog('${phaseInstance.id}')"><g:message code="_phaseForm.button.delete"/></button>
+      <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog()"><g:message code="_phaseForm.button.close"/></button>
     </div>
   </g:formRemote>
 </g:if>
@@ -58,14 +58,14 @@
 
       <li class="prop">
 
-        <label for="name">Name:</label>
+        <label for="name"><g:message code="_phaseForm.label.name"/></label>
         <input type="text" id="name" name="name"
                class="value ${hasErrors(bean:phaseInstance,field:'name','errors')}"
                value="${fieldValue(bean:phaseInstance,field:'name')}"/>
       </li>
 
       <li class="prop">
-        <label for="cardLimit">Card Limit:</label>
+        <label for="cardLimit"><g:message code="_phaseForm.label.cardLimit"/></label>
         <input type="text" id="cardLimit" name="cardLimit"
                class="${hasErrors(bean:phaseInstance,field:'cardLimit','errors')}"
                value="${fieldValue(bean:phaseInstance,field:'cardLimit')}" />
@@ -78,8 +78,8 @@
     <input type="hidden" name="board.id" value="1" />
 
     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <input class="save ui-state-default ui-corner-all" type="submit" value="Save" />
-      <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog()">Close</button>
+      <input class="save ui-state-default ui-corner-all" type="submit" value="<g:message code="_phaseForm.button.save"/>" />
+      <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog()"><g:message code="_phaseForm.button.close"/></button>
     </div>
 
   </g:formRemote>

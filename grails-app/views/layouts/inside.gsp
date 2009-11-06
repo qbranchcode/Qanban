@@ -16,9 +16,9 @@
     </div>
 
     <ul>
-      <li><a href="${createLink(controller:'card',action:'create')}" class="addCardLink">Add Card</a></li>
-      <li><a href="${createLink(controller:'phase',action:'create')}" class="addPhaseLink">Add Phase</a></li>
-      <li><a href="${createLink(controller:'logout')}">Log Out</a></li>
+      <li><a href="${createLink(controller:'card',action:'create')}" class="addCardLink"><g:message code="layout.inside.menu.addCard"/></a></li>
+      <li><a href="${createLink(controller:'phase',action:'create')}" class="addPhaseLink"><g:message code="layout.inside.menu.addPhase"/></a></li>
+      <li><a href="${createLink(controller:'logout')}"><g:message code="layout.inside.menu.logOut"/></a></li>
       <li><span id="debug"></span></li>
     </ul>
 

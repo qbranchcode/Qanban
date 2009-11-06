@@ -15,11 +15,11 @@
   <jq:jquery>
 
 
-    $createCardDialog = $('<div id="createCard" class="dialog">as</div>');
+    $createCardDialog = $('<div id="createCard" class="dialog"></div>');
     $createCardDialog.dialog({
       autoOpen: false,
       modal: true,
-      title: "Add new card"
+      title: "<g:message code="mainView.jQuery.dialog.addCardForm.title"/>"
     });
 
     $('.addCardLink').click(function(event){
@@ -32,7 +32,7 @@
     $createPhaseDialog.dialog({
       autoOpen: false,
       modal: true,
-      title: "Add new phase"
+      title: "<g:message code="mainView.jQuery.dialog.addPhaseForm.title"/>"
     });
 
     $('.addPhaseLink').click(function(event){
@@ -78,15 +78,15 @@
         height:140,
         modal: true,
         buttons: {
-            Yes: function() {
+            <g:message code="yes"/>: function() {
                     $.ajax({  url: '${createLink(controller:'phase',action:'ajaxDelete')}',
                               data: {'id': id},
                               type: 'POST',
                               error: function (XMLHttpRequest, textStatus, errorThrown) {
-                                 $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>The phase can not be deleted!</p></div>').dialog({
+                                 $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.errorDeletingPhase.content"/></p></div>').dialog({
                                   modal: true,
                                   buttons: {
-                                    Ok: function() {
+                                  <g:message code="ok"/>: function() {
                                       $(this).dialog('close');
                                     }
                                   }
@@ -95,7 +95,7 @@
                     $(this).dialog('close');
                     updateBoard();
             },
-            No: function() {
+            <g:message code="no"/>: function() {
                     $(this).dialog('close');
             }
         }
@@ -118,10 +118,10 @@
           {'id': cardId , 'movePosition' : newPos , 'movePhase' : newPhase},
           function(data){
             if( !data.result ){
-              $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>Illegal move!</p></div>').dialog({
+              $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.illegalMove"/></p></div>').dialog({
                 modal: true,
                 buttons: {
-                  Ok: function() {
+                  <g:message code="ok"/>: function() {
                     $(this).dialog('close');
                     updateBoard();
                   }
@@ -140,7 +140,7 @@
     $editPhaseDialog.dialog({
       autoOpen: false,
       modal: true,
-      title: "Change Card Limit"
+      title: "<g:message code="mainView.jQuery.dialog.editPhaseForm.title"/>"
     });
 
     $('.editPhaseLink').click(function(event){
