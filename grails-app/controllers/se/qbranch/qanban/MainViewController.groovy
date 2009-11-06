@@ -57,10 +57,6 @@ class MainViewController {
 
     }
 
-    def cardForm = {
-        
-    }
-
     def showBoard = {
         render(template: "/board/board", bean: Board.get(1))
     }
