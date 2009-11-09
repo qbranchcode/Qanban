@@ -37,7 +37,6 @@ class MainViewController {
     }
 
     boolean isPhaseFree(phase, oldPhaseIndex, newPhaseIndex) {
-        println "OPI: $oldPhaseIndex, NPI: $newPhaseIndex"
         if(phase.cards.size() == phase.cardLimit && oldPhaseIndex != newPhaseIndex) {
             return false
         }
