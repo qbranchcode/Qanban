@@ -20,7 +20,7 @@ class MainViewController {
             def newPhaseIndex = board.phases.indexOf(cmd.phase)
 
             if(isMoveLegal(oldPhaseIndex, newPhaseIndex)
-                && isPhaseFree(cmd.phase)) {
+                && isPhaseFree(cmd.phase, oldPhaseIndex, newPhaseIndex)) {
                 cmd.card.phase.cards.remove(cmd.card)
                 cmd.phase.cards.add(cmd.moveToCardsIndex, cmd.card)
                 return render([result: true] as JSON)
@@ -36,9 +36,11 @@ class MainViewController {
             return false
     }
 
-    boolean isPhaseFree(phase) {
-        if(phase.cards.size() == phase.cardLimit)
+    boolean isPhaseFree(phase, oldPhaseIndex, newPhaseIndex) {
+        println "OPI: $oldPhaseIndex, NPI: $newPhaseIndex"
+        if(phase.cards.size() == phase.cardLimit && oldPhaseIndex != newPhaseIndex) {
             return false
+        }
         else
             return true
     }
