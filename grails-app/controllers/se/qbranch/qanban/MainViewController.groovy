@@ -11,31 +11,67 @@ class MainViewController {
 
     }
 
-    def moveCard = {
-        if (!params.id || !params.movePosition || !params.movePhase)
+    def moveCard = { MoveCardCommand cmd ->
+        if(cmd.hasErrors()) {
             return render([result: false] as JSON)
+        } else {
+            def board = Board.get(1)
+            def oldPhaseIndex = board.phases.indexOf(cmd.card.phase)
+            def newPhaseIndex = board.phases.indexOf(cmd.phase)
 
-        def card = Card.get(params.id)
-        def board = Board.get(1)
-        def movePhaseParam = params.movePhase as Integer
-        def oldPhaseId = card.phase.id
-        def oldPhase = Phase.get(oldPhaseId)
-        def movePhase = Phase.get(params.movePhase)
-        def oldPhaseIndex = board.phases.indexOf(oldPhase)
-        def newPhaseIndex = board.phases.indexOf(movePhase)
-        def cardLimit = board.phases[newPhaseIndex].cardLimit
-
-        if( newPhaseIndex < oldPhaseIndex ||
-            newPhaseIndex > oldPhaseIndex.plus(1) ||
-            ( board.phases[newPhaseIndex].cards.size() == cardLimit && oldPhaseIndex != newPhaseIndex ) )
+            if(isMoveLegal(oldPhaseIndex, newPhaseIndex)
+                && isPhaseFree(cmd.phase)) {
+                cmd.card.phase.cards.remove(cmd.card)
+                cmd.phase.cards.add(cmd.moveToCardsIndex, cmd.card)
+                return render([result: true] as JSON)
+            }
             return render([result: false] as JSON)
+        }
+    }
 
-        board.phases[oldPhaseIndex].cards.remove(card)
-        board.phases[newPhaseIndex].cards.add(params.movePosition as Integer, card)
-        return render([result: true] as JSON)
+    boolean isMoveLegal(oldPhaseIndex, newPhaseIndex) {
+        if(oldPhaseIndex+1 == newPhaseIndex || oldPhaseIndex == newPhaseIndex)
+            return true
+        else
+            return false
+    }
+
+    boolean isPhaseFree(phase) {
+        if(phase.cards.size() == phase.cardLimit)
+            return false
+        else
+            return true
     }
 
     def showBoard = {
         render(template: "/board/board", bean: Board.get(1))
     }
 }
+
+class MoveCardCommand {
+
+    static constraints = {
+        id(min: 0, nullable: false, validator:{ val, obj ->
+                Card.exists(obj.id)
+            })
+        moveToCardsIndex(min: 0, nullable: false)
+        moveToPhase(min: 0, nullable: false, validator:{val, obj ->
+                Phase.exists(obj.moveToPhase)
+            })
+    }
+
+    Integer id
+    Integer moveToCardsIndex
+    Integer moveToPhase
+
+    def getCard() {
+        Card.get(id)
+    }
+
+    def getPhase() {
+        Phase.get(moveToPhase)
+    }
+    
+}
+
+
