@@ -16,7 +16,8 @@ class MainViewController {
             return render([result: false] as JSON)
         } else {
             def board = Board.get(1)
-            def oldPhaseIndex = board.phases.indexOf(cmd.card.phase)
+            //TODO: Why do I have to use "Phase.get(cmd.card.phase.id)) ? Why can't I use "cmd.card.phase" ?
+            def oldPhaseIndex = board.phases.indexOf(Phase.get(cmd.card.phase.id))
             def newPhaseIndex = board.phases.indexOf(cmd.phase)
 
             if(isMoveLegal(oldPhaseIndex, newPhaseIndex)

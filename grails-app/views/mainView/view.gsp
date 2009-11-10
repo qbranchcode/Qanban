@@ -115,7 +115,7 @@
         var newPhase = ui.item.parent().attr('id').split('_')[1];
         $.post(
           '${createLink(controller:'mainView',action:'moveCard')}',
-          {'id': cardId , 'movePosition' : newPos , 'movePhase' : newPhase},
+          {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase},
           function(data){
             if( !data.result ){
               $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.illegalMove"/></p></div>').dialog({

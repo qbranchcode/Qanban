@@ -72,8 +72,18 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         super.tearDown()
     }
 
+    void testMoveCardSuccessfull() {
+        def cmd = new MoveCardCommand(id: "1", moveToCardsIndex: "0", moveToPhase: "2")
+        cmd.validate()
+        controller.moveCard(cmd)
+        def response = JSON.parse(controller.response.contentAsString)
+        assertTrue "Expected move to return true", response.result
+        assertEquals 1, secondPhase.cards.size()
+        assertEquals 2, firstPhase.cards.size()
+    }
+
     void testMoveCardToPhaseThatDoesntExists() {
-        def cmd = new MoveCardCommand(id: 3, moveToCardsIndex: 0, moveToPhase: 7)
+        def cmd = new MoveCardCommand(id: "3", moveToCardsIndex: "0", moveToPhase: "7")
         cmd.validate()
         controller.moveCard(cmd)
         def response = JSON.parse(controller.response.contentAsString)
@@ -81,7 +91,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
     }
 
     void testMoveCardMoreThanOnePhase() {
-        def cmd = new MoveCardCommand(id: 3, moveToCardsIndex: 0, moveToPhase: 3)
+        def cmd = new MoveCardCommand(id: "3", moveToCardsIndex: "0", moveToPhase: "3")
         cmd.validate()
         controller.moveCard(cmd)
         def response = JSON.parse(controller.response.contentAsString)
@@ -89,7 +99,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
     }
 
     void testNotSettingPhaseMovePhaseOrMovePosition() {
-        def cmd = new MoveCardCommand(id: 3)
+        def cmd = new MoveCardCommand(id: "3")
         cmd.validate()
         controller.moveCard(cmd)
         def response = JSON.parse(controller.response.contentAsString)
@@ -102,7 +112,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         secondPhase.addToCards(new Card(title: "p1c3", description: "p1c3DESC", caseNumber: 7))
         secondPhase.save()
         
-        def cmd = new MoveCardCommand(id: 3, moveToCardsIndex: 0, moveToPhase: 2)
+        def cmd = new MoveCardCommand(id: "3", moveToCardsIndex: "0", moveToPhase: "2")
         cmd.validate()
         controller.moveCard(cmd)
         
@@ -112,7 +122,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
     }
 
     void testMoveCardInPhaseAndToNewPhase() {
-        def cmd = new MoveCardCommand(id: 3, moveToCardsIndex: 0, moveToPhase: 2)
+        def cmd = new MoveCardCommand(id: "3", moveToCardsIndex: "0", moveToPhase: "2")
         cmd.validate()
         controller.moveCard(cmd)
         
@@ -128,7 +138,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         card.phase = secondPhase
         card.save()
 
-        def cmd = new MoveCardCommand(id: 4, moveToCardsIndex: 0, moveToPhase: 1)
+        def cmd = new MoveCardCommand(id: "4", moveToCardsIndex: "0", moveToPhase: "1")
         cmd.validate()
         controller.moveCard(cmd)
 
@@ -138,7 +148,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
     }
 
     void testMoveCardInFullPhase() {
-        def cmd = new MoveCardCommand(id: 2, moveToCardsIndex: 0, moveToPhase: 1)
+        def cmd = new MoveCardCommand(id: "2", moveToCardsIndex: "0", moveToPhase: "1")
         cmd.validate()
         controller.moveCard(cmd)
 
