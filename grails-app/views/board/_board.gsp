@@ -15,13 +15,15 @@
 
         <div class="phaseHolder">
           <div class="phaseHeader">
-            <h3>${phase.name}</h3>
-            <a href="${createLink(controller:'phase',action:'edit')}" class="editPhaseLink" id="phaseLink_${phase.id}">
+            <h3><a href="${createLink(controller:'phase',action:'edit')}" class="editPhaseLink" id="phaseLink_${phase.id}">${phase.name}</a></h3>
+            <!--<a href="${createLink(controller:'phase',action:'edit')}" class="editPhaseLink" id="phaseLink_${phase.id}">
               <img src="" alt="edit"/>
-            </a>
+            </a>-->
             <div class="limitLine"><g:if test="${phase.cardLimit}">${phase.cards.size()}/${phase.cardLimit}</g:if></div>
           </div>
-          <ul class="phase <g:if test="${phase.cardLimit}">cardLimit_${phase.cardLimit}</g:if>" id="phase_${phase.id}">
+          <ul class="phase <g:if test="${phase.cardLimit}">cardLimit_${phase.cardLimit}</g:if>" 
+              id="phase_${phase.id}"
+              style="height: <g:maxCardCount phases="${it.phases}" cardHeight="30" unit="px"/>" >
 
             <g:each var="card" in="${phase.cards}">
 

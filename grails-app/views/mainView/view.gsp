@@ -113,6 +113,28 @@
         var newPos = ui.item.prevAll().length;
         var cardId = ui.item.attr('id').split('_')[1];
         var newPhase = ui.item.parent().attr('id').split('_')[1];
+        $phases = $('.phase');
+
+        var maxCards = 0;
+        $phases.each(function(){
+            var $phase = $(this);
+            var numberOfChildren = $phase.children().size();
+            var classList = $phase.attr('class').split(' ');
+
+            $.each(classList, function(index, item){
+                var classSubstings = item.split('_');
+                if( classSubstings[0] == 'cardLimit' ){
+                  $phase.parent().find('.limitLine').html(numberOfChildren + '/' + classSubstings[1]);
+                }
+            });
+
+            if( numberOfChildren > maxCards ){
+              maxCards = numberOfChildren;
+            }
+        });
+        var height = ( maxCards * $('.card').height()) +'px';
+        $phases.css('height', height);
+        
         $.post(
           '${createLink(controller:'mainView',action:'moveCard')}',
           {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase},
@@ -165,6 +187,8 @@
   </g:javascript>
 
   <style type="text/css">
+    
+
 
   </style>
 

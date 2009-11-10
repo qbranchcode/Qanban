@@ -149,7 +149,8 @@ h4{}
 
 ul.phase {
     list-style: none;
-   /* height: 100px;*/
+    min-height: 30px;
+    padding-bottom: 10px;
 }
 
 .card {
@@ -157,11 +158,34 @@ ul.phase {
     margin: 1px 2px 0 2px; 
     background-color: yellow;
     text-align: center;
+    height: 30px;
 }
 
 #phaseList { list-style-type: none; list-style-position: outside; list-style-image: none;}
-    .phaseWrapper { height: 100px; float: left; }
-    .phaseHolder { width: 100%; }
+.phaseWrapper { height: 100px; float: left; }
+.phaseHolder { width: 100%; }
+.phaseHeader {
+    height: 3em;
+    position: relative;
+}
+
+/*
+.phaseHeader .editPhaseLink {
+    position: absolute;
+    top: 0.4em;
+    right: 0.3em;
+}
+*/
+.phaseHeader .limitLine {
+    height: 1em;
+    background-color: #bbb;
+    text-align: center;
+    line-height: 1em;
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+
 
     .dialog ul { list-style-type: none; list-style-position: outside; list-style-image: none; margin-top: 10px; }
     .dialog .prop { float: right; margin-top: 4px;}
