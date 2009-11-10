@@ -149,7 +149,7 @@ h4{}
 
 ul.phase {
     list-style: none;
-    height: 100px;
+   /* height: 100px;*/
 }
 
 .card {
