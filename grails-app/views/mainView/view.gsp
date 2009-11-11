@@ -24,7 +24,7 @@
 
     $('.addCardLink').click(function(event){
       $createCardDialog.dialog('open');
-      $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}');
+      $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id}});
       event.preventDefault();
     });
 
@@ -79,9 +79,13 @@
         modal: true,
         buttons: {
             <g:message code="yes"/>: function() {
+
                     $.ajax({  url: '${createLink(controller:'phase',action:'ajaxDelete')}',
                               data: {'id': id},
                               type: 'POST',
+                              success: function() {
+                                updateBoard();
+                              },
                               error: function (XMLHttpRequest, textStatus, errorThrown) {
                                  $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.errorDeletingPhase.content"/></p></div>').dialog({
                                   modal: true,
@@ -91,9 +95,9 @@
                                     }
                                   }
                                 });
+                                updateBoard();
                               }});
                     $(this).dialog('close');
-                    updateBoard();
             },
             <g:message code="no"/>: function() {
                     $(this).dialog('close');
@@ -177,7 +181,10 @@
     }
 
     function updateBoard(){
-      $('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}',function(){setupSortable();});
+      $('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}',
+      function(){
+        setupSortable();
+      });
     }
 
     function closeDialog(){

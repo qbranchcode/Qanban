@@ -33,7 +33,7 @@
         <input type="text" id="description" name="description"
                class="${hasErrors(bean:cardInstance,field:'description','errors')}"
                value="${fieldValue(bean:cardInstance,field:'description')}"/>
-        <input type="hidden" name="phase.id" value="1" />
+        <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
       </li>
 
      

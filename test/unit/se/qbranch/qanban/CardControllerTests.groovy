@@ -6,12 +6,15 @@ class CardControllerTests extends ControllerUnitTestCase {
 
     protected void setUp() {
         super.setUp()
+        mockDomain(Board, [ new Board() ])
         mockDomain(Phase, [ new Phase(name:'Phasendeluxe') ])
         mockDomain(Card, [ new Card(title:"CardTitle", caseNumber: 1, description: "Predef card") ])
 
         def c = Card.get(1)
         def p = Phase.get(1)
+        def b = Board.get(1)
         p.addToCards(c).save()
+        b.addToPhases(p).save()
     }
 
     protected void tearDown() {

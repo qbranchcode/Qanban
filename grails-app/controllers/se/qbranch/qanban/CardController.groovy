@@ -19,7 +19,7 @@ class CardController {
 
     def save = {
         def cardInstance = new Card(params)
-        def phase = Phase.get(params."phase.id")
+        def phase = findFirstPhase()
         if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
             flash.message = "Card ${cardInstance.id} created"
             return redirect(controller: 'mainView', action: 'view')
@@ -131,8 +131,6 @@ class CardController {
 
 
     def saveOrUpdate = {
-
-        println('inne i saveOrUpdate')
         def cardInstance
 
         // Update
@@ -185,12 +183,8 @@ class CardController {
 
         // Save
         }else{
-
-            println('- inne i save-delen')
-
             cardInstance = new Card(params)
-
-            def phase = Phase.get(params."phase.id")
+            def phase = findFirstPhase()
             
             if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
 
@@ -259,7 +253,7 @@ class CardController {
     }
 
     def ajaxShowForm = {
-        render(template:'cardForm')
+        render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id")])
     }
 
     /****
@@ -268,15 +262,18 @@ class CardController {
 
     def ajaxSave = {
         def cardInstance = new Card(params)
-        def phase = Phase.get(params."phase.id")
+        def phase = cardInstance.phase
         if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
             flash.message = "Card ${cardInstance.title} registered"
         }
         else {
             flash.message = null
         }
-        render(template:'cardForm',model:[cardInstance:cardInstance])
+        render(template:'cardForm',model:[cardInstance:cardInstance, boardInstance: cardInstance.phase.board])
     }
-
-    
+    Phase findFirstPhase() {
+        def board  = Board.get(1)
+        def phase = Phase.get(board.phases[0].id)
+        return phase
+    }
 }

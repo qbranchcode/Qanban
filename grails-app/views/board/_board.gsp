@@ -11,7 +11,7 @@
     
     <g:each var="phase" in="${it.phases}">
 
-      <li class="phaseWrapper" style="width:${100/it.phases.size()-1}%; margin: 0 0.5%;">
+      <li class="phaseWrapper" id="phaseWrapper_${phase.id}"style="width:${100/it.phases.size()-1}%; margin: 0 0.5%;">
 
         <div class="phaseHolder">
           <div class="phaseHeader">
