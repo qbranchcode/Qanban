@@ -45,7 +45,6 @@ class MainViewController {
     }
 
     void createCardEventMove(cmd, board) {
-
         def cardEventMove = new CardEventMove(
             newPhaseIndex: board.phases.indexOf(cmd.phase),
             newCardIndex: cmd.moveToCardsIndex,
