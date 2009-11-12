@@ -113,10 +113,16 @@
     $('#phase_${phase.id}').sortable({
       <g:if test="${i + 1 < board.phases.size()}">
       connectWith: '#phase_${board.phases[i+1].id}.available',
-    </g:if>
       start: function(event,ui){
         sort = true;
+        $('.phase:not(#phase_${board.phases[i+1].id}.available)').animate({display: 'none'}, 200);
       },
+      </g:if>
+    <g:else>
+      start: function(event,ui){
+        sort = true;       
+      },
+    </g:else>
       placeholder: 'placeholder',
       stop: function(event,ui){
         var newPos = ui.item.prevAll().length;
@@ -142,7 +148,7 @@
             }
         });
         var height = ( maxCards * $('.card').height()) +'px';
-        $phases.css('height', height);
+        $phases.animate({height: height},300);
         
         $.post(
           '${createLink(controller:'mainView',action:'moveCard')}',
