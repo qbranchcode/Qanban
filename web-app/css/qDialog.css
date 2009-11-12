@@ -11,7 +11,7 @@
 }
 
 
-.dialog{
+.qdialog{
 
     width: 400px;
     min-height: 100px;
@@ -26,14 +26,14 @@
 
 /* Dialog - Top */
 
-.dialog .top{
+.qdialog .top{
     border-bottom: 1px solid red;
     height: 24px;
     cursor: move;
     background-color: #cc0000;
 }
 
-.dialog .top h1 {
+.qdialog .top h1 {
  display: inline-block;
  font-size: 1.4em;
  line-height: 24px;
@@ -42,7 +42,7 @@
  float: left;
 }
 
-.dialog .top .btn{
+.qdialog .top .btn{
     float: right;
     width: 20px;
     height: 20px;
@@ -55,7 +55,7 @@
 }
 
 
-.dialog .btnHover{
+.qdialog .btnHover{
     border: 2px solid #fff !important;
     font-weight: bold !important;
     height: 18px !important;
@@ -66,12 +66,12 @@
 
 /* Form specific styles */
 
-.dialog .content {
+.qdialog .content {
     margin: 0 2px 0 2px;
     padding: 2px;
 }
 
-.dialog .content textarea {
+.qdialog .content textarea {
     margin: 0 4px;
     width: 384px;
     padding: 2px;
@@ -96,14 +96,14 @@
 
 /* Button panel */
 
-.dialog .buttons {
+.qdialog .buttons {
     clear: both;
     height: 24px;
     margin: 0 2px 0 2px;
     padding: 5px 5px;
 }
 
-.dialog .buttons .btn{
+.qdialog .buttons .btn{
     padding: 0 5px;
     float: right;
     border: 1px solid #cc0000;
@@ -111,7 +111,7 @@
     font-size: 1.2em;
 }
 
-.dialog .buttons .btnHover{
+.qdialog .buttons .btnHover{
     border: 2px solid #cc0000 !important;
     font-weight: bold !important;
     height: 18px !important;
@@ -131,16 +131,16 @@
 #caseNoWrapper label{ line-height: 15px;}
 #caseNoWrapper input{ font-size: 11px; width: 60px;}
 
-.dialog .header {
+.qdialog .header {
     height: 44px;
     margin: 0 2px 0 2px;
     padding: 2px;
     border-bottom: 1px solid #ddd;
 }
 
-.dialog ul li { display: block;}
+.qdialog ul li { display: block;}
 
-.dialog .header .assignee {
+.qdialog .header .assignee {
     border: 1px solid #000;
     width: 40px;
     height: 40px;
@@ -149,14 +149,14 @@
     background-color: grey;
 }
 
-.dialog .header input{
+.qdialog .header input{
     font-size: 20px;
     font-weight: bold;
     width: 340px;
     text-indent: 4px;
 }
 
-.dialog .header .date{
+.qdialog .header .date{
     display: inline-block;
     font-size: 11px;
     padding: 3px 5px 1px 10px;

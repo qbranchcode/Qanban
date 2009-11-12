@@ -6,7 +6,7 @@ jQuery.fn.qDialog = function(options) {
 
     var confirmReturnValue = -1;
     
-    var $dialog = $(this).addClass('dialog qframe').draggable({
+    var $dialog = $(this).addClass('qdialog qframe').draggable({
         handle: '.top'
     }).appendTo($('body'));
 
