@@ -4,14 +4,13 @@
 
 
 * {
- margin: 0px;
- padding: 0px;
+    margin: 0px;
+    padding: 0px;
 }
 
 
 
 body{
-
     background-color: #f2f2f2;
 
     /*
@@ -19,18 +18,13 @@ body{
  	1.2 em = 12px
  	...
     */
-
     font-size: 62.5%;
-
-
-
-    
-    font-family: Arial;
 
     /*
         font-family: Tahoma,Verdana,Arial,Helvetica; code.qb.se
 	font-family: Verdana; qb.se
     */
+    font-family: Arial;
 }
 
 
@@ -55,8 +49,6 @@ a:hover {
 
 p { font-size: 1.2em;}
 p a { /*cascadefix*/ font-size: 1em;}
-
-
 
 h1{}
 h2  { font-size: 3.1em; }
@@ -109,12 +101,6 @@ h4{}
     color: #fff;
 }
 
-#wrapper {
-    position: relative;
-    padding-top: 100px;
-
-}
-
 .splitter {
     height: 1px;
     background-color: #000;
@@ -127,8 +113,11 @@ h4{}
 /*********/
 
 
+#wrapper {
+    position: relative;
+    padding-top: 100px;
 
-
+}
 
 #board {
     width: 80em;
@@ -169,7 +158,11 @@ ul.phase {
     height: 30px;
 }
 
-#phaseList { list-style-type: none; list-style-position: outside; list-style-image: none;}
+#phaseList { 
+    list-style-type: none;
+    list-style-position: outside;
+    list-style-image: none;
+}
 .phaseWrapper { height: 100px; float: left; }
 .phaseHolder { width: 100%; }
 .phaseHeader {
@@ -195,19 +188,22 @@ ul.phase {
 }
 
 
-    .dialog ul { list-style-type: none; list-style-position: outside; list-style-image: none; margin-top: 10px; }
-    .dialog .prop { float: right; margin-top: 4px;}
-    .dialog .prop input{ width: 180px; }
 
-    .ui-dialog .ui-dialog-buttonpane input {
-      cursor: pointer;
-      float: right;
-      line-height: 1.4em;
-      margin: 0.5em 0.4em 0.5em 0;
-      overflow: visible;
-      padding: 0.2em 0.6em 0.3em;
-    }
 
-    .ui-dialog .ui-dilaog-content {
-      overflow: visible !important;
-    }
+/* Old dialog styles, remove when porting to qDialog!!!! */
+.dialog ul { list-style-type: none; list-style-position: outside; list-style-image: none; margin-top: 10px; }
+.dialog .prop { float: right; margin-top: 4px;}
+.dialog .prop input{ width: 180px; }
+
+.ui-dialog .ui-dialog-buttonpane input {
+    cursor: pointer;
+    float: right;
+    line-height: 1.4em;
+    margin: 0.5em 0.4em 0.5em 0;
+    overflow: visible;
+    padding: 0.2em 0.6em 0.3em;
+}
+
+.ui-dialog .ui-dilaog-content {
+    overflow: visible !important;
+}
