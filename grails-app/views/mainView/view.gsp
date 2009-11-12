@@ -22,7 +22,9 @@
     $createCardDialog
       .qDialog({  trigger: '.addCardLink',
                   title: '<g:message code="mainView.jQuery.dialog.addCardForm.title"/>',
-                  form: { yes: 'Yepp', no : 'Nope'},
+                  form: { yes: '<g:message code="yes"/>', no : '<g:message code="no"/>',
+                          confirmDiscardContent : '<g:message code="mainView.jQuery.dialog.confirmDiscard.content"/>' ,
+                          confirmDiscardTitle : '<g:message code="mainView.jQuery.dialog.confirmDiscard.title"/>' },
                   buttons: { '<g:message code="ok"/>' : function(){
                                     $createCardDialog.find('input[type="submit"]').click();
                                   }

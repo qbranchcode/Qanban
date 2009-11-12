@@ -110,14 +110,14 @@ jQuery.fn.qDialog = function(options) {
 
                     var $confirmDialog;
                     var confirmOptions = new Array();
-                    confirmOptions['confirm'] = 'There is changes.. discard?';
+                    confirmOptions['confirm'] = options.form.confirmDiscardContent;
 
                     var buttons = new Array();
                     buttons[options.form.yes] = function(){ $confirmDialog.close();destroyDialog(); };
                     buttons[options.form.no] = function(){ $confirmDialog.close();};
 
                     confirmOptions['buttons'] = buttons;
-                    confirmOptions['title'] = "Are you sure?";
+                    confirmOptions['title'] = options.form.confirmDiscardTitle;
                     confirmOptions['modal'] = true;
                     $confirmDialog = $('<div class="closeConfirm"></div>').qDialog(confirmOptions);
 
