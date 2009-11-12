@@ -18,7 +18,8 @@
     border: 2px solid #cc0000;
     background-color: #f5f4ee;
     z-index: 2000;
-    margin: auto;
+    position: fixed;
+
 }
 
 

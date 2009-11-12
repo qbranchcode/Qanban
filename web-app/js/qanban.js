@@ -9,6 +9,7 @@ jQuery.fn.qDialog = function(options) {
     var $dialog = $(this).addClass('dialog qframe').draggable({
         handle: '.top'
     }).appendTo($('body'));
+
     var $top = $('<div class="top"></div>').prependTo($dialog);
     var $closeBtn = $('<div class="btn close_action qframe">X</div>').appendTo($top);
     var $content = $('<div class="content"></div>').appendTo($dialog);
@@ -66,7 +67,7 @@ jQuery.fn.qDialog = function(options) {
      * Checks if a trigger is specified, in that case the dialog will be invisible by default
      */
     function enableTriggerAndLoad(options){
-        
+
 
         if( options.trigger != null ){
 
@@ -79,6 +80,7 @@ jQuery.fn.qDialog = function(options) {
                     $content.load(options.preLoadUrl,
                         options.preLoadParams, function (){ 
                             initHiddenFields();
+                            
                             $dialog.toggle();
                             
                          });
@@ -88,7 +90,9 @@ jQuery.fn.qDialog = function(options) {
                 event.preventDefault();
             });
         }
-        
+
+                $dialog.css('top', parseInt(( $(window).height()/2 ) - $dialog.height() ) +'px').css('left', parseInt(( $('body').width()/2 ) - ( $dialog.width()/2 )) +'px');
+
 
     }
 
