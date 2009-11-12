@@ -6,16 +6,33 @@
 
   <title>Qanban</title>
 
+  <link rel="stylesheet" href="${resource(dir:'css',file:'qDialog.css')}" />
+
   <g:javascript library="jquery"/>
   <g:javascript src="jquery/jquery.ui.core.js"/>
   <g:javascript src="jquery/jquery.ui.sortable.js"/>
   <g:javascript src="jquery/jquery.ui.draggable.js"/>
   <g:javascript src="jquery/jquery.ui.dialog.js"/>
-
+  <g:javascript src="qanban.js"/>
   <jq:jquery>
 
 
-    $createCardDialog = $('<div id="createCard" class="dialog"></div>');
+    $createCardDialog = $('<div id="createCard"></div>');
+
+    $createCardDialog
+      .qDialog({  trigger: '.addCardLink',
+                  title: '<g:message code="mainView.jQuery.dialog.addCardForm.title"/>',
+                  form: { yes: 'Yepp', no : 'Nope'},
+                  buttons: { '<g:message code="ok"/>' : function(){
+                                    $createCardDialog.find('input[type="submit"]').click();
+                                  }
+                           },
+                  contentId: 'createCardContent',
+                  modal: true,
+                  preLoadUrl: '${createLink(controller:'card',action:'ajaxShowForm')}',
+                  preLoadParams: {'board.id':${board.id}} } );
+    
+/*
     $createCardDialog.dialog({
       autoOpen: false,
       modal: true,
@@ -27,7 +44,7 @@
       $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id}});
       event.preventDefault();
     });
-
+*/
     $createPhaseDialog = $('<div id="createPhase" class="dialog"></div>');
     $createPhaseDialog.dialog({
       autoOpen: false,
@@ -225,5 +242,6 @@
 
   </div>
 
+  <div id="crap"></div>
 </body>
 
