@@ -29,14 +29,14 @@ class BootStrap {
                 role.addToPeople(user)
             }
 
-            Phase p1 = new Phase(name:'Backlog')
+            Phase p1 = new Phase(name:'Backlog', cardLimit: 10)
             p1.addToCards(new Card(title:"Card #1",caseNumber:1,description:'blalbblalbabla'))
             .addToCards(new Card(title:"Card #2",caseNumber:2,description:'blöblöblöblöbl'))
 
             Board b = new Board()
             .addToPhases(p1)
-            .addToPhases(new Phase(name:'WIP'))
-            .addToPhases(new Phase(name:'Done'))
+            .addToPhases(new Phase(name:'WIP', cardLimit: 5))
+            .addToPhases(new Phase(name:'Done', cardLimit: 5))
             .save()
 
 

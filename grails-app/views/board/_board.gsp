@@ -21,7 +21,7 @@
             </a>-->
             <div class="limitLine"><g:if test="${phase.cardLimit}">${phase.cards.size()}/${phase.cardLimit}</g:if></div>
           </div>
-          <ul class="phase <g:if test="${phase.cardLimit}">cardLimit_${phase.cardLimit}</g:if>" 
+          <ul class="<g:if test="${phase.cardLimit && phase.cards.size() > 0 && (phase.cardLimit/phase.cards.size()) != 1 || phase.cardLimit != phase.cards.size()}">available</g:if> phase <g:if test="${phase.cardLimit}">cardLimit_${phase.cardLimit}</g:if>"
               id="phase_${phase.id}"
               style="height: <g:maxCardCount phases="${it.phases}" cardHeight="30" unit="px"/>" >
 

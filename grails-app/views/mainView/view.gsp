@@ -108,11 +108,16 @@
 
 
   function setupSortable(){
-     $('.phase').sortable({
-      connectWith: '.phase',
+
+  <g:each var="phase" status="i" in="${board.phases}">
+    $('#phase_${phase.id}').sortable({
+      <g:if test="${i + 1 < board.phases.size()}">
+      connectWith: '#phase_${board.phases[i+1].id}.available',
+    </g:if>
       start: function(event,ui){
         sort = true;
       },
+      placeholder: 'placeholder',
       stop: function(event,ui){
         var newPos = ui.item.prevAll().length;
         var cardId = ui.item.attr('id').split('_')[1];
@@ -143,6 +148,7 @@
           '${createLink(controller:'mainView',action:'moveCard')}',
           {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase},
           function(data){
+            updateBoard();
             if( !data.result ){
               $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.illegalMove"/></p></div>').dialog({
                 modal: true,
@@ -160,6 +166,8 @@
           "json");
       }
     });
+
+  </g:each>
 
 
     $editPhaseDialog = $('<div id="editPhase" class="dialog"></div>');
@@ -195,8 +203,6 @@
 
   <style type="text/css">
     
-
-
   </style>
 
 

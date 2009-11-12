@@ -161,6 +161,14 @@ ul.phase {
     height: 30px;
 }
 
+.placeholder {
+    border: 1px solid;
+    margin: 1px 2px 0 2px; 
+    background-color: red;
+    text-align: center;
+    height: 30px;
+}
+
 #phaseList { list-style-type: none; list-style-position: outside; list-style-image: none;}
 .phaseWrapper { height: 100px; float: left; }
 .phaseHolder { width: 100%; }
