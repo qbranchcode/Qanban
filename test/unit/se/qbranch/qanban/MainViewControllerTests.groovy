@@ -32,6 +32,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
                 new Phase(name: "Phase2", cardLimit: 3)])
 
         mockDomain(Board, [new Board()])
+        mockDomain(CardEventMove)
         
         board = Board.get(1)
         firstPhase = Phase.findByName("Phase1")
@@ -72,16 +73,6 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         super.tearDown()
     }
 
-    void testMoveCardSuccessfull() {
-        def cmd = new MoveCardCommand(id: "1", moveToCardsIndex: "0", moveToPhase: "2")
-        cmd.validate()
-        controller.moveCard(cmd)
-        def response = JSON.parse(controller.response.contentAsString)
-        assertTrue "Expected move to return true", response.result
-        assertEquals 1, secondPhase.cards.size()
-        assertEquals 2, firstPhase.cards.size()
-    }
-
     void testMoveCardToPhaseThatDoesntExists() {
         def cmd = new MoveCardCommand(id: "3", moveToCardsIndex: "0", moveToPhase: "7")
         cmd.validate()
@@ -119,16 +110,6 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         assertEquals 3, secondPhase.cards.size()
         def response = JSON.parse(controller.response.contentAsString)
         assertFalse "Expected move to return false", response.result
-    }
-
-    void testMoveCardInPhaseAndToNewPhase() {
-        def cmd = new MoveCardCommand(id: "3", moveToCardsIndex: "0", moveToPhase: "2")
-        cmd.validate()
-        controller.moveCard(cmd)
-        
-        def response = JSON.parse(controller.response.contentAsString)
-        assertTrue "Expected move to return true", response.result
-        assertEquals 1, secondPhase.cards.size()
     }
 
     void testMoveCardBackPhase() {

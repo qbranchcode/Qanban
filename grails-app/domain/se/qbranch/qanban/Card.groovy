@@ -10,6 +10,8 @@ class Card {
         phase()
     }
 
+    static hasMany = [ events : CardEventMove ]
+
     String title
     String description
     Integer caseNumber

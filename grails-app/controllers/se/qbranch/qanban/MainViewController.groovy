@@ -22,8 +22,7 @@ class MainViewController {
 
             if(isMoveLegal(oldPhaseIndex, newPhaseIndex)
                 && isPhaseFree(cmd.phase, oldPhaseIndex, newPhaseIndex)) {
-                cmd.card.phase.cards.remove(cmd.card)
-                cmd.phase.cards.add(cmd.moveToCardsIndex, cmd.card)
+                createCardEventMove(cmd, board)
                 return render([result: true] as JSON)
             }
             return render([result: false] as JSON)
@@ -32,9 +31,9 @@ class MainViewController {
 
     boolean isMoveLegal(oldPhaseIndex, newPhaseIndex) {
         if(oldPhaseIndex+1 == newPhaseIndex || oldPhaseIndex == newPhaseIndex)
-            return true
+        return true
         else
-            return false
+        return false
     }
 
     boolean isPhaseFree(phase, oldPhaseIndex, newPhaseIndex) {
@@ -42,7 +41,16 @@ class MainViewController {
             return false
         }
         else
-            return true
+        return true
+    }
+
+    void createCardEventMove(cmd, board) {
+
+        def cardEventMove = new CardEventMove(
+            newPhaseIndex: board.phases.indexOf(cmd.phase),
+            newCardIndex: cmd.moveToCardsIndex,
+            card: cmd.card)
+        cardEventMove.save()
     }
 
     def showBoard = {
@@ -62,6 +70,10 @@ class MoveCardCommand {
             })
     }
 
+    static mapping = {
+        version false
+    }
+
     Integer id
     Integer moveToCardsIndex
     Integer moveToPhase
@@ -75,5 +87,3 @@ class MoveCardCommand {
     }
     
 }
-
-
