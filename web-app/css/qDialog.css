@@ -1,0 +1,194 @@
+
+/* General */
+
+.qframe{
+    -webkit-border-top-left-radius: 6px;
+    -webkit-border-top-right-radius: 6px;
+    -webkit-border-bottom-left-radius: 6px;
+    -moz-border-radius-topleft:6px;
+    -moz-border-radius-topright:6px;
+    -moz-border-radius-bottomleft:6px;
+}
+
+
+.dialog{
+    width: 400px;
+    min-height: 100px;
+    border: 2px solid #cc0000;
+    background-color: #f5f4ee;
+    z-index: 2000;
+    margin: auto;
+}
+
+
+
+/* Dialog - Top */
+
+.dialog .top{
+    border-bottom: 1px solid red;
+    height: 24px;
+    cursor: move;
+    background-color: #cc0000;
+}
+
+.dialog .top h1 {
+ display: inline-block;
+ font-size: 1.4em;
+ line-height: 24px;
+ padding-left: 3px;
+ color: #fff;
+ float: left;
+}
+
+.dialog .top .btn{
+    float: right;
+    width: 20px;
+    height: 20px;
+    border: 1px solid #fff;
+    margin: 1px;
+    text-align: center;
+    font-size: 1.7em;
+    line-height: 20px;
+    color: #fff;
+}
+
+
+.dialog .btnHover{
+    border: 2px solid #fff !important;
+    font-weight: bold !important;
+    height: 18px !important;
+    width: 18px !important;
+    cursor: pointer;
+}
+
+
+/* Form specific styles */
+
+.dialog .content {
+    margin: 0 2px 0 2px;
+    padding: 2px;
+}
+
+.dialog .content textarea {
+    margin: 0 4px;
+    width: 384px;
+    padding: 2px;
+}
+
+
+
+.property {
+    background-color: transparent;
+    border: 1px solid transparent;
+    border-bottom: 1px solid #fff;
+    border-right: 1px solid #fff;
+}
+
+.selected{
+    background-color: #fff !important;
+    border-bottom: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+
+.errors{ border: 1px solid red; }
+
+/* Button panel */
+
+.dialog .buttons {
+    clear: both;
+    height: 24px;
+    margin: 0 2px 0 2px;
+    padding: 5px 5px;
+}
+
+.dialog .buttons .btn{
+    padding: 0 5px;
+    float: right;
+    border: 1px solid #cc0000;
+    line-height: 20px;
+    font-size: 1.2em;
+}
+
+.dialog .buttons .btnHover{
+    border: 2px solid #cc0000 !important;
+    font-weight: bold !important;
+    height: 18px !important;
+    width: auto !important;
+    padding: 0 3px;
+}
+
+/* Specifics for the card form */
+
+#caseNoWrapper {
+ width: 150px;
+ float: right;
+ height: 20px;
+ padding: 3px 1px 1px 0px;
+}
+#caseNoWrapper * { float: right; margin-left: 5px;}
+#caseNoWrapper label{ line-height: 15px;}
+#caseNoWrapper input{ font-size: 11px; width: 60px;}
+
+.dialog .header {
+    height: 44px;
+    margin: 0 2px 0 2px;
+    padding: 2px;
+    border-bottom: 1px solid #ddd;
+}
+
+.dialog ul li { display: block;}
+
+.dialog .header .assignee {
+    border: 1px solid #000;
+    width: 40px;
+    height: 40px;
+    float: left;
+    margin-right: 2px;
+    background-color: grey;
+}
+
+.dialog .header input{
+    font-size: 20px;
+    font-weight: bold;
+    width: 340px;
+    text-indent: 4px;
+}
+
+.dialog .header .date{
+    display: inline-block;
+    font-size: 11px;
+    padding: 3px 5px 1px 10px;
+    position: relative;
+}
+
+
+/* Create card dialog specifics */
+
+#createCardContent input, textarea { border: 1px solid #ddd;}
+/*#createCard { width: 300px;}*/
+#createCardContent form ul { padding-right: 30px; list-style-type: none; list-style-position: outside; list-style-image: none; margin-top: 10px; }
+#createCardContent .prop { float: right; margin-top: 4px;}
+#createCardContent .prop input{ width: 180px; }
+
+
+/* Confim dialog */
+
+.closeConfirm { margin: auto; width: 250px; }
+
+/* Modal */
+
+.modal{
+ position: fixed;
+ top: 0;
+ left: 0;
+ height: 100%;
+ width: 100%;
+ z-index: -1;
+}
+
+.modal .bg{
+ background-color: #ddd;
+ height: 100%;
+ width: 100%;
+ opacity: .44;
+}
