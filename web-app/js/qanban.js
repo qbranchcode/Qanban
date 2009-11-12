@@ -54,8 +54,6 @@ jQuery.fn.qDialog = function(options) {
     function destroyDialog(){
         $dialog.toggle();
         $content.empty();
-        
-        
     }
 
     function setDialogTitle(title){
@@ -214,14 +212,11 @@ function initHiddenFields(){
  */
 
 function scanFormResult(){
-
     if( $createCardDialog.find('.errors').size() == 0 ){
-        $createCardDialog.toggle();
-        $createCardDialog.empty();
+        $createCardDialog.toggle();eateCardDialog.empty();
+        $createCardDialog.find('.content').empty();
     }else{
         initHiddenFields();
     }
-
-
 }
 
