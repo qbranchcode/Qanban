@@ -2,16 +2,16 @@ package se.qbranch.qanban
 
 class CardEventMove{
 
-    Integer newPhaseIndex
     Integer newCardIndex
     Card card
+    User user
+    Phase newPhase
 
     transient afterInsert = {
 
-        def newPhaseInstance = card.phase.board.phases[newPhaseIndex]
         card.phase.cards.remove(card)
-        newPhaseInstance.cards.add(newCardIndex, card)
-        card.phase = newPhaseInstance
+        newPhase.cards.add(newCardIndex, card)
+        card.phase = newPhase
     }
 
     def invalidateEvent() {

@@ -23,4 +23,13 @@ class MainViewControllerTests extends ControllerUnitTestCase {
         assertTrue "Expected move to return true", response.result
         assertEquals 1, secondPhase.cards.size()
     }
+
+    void testMoveCardInFullPhase() {
+        def cmd = new MoveCardCommand(id: "2", moveToCardsIndex: "0", moveToPhase: "1")
+        cmd.validate()
+        controller.moveCard(cmd)
+
+        def response = JSON.parse(controller.response.contentAsString)
+        assertTrue "Expected move to return true", response.result
+    }
 }
