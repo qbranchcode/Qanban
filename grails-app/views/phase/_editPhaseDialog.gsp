@@ -44,15 +44,14 @@
     <input type="hidden" name="id" value="${phaseInstance.id}" />
     <input type="hidden" name="board.id" value="1" />
 
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
+    
       <input style="display: none;" type="submit" value="<g:message code="_phaseForm.button.update"/>" />
-      <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog(); deletePhaseDialog('${phaseInstance.id}')"><g:message code="_phaseForm.button.delete"/></button>
       
-    </div>
+    kalas
   </g:formRemote>
 </g:if>
 <g:else>
-  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="createPhase" name="phaseForm" onSuccess="refreshMainView('#createPhaseDialog')">
+  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="createPhaseDialog" name="phaseForm" onSuccess="refreshMainView('#createPhaseDialog')">
     <ul>
 
 
