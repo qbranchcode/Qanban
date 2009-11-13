@@ -5,7 +5,7 @@ import grails.converters.*
 class MainViewController {
 
     def authenticateService
-    
+
     def index = { redirect(action:view,params:params)  }
 
     def view = {
@@ -61,8 +61,18 @@ class MainViewController {
         def initialCardIndex = cmd.card.phase.cards.indexOf(cmd.card)
         def initialPhase = cmd.card.phase
         if(initialCardIndex == cmd.moveToCardsIndex && initialPhase.equals(cmd.phase))
-            return false
+        return false
         return true
+    }
+    
+    void createCardEventMove(cmd, board) {
+        def user = authenticateService.userDomain()
+        def cardEventMove = new CardEventMove(
+            newPhase: cmd.phase,
+            newCardIndex: cmd.moveToCardsIndex,
+            card: cmd.card,
+            user: user)
+        cardEventMove.save()
     }
 
     def showBoard = {
