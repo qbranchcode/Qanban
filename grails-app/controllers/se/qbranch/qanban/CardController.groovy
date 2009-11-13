@@ -253,7 +253,10 @@ class CardController {
     }
 
     def ajaxShowForm = {
+        if(params.id == null)
         render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id")])
+        else
+        render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id)])
     }
 
     /****

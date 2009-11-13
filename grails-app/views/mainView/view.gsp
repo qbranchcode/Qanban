@@ -6,7 +6,7 @@
 
   <title>Qanban</title>
 
-  <link rel="stylesheet" href="${resource(dir:'css',file:'qDialog.css')}" />
+  <%-- <link rel="stylesheet" href="${resource(dir:'css',file:'qDialog.css')}" /> --%>
 
   <g:javascript library="jquery"/>
   <g:javascript src="jquery/jquery.ui.core.js"/>
@@ -19,22 +19,7 @@
 
     $createCardDialog = $('<div id="createCard"></div>');
 
-    $createCardDialog
-      .qDialog({  trigger: '.addCardLink',
-                  title: '<g:message code="mainView.jQuery.dialog.addCardForm.title"/>',
-                  form: { yes: '<g:message code="yes"/>', no : '<g:message code="no"/>',
-                          confirmDiscardContent : '<g:message code="mainView.jQuery.dialog.confirmDiscard.content"/>' ,
-                          confirmDiscardTitle : '<g:message code="mainView.jQuery.dialog.confirmDiscard.title"/>' },
-                  buttons: { '<g:message code="ok"/>' : function(){
-                                    $createCardDialog.find('input[type="submit"]').click();
-                                  }
-                           },
-                  contentId: 'createCardContent',
-                  modal: true,
-                  preLoadUrl: '${createLink(controller:'card',action:'ajaxShowForm')}',
-                  preLoadParams: {'board.id':${board.id}} } );
-    
-/*
+
     $createCardDialog.dialog({
       autoOpen: false,
       modal: true,
@@ -46,7 +31,7 @@
       $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id}});
       event.preventDefault();
     });
-*/
+
     $createPhaseDialog = $('<div id="createPhase" class="dialog"></div>');
     $createPhaseDialog.dialog({
       autoOpen: false,
@@ -210,6 +195,13 @@
       event.preventDefault();
     });
 
+    $('.editCardLink').click(function(event){
+
+      var cardId = $(this).attr('id').split('_')[1];
+      $createCardDialog.dialog('open');
+      $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id} , 'id':cardId});
+      event.preventDefault();
+    });
     
     }
 
