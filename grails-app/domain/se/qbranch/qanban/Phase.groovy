@@ -4,7 +4,10 @@ class Phase {
 
     static constraints = {
         name(nullable: false, blank: false)
-        cardLimit(nullable: true)
+        cardLimit(nullable: true, validator:{ limit, phaseInstance ->
+                if(phaseInstance.cardLimit < phaseInstance.cards.size())
+                    return ['phase.cardLimit.lessThanCardsSize', limit]
+            })
     }
 
     //TODO: Titta mer på det här!
