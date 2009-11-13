@@ -14,4 +14,13 @@ class Phase {
     Board board
     List cards = []
     Integer cardLimit
+
+    boolean equals(Object o) {
+        if(o instanceof Phase) {
+            Phase p = (Phase) o
+            if(this.id == p.id)
+                return true
+        }
+        return false
+    }
 }
