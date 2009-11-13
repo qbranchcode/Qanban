@@ -16,27 +16,38 @@
   <g:javascript src="qanban.js"/>
   <jq:jquery>
 
-
-    $createCardDialog = $('<div id="createCard"></div>');
+    var dilogFormBuffer = {};
+    
+    $createCardDialog = $('<div id="createCardDialog"></div>');
 
 
     $createCardDialog.dialog({
       autoOpen: false,
       modal: true,
-      title: "<g:message code="mainView.jQuery.dialog.addCardForm.title"/>"
+      title: "<g:message code="mainView.jQuery.dialog.addCardForm.title"/>",
+      buttons: {
+                    <g:message code="_cardForm.button.submit"/> : function(){ 
+                      $createCardDialog.find('input[type="submit"]').click();                      
+                    }
+      } 
     });
 
     $('.addCardLink').click(function(event){
-      $createCardDialog.dialog('open');
-      $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id}});
+      $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id}},function(){$createCardDialog.dialog('open');});
       event.preventDefault();
     });
 
     $createPhaseDialog = $('<div id="createPhase" class="dialog"></div>');
+    
     $createPhaseDialog.dialog({
       autoOpen: false,
       modal: true,
-      title: "<g:message code="mainView.jQuery.dialog.addPhaseForm.title"/>"
+      title: "<g:message code="mainView.jQuery.dialog.addPhaseForm.title"/>",
+      buttons: {
+                    <g:message code="_phaseForm.button.save"/> : function(){
+                      $createPhaseDialog.find('input[type="submit"]').click();
+                    }
+      }
     });
 
     $('.addPhaseLink').click(function(event){
@@ -195,14 +206,44 @@
       event.preventDefault();
     });
 
+    $editCardDialog = $('<div id="editCardDialog"></div>');
+
+    $editCardDialog.dialog({
+      autoOpen: false,
+      modal: true,
+      title: "<g:message code="mainView.jQuery.dialog.editCardForm.title"/>",
+ 
+    });
     $('.editCardLink').click(function(event){
 
       var cardId = $(this).attr('id').split('_')[1];
-      $createCardDialog.dialog('open');
-      $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id} , 'id':cardId});
+      $editCardDialog.dialog('open');
+      $editCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id} , 'id':cardId});
       event.preventDefault();
     });
     
+    }
+
+    function refreshMainView(dialogSelector){
+      alert(dialogSelector);
+      $dialog = $(dialogSelector);
+      if( $dialog.find('.errors').size() == 0 ){
+        $dialog.dialog('close');
+        updateBoard();
+        $('<div id="popup" title="Success">Card successfully created!</div>').dialog({
+			bgiframe: true,
+			modal: true,
+			buttons: {
+				Ok: function() {
+					$(this).dialog('close');
+				}
+			},
+                        open: function(){
+                          setTimeout("$('#popup').dialog('close')",1250);
+                        }
+		});
+
+      }
     }
 
     function updateBoard(){

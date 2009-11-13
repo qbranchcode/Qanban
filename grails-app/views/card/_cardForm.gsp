@@ -13,8 +13,8 @@
     <g:renderErrors bean="${cardInstance}" as="list" />
   </div>
 </g:hasErrors>
-<g:if test="${cardInstance}">
-  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="createCard" name="cardForm" onSuccess="updateBoard()">
+<g:if test="${cardInstance?.id}">
+  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="editCardDialog" name="cardForm" onSuccess="refreshMainView('#editCardDialog')">
     <ul>
 
       <li class="prop">
@@ -48,32 +48,29 @@
       </g:if>
     </ul>
 
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <input class="save ui-state-default ui-corner-all" type="submit" value="<g:message code="_cardForm.button.submit"/>" />
-             <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog()"><g:message code="_cardForm.button.close"/></button>
-    </div>
+      <input style="display: none;" class="save ui-state-default ui-corner-all" type="submit" value="<g:message code="_cardForm.button.submit"/>" />
   </g:formRemote>
 </g:if>
 <g:else>
-  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="createCard" name="cardForm" onSuccess="updateBoard()">
+  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="createCardDialog" name="cardForm" onSuccess="refreshMainView('#createCardDialog')">
     <ul>
 
       <li class="prop">
         <label for="caseNumber"><g:message code="_cardForm.label.caseNumber"/></label>
         <input type="text" id="caseNumber" name="caseNumber"
-               class="${hasErrors(bean:cardInstance,field:'caseNumber','errors')}"
+               class="property ${hasErrors(bean:cardInstance,field:'caseNumber','errors')}"
                value="${fieldValue(bean:cardInstance,field:'caseNumber')}" />
       </li>
       <li class="prop">
         <label for="title"><g:message code="_cardForm.label.title"/></label>
         <input type="text" id="title" name="title"
-               class="${hasErrors(bean:cardInstance,field:'title','errors')}"
+               class="property ${hasErrors(bean:cardInstance,field:'title','errors')}"
                value="${fieldValue(bean:cardInstance,field:'title')}"/>
       </li>
       <li class="prop">
         <label for="description"><g:message code="_cardForm.label.description"/></label>
         <input type="text" id="description" name="description"
-               class="${hasErrors(bean:cardInstance,field:'description','errors')}"
+               class="property ${hasErrors(bean:cardInstance,field:'description','errors')}"
                value="${fieldValue(bean:cardInstance,field:'description')}"/>
         <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
       </li>
@@ -82,9 +79,6 @@
 
     </ul>
 
-    <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <input class="save ui-state-default ui-corner-all" type="submit" value="<g:message code="_cardForm.button.submit"/>" />
-             <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog()"><g:message code="_cardForm.button.close"/></button>
-    </div>
+      <input style="display: none;" type="submit" value="<g:message code="_cardForm.button.submit"/>" />
   </g:formRemote>
 </g:else>

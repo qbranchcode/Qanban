@@ -17,8 +17,8 @@
   </div>
 </g:hasErrors>
 
-<g:if test="${phaseInstance}">
-  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="editPhase" name="phaseForm" onSuccess="updateBoard()">
+<g:if test="${phaseInstance?.id}">
+  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="editPhaseDialog" name="phaseForm" onSuccess="refreshMainView('#editPhaseDialog')">
     <ul>
 
 
@@ -45,14 +45,14 @@
     <input type="hidden" name="board.id" value="1" />
 
     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <input class="save ui-state-default ui-corner-all" type="submit" value="<g:message code="_phaseForm.button.update"/>" />
+      <input style="display: none;" type="submit" value="<g:message code="_phaseForm.button.update"/>" />
       <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog(); deletePhaseDialog('${phaseInstance.id}')"><g:message code="_phaseForm.button.delete"/></button>
-      <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog()"><g:message code="_phaseForm.button.close"/></button>
+      
     </div>
   </g:formRemote>
 </g:if>
 <g:else>
-  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="createPhase" name="phaseForm" onSuccess="updateBoard()">
+  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="createPhase" name="phaseForm" onSuccess="refreshMainView('#createPhaseDialog')">
     <ul>
 
 
@@ -78,8 +78,7 @@
     <input type="hidden" name="board.id" value="1" />
 
     <div class="ui-dialog-buttonpane ui-widget-content ui-helper-clearfix">
-      <input class="save ui-state-default ui-corner-all" type="submit" value="<g:message code="_phaseForm.button.save"/>" />
-      <button class="ui-state-default ui-corner-all" type="button" onclick="closeDialog()"><g:message code="_phaseForm.button.close"/></button>
+      <input style="display: none;" type="submit" value="<g:message code="_phaseForm.button.save"/>" />
     </div>
 
   </g:formRemote>
