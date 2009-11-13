@@ -14,7 +14,7 @@
   </div>
 </g:hasErrors>
 <g:if test="${cardInstance?.id}">
-  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="editCardDialog" name="cardForm" onSuccess="refreshMainView('#editCardDialog')">
+  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="editCardDialog" name="cardForm" onSuccess="refreshMainView('#editCardDialog', , 'Success', 'Card successfully updated')">
     <ul>
 
       <li class="prop">
@@ -52,7 +52,7 @@
   </g:formRemote>
 </g:if>
 <g:else>
-  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="createCardDialog" name="cardForm" onSuccess="refreshMainView('#createCardDialog')">
+  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="createCardDialog" name="cardForm" onSuccess="refreshMainView('#createCardDialog', 'Success', 'Card successfully created')">
     <ul>
 
       <li class="prop">

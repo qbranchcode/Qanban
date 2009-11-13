@@ -190,7 +190,7 @@
 
       </g:each>
 
-      $editPhaseDialog = $('<div id="editPhaseDialog" class="dialog"></div>');
+      $editPhaseDialog = $('<div id="editPhaseDialog"></div>');
       $editPhaseDialog.dialog({
             autoOpen: false,
             modal: true,
@@ -239,12 +239,12 @@
     
   }
 
-  function refreshMainView(dialogSelector){
+  function refreshMainView(dialogSelector, successTitle, successMessage){
       $dialog = $(dialogSelector);
       if( $dialog.find('.errors').size() == 0 ){
             $dialog.dialog('close');
             updateBoard();
-        /*  $('<div id="popup" title="Success">Card successfully created!</div>').dialog({
+            $('<div id="popup" title="'+successTitle+'">'+successMessage+'</div>').dialog({
 			bgiframe: true,
 			modal: true,
 			buttons: {
@@ -255,7 +255,7 @@
                         open: function(){
                                 setTimeout("$('#popup').dialog('close')",1250);
                         }
-            });*/
+            });
         }
   }
 
