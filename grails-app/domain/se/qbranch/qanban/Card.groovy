@@ -16,6 +16,8 @@ class Card {
     String description
     Integer caseNumber
 
+    SortedSet events
+
     // Auto timestamps (changed when db is updated)
     Date dateCreated
     Date lastUpdated

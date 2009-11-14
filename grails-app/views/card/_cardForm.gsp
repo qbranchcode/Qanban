@@ -41,7 +41,8 @@
         <li class="prop">
           <select name="events" size="4" multiple>
             <g:each in="${cardInstance.events}" var='event'>
-              <option>${event.user.username} moved to ${event.newPhase.name}, on CardIndex: ${event.newCardIndex}</option>
+              <option>${event.dateCreated}:
+              ${event.user.username} moved to ${event.newPhase.name}, on CardIndex: ${event.newCardIndex}</option>
             </g:each>
           </select>
         </li>
