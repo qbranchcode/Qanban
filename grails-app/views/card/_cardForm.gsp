@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+	<%@ page contentType="text/html;charset=UTF-8" %>
 
 <g:setProvider library="jquery"/>
 
@@ -15,42 +15,52 @@
 </g:hasErrors>
 <g:if test="${cardInstance?.id}">
   <g:formRemote url="[controller:'card',action:'ajaxSave']" update="editCardDialog" name="cardForm" onSuccess="refreshMainView('#editCardDialog', , 'Success', 'Card successfully updated')">
-    <ul>
-
-      <li class="prop">
-        <label for="caseNumber"><g:message code="_cardForm.label.caseNumber"/></label>
-        <input type="text" id="caseNumber" name="caseNumber"
-               class="${hasErrors(bean:cardInstance,field:'caseNumber','errors')}"
-               value="${fieldValue(bean:cardInstance,field:'caseNumber')}" />
-      </li>
-      <li class="prop">
-        <label for="title"><g:message code="_cardForm.label.title"/></label>
-        <input type="text" id="title" name="title"
-               class="${hasErrors(bean:cardInstance,field:'title','errors')}"
-               value="${fieldValue(bean:cardInstance,field:'title')}"/>
-      </li>
-      <li class="prop">
+  
+  	<div class="header">
+  		<div class="assignee">
+  			<!-- Gravatar -->
+  		</div>
+  		<div class="info">
+  		
+  			<input type="text" id="card.title" name="title" 
+  				class="property ${hasErrors(bean:cardInstance,field:'title','errors')}"
+           		value="${fieldValue(bean:cardInstance,field:'title')}" />
+           		
+            <span class="date">Last updated: <g:formatDate format="yyyy-MM-dd HH:mm" 
+            	date="${cardInstance.lastUpdated}"/></span>
+            
+            <div class="caseNumberWrapper">
+            	<label for="caseNumber"><g:message code="_cardForm.label.caseNumber"/></label>
+        		<input type="text" id="card.caseNumber" name="caseNumber"
+               		class="property ${hasErrors(bean:cardInstance,field:'caseNumber','errors')}"
+               		value="${fieldValue(bean:cardInstance,field:'caseNumber')}" />
+            </div>
+            
+  		</div>
+  	</div>
+    <div class="content">
+        	
         <label for="description"><g:message code="_cardForm.label.description"/></label>
-        <input type="text" id="description" name="description"
-               class="${hasErrors(bean:cardInstance,field:'description','errors')}"
-               value="${fieldValue(bean:cardInstance,field:'description')}"/>
-        <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
-      </li>
-
-      <g:if test="${cardInstance.events}">
-        <li class="prop">
+        <textarea id="card.description" class="property ${hasErrors(bean:cardInstance,field:'description','errors')}"
+        name="description">"${fieldValue(bean:cardInstance,field:'description')}"</textarea>
+ 
+ 		
+ 		<g:if test="${cardInstance.events}">
           <select name="events" size="4" multiple>
             <g:each in="${cardInstance.events}" var='event'>
               <option>${event.dateCreated}:
-              ${event.user.username} moved to ${event.newPhase.name}, on CardIndex: ${event.newCardIndex}</option>
+              	${event.user.username} moved to ${event.newPhase.name}, on CardIndex: ${event.newCardIndex}
+              </option>
             </g:each>
           </select>
-        </li>
-      </g:if>
-    </ul>
+      	</g:if>
+      
+ 	</div>
+        
+    <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
+ 	<input style="display: none;" type="submit"/>
+ </g:formRemote>
 
-      <input style="display: none;" class="save ui-state-default ui-corner-all" type="submit" value="<g:message code="_cardForm.button.submit"/>" />
-  </g:formRemote>
 </g:if>
 <g:else>
   <g:formRemote url="[controller:'card',action:'ajaxSave']" update="createCardDialog" name="cardForm" onSuccess="refreshMainView('#createCardDialog', 'Success', 'Card successfully created')">

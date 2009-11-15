@@ -229,6 +229,7 @@
             autoOpen: false,
             modal: true,
             title: "<g:message code="mainView.jQuery.dialog.editCardForm.title"/>",
+            width: 400
       });
 
       $('.editCardLink').click(function(event){
@@ -274,6 +275,73 @@
 
   <style type="text/css">
     
+
+
+
+#editCardDialog  .header {
+ height: 44px;
+ margin: 0 2px 0 2px;
+ padding: 2px;
+ border-bottom: 1px solid #ddd;
+}
+
+#editCardDialog .header .assignee {
+ border: 1px solid #000;
+ width: 40px;
+ height: 40px;
+ float: left;
+ margin-right: 2px;
+ background-color: grey;
+}
+
+#editCardDialog .header input{
+ font-size: 20px;
+ font-weight: bold;
+ width: 342px;
+ text-indent: 4px;
+}
+
+
+#editCardDialog .header .info{
+ width: 324px;
+ float: left;
+}
+
+#editCardDialog { overflow-x: hidden;}
+#editCardDialog .header .date{ 
+ display: inline-block;
+ font-size: 11px;
+ padding: 3px 5px 1px 10px;
+ position: relative;
+ width: 160px;
+ float: left;
+}
+
+#editCardDialog .caseNumberWrapper{ float: left; width: 105px; padding-left: 40px;}
+#editCardDialog .caseNumberWrapper *{ line-height: 1.7em; font-size: 1.0em !important;}
+#editCardDialog .caseNumberWrapper input{  width: 30px !important; }
+#editCardDialog .content {
+ margin: 0 2px 0 2px;
+ padding: 2px;
+}
+
+#editCardDialog  .content textarea {
+ margin: 0 4px;
+ width: 384px;
+ padding: 2px;
+}
+
+#editCardDialog  select { width: 370px;}
+
+#editCardDialog .top { background-color: #cc0000; }
+
+#editCardDialog .property { 
+ background-color: transparent;
+ border: 1px solid transparent;
+ border-bottom: 1px solid #fff;
+ border-right: 1px solid #fff;
+}
+
   </style>
 
 
