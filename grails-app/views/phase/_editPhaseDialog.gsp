@@ -46,8 +46,7 @@
 
     
       <input style="display: none;" type="submit" value="<g:message code="_phaseForm.button.update"/>" />
-      
-    kalas
+     
   </g:formRemote>
 </g:if>
 <g:else>
