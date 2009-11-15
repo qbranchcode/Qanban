@@ -133,12 +133,12 @@
                     connectWith: '#phase_${board.phases[i+1].id}.available',
                     start: function(event,ui){
                         sort = true;
-                        $('.phase:not(#phase_${board.phases[i+1].id}.available)').animate({display: 'none'}, 200);
-                    },
+                        $(".phase:not('#phase_${phase.id},#phase_${board.phases[i+1].id}.available')").parent().animate({opacity: 0.3},300);                    },
                 </g:if>
                 <g:else>
                     start: function(event,ui){
                       sort = true;
+                      $(".phase:not('#phase_${phase.id}')").parent().animate({opacity: 0.3},300); 
                     },
                 </g:else>
                     placeholder: 'placeholder',
@@ -165,7 +165,7 @@
                             }
                         });
                         var height = ( maxCards * $('.card').height()) +'px';
-                        $phases.animate({height: height},300);
+                        $phases.animate({height: height, opacity: 1},300);
         
                         $.post(
                             '${createLink(controller:'mainView',action:'moveCard')}',
