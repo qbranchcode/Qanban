@@ -254,48 +254,54 @@ function deletePhaseDialog(id){
     
   }
 
-  function recalculateHeightAndUpdateCardCount(){
-      
-      $phases = $('.phase');
-      var maxCards = 0;
-      
-      $phases.each(function(){
-         var $phase = $(this);
-         var numberOfChildren = $phase.children().size();
-         var classList = $phase.attr('class').split(' ');
-
-         $.each(classList, function(index, item){
-             var classSubstings = item.split('_');
-             if( classSubstings[0] == 'cardLimit' ){
-                 $phase.parent().find('.limitLine').html(numberOfChildren + '/' + classSubstings[1]);
-             }
-         });
-
-         if( numberOfChildren > maxCards ){
-             maxCards = numberOfChildren;
-         }
-      });
-                        
-      var height = ( maxCards * $('.card').height()) +'px';
-      $phases.animate({height: height, opacity: 1},300);
-
-  }
+ 
 
   function cardFormRefresh(formData,dialogSelector,successTitle,successMessage){
+      
+      var heightAndCount = function recalculateHeightAndUpdateCardCount(){
+      
+      	  $phases = $('.phase');
+      	  var maxCards = 0;
+      
+      	  $phases.each(function(){
+             var $phase = $(this);
+             var numberOfChildren = $phase.children().size();
+             var classList = $phase.attr('class').split(' ');
+
+             $.each(classList, function(index, item){
+             	 var classSubstings = item.split('_');
+             	 if( classSubstings[0] == 'cardLimit' ){
+                     $phase.parent().find('.limitLine').html(numberOfChildren + '/' + classSubstings[1]);
+             	 }
+             });
+
+             if( numberOfChildren > maxCards ){
+             	 maxCards = numberOfChildren;
+             }
+      	  });
+                        
+      	  var height = ( maxCards * $('.card').height()) +'px';
+      	  $phases.animate({height: height, opacity: 1},300);
+
+      }
+      
+      formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first'),heightAndCount);
+  
+  }
+ 
+  function formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,callbackFunction){
       
       var $dialog = $(dialogSelector);
       var id = $(formData).find('input[name="id"]').val();
       
       if( $dialog.find('.errors').size() == 0 && id ){
-      	  
-	      $.get('${createLink(controller:"card",action:"show")}/'+id,
-	         'html',function(data,textStatus){
-		     $('.phase:first').append(data);
-		     recalculateHeightAndUpdateCardCount();
-		     closeDialog($dialog,successTitle,successMessage);
-		 }
-	      );
-	  
+      	  $.get(url+'/'+id,'html',function(data,textStatus){
+	      $destination.append(data);
+	      if( callbackFunction ){
+	      	  callbackFunction();
+	      }
+	      closeDialog($dialog,successTitle,successMessage);
+	  });
       }
   }
   
