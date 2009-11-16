@@ -44,7 +44,7 @@ class CardController {
         withFormat {
             
             html {
-                return [ cardInstance : cardInstance ]
+                return render (template:"card", bean:cardInstance )
             }
 
             js {
