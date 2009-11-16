@@ -15,8 +15,8 @@
 </g:hasErrors>
 <g:if test="${cardInstance?.id}">
   <g:formRemote url="[controller:'card',action:'ajaxSave']"
-update="editCardDialog" name="cardForm"
-onSuccess="getJSONCard(${cardInstance.id});refreshMainView('#editCardDialog', 'Success', 'Card successfully updated')">
+     update="editCardDialog" name="cardForm"
+     onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')">
   
   	<div class="header">
   		<div class="assignee">
@@ -67,8 +67,8 @@ onSuccess="getJSONCard(${cardInstance.id});refreshMainView('#editCardDialog', 'S
 </g:if>
 <g:else>
   <g:formRemote url="[controller:'card',action:'ajaxSave']"
-update="createCardDialog" name="cardForm"
-onSuccess="getJSONCard(data);refreshMainView('#createCardDialog', 'Success', 'Card successfully created')">
+     update="createCardDialog" name="cardForm"
+      onSuccess="cardFormRefresh(data,'#createCardDialog')">
     <ul>
 
       <li class="prop">

@@ -86,9 +86,19 @@
 
   <g:javascript>
 
-  function getJSONCard(formData){
-  alert('formData: '+ formData);
-/*$.get('${createLink(controller:"card",action:"show")}/'+id+'.js','json',function(data,textStatus){alert(data);});*/
+
+  
+  function injectCardOnFirstPhase(id){
+  
+	   if( id ){
+  	   
+	     $.get('${createLink(controller:"card",action:"show")}/'+id,'json',
+	   	function(data,textStatus){
+    		     $('.phase:first').append($(data));
+    		     
+  		});
+	   }
+	   
   }
 
 function deletePhaseDialog(id){
@@ -244,11 +254,56 @@ function deletePhaseDialog(id){
     
   }
 
-  function refreshMainView(dialogSelector, successTitle, successMessage){
-      $dialog = $(dialogSelector);
-      if( $dialog.find('.errors').size() == 0 ){
-            $dialog.dialog('close');
-            updateBoard();
+  function recalculateHeightAndUpdateCardCount(){
+      
+      $phases = $('.phase');
+      var maxCards = 0;
+      
+      $phases.each(function(){
+         var $phase = $(this);
+         var numberOfChildren = $phase.children().size();
+         var classList = $phase.attr('class').split(' ');
+
+         $.each(classList, function(index, item){
+             var classSubstings = item.split('_');
+             if( classSubstings[0] == 'cardLimit' ){
+                 $phase.parent().find('.limitLine').html(numberOfChildren + '/' + classSubstings[1]);
+             }
+         });
+
+         if( numberOfChildren > maxCards ){
+             maxCards = numberOfChildren;
+         }
+      });
+                        
+      var height = ( maxCards * $('.card').height()) +'px';
+      $phases.animate({height: height, opacity: 1},300);
+
+  }
+
+  function cardFormRefresh(formData,dialogSelector,successTitle,successMessage){
+      
+      var $dialog = $(dialogSelector);
+      var id = $(formData).find('input[name="id"]').val();
+      
+      if( $dialog.find('.errors').size() == 0 && id ){
+      	  
+	      $.get('${createLink(controller:"card",action:"show")}/'+id,
+	         'html',function(data,textStatus){
+		     $('.phase:first').append(data);
+		     recalculateHeightAndUpdateCardCount();
+		     closeDialog($dialog,successTitle,successMessage);
+		 }
+	      );
+	  
+      }
+  }
+  
+  function closeDialog($dialog,successTitle,successMessage){
+
+      $dialog.dialog('close');
+      
+      if( successTitle && successMessage ){
             $('<div id="popup" title="'+successTitle+'">'+successMessage+'</div>').dialog({
 			bgiframe: true,
 			modal: true,
@@ -260,8 +315,8 @@ function deletePhaseDialog(id){
                         open: function(){
                                 setTimeout("$('#popup').dialog('close')",1250);
                         }
-            });
-        }
+      	    });
+      }
   }
 
   function updateBoard(){
@@ -271,9 +326,6 @@ function deletePhaseDialog(id){
       });
   }
 
-  function closeDialog(){
-        $('.dialog').dialog('close');
-  }
 
   </g:javascript>
 
