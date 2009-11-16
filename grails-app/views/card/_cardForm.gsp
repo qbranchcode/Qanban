@@ -14,7 +14,9 @@
   </div>
 </g:hasErrors>
 <g:if test="${cardInstance?.id}">
-  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="editCardDialog" name="cardForm" onSuccess="refreshMainView('#editCardDialog', , 'Success', 'Card successfully updated')">
+  <g:formRemote url="[controller:'card',action:'ajaxSave']"
+update="editCardDialog" name="cardForm"
+onSuccess="getJSONCard(${cardInstance.id});refreshMainView('#editCardDialog', 'Success', 'Card successfully updated')">
   
   	<div class="header">
   		<div class="assignee">
@@ -57,13 +59,16 @@
       
  	</div>
         
+	<input type="hidden" name="id" value="${cardInstance?.id}"/>
     <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
  	<input style="display: none;" type="submit"/>
  </g:formRemote>
 
 </g:if>
 <g:else>
-  <g:formRemote url="[controller:'card',action:'ajaxSave']" update="createCardDialog" name="cardForm" onSuccess="refreshMainView('#createCardDialog', 'Success', 'Card successfully created')">
+  <g:formRemote url="[controller:'card',action:'ajaxSave']"
+update="createCardDialog" name="cardForm"
+onSuccess="getJSONCard(data);refreshMainView('#createCardDialog', 'Success', 'Card successfully created')">
     <ul>
 
       <li class="prop">

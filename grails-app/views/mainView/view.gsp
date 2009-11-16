@@ -86,8 +86,12 @@
 
   <g:javascript>
 
+  function getJSONCard(formData){
+  alert('formData: '+ formData);
+/*$.get('${createLink(controller:"card",action:"show")}/'+id+'.js','json',function(data,textStatus){alert(data);});*/
+  }
 
-  function deletePhaseDialog(id){
+function deletePhaseDialog(id){
   
       $('<div><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to delete the phase?</p></div>').dialog({
         resizable: false,
@@ -109,7 +113,7 @@
                                   <g:message code="ok"/>: function() {
                                       $(this).dialog('close');
                                     }
-                                  }
+                                  }  
                                 });
                                 updateBoard();
                               }});
