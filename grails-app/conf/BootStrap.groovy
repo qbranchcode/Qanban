@@ -13,7 +13,8 @@ class BootStrap {
 
             Role role = new Role(description:"administrator access",authority:"ROLE_ADMIN")
             role.save()
-            Requestmap map = new Requestmap(url:"/mainView/**", configAttribute:"ROLE_ADMIN")
+            Requestmap loginMap = new Requestmap(url:"/login/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
+            Requestmap map = new Requestmap(url:"/**", configAttribute:"ROLE_ADMIN")
             map.save()
 
             def md5pass = authenticateService.passwordEncoder("test")
