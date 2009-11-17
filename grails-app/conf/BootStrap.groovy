@@ -11,11 +11,12 @@ class BootStrap {
         switch (GrailsUtil.environment) {
             case "development":
 
-            Role role = new Role(description:"administrator access",authority:"ROLE_ADMIN")
-            role.save()
+            Role role = new Role(description:"administrator access",authority:"ROLE_ADMIN").save()
             Requestmap loginMap = new Requestmap(url:"/login/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
-            Requestmap map = new Requestmap(url:"/**", configAttribute:"ROLE_ADMIN")
-            map.save()
+            Requestmap cssMap = new Requestmap(url:"/css/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
+            Requestmap jsMap = new Requestmap(url:"/js/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
+            Requestmap imageMap = new Requestmap(url:"/images/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
+            Requestmap map = new Requestmap(url:"/**", configAttribute:"ROLE_ADMIN").save()
 
             def md5pass = authenticateService.passwordEncoder("test")
             User user = new User(username: "testuser",
