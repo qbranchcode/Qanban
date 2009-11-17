@@ -17,6 +17,9 @@
   </div>
 </g:hasErrors>
 
+<%--
+	EDIT / SHOW 
+--%>
 <g:if test="${phaseInstance?.id}">
   <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="editPhaseDialog" name="phaseForm" onSuccess="refreshMainView('#editPhaseDialog', 'Success', 'Phase successfully updated')">
     <ul>
@@ -49,8 +52,13 @@
      
   </g:formRemote>
 </g:if>
+
+<%--
+	CREATE
+--%>
+
 <g:else>
-  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="createPhaseDialog" name="phaseForm" onSuccess="refreshMainView('#createPhaseDialog', 'Success', 'Phase successfully created')">
+  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="createPhaseDialog" name="phaseForm" onSuccess="phaseFormRefresh(data,'#createPhaseDialog')">
     <ul>
 
 
