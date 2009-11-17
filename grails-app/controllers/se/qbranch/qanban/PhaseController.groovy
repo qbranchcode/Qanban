@@ -17,13 +17,14 @@ class PhaseController {
     }
 
     def show = {
+println "show phase $params.id"
         def phaseInstance = Phase.get( params.id )
 
         if(!phaseInstance) {
             flash.message = "Phase not found with id ${params.id}"
             redirect(action:list)
         }
-        else { return [ phaseInstance : phaseInstance ] }
+        else { return render (template:"phase", bean:phaseInstance )}
     }
 
     def delete = {
