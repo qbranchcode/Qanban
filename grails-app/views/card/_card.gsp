@@ -4,7 +4,7 @@
     id="card_${it.id}">
     <a href="${createLink(controller:'card',action:'edit')}"
        class="editCardLink"
-       id="cardLink_$(it.id}">
+       id="cardLink_${it.id}">
           ${it.title}
     </a>
 </li>
