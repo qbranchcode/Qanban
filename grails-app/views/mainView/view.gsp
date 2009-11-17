@@ -87,7 +87,21 @@
   <g:javascript>
 
 
-  function deletePhaseDialog(id){
+  
+  function injectCardOnFirstPhase(id){
+  
+	   if( id ){
+  	   
+	     $.get('${createLink(controller:"card",action:"show")}/'+id,'json',
+	   	function(data,textStatus){
+    		     $('.phase:first').append($(data));
+    		     
+  		});
+	   }
+	   
+  }
+
+function deletePhaseDialog(id){
   
       $('<div><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to delete the phase?</p></div>').dialog({
         resizable: false,
@@ -109,7 +123,7 @@
                                   <g:message code="ok"/>: function() {
                                       $(this).dialog('close');
                                     }
-                                  }
+                                  }  
                                 });
                                 updateBoard();
                               }});
@@ -240,11 +254,62 @@
     
   }
 
-  function refreshMainView(dialogSelector, successTitle, successMessage){
-      $dialog = $(dialogSelector);
-      if( $dialog.find('.errors').size() == 0 ){
-            $dialog.dialog('close');
-            updateBoard();
+ 
+
+  function cardFormRefresh(formData,dialogSelector,successTitle,successMessage){
+      
+      var heightAndCount = function recalculateHeightAndUpdateCardCount(){
+      
+      	  $phases = $('.phase');
+      	  var maxCards = 0;
+      
+      	  $phases.each(function(){
+             var $phase = $(this);
+             var numberOfChildren = $phase.children().size();
+             var classList = $phase.attr('class').split(' ');
+
+             $.each(classList, function(index, item){
+             	 var classSubstings = item.split('_');
+             	 if( classSubstings[0] == 'cardLimit' ){
+                     $phase.parent().find('.limitLine').html(numberOfChildren + '/' + classSubstings[1]);
+             	 }
+             });
+
+             if( numberOfChildren > maxCards ){
+             	 maxCards = numberOfChildren;
+             }
+      	  });
+                        
+      	  var height = ( maxCards * $('.card').height()) +'px';
+      	  $phases.animate({height: height, opacity: 1},300);
+
+      }
+      
+      formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first'),heightAndCount);
+  
+  }
+ 
+  function formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,callbackFunction){
+      
+      var $dialog = $(dialogSelector);
+      var id = $(formData).find('input[name="id"]').val();
+      
+      if( $dialog.find('.errors').size() == 0 && id ){
+      	  $.get(url+'/'+id,'html',function(data,textStatus){
+	      $destination.append(data);
+	      if( callbackFunction ){
+	      	  callbackFunction();
+	      }
+	      closeDialog($dialog,successTitle,successMessage);
+	  });
+      }
+  }
+  
+  function closeDialog($dialog,successTitle,successMessage){
+
+      $dialog.dialog('close');
+      
+      if( successTitle && successMessage ){
             $('<div id="popup" title="'+successTitle+'">'+successMessage+'</div>').dialog({
 			bgiframe: true,
 			modal: true,
@@ -256,8 +321,8 @@
                         open: function(){
                                 setTimeout("$('#popup').dialog('close')",1250);
                         }
-            });
-        }
+      	    });
+      }
   }
 
   function updateBoard(){
@@ -267,9 +332,6 @@
       });
   }
 
-  function closeDialog(){
-        $('.dialog').dialog('close');
-  }
 
   </g:javascript>
 

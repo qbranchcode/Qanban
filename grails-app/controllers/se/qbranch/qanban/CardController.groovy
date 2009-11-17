@@ -31,7 +31,7 @@ class CardController {
 
 
     def show = {
-
+    	println('show')
         if( !params.id )
             return render(status: 400, text: "You must specify an id")
             
@@ -44,7 +44,7 @@ class CardController {
         withFormat {
             
             html {
-                return [ cardInstance : cardInstance ]
+                return render (template:"card", bean:cardInstance )
             }
 
             js {

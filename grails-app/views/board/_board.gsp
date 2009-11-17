@@ -3,7 +3,7 @@
   and open the template in the editor.
 -->
 
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 
 <div id="board">
 
@@ -27,8 +27,8 @@
 
             <g:each var="card" in="${phase.cards}">
 
-                <li class="card" id="card_${card.id}"><a href="${createLink(controller:'card',action:'edit')}" class="editCardLink" id="cardLink_${card.id}">${card.title}</a></li>
-
+	    	<g:render template="/card/card" bean="${card}"/>
+				
             </g:each>
 
           </ul>
