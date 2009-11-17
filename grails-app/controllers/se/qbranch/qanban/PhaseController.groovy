@@ -17,7 +17,7 @@ class PhaseController {
     }
 
     def show = {
-println "show phase $params.id"
+
         def phaseInstance = Phase.get( params.id )
 
         if(!phaseInstance) {
