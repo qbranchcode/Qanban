@@ -5,9 +5,11 @@ import grails.util.GrailsUtil
 class BootStrap {
 
     def authenticateService
-
+    def authenticationManager
+    def sessionController
+    
     def init = { servletContext ->
-
+        authenticationManager.sessionController = sessionController
         switch (GrailsUtil.environment) {
             case "development":
 

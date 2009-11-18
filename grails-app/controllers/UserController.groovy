@@ -7,6 +7,7 @@ import se.qbranch.qanban.Role
 class UserController {
 
 	def authenticateService
+        def sessionRegistry
 
 	// the delete, save and update actions only accept POST requests
 	static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
@@ -133,6 +134,18 @@ class UserController {
 			render view: 'create', model: [authorityList: Role.list(), person: person]
 		}
 	}
+
+    def showOnlineUsers = {
+        def users = sessionRegistry.getAllPrincipals()
+        def onlineUsers = []
+
+        for(user in users) {
+            def userObject = User.findByUsername(user)
+            onlineUsers.add(userObject)
+        }
+
+        render(template:'onlineUsers',model:[onlineUsers:onlineUsers])
+    }
 
 	private void addRoles(person) {
 		for (String key in params.keySet()) {
