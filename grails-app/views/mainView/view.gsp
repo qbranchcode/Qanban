@@ -162,6 +162,14 @@
             title: "<g:message code="mainView.jQuery.dialog.editCardForm.title"/>",
             width: 400
       });
+      
+      $moveCardDialog = $('<div id="moveCardDialog"></div>');
+      $moveCardDialog.dialog({
+      		      autoOpen: false,
+		      modal: true,
+		      title: "<g:message code="mainView.jQuery.moveCardForm.title"/>",
+		      width: 400
+      });
     
 /***************/
 /* Board logic */
@@ -204,11 +212,7 @@
 
   <g:javascript>
 
-
-  
-
-
-function deletePhaseDialog(id){
+   function deletePhaseDialog(id){
   
       $('<div><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to delete the phase?</p></div>').dialog({
         resizable: false,
@@ -279,93 +283,132 @@ function deletePhaseDialog(id){
       });
     
   }
-  
-
 
   function enableSortableOnPhase($phase){
   	   $phase.sortable({
 	   	  placeholder: 'placeholder',
-		  beforeStop: function(event,ui){
-
-		  	var icv = $(this).sortable('option','initCardValues');
-			$('#debug').html(icv.elementId + '-' + icv.initPhase + '.' + icv.initPos);
-		  },
                   stop: function(event,ui){
-	 
-                        var newPos = ui.item.prevAll().length;
+	 			
+			recalculateHeightAndUpdateCardCount();
+			$('.phase').parent().animate({opacity: 1},300);
+
+		  	var icv = $(this).sortable('option','initCardValues');		       			
+			var placementSelector = "#" + icv.initPhase + " .card:nth-child(" + ( icv.initPos  ) + ")" ;
+			var initPhaseSize = $('#' + icv.initPhase + '> .card').size();
+			
+			var newPos = ui.item.prevAll().length;
                         var cardId = ui.item.attr('id').split('_')[1];
                         var newPhase = ui.item.parent().attr('id').split('_')[1];
-                        $phases = $('.phase');
-                        var maxCards = 0;
-                        $phases.each(function(){
-                            var $phase = $(this);
-                            var numberOfChildren = $phase.children().size();
-                            var classList = $phase.attr('class').split(' ');
 
-                            $.each(classList, function(index, item){
-                                var classSubstings = item.split('_');
-                                if( classSubstings[0] == 'cardLimit' ){
-                                    $phase.parent().find('.limitLine').html(numberOfChildren + '/' + classSubstings[1]);
-                                }
-                            });
+			var updateCall = function(){ $.qPost(
+               	          '${createLink(controller:'mainView',action:'moveCard')}',
+               		  {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase},
+              		  function(data){
+                	     if( !data.result ){
+                       	        alert('error moving card!');
+                       	     }
+             		  },
+              		  "json");
+			};
 
-                            if( numberOfChildren > maxCards ){
-                                maxCards = numberOfChildren;
-                            }
-                        });
 
-                        var height = ( maxCards * $('.card').height()) +'px';
+			if( ui.item.parent().attr('id') != icv.initPhase ){
+	                   
+			   $moveCardDialog.dialog('option', 'buttons', {
+			      '<g:message code="ok"/>': function() {
+				      updateCall();
+			      	      $(this).dialog("close");
 
-                        $phases.animate({'height':height},300);
-			$phases.parent().animate({opacity: 1},300);
+				  },
+			      '<g:message code="cancel"/>': function() {
+			      			
+			      	      initPhaseSize  == 0 || initPhaseSize < icv.initPos ? $('#'+icv.initPhase).append(ui.item) : function(){ 
+			      	         ui.item.insertBefore($(placementSelector));  
+				      }();
+		       
+		       		      recalculateHeightAndUpdateCardCount();
 
-		  	var icv = $(this).sortable('option','initCardValues');
-			$('#debug').html('Stop: ' + icv.elementId + '-' + icv.initPhase + '.' + icv.initPos);
-			
-                        $.qPost(
-                            '${createLink(controller:'mainView',action:'moveCard')}',
-                            {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase},
-                            function(data){
-                                if( !data.result ){
-                                    alert('error moving card!');
-                                }
-                            },
-                            "json");
-                    }
+			      	      $(this).dialog("close");
+			      	  }
+			   });
+			   
+			   $moveCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',
+			      			 { 'board.id':${board.id}, 'id':cardId },
+					         function(){
+					            $moveCardDialog.dialog('open'); 
+			   			 }
+			   );
+
+			}else{    
+		           updateCall();
+			}
+               
+		    }
       	   });
   }
 
   function reconnectPhases(){
   	   var $phases = $('.phase');
-
-	   	var width = (100/$phases.size()) - 1;
-		$('.phaseAutoWidth').width(width+'%');
+	   var width = (100/$phases.size()) - 1;
+	   $('.phaseAutoWidth').width(width+'%');
+		
+	   $('#debug').html("ReconPhases: ");
 
 	   $phases.each(function(index,$phase){
+	   
+	       $('#debug').append(" - .phase:not('");
+
 	       var $nextPhase = index < $phases.size() ? $( $phases[index+1] ) : false;
-	       if( $nextPhase.attr('id') ){
+	       
 	       	   
-		   $(this).sortable('option','connectWith','#'+$nextPhase.attr('id')+'.available');
+		   $nextPhase.attr('id') != 'undefined' ? $(this).sortable('option','connectWith','#'+$nextPhase.attr('id')+'.available') : {} ;
+		   
 		   $(this).sortable('option','start', function(event,ui){
 		      
-		      var fadeIgnore = "#" + $(this).attr('id') + "," + $(this).sortable('option','connectWith');
-		     
-		      $(".phase:not('"+fadeIgnore+"')").parent().animate({opacity:0.3},300);
-		      
-                        var initPos = ui.item.prevAll().length;
+		        var fadeIgnore = $nextPhase.attr('id') != null ?
+			                     "#" + $(this).attr('id') + "','" + $(this).sortable('option','connectWith') :
+					     "#" + $(this).attr('id');
+					     
+      			$(".phase:not('"+fadeIgnore+"')").parent().animate({opacity:0.3},300);
+    			$('#debug').html(fadeIgnore);                    
+			var initPos = ui.item.prevAll().length + 1;
                         var elementId = ui.item.attr('id');
-                        var initPhase = ui.item.parent().attr('id').split('_')[1];
+                        var initPhase = ui.item.parent().attr('id');
 			
-
 			$(this).sortable('option','initCardValues',
 				         {'elementId': elementId,'initPhase': initPhase, 'initPos': initPos});
 		      	    		    
 		   });			   
-	       }
 	   });
   }
 
+  function recalculateHeightAndUpdateCardCount(){
+      
+      	  $phases = $('.phase');
+      	  var maxCards = 0;
+      
+      	  $phases.each(function(){
+             var $phase = $(this);
+             var numberOfChildren = $phase.children().size();
+             var classList = $phase.attr('class').split(' ');
 
+             $.each(classList, function(index, item){
+             	 var classSubstings = item.split('_');
+             	 if( classSubstings[0] == 'cardLimit' ){
+                     $phase.parent().find('.limitLine').html(numberOfChildren + '/' + classSubstings[1]);
+             	 }
+             });
+
+             if( numberOfChildren > maxCards ){
+             	 maxCards = numberOfChildren;
+             }
+      	  });
+                        
+ 	  var height = ( maxCards * $('.card').height()) +'px';
+      	  $phases.animate({height: height},300);
+	  rescanBoardButtons();
+
+  }
  
   function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
       var url = "${createLink(controller:'phase',action:'show')}";
@@ -396,36 +439,7 @@ function deletePhaseDialog(id){
 
   function cardFormRefresh(formData,dialogSelector,successTitle,successMessage){
       
-      var heightAndCount = function recalculateHeightAndUpdateCardCount(){
-      
-      	  $phases = $('.phase');
-      	  var maxCards = 0;
-      
-      	  $phases.each(function(){
-             var $phase = $(this);
-             var numberOfChildren = $phase.children().size();
-             var classList = $phase.attr('class').split(' ');
-
-             $.each(classList, function(index, item){
-             	 var classSubstings = item.split('_');
-             	 if( classSubstings[0] == 'cardLimit' ){
-                     $phase.parent().find('.limitLine').html(numberOfChildren + '/' + classSubstings[1]);
-             	 }
-             });
-
-             if( numberOfChildren > maxCards ){
-             	 maxCards = numberOfChildren;
-             }
-      	  });
-                        
- 	  var height = ( maxCards * $('.card').height()) +'px';
-      	  $phases.animate({height: height},300);
-	  rescanBoardButtons();
-
-
-      }
-      
-      formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first'),heightAndCount);
+  	   formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first'),recalculateHeightAndUpdateCardCount);
   
   }
  
