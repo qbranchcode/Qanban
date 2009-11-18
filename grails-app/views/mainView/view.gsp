@@ -189,6 +189,13 @@
 
     rescanBoardButtons();
 
+    // The time out value is set to be 18,000,000 milli-seconds (or 5 minutes)
+    function reloader(){
+      setTimeout(function(){updateBoard();reloader();},18000000);
+    }
+
+    reloader();
+
 
   </jq:jquery>
 
