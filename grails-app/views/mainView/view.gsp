@@ -225,7 +225,8 @@
                               data: {'id': id},
                               type: 'POST',
                               success: function() {
-                                updateBoard();
+                                $("#phaseWrapper_"+id).remove();
+                                fixWidth();
                               },
                               error: function (XMLHttpRequest, textStatus, errorThrown) {
                                  $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.errorDeletingPhase.content"/></p></div>').dialog({
@@ -236,7 +237,6 @@
                                     }
                                   }  
                                 });
-                                updateBoard();
                               }});
                     $(this).dialog('close');
             },
@@ -247,7 +247,10 @@
       });
    }
 
-
+   function fixWidth(){
+          var width = 100/($('.phase').size())-1 + '%';
+          $('.phaseAutoWidth').width(width);
+   }
 
   function rescanBoardButtons(){
 
@@ -394,7 +397,7 @@
 
              $.each(classList, function(index, item){
              	 var classSubstings = item.split('_');
-             	 if( classSubstings[0] == 'cardLimit' ){
+             	 if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'cardLimit' ){
                      $phase.parent().find('.limitLine').html(numberOfChildren + '/' + classSubstings[1]);
              	 }
              });
@@ -426,13 +429,7 @@
           rescanBoardButtons();
       };
 
-      var changeWidth = function(){
-		var width = 100/($('.phase').size()+1)-1 + '%';
-		$('.phaseAutoWidth').width(width);
-
-      }
-
-      formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,updatePhases,changeWidth);
+      formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,updatePhases,fixWidth);
   }
   
 
