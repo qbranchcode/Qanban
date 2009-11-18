@@ -361,11 +361,10 @@ function deletePhaseDialog(id){
 	  enableSortableOnPhase($newPhase);
 	  reconnectPhases();
 	  if( injection ){
-		rescanBoardButtons();
-		
 		var height = $(".phase:not('[id="+$newPhase.attr('id')+"]')").height();
 		$newPhase.height(height);
 	  }
+          rescanBoardButtons();
       };
 
       var changeWidth = function(){
@@ -461,7 +460,7 @@ function deletePhaseDialog(id){
 				}
 			},
                         open: function(){
-                                setTimeout("$('#popup').dialog('close')",1250);
+                                setTimeout(function(){$('#popup').dialog('close')},1250);
                         }
       	    });
       }
