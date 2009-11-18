@@ -1,0 +1,68 @@
+#cardForm  .header {
+ height: 44px;
+ margin: 0 2px 0 2px;
+ padding: 2px;
+ border-bottom: 1px solid #ddd;
+}
+
+#cardForm .header .assignee {
+ border: 1px solid #000;
+ width: 40px;
+ height: 40px;
+ float: left;
+ margin-right: 2px;
+ background-color: grey;
+}
+
+#cardForm .header input{
+ font-size: 20px;
+ font-weight: bold;
+ width: 326px;
+ text-indent: 4px;
+}
+
+
+#cardForm .header .info{
+ width: 326px;
+ float: left;
+}
+
+#cardForm { overflow-x: hidden;}
+#cardForm .header .date{
+ display: inline-block;
+ font-size: 11px;
+ padding: 3px 5px 1px 10px;
+ position: relative;
+ width: 160px;
+ float: left;
+}
+
+#cardForm .caseNumberWrapper{ float: left; width: 111px; padding-left: 40px;}
+#cardForm .caseNumberWrapper *{ line-height: 1.7em; font-size: 1.0em !important;}
+#cardForm .caseNumberWrapper input{  width: 36px !important; }
+#cardForm .content {
+ margin: 0 2px 0 2px;
+ padding: 2px;
+}
+
+#cardForm  .content textarea {
+ margin: 0px;
+ width: 369px;
+ padding: 2px;
+}
+
+#cardForm  select { width: 370px;}
+
+#cardForm .top { background-color: #cc0000; }
+
+#createCardDialog .property {
+ background-color: transparent;
+ border: 1px solid black;
+ }
+
+ #editCardDialog .property {
+ background-color: transparent;
+ border: 1px solid transparent;
+ border-bottom: 1px solid #fff;
+ border-right: 1px solid #fff;
+}
