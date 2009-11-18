@@ -284,9 +284,14 @@ function deletePhaseDialog(id){
 
   function enableSortableOnPhase($phase){
   	   $phase.sortable({
-	   	  start: function(event,ui){ sort = true; },
-		  placeholder: 'placeholder',
+	   	  placeholder: 'placeholder',
+		  beforeStop: function(event,ui){
+
+		  	var icv = $(this).sortable('option','initCardValues');
+			$('#debug').html(icv.elementId + '-' + icv.initPhase + '.' + icv.initPos);
+		  },
                   stop: function(event,ui){
+	 
                         var newPos = ui.item.prevAll().length;
                         var cardId = ui.item.attr('id').split('_')[1];
                         var newPhase = ui.item.parent().attr('id').split('_')[1];
@@ -313,7 +318,10 @@ function deletePhaseDialog(id){
 
                         $phases.animate({'height':height},300);
 			$phases.parent().animate({opacity: 1},300);
-        
+
+		  	var icv = $(this).sortable('option','initCardValues');
+			$('#debug').html('Stop: ' + icv.elementId + '-' + icv.initPhase + '.' + icv.initPos);
+			
                         $.qPost(
                             '${createLink(controller:'mainView',action:'moveCard')}',
                             {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase},
@@ -343,6 +351,14 @@ function deletePhaseDialog(id){
 		      var fadeIgnore = "#" + $(this).attr('id') + "," + $(this).sortable('option','connectWith');
 		     
 		      $(".phase:not('"+fadeIgnore+"')").parent().animate({opacity:0.3},300);
+		      
+                        var initPos = ui.item.prevAll().length;
+                        var elementId = ui.item.attr('id');
+                        var initPhase = ui.item.parent().attr('id').split('_')[1];
+			
+
+			$(this).sortable('option','initCardValues',
+				         {'elementId': elementId,'initPhase': initPhase, 'initPos': initPos});
 		      	    		    
 		   });			   
 	       }
@@ -499,6 +515,5 @@ function deletePhaseDialog(id){
 
   </div>
 
-  <div id="crap"></div>
 </body>
 
