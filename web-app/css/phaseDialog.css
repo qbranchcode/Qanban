@@ -1,0 +1,67 @@
+#phaseForm  .header {
+ height: 44px;
+ margin: 0 2px 0 2px;
+ padding: 2px;
+}
+
+#phaseForm .header .assignee {
+ border: 1px solid #000;
+ width: 40px;
+ height: 40px;
+ float: left;
+ margin-right: 2px;
+ background-color: grey;
+}
+
+#phaseForm .header input{
+ font-size: 20px;
+ font-weight: bold;
+ width: 334px;
+ text-indent: 4px;
+}
+
+
+#phaseForm .header .info{
+ width: 373px;
+ float: left;
+}
+
+#phaseForm { overflow-x: hidden;}
+#phaseForm .header .date{
+ display: inline-block;
+ font-size: 11px;
+ padding: 3px 5px 1px 10px;
+ position: relative;
+ width: 160px;
+ float: left;
+}
+
+#phaseForm .cardLimitWrapper{ float: left; width: 111px; padding-left: 85px;}
+#phaseForm .cardLimitWrapper *{ line-height: 1.7em; font-size: 1.0em !important;}
+#phaseForm .cardLimitWrapper input{  width: 54px !important; }
+#phaseForm .content {
+ margin: 0 2px 0 2px;
+ padding: 2px;
+}
+
+#phaseForm  .content textarea {
+ margin: 0px;
+ width: 369px;
+ padding: 2px;
+}
+
+#phaseForm  select { width: 370px;}
+
+#phaseForm .top { background-color: #cc0000; }
+
+#createCardDialog .property {
+ background-color: transparent;
+ border: 1px solid black;
+ }
+
+ #editCardDialog .property {
+ background-color: transparent;
+ border: 1px solid transparent;
+ border-bottom: 1px solid #fff;
+ border-right: 1px solid #fff;
+}

@@ -132,6 +132,7 @@
     $createPhaseDialog.dialog({
       autoOpen: false,
       modal: true,
+      width: 400,
       title: "<g:message code="mainView.jQuery.dialog.addPhaseForm.title"/>",
       buttons: {
                     <g:message code="_phaseForm.button.save"/> : function(){
@@ -149,6 +150,7 @@
       $editPhaseDialog.dialog({
             autoOpen: false,
             modal: true,
+            width: 400,
             title: "<g:message code="mainView.jQuery.dialog.editPhaseForm.title"/>",
             close: function(){ $editPhaseDialog.empty(); },
       });

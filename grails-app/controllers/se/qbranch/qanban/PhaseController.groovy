@@ -103,7 +103,7 @@ class PhaseController {
     }
 
     def ajaxPhaseForm = {
-        render(template:'editPhaseDialog', model:[ phaseInstance: Phase.get(params.id)])
+        render(template:'phaseForm', model:[ phaseInstance: Phase.get(params.id)])
     }
 
     /****
@@ -127,7 +127,7 @@ class PhaseController {
                     if(phaseInstance.version > version) {
 
                         phaseInstance.errors.rejectValue("version", "phase.optimistic.locking.failure", "Another user has updated this Phase while you were editing.")
-                        return render(template:'editPhaseDialog',model:[phaseInstance:phaseInstance])
+                        return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
                         
                     }
                 }
@@ -138,12 +138,12 @@ class PhaseController {
                     flash.message = "Phase ${params.id} updated"              
                 }
                 
-                return render(template:'editPhaseDialog',model:[phaseInstance:phaseInstance])
+                return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
                 
             }
             else {
                 flash.message = "Phase not found with id ${params.id}"
-                return render(template:'editPhaseDialog',model:[phaseInstance:phaseInstance])
+                return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
             }
 
         }else{
@@ -156,7 +156,7 @@ class PhaseController {
             else {
                 flash.message = null
             }
-            render(template:'editPhaseDialog',model:[phaseInstance:phaseInstance])
+            render(template:'phaseForm',model:[phaseInstance:phaseInstance])
         }
     }
 
