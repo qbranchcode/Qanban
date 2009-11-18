@@ -355,25 +355,28 @@
 	   var width = (100/$phases.size()) - 1;
 	   $('.phaseAutoWidth').width(width+'%');
 		
-	   $('#debug').html("ReconPhases: ");
-
 	   $phases.each(function(index,$phase){
 	   
-	       $('#debug').append(" - .phase:not('");
 
 	       var $nextPhase = index < $phases.size() ? $( $phases[index+1] ) : false;
 	       
-	       	   
+	       	   var $currentPhase = $(this);
 		   $nextPhase.attr('id') != 'undefined' ? $(this).sortable('option','connectWith','#'+$nextPhase.attr('id')+'.available') : {} ;
 		   
-		   $(this).sortable('option','start', function(event,ui){
+		   $currentPhase.sortable('option','start', function(event,ui){
 		      
 		        var fadeIgnore = $nextPhase.attr('id') != null ?
 			                     "#" + $(this).attr('id') + "','" + $(this).sortable('option','connectWith') :
 					     "#" + $(this).attr('id');
-					     
-      			$(".phase:not('"+fadeIgnore+"')").parent().animate({opacity:0.3},300);
-    			$('#debug').html(fadeIgnore);                    
+			$('.phase').filter(function(){
+			     
+			     var notNext = $(this).attr('id') != $nextPhase.attr('id');
+			     var notCurr = $(this).attr('id') != $currentPhase.attr('id');
+			     
+			     return notCurr && notNext;
+			     
+			}).parent().animate({opacity:0.3},300);
+                    
 			var initPos = ui.item.prevAll().length + 1;
                         var elementId = ui.item.attr('id');
                         var initPhase = ui.item.parent().attr('id');
