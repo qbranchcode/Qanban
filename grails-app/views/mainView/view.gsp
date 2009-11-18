@@ -18,6 +18,91 @@
 
     /* Replace function */
     $.fn.replaceWith = function($newElement){ this.after($newElement).remove(); };
+
+
+
+    /*Ajax Load Wrapper */
+    $.fn.qLoad = function(url, data, successCallback, errorCallback) {
+      var $element = $(this);
+
+      var options = {};
+      options.url = url;
+      options.successCallback = successCallback;
+      options.success = function(data, textStatus){
+        var successCallback = options.successCallback;
+        if(successCallback) {
+          successCallback(data, textStatus);
+        }
+        $element.html(data);
+      };
+      options.data = data;
+      options.errorCallback = errorCallback;
+      options.error = function(XMLHttpRequest, textStatus, errorThrown){
+            var errorCallback = options.errorCallback;
+            if(XMLHttpRequest.status == 0) {
+              $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
+              modal: true });
+            }
+            if( errorCallback ){
+              errorCallback(XMLHttpRequest, textStatus, errorThrown);
+            }
+      };
+      options.type = "GET";
+
+      $.ajax(options);
+
+    }
+
+    /*Ajax Post Wrapper*/
+    $.qPost = function(url, data, successCallback, dataType) {
+      var options = {};
+      options.url = url;
+      options.successCallback = successCallback;
+      options.success = function(data, textStatus){
+        var successCallback = options.successCallback;
+        if(successCallback) {
+          successCallback(data, textStatus);
+        }
+      };
+      options.data = data;
+      options.error = function(XMLHttpRequest, textStatus, errorThrown){
+            if(XMLHttpRequest.status == 0) {
+              $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
+              modal: true });
+            }
+      };
+      options.dataType = dataType;
+      options.type = "POST";
+
+      $.ajax(options);
+
+    }
+
+    /*Ajax Get Wrapper*/
+    $.qGet = function(url, data, successCallback, dataType) {
+      var options = {};
+      options.url = url;
+      options.successCallback = successCallback;
+      options.success = function(data, textStatus){
+        var successCallback = options.successCallback;
+        if(successCallback) {
+          successCallback(data, textStatus);
+        }
+      };
+      options.data = data;
+      options.error = function(XMLHttpRequest, textStatus, errorThrown){
+            if(XMLHttpRequest.status == 0) {
+              $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
+              modal: true });
+            }
+      };
+      options.dataType = dataType;
+      options.type = "GET";
+
+      $.ajax(options);
+
+    }
+
     
 /***********/
 /* DIALOGS */
@@ -37,7 +122,7 @@
     });
 
     $('.addCardLink').click(function(event){
-      $createCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id}},function(){$createCardDialog.dialog('open');});
+      $createCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id}},function(){$createCardDialog.dialog('open');});
       event.preventDefault();
     });
 
@@ -55,8 +140,7 @@
     });
 
     $('.addPhaseLink').click(function(event){
-      $createPhaseDialog.dialog('open');
-      $createPhaseDialog.load('${createLink(controller:'phase',action:'ajaxPhaseForm')}');
+      $createPhaseDialog.qLoad('${createLink(controller:'phase',action:'ajaxPhaseForm')}',{},function(){$createPhaseDialog.dialog('open');});
       event.preventDefault();
     });
 
@@ -155,7 +239,7 @@ function deletePhaseDialog(id){
 
       $('.editPhaseLink').click(function(event){
             var phaseId = $(this).attr('id').split('_')[1];
-            $editPhaseDialog.load(
+            $editPhaseDialog.qLoad(
                 '${createLink(controller:'phase',action:'ajaxPhaseForm')}',
                 {'id': phaseId },
                 function(){
@@ -180,7 +264,7 @@ function deletePhaseDialog(id){
 
       $('.editCardLink').click(function(event){
             var cardId = $(this).attr('id').split('_')[1];
-            $editCardDialog.load('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id} , 'id':cardId},function(){$editCardDialog.dialog('open');});
+            $editCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id} , 'id':cardId},function(){$editCardDialog.dialog('open');});
             event.preventDefault();
       });
     
@@ -220,7 +304,7 @@ function deletePhaseDialog(id){
                         $phases.animate({'height':height},300);
 			$phases.parent().animate({opacity: 1},300);
         
-                        $.post(
+                        $.qPost(
                             '${createLink(controller:'mainView',action:'moveCard')}',
                             {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase},
                             function(data){
@@ -327,8 +411,7 @@ function deletePhaseDialog(id){
      
       if( $dialog.find('.errors').size() == 0 && id ){
       	  
-      	  $.get(url+'/'+id,'html',function(data,textStatus){
-	      
+      	  $.qGet(url+'/'+id,'html',function(data,textStatus){
 	      var $newElement = $(data);
 	      var $oldElement = $('#'+$newElement.attr("id"));
 	      var createdNewElement = false;
@@ -375,7 +458,7 @@ function deletePhaseDialog(id){
   }
 
   function updateBoard(){
-      $('#boardWrapper').load('${createLink(controller:'mainView',action:'showBoard')}',
+      $('#boardWrapper').qLoad('${createLink(controller:'mainView',action:'showBoard')}',
       function(){
           rescanBoardButtons();
       });
