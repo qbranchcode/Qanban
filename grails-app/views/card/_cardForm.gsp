@@ -2,8 +2,6 @@
 
 <g:setProvider library="jquery"/>
 
-
-
 <g:if test="${flash.message}">
   <div>${flash.message}</div>
 </g:if>
@@ -70,7 +68,7 @@
 <g:else>
   <g:formRemote url="[controller:'card',action:'ajaxSave']"
                 update="createCardDialog" name="cardForm"
-                onSuccess="cardFormRefresh(data,'#createCardDialog')">
+                onSuccess="cardFormRefresh(data,'#createCardDialog')" before="if(document.cardForm.title.value == 'Title...          ') document.cardForm.title.value = '';">
 
     <div class="header">
       <div class="assignee">
@@ -79,8 +77,8 @@
       <div class="info">        
         <input type="text" id="card.title" name="title"
                class="property ${hasErrors(bean:cardInstance,field:'title','errors')}"
-               value="Title..." onfocus="if (this.value == 'Title...') this.value = '';"
-               onblur="if (this.value == '') this.value = 'Title...'"/>
+               value="Title...          " onfocus="if (this.value == 'Title...          ') this.value = '';"
+               onblur="if (this.value == '') this.value = 'Title...          '"/>
 
        <span class="date"></span>
        <div class="caseNumberWrapper">
@@ -97,7 +95,7 @@
       <textarea id="card.description" class="property ${hasErrors(bean:cardInstance,field:'description','errors')}"
                 name="description"></textarea>
     </div>
-
+    
     <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
     <input style="display: none;" type="submit" value="<g:message code="_cardForm.button.submit"/>" />
            
