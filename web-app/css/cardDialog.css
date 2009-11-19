@@ -6,12 +6,14 @@
 }
 
 #cardForm .header .assignee {
- border: 1px solid #000;
- width: 40px;
- height: 40px;
- float: left;
- margin-right: 2px;
- background-color: grey;
+				float: left; 
+				padding:2px; 
+				background-color: #fdfdfd; 
+				border: 1px solid #000;
+				position: fixed; 
+				z-index: 3000;
+ min-height: 38px;
+ min-width: 38px;
 }
 
 #cardForm .header input{
@@ -25,6 +27,7 @@
 #cardForm .header .info{
  width: 326px;
  float: left;
+ margin-left: 44px;
 }
 
 #cardForm { overflow-x: hidden;}
@@ -66,3 +69,71 @@
  border-bottom: 1px solid #fff;
  border-right: 1px solid #fff;
 }
+
+
+
+			.dropdownContainer{
+				float: left; 
+				padding:2px; 
+				background-color: #fdfdfd; 
+				border: 1px solid #000;
+				position: absolute; 
+				z-index: 3000;
+
+			}
+
+			#assignees{
+				display: none;
+				max-height: 120px;	
+				overflow-y: auto; 
+				position:relative; 
+				padding-top: 2px; 
+				border-top: 1px solid #000; 
+				margin-top:2px;				
+			}
+
+			#assignees li {
+				float: none;
+				display: block;
+				height: 30px;	
+				cursor: pointer;
+				margin-top: 1px;
+			}
+
+
+			#assignees li:hover {
+				background-color: #eeeeee;	
+			}
+
+			#assignees li.selected {
+				background-color: #e3a1a1;
+			}
+
+			#assignees li.selected:hover {
+				background-color: #cc0000;
+			}
+
+			#assignees li img, .currentAssigneePic{	
+				display: block; 
+				float: left;
+			}
+
+			#assignees li .name, #currentAssigneeName {
+				float: left;
+				font-size: 12px;	
+				font-weight: bold; 
+				height: 15px; 
+				padding: 12px 13px 3px 4px;
+				display: block; 
+			}
+
+			#currentAssigneeName{
+				display: none;
+				cursor: pointer;
+				padding-right: 3px;
+			}
+
+			.currentAssigneePic {
+				cursor: pointer;
+				
+			}

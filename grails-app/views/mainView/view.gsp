@@ -22,7 +22,7 @@
 
 
     /*Ajax Load Wrapper */
-    $.fn.qLoad = function(url, data, successCallback, errorCallback) {
+    $.fn.qLoad = function(url, data, successCallback, errorCallback, completeCallback) {
       var $element = $(this);
 
       var options = {};
@@ -62,6 +62,9 @@
               errorCallback(XMLHttpRequest, textStatus, errorThrown);
             }
       };
+      if( completeCallback ){
+	    options.complete = completeCallback;
+      }
       options.type = "GET";
 
       $.ajax(options);
@@ -203,7 +206,8 @@
             autoOpen: false,
             modal: true,
             title: "<g:message code="mainView.jQuery.dialog.editCardForm.title"/>",
-            width: 400
+            width: 400,
+	    close: function(){ $(this).empty(); }
       });
       
     
@@ -247,6 +251,33 @@
   </jq:jquery>
 
   <g:javascript>
+
+   function initAssigneeSelect(){
+	/*setTimeout( function(){*/
+			$('.dropdownTrigger, #currentAssigneeName').click(function(event){
+				$('#assignees').toggle();
+				$('#currentAssigneeName').toggle();
+				event.preventDefault();
+			});
+
+			$('#assignees li').click(function(){
+				$(this).siblings().removeClass('selected');
+				$(this).addClass('selected');
+				$('.currentAssigneePic').attr('src',$(this).find('img').attr('src'));
+				$('#currentAssigneeName').html($(this).find('.name').html());
+				$('#assigneeValue').val($(this).attr('id').split('_')[1]);
+				$('#assignees').hide();
+				$('#currentAssigneeName').hide();				
+			});
+
+			$('.dropdownContainer').mouseleave(function(){
+				$('#assignees').hide();
+				$('#currentAssigneeName').hide();
+
+			});
+	/*},100);*/
+   }
+
 
    function deletePhaseDialog(id){
   
@@ -317,7 +348,8 @@
 
       $('.editCardLink').click(function(event){
             var cardId = $(this).attr('id').split('_')[1];
-            $editCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id} , 'id':cardId},function(){$editCardDialog.dialog('open');});
+            $editCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id} , 'id':cardId},function(){$editCardDialog.dialog('open');}, null, initAssigneeSelect);
+
             event.preventDefault();
       });
     
@@ -385,17 +417,24 @@
 		       
 		       		      	       recalculateHeightAndUpdateCardCount();
 					    }
+					    $(this).empty();
+					    $(this).dialog('destroy');
   			   	      },
 			   	      confirmed: false,
 			   	      card: ui.item,
 				      placementSelector: placementSelector
 			   });
-			   
+	/*
+url, data, successCallback, errorCallback, completeCallback
+initAssigneeSelect
+*/		   
 			   $moveCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',
 			      			 { 'board.id':${board.id}, 'id':cardId },
 					         function(){
 					            $moveCardDialog.dialog('open'); 
-			   			 }
+			   			 },
+						 null,
+						 initAssigneeSelect
 			   );
 
 			}else{    

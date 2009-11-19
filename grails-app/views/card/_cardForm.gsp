@@ -17,9 +17,40 @@
                 onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')">
 
     <div class="header">
-      <div class="assignee">
-        <!-- Gravatar -->
-      </div>
+ 
+	
+	<div class="dropdownContainer assignee">   
+ 
+		<g:if test="${cardInstance.assignee}">
+			<avatar:gravatar email="${cardInstance.assignee.email}" size="38" class="dropdownTrigger currentAssigneePic"
+				alt="<g:message code='_cardForm.assignee.trigger'/>"/>
+			<span id="currentAssigneeName">${cardInstance.assignee.userRealName}</span>
+		</g:if>
+		<g:else>
+			<img class="dropdownTrigger currentAssigneePic" src="" alt="<g:message code='_cardForm.assignee.trigger'/>"
+				width="38" height="38"/>
+			<span id="currentAssigneeName"><g:message code='_cardForm.assigne.noAssignee'/></span>
+		</g:else>
+
+		<div style="clear: both;"></div>
+		<ul id="assignees">
+			<li id="user_null" <g:if test="${!cardInstance.assignee?.id}">class="selected"</g:if> >
+				<img src="" alt="No assignee" width="30" height="30"/>				
+				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
+			</li>
+			<g:each var="user" in="${userList}">
+				<li id="user_${user.id}"
+				    class='<g:if test="${cardInstance.assignee?.id == user.id}">selected</g:if>' >
+					
+					<avatar:gravatar email="${user.email}" alt="${user.userRealName}" size="30"/>
+					<span class="name">${user.userRealName}</span>
+				</li>
+			</g:each>
+		</ul>
+		<div style="clear: both;"></div>
+	</div>    
+
+    
       <div class="info">
 
         <input type="text" id="card.title" name="title"
@@ -59,6 +90,7 @@
 
     <input type="hidden" name="id" value="${cardInstance?.id}"/>
     <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
+    <input type="hidden" name="assignee.id" id="assigneeValue" value="${cardInstance.assignee?.id}"/>
     <input style="display: none;" type="submit"/>
   </g:formRemote>
 
@@ -101,3 +133,5 @@
            
   </g:formRemote>
 </g:else>
+
+
