@@ -17,19 +17,6 @@ class CardController {
     //static allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
 
-    def save = {
-        def cardInstance = new Card(params)
-        def phase = findFirstPhase()
-        if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
-            flash.message = "Card ${cardInstance.id} created"
-            return redirect(controller: 'mainView', action: 'view')
-        }
-        else {
-            return render(view:'create',model:[cardInstance:cardInstance])
-        }
-    }
-
-
     def show = {
 
         if( !params.id )
@@ -78,34 +65,6 @@ class CardController {
 
     }
 
-    def update = {
-        def cardInstance = Card.get( params.id )
-        if(cardInstance) {
-            if(params.version) {
-                def version = params.version.toLong()
-                if(cardInstance.version > version) {
-
-                    cardInstance.errors.rejectValue("version", "card.optimistic.locking.failure", "Another user has updated this Card while you were editing.")
-                    render(view:'edit',model:[cardInstance:cardInstance])
-                    return
-                }
-            }
-            cardInstance.properties = params
-            if(!cardInstance.hasErrors() && cardInstance.save()) {
-                flash.message = "Card ${params.id} updated"
-                redirect(action:show,id:cardInstance.id)
-            }
-            else {
-                render(view:'edit',model:[cardInstance:cardInstance])
-            }
-        }
-        else {
-            flash.message = "Card not found with id ${params.id}"
-            redirect(action:list)
-        }
-    }
-
-    
     def delete = {
 
         def cardInstance = Card.get( params.id )
@@ -232,25 +191,6 @@ class CardController {
      * Pure view related actions
      *
      ****/
-
-    def create = {
-        def cardInstance = new Card()
-        cardInstance.properties = params
-        return ['cardInstance':cardInstance]
-    }
-    
-    def edit = {
-
-        def cardInstance = Card.get( params.id )
-
-        if(!cardInstance) {
-            flash.message = "Card not found with id ${params.id}"
-            redirect(action:list)
-        }
-        else {
-            return [ cardInstance : cardInstance ]
-        }
-    }
 
     def ajaxShowForm = {
         if(params.id == null)

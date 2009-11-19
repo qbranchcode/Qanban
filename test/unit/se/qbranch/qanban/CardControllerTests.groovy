@@ -26,7 +26,7 @@ class CardControllerTests extends ControllerUnitTestCase {
         mockParams.caseNumber = "1"
         mockParams.description = "My testcard"
 
-        def model = controller.save()
+        def model = controller.saveOrUpdate()
 
         def card = model.cardInstance
 
@@ -41,7 +41,7 @@ class CardControllerTests extends ControllerUnitTestCase {
         mockParams.description = "My testcard"
         mockParams."phase.id" = "1"
 
-        def model = controller.save()
+        def model = controller.saveOrUpdate()
         def card = Card.findByTitle("Title")
 
         assertEquals "My testcard" ,card.description
@@ -55,7 +55,7 @@ class CardControllerTests extends ControllerUnitTestCase {
 
     void testSaveWithEmptyForm() {
 
-        controller.save();
+        controller.saveOrUpdate();
 
         assertEquals 'create', renderArgs.view
         

@@ -69,7 +69,7 @@
   <g:formRemote url="[controller:'card',action:'ajaxSave']"
                 update="createCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#createCardDialog')"
-                before="if(document.cardForm.title.value == 'Title...          ') document.cardForm.title.value = '';">
+                before="if(\$('[name=title]').val() == 'Title...          ') \$('[name=title]').val('');">
 
     <div class="header">
       <div class="assignee">
@@ -85,8 +85,7 @@
        <div class="caseNumberWrapper">
          <label for="caseNumber"><g:message code="_cardForm.label.caseNumber"/></label>
           <input type="text" id="card.caseNumber" name="caseNumber"
-                 class="property ${hasErrors(bean:cardInstance,field:'caseNumber','errors')}"
-                 />
+                 class="property ${hasErrors(bean:cardInstance,field:'caseNumber','errors')}"/>
         </div>
 
       </div>
