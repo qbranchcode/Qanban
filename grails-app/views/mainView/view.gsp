@@ -163,13 +163,6 @@
             width: 400
       });
       
-      $moveCardDialog = $('<div id="moveCardDialog"></div>');
-      $moveCardDialog.dialog({
-      		      autoOpen: false,
-		      modal: true,
-		      title: "<g:message code="mainView.jQuery.moveCardForm.title"/>",
-		      width: 400
-      });
     
 /***************/
 /* Board logic */
@@ -317,22 +310,42 @@
 
 			if( ui.item.parent().attr('id') != icv.initPhase ){
 	                   
-			   $moveCardDialog.dialog('option', 'buttons', {
-			      '<g:message code="ok"/>': function() {
-				      updateCall();
-			      	      $(this).dialog("close");
-
-				  },
-			      '<g:message code="cancel"/>': function() {
-			      			
-			      	      initPhaseSize  == 0 || initPhaseSize < icv.initPos ? $('#'+icv.initPhase).append(ui.item) : function(){ 
-			      	         ui.item.insertBefore($(placementSelector));  
-				      }();
+    			    $moveCardDialog = $('<div id="moveCardDialog"></div>');
+      		            $moveCardDialog.dialog({
+      			       	      autoOpen: false,
+		      		      modal: true,
+		      	     	      title: "<g:message code="mainView.jQuery.moveCardForm.title"/>",
+		      		      width: 400,
+    		                      initCardValues: icv,
+			   	      buttons: {
+			      	         '<g:message code="ok"/>': function() {
+				      	    updateCall();
+				      	    $(this).dialog('option','confirmed',true);
+			      	      	    $(this).dialog("close");
+				         },
+			      		 '<g:message code="cancel"/>': function() {	
+			      	      	    $(this).dialog("close");
+			      	  	 }
+			   	      },
+			   	      close: function(event, ui) {
+  			   	      	    
+					    if( !$(this).dialog('option', 'confirmed') ) {
+				      	       var icv = $(this).dialog('option','initCardValues');
+				      	       var card = $(this).dialog('option','card');
+				      	       var placementSelector = $(this).dialog('option','placementSelector');
+				      
+				      	       var initPhaseSize = $('#' + icv.initPhase + '> .card').size();
+				      
+				      	       initPhaseSize  == 0 || initPhaseSize < icv.initPos ? $('#'+icv.initPhase).append(card) : function(){ 
+			      	                  card.insertBefore($(placementSelector));  
+				      	       }();
 		       
-		       		      recalculateHeightAndUpdateCardCount();
-
-			      	      $(this).dialog("close");
-			      	  }
+		       		      	       recalculateHeightAndUpdateCardCount();
+					    }
+  			   	      },
+			   	      confirmed: false,
+			   	      card: ui.item,
+				      placementSelector: placementSelector
 			   });
 			   
 			   $moveCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',
