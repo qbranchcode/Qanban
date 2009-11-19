@@ -68,7 +68,8 @@
 <g:else>
   <g:formRemote url="[controller:'card',action:'ajaxSave']"
                 update="createCardDialog" name="cardForm"
-                onSuccess="cardFormRefresh(data,'#createCardDialog')" before="if(document.cardForm.title.value == 'Title...          ') document.cardForm.title.value = '';">
+                onSuccess="cardFormRefresh(data,'#createCardDialog')"
+                before="if(document.cardForm.title.value == 'Title...          ') document.cardForm.title.value = '';">
 
     <div class="header">
       <div class="assignee">

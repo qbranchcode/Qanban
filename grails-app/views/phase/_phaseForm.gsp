@@ -21,7 +21,8 @@
 	EDIT / SHOW 
 --%>
 <g:if test="${phaseInstance?.id}">
-  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="editPhaseDialog" name="phaseForm" onSuccess="phaseFormRefresh(data, '#editPhaseDialog', 'Success', 'Phase successfully updated')">
+  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="editPhaseDialog" name="phaseForm"
+                onSuccess="phaseFormRefresh(data, '#editPhaseDialog', 'Success', 'Phase successfully updated')">
     
         <div class="header">
       <div class="info">
@@ -53,7 +54,8 @@
 --%>
 
 <g:else>
-  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="createPhaseDialog" name="phaseForm" onSuccess="phaseFormRefresh(data,'#createPhaseDialog')">
+  <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="createPhaseDialog" name="phaseForm"
+                onSuccess="phaseFormRefresh(data,'#createPhaseDialog')">
 
     <div class="header">
       <div class="info">
