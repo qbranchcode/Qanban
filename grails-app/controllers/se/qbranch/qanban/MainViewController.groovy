@@ -6,6 +6,14 @@ class MainViewController {
 
     def authenticateService
 
+    def setAssignee = { SetAssigneeCommand cmd ->
+        if(cmd.hasErrors()) {
+            return render([result: false] as JSON)
+        } else {
+            createCardEventSetAssignee(cmd);
+        }
+    }
+
     def index = { redirect(action:view,params:params)  }
 
     def view = {
@@ -16,7 +24,7 @@ class MainViewController {
                 admin = role.authority
             } 
         }
-        [ board : Board.get(1) , admin : admin ]
+        [ board : Board.get(1) , admin : admin , userInstance : userInstance ]
 
     }
 
@@ -62,6 +70,14 @@ class MainViewController {
                 user: authenticateService.userDomain())
             cardEventMove.save()
         }
+    }
+
+    void createCardEventSetAssignee(cmd) {
+        def cardEventSetAssignee = new CardEventSetAssignee(
+            card: cmd.card,
+            user: authenticateService.userDomain(),
+            newAssignee: cmd.assignee)
+        cardEventSetAssignee.save()
     }
 
     boolean checkActuallyMoving(cmd) {
@@ -114,5 +130,29 @@ class MoveCardCommand {
     def getPhase() {
         Phase.get(moveToPhase)
     }
+    
+}
+
+class SetAssigneeCommand {
+
+    static constraints = {
+        assigneeId(min: 0, nullable: true, validator:{ val, obj ->
+                !val || User.exists( val )
+            })
+        cardId(min: 0, nullable: false, validator:{ val, obj ->
+                Card.exists(obj.cardId)
+            })
+    }
+    Integer assigneeId
+    Integer cardId
+
+    def getAssignee() {
+        User.get(assigneeId)
+    }
+
+    def getCard() {
+        Card.get(cardId)
+    }
+
     
 }
