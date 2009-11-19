@@ -27,13 +27,28 @@
 
       var options = {};
       options.url = url;
+      options.cache = false;
       options.successCallback = successCallback;
       options.success = function(data, textStatus){
-        var successCallback = options.successCallback;
-        if(successCallback) {
-          successCallback(data, textStatus);
+        var fail = data.indexOf('<html>') != -1;
+        if( fail ) {
+          $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.sessionTimeout"/></p></div>').dialog({
+              modal: true,
+              buttons: {
+                <g:message code="ok"/>: function() {
+                  $(this).dialog('close');
+                  //Redirect till mainView/index
+                  window.location = "${createLink(controller:'mainView')}";
+                }
+              }
+          });
+        } else {
+          var successCallback = options.successCallback;
+          if(successCallback) {
+            successCallback(data, textStatus);
+          }
+          $element.html(data);
         }
-        $element.html(data);
       };
       options.data = data;
       options.errorCallback = errorCallback;
@@ -59,9 +74,23 @@
       options.url = url;
       options.successCallback = successCallback;
       options.success = function(data, textStatus){
-        var successCallback = options.successCallback;
-        if(successCallback) {
-          successCallback(data, textStatus);
+        var fail = data.indexOf('<html>') != -1;
+        if( fail ) {
+          $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.sessionTimeout"/></p></div>').dialog({
+              modal: true,
+              buttons: {
+                <g:message code="ok"/>: function() {
+                  $(this).dialog('close');
+                  //Redirect till mainView/index
+                  window.location = "${createLink(controller:'mainView')}";
+                }
+              }
+          });
+        } else {
+          var successCallback = options.successCallback;
+          if(successCallback) {
+            successCallback(data, textStatus);
+          }
         }
       };
       options.data = data;
@@ -84,9 +113,23 @@
       options.url = url;
       options.successCallback = successCallback;
       options.success = function(data, textStatus){
-        var successCallback = options.successCallback;
-        if(successCallback) {
-          successCallback(data, textStatus);
+        var fail = data.indexOf('<html>') != -1;
+        if( fail ) {
+          $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.sessionTimeout"/></p></div>').dialog({
+              modal: true,
+              buttons: {
+                <g:message code="ok"/>: function() {
+                  $(this).dialog('close');
+                  //Redirect till mainView/index
+                  window.location = "${createLink(controller:'mainView')}";
+                }
+              }
+          });
+        } else {
+          var successCallback = options.successCallback;
+          if(successCallback) {
+            successCallback(data, textStatus);
+          }
         }
       };
       options.data = data;
