@@ -6,6 +6,7 @@ import grails.converters.*
 
 class CardController {
 
+    def authenticateService
 
     /*****
      *  C - R - U - D
@@ -172,7 +173,7 @@ class CardController {
         else if( params.newPhase == null )
 	   render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list(), cardInstance: Card.get(params.id)])
 	else
-           render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: Phase.get(params.newPhase) ,userList: User.list()])
+           render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: Phase.get(params.newPhase) ,userList: User.list(), loggedInUser: authenticateService.userDomain()])
     }
 
     def ajaxSave = {
