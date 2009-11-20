@@ -1,3 +1,12 @@
+#moveCardDialog #moveMessage{
+ padding: 10px;
+
+}
+
+#cardForm input[disabled], #cardForm textarea[disabled] {
+ color: #333;
+}
+
 #cardForm  .header {
  height: 44px;
  margin: 0 2px 0 2px;
@@ -20,7 +29,7 @@
  font-size: 20px;
  font-weight: bold;
  width: 326px;
- text-indent: 4px;
+ text-indent: 8px;
 }
 
 
@@ -63,7 +72,7 @@
  border: 1px solid black;
  }
 
- #editCardDialog .property {
+#editCardDialog .property, #moveCardDialog .property {
  background-color: transparent;
  border: 1px solid transparent;
  border-bottom: 1px solid #fff;
@@ -113,7 +122,7 @@
 				background-color: #cc0000;
 			}
 
-			#assignees li img, .currentAssigneePic{	
+			#assignees li img, .assignee .avatar{	
 				display: block; 
 				float: left;
 			}
@@ -133,7 +142,8 @@
 				padding-right: 3px;
 			}
 
-			.currentAssigneePic {
+			.assignee .avatar {
 				cursor: pointer;
 				
 			}
+
