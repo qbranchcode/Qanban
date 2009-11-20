@@ -28,7 +28,7 @@ class CardControllerTests extends ControllerUnitTestCase {
 
         def model = controller.saveOrUpdate()
         
-        assertEquals 'create', renderArgs.view
+        assertEquals null, renderArgs.view
         assertEquals null, model
     }
 
@@ -54,7 +54,7 @@ class CardControllerTests extends ControllerUnitTestCase {
 
         controller.saveOrUpdate();
 
-        assertEquals 'create', renderArgs.view
+        assertEquals null, renderArgs.view
         
     }
 
