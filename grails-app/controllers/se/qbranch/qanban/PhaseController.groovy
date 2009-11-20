@@ -20,13 +20,20 @@ class PhaseController {
 
     def show = {
 
-        def phaseInstance = Phase.get( params.id )        
+        def phaseInstance = Phase.get( params.id )
+        def userInstance = authenticateService.userDomain()
+        def admin
+        for(role in userInstance.authorities) {
+            if(role.authority.equals("ROLE_ADMIN")) {
+                admin = role.authority
+            }
+        }
 
         if(!phaseInstance) {
             flash.message = "Phase not found with id ${params.id}"
             redirect(action:list)
         }
-        else { return render (template:"phase", bean:phaseInstance)}
+        else { return render (template:"phase", bean:phaseInstance, model:[ admin : admin ])}
     }
 
     def delete = {

@@ -4,8 +4,12 @@
 <li class="phaseWrapper phaseAutoWidth" id="phaseWrapper_${it.id}">
    <div class="phaseHolder">
    	<div class="phaseHeader">
-            
+          <g:if test="${admin}">
             <h3><a href="${createLink(controller:'phase',action:'edit')}" class="editPhaseLink" id="phaseLink_${it.id}">${it.name}</a></h3>
+          </g:if>
+          <g:else>
+            <h3>${it.name}</h3>
+          </g:else>
             <div class="limitLine">
 		<g:if test="${it.cardLimit}">${it.cards.size()}/${it.cardLimit}</g:if>
 		<g:else><g:message code="_phase.noLimit"/></g:else>
