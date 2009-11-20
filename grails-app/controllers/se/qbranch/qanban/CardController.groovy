@@ -179,7 +179,7 @@ class CardController {
     def ajaxSave = {
         def cardInstance = new Card(params)
         def phase = cardInstance.phase
-        if(cardInstance.validate() && phase && phase.addToCards(cardInstace) && cardInstance.save()) {
+        if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
             flash.message = "Card ${cardInstance.title} registered"
         } else {
             flash.message = null

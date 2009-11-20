@@ -26,17 +26,6 @@
 	
 	<div class="dropdownContainer assignee">   
  
-<%--		<g:if test="${cardInstance.assignee}">
-			<avatar:gravatar email="${cardInstance.assignee.email}" size="38" />
-			<span id="currentAssigneeName">${cardInstance.assignee.userRealName}</span>
-		</g:if>
-		<g:else>
-			<img class="avatar" 
-			     src="<g:resource dir="images" file="noAssignee.png"/>" alt="<g:message code='_cardForm.assignee.trigger'/>"
-				width="38" height="38"/>
-			<span id="currentAssigneeName"><g:message code='_cardForm.assignee.noAssignee'/></span>
-		</g:else>
---%>
     			<avatar:gravatar email="${loggedInUser.email}" size="38"/>
 			<span id="currentAssigneeName">${loggedInUser.userRealName}</span>
 		<div style="clear: both;"></div>
@@ -96,7 +85,7 @@
     </div>
 
     <input type="hidden" name="cardId" value="${cardInstance?.id}"/>
-    <input type="hidden" name="assigneeId" id="assigneeValue" value="${cardInstance.assignee?.id}"/>
+    <input type="hidden" name="assigneeId" id="assigneeValue" value="${loggedInUser.id}"/>
     <input style="display: none;" type="submit"/>
   </g:formRemote>
 </g:if>
