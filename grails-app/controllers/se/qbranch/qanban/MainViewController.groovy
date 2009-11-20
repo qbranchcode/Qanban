@@ -7,6 +7,7 @@ class MainViewController {
     def authenticateService
 
     def setAssignee = { SetAssigneeCommand cmd ->
+
         if(cmd.hasErrors()) {
             return render([result: false] as JSON)
         } else {
@@ -77,6 +78,7 @@ class MainViewController {
             card: cmd.card,
             user: authenticateService.userDomain(),
             newAssignee: cmd.assignee)
+
         cardEventSetAssignee.save()
     }
 

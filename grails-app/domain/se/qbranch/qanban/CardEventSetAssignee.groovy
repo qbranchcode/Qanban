@@ -2,13 +2,16 @@ package se.qbranch.qanban
 
 class CardEventSetAssignee implements Comparable {
 
+    static constraints = {
+		newAssignee ( nullable: true )
+	}
     Card card
     User user
     Date dateCreated
     User newAssignee
 
     transient afterInsert = {
-        card.assignee = newAssignee
+	card.assignee = newAssignee
     }
 
     int compareTo(Object o) {
