@@ -11,8 +11,97 @@
     <g:renderErrors bean="${cardInstance}" as="list" />
   </div>
 </g:hasErrors>
-<g:if test="${cardInstance?.id}">
-  <g:formRemote url="${[controller:'card',action:'ajaxSave', params: [format: 'html']]}"
+
+
+<g:if test="${newPhase}">
+  <div id="moveMessage">
+       <g:message code="_cardForm.move.message"/>
+  </div>
+  <g:formRemote url="[controller:'mainView',action:'setAssignee']"
+                update="editCardDialog" name="cardForm"
+                onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')">
+
+    <div class="header">
+ 
+	
+	<div class="dropdownContainer assignee">   
+ 
+<%--		<g:if test="${cardInstance.assignee}">
+			<avatar:gravatar email="${cardInstance.assignee.email}" size="38" />
+			<span id="currentAssigneeName">${cardInstance.assignee.userRealName}</span>
+		</g:if>
+		<g:else>
+			<img class="avatar" 
+			     src="<g:resource dir="images" file="noAssignee.png"/>" alt="<g:message code='_cardForm.assignee.trigger'/>"
+				width="38" height="38"/>
+			<span id="currentAssigneeName"><g:message code='_cardForm.assignee.noAssignee'/></span>
+		</g:else>
+--%>
+    			<avatar:gravatar email="${loggedInUser.email}" size="38"/>
+			<span id="currentAssigneeName">${loggedInUser.userRealName}</span>
+		<div style="clear: both;"></div>
+		<ul id="assignees">
+			<li id="user_">
+				<img src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30" class="avatar"/>				
+				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
+			</li>
+			<g:each var="user" in="${userList}">
+				<li id="user_${user.id}"
+				    class='<g:if test="${loggedInUser.id == user.id}">selected</g:if>' >
+					
+					<avatar:gravatar email="${user.email}" alt="${user.userRealName}" size="30"/>
+					<span class="name">${user.userRealName}</span>
+				</li>
+			</g:each>
+		</ul>
+		<div style="clear: both;"></div>
+	</div>    
+
+    
+      <div class="info">
+
+        <input type="text" id="card.title" disabled="disabled"
+               class="property ${hasErrors(bean:cardInstance,field:'title','errors')}"
+               value="${fieldValue(bean:cardInstance,field:'title')}" />
+
+        <span class="date">Last updated: <g:formatDate format="yyyy-MM-dd HH:mm"
+                                                       date="${cardInstance.lastUpdated}"/></span>
+
+        <div class="caseNumberWrapper">
+          <label for="caseNumber"><g:message code="_cardForm.label.caseNumber"/></label>
+          <input type="text" id="card.caseNumber" disabled="disabled"
+                 class="property ${hasErrors(bean:cardInstance,field:'caseNumber','errors')}"
+                 value="${fieldValue(bean:cardInstance,field:'caseNumber')}" />
+        </div>
+	
+	</textarea>
+      </div>
+    </div>
+    <div class="content">
+
+      <label for="description"><g:message code="_cardForm.label.description"/></label>
+      <textarea id="card.description" disabled="disabled" class="property ${hasErrors(bean:cardInstance,field:'description','errors')}">"${fieldValue(bean:cardInstance,field:'description')}"</textarea>
+
+
+      <g:if test="${cardInstance.events}">
+        <select size="4" multiple>
+          <g:each in="${cardInstance.events}" var='event'>
+            <option>${event.dateCreated}:
+              ${event.user.username} moved to ${event.newPhase.name}, on CardIndex: ${event.newCardIndex}
+            </option>
+          </g:each>
+        </select>
+      </g:if>
+
+    </div>
+
+    <input type="hidden" name="cardId" value="${cardInstance?.id}"/>
+    <input type="hidden" name="assigneeId" id="assigneeValue" value="${cardInstance.assignee?.id}"/>
+    <input style="display: none;" type="submit"/>
+  </g:formRemote>
+</g:if>
+<g:elseif test="${cardInstance?.id}">
+  <g:formRemote url="[controller:'card',action:'ajaxSave']"
                 update="editCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')">
 
@@ -22,20 +111,19 @@
 	<div class="dropdownContainer assignee">   
  
 		<g:if test="${cardInstance.assignee}">
-			<avatar:gravatar email="${cardInstance.assignee.email}" size="38" class="dropdownTrigger currentAssigneePic"
-				alt="<g:message code='_cardForm.assignee.trigger'/>"/>
+			<avatar:gravatar email="${cardInstance.assignee.email}" size="38"/>
 			<span id="currentAssigneeName">${cardInstance.assignee.userRealName}</span>
 		</g:if>
 		<g:else>
-			<img class="dropdownTrigger currentAssigneePic" src="" alt="<g:message code='_cardForm.assignee.trigger'/>"
+			<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="<g:message code='_cardForm.assignee.trigger'/>"
 				width="38" height="38"/>
-			<span id="currentAssigneeName"><g:message code='_cardForm.assigne.noAssignee'/></span>
+			<span id="currentAssigneeName"><g:message code='_cardForm.assignee.noAssignee'/></span>
 		</g:else>
 
 		<div style="clear: both;"></div>
 		<ul id="assignees">
 			<li id="user_null" <g:if test="${!cardInstance.assignee?.id}">class="selected"</g:if> >
-				<img src="" alt="No assignee" width="30" height="30"/>				
+				<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30"/>				
 				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
 			</li>
 			<g:each var="user" in="${userList}">
@@ -94,11 +182,11 @@
     <input style="display: none;" type="submit"/>
   </g:formRemote>
 
-</g:if>
+</g:elseif>
 
 
 <g:else>
-  <g:formRemote url="${[controller:'card',action:'ajaxSave', params: [format: 'html']]}"
+  <g:formRemote url="${[controller:'card',action:'saveOrUpdate', params: [format: 'html']]}"
                 update="createCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#createCardDialog')"
                 before="if(\$('[name=title]').val() == 'Title...          ') \$('[name=title]').val('');">

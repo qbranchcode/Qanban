@@ -253,8 +253,8 @@
   <g:javascript>
 
    function initAssigneeSelect(){
-	/*setTimeout( function(){*/
-			$('.dropdownTrigger, #currentAssigneeName').click(function(event){
+	
+			$('.assignee > .avatar, #currentAssigneeName').click(function(event){
 				$('#assignees').toggle();
 				$('#currentAssigneeName').toggle();
 				event.preventDefault();
@@ -263,7 +263,7 @@
 			$('#assignees li').click(function(){
 				$(this).siblings().removeClass('selected');
 				$(this).addClass('selected');
-				$('.currentAssigneePic').attr('src',$(this).find('img').attr('src'));
+				$('.assignee > .avatar').attr('src',$(this).find('img').attr('src'));
 				$('#currentAssigneeName').html($(this).find('.name').html());
 				$('#assigneeValue').val($(this).attr('id').split('_')[1]);
 				$('#assignees').hide();
@@ -275,7 +275,7 @@
 				$('#currentAssigneeName').hide();
 
 			});
-	/*},100);*/
+	
    }
 
 
@@ -389,12 +389,13 @@
       		            $moveCardDialog.dialog({
       			       	      autoOpen: false,
 		      		      modal: true,
-		      	     	      title: "<g:message code="mainView.jQuery.moveCardForm.title"/>",
+		      	     	      title: "<g:message code="mainView.jQuery.moveCardForm.preCardTitle"/>" + ui.item.find('a').html(),
 		      		      width: 400,
     		                      initCardValues: icv,
 			   	      buttons: {
 			      	         '<g:message code="ok"/>': function() {
 				      	    updateCall();
+					    $(this).find('input[type="submit"]').click();
 				      	    $(this).dialog('option','confirmed',true);
 			      	      	    $(this).dialog("close");
 				         },
@@ -429,7 +430,8 @@ url, data, successCallback, errorCallback, completeCallback
 initAssigneeSelect
 */		   
 			   $moveCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',
-			      			 { 'board.id':${board.id}, 'id':cardId },
+			      			 {
+'board.id':${board.id}, 'id':cardId , 'newPhase': newPhase},
 					         function(){
 					            $moveCardDialog.dialog('open'); 
 			   			 },

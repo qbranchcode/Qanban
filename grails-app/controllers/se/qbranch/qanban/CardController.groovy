@@ -168,9 +168,11 @@ class CardController {
 
     def ajaxShowForm = {
         if(params.id == null)
-        render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list()])
-        else
-        render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), userList: User.list()])
+           render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list()])
+        else if( params.newPhase == null )
+	   render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list(), cardInstance: Card.get(params.id)])
+	else
+           render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: Phase.get(params.newPhase) ,userList: User.list()])
     }
 
     def ajaxSave = {
