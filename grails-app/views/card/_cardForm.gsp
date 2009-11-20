@@ -12,7 +12,7 @@
   </div>
 </g:hasErrors>
 <g:if test="${cardInstance?.id}">
-  <g:formRemote url="${[controller:'card',action:'saveOrUpdate', params: [format: 'html']]}"
+  <g:formRemote url="${[controller:'card',action:'ajaxSave', params: [format: 'html']]}"
                 update="editCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')">
 
@@ -66,7 +66,7 @@
 
 
 <g:else>
-  <g:formRemote url="${[controller:'card',action:'saveOrUpdate', params: [format: 'html']]}"
+  <g:formRemote url="${[controller:'card',action:'ajaxSave', params: [format: 'html']]}"
                 update="createCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#createCardDialog')"
                 before="if(\$('[name=title]').val() == 'Title...          ') \$('[name=title]').val('');">

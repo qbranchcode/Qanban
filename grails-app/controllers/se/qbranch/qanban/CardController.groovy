@@ -148,7 +148,7 @@ class CardController {
     void cardDidntSave(cardInstance) {
         withFormat{
             html{
-                return render(view:'create',model:[cardInstance:cardInstance])
+                return render(template:'cardForm',model:[cardInstance])
             }
             js {
                 response.status = 500 //Internal Server Error
@@ -171,6 +171,17 @@ class CardController {
         render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id")])
         else
         render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id)])
+    }
+
+    def ajaxSave = {
+        def cardInstance = new Card(params)
+        def phase = cardInstance.phase
+        if(cardInstance.validate() && phase && phase.addToCards(cardInstace) && cardInstance.save()) {
+            flash.message = "Card ${cardInstance.title} registered"
+        } else {
+            flash.message = null
+        }
+        render (template: 'cardForm', model: [cardInstance:cardInstance, boardInstance:cardInstance.phase.board])
     }
     
 }
