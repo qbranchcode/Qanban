@@ -160,6 +160,7 @@
       autoOpen: false,
       modal: true,
       width: 400,
+      close: function(){ $(this).empty(); },
       title: "<g:message code="mainView.jQuery.dialog.addCardForm.title"/>",
       buttons: {
                     <g:message code="_cardForm.button.submit"/> : function(){ 
@@ -180,6 +181,7 @@
       modal: true,
       width: 400,
       title: "<g:message code="mainView.jQuery.dialog.addPhaseForm.title"/>",
+      close: function(){ $(this).empty(); },
       buttons: {
                     <g:message code="_phaseForm.button.save"/> : function(){
                       $createPhaseDialog.find('input[type="submit"]').click();
@@ -198,7 +200,7 @@
             modal: true,
             width: 400,
             title: "<g:message code="mainView.jQuery.dialog.editPhaseForm.title"/>",
-            close: function(){ $editPhaseDialog.empty(); },
+            close: function(){ $(this).empty(); }
       });
 
       $editCardDialog = $('<div id="editCardDialog"></div>');
@@ -306,9 +308,14 @@
                                 });
                               }});
                     $(this).dialog('close');
+		    $(this).empty();
+		    $(this).dialog('destroy');
+
             },
             <g:message code="no"/>: function() {
                     $(this).dialog('close');
+		    $(this).empty();
+		    $(this).dialog('destroy');
             }
         }
       });
@@ -425,10 +432,7 @@
 			   	      card: ui.item,
 				      placementSelector: placementSelector
 			   });
-	/*
-url, data, successCallback, errorCallback, completeCallback
-initAssigneeSelect
-*/		   
+		   
 			   $moveCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',
 			      			 {
 'board.id':${board.id}, 'id':cardId , 'newPhase': newPhase},
@@ -536,7 +540,7 @@ initAssigneeSelect
 
   function cardFormRefresh(formData,dialogSelector,successTitle,successMessage){
       
-  	   formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first'),recalculateHeightAndUpdateCardCount);
+  	   formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first')/*,recalculateHeightAndUpdateCardCount*/);
   
   }
  
