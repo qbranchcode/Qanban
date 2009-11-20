@@ -6,6 +6,8 @@ import grails.converters.*
 
 class PhaseController {
     
+    def authenticateService
+
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -18,20 +20,13 @@ class PhaseController {
 
     def show = {
 
-        def phaseInstance = Phase.get( params.id )
-        def userInstance = authenticateService.userDomain()
-        def admin
-        for(role in userInstance.authorities) {
-            if(role.authority.equals("ROLE_ADMIN")) {
-                admin = role.authority
-            }
-        }
+        def phaseInstance = Phase.get( params.id )        
 
         if(!phaseInstance) {
             flash.message = "Phase not found with id ${params.id}"
             redirect(action:list)
         }
-        else { return render (template:"phase", [ phaseInstance : phaseInstance, admin : admin ] )}
+        else { return render (template:"phase", bean:phaseInstance)}
     }
 
     def delete = {

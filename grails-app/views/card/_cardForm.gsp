@@ -12,7 +12,7 @@
   </div>
 </g:hasErrors>
 <g:if test="${cardInstance?.id}">
-  <g:formRemote url="[controller:'card',action:'ajaxSave']"
+  <g:formRemote url="${[controller:'card',action:'saveOrUpdate', params: [format: 'html']]}"
                 update="editCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')">
 
@@ -66,7 +66,7 @@
 
 
 <g:else>
-  <g:formRemote url="[controller:'card',action:'ajaxSave']"
+  <g:formRemote url="${[controller:'card',action:'saveOrUpdate', params: [format: 'html']]}"
                 update="createCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#createCardDialog')"
                 before="if(\$('[name=title]').val() == 'Title...          ') \$('[name=title]').val('');">
@@ -97,7 +97,7 @@
     </div>
     
     <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
-    <input style="display: none;" type="submit" value="<g:message code="_cardForm.button.submit"/>" />
+    <input style="display: none;" type="submit"/>
            
   </g:formRemote>
 </g:else>

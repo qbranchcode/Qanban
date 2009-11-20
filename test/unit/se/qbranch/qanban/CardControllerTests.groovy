@@ -27,12 +27,9 @@ class CardControllerTests extends ControllerUnitTestCase {
         mockParams.description = "My testcard"
 
         def model = controller.saveOrUpdate()
-
-        def card = model.cardInstance
-
+        
         assertEquals 'create', renderArgs.view
-        assertTrue 'Should have had errors', card.hasErrors()
-        assertEquals "nullable", card.errors.phase
+        assertEquals null, model
     }
 
     void testCardShouldSaveWithPhase() {
@@ -101,7 +98,6 @@ class CardControllerTests extends ControllerUnitTestCase {
         assertEquals "My testcard" ,card.description
         assertEquals "Phasendeluxe", card.phase.name
         assertEquals "Title", Phase.get(1).cards[1].title
-        assertEquals 'view', redirectArgs.action
     }
 
     //TODO: How to test with diffrent mime-types?

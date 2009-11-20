@@ -93,43 +93,21 @@ class CardController {
         def cardInstance
 
         // Update
-        if( params.id ){
-            
+        if( params.id ){            
             cardInstance = Card.get( params.id )
-
             if(cardInstance) {
-
                 if(params.version) {
-
                     def version = params.version.toLong()
                     if(cardInstance.version > version) {
 
                         cardInstance.errors.rejectValue("version", "card.optimistic.locking.failure", "Another user has updated this Card while you were editing.")
                         return render(view:'edit',model:[cardInstance:cardInstance])
-                        
                     }
                 }
 
                 cardInstance.properties = params
                 if(!cardInstance.hasErrors() && cardInstance.save()) {
-                  
-                    withFormat{
-
-                        html{
-                            flash.message = "Card ${params.id} updated"
-                            return redirect(action:show,id:cardInstance.id)
-                        }
-
-                        js{
-                            return render ([ cardInstance : cardInstance  ] as JSON)
-                        }
-
-                        xml{
-                            return render ([ cardInstance : cardInstance  ] as XML)
-                        }
-
-                    }
-                    
+                    cardUpdatedOrSaved(cardInstance, "Card ${params.id} updated")
                 }
                 else {
                     render(view:'edit',model:[cardInstance:cardInstance])
@@ -143,49 +121,45 @@ class CardController {
         // Save
         }else{
             cardInstance = new Card(params)
-            def phase = findFirstPhase()
-            
+            def phase = cardInstance.phase
             if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
-
-                withFormat{
-                    html{
-                        flash.message = "Card ${cardInstance.id} created"
-                        return redirect(controller: 'mainView', action: 'view')
-                    }
-
-                    js{
-                        return render ([ cardInstance : cardInstance  ] as JSON)
-                    }
-
-                    xml{
-                        return render ([ cardInstance : cardInstance  ] as XML)
-                    }
-                }
-                
-            }
-            else {
-
-                withFormat{
-
-                    html{
-                        return render(view:'create',model:[cardInstance:cardInstance])
-                    }
-
-                    js {
-                        response.status = 500 //Internal Server Error
-                        return render( "Could not create new Card due to errors:\n ${cardInstance.errors}" )
-                    }
-
-                    xml {
-                        response.status = 500 //Internal Server Error
-                        return render( "Could not create new Card due to errors:\n ${cardInstance.errors}" )
-                    }
-                }
-                
+                cardUpdatedOrSaved(cardInstance, "Card ${cardInstance.id} registred")
+            } else {
+                cardDidntSave(cardInstance)
             }
         }
     }
 
+    void cardUpdatedOrSaved(cardInstance, message) {
+        withFormat{
+            html{
+                flash.message = message
+                return render(template:'cardForm',model:[cardInstance:cardInstance, boardInstance: cardInstance.phase.board])
+            }
+            js{
+                return render ([ cardInstance : cardInstance  ] as JSON)
+            }
+            xml{
+                return render ([ cardInstance : cardInstance  ] as XML)
+            }
+        }
+    }
+
+    void cardDidntSave(cardInstance) {
+        withFormat{
+            html{
+                return render(view:'create',model:[cardInstance:cardInstance])
+            }
+            js {
+                response.status = 500 //Internal Server Error
+                return render( "Could not create new Card due to errors:\n ${cardInstance.errors}" )
+            }
+            xml {
+                response.status = 500 //Internal Server Error
+                return render( "Could not create new Card due to errors:\n ${cardInstance.errors}" )
+            }
+        }
+    }
 
     /****
      * Pure view related actions
@@ -198,25 +172,5 @@ class CardController {
         else
         render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id)])
     }
-
-    /****
-     *  Temporary ajax call actions
-     ****/
-
-    def ajaxSave = {
-        def cardInstance = new Card(params)
-        def phase = cardInstance.phase
-        if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
-            flash.message = "Card ${cardInstance.title} registered"
-        }
-        else {
-            flash.message = null
-        }
-        render(template:'cardForm',model:[cardInstance:cardInstance, boardInstance: cardInstance.phase.board])
-    }
-    Phase findFirstPhase() {
-        def board  = Board.get(1)
-        def phase = Phase.get(board.phases[0].id)
-        return phase
-    }
+    
 }

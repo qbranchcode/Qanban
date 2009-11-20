@@ -17,14 +17,8 @@ class MainViewController {
     def index = { redirect(action:view,params:params)  }
 
     def view = {
-        def userInstance = authenticateService.userDomain()
-        def admin
-        for(role in userInstance.authorities) {
-            if(role.authority.equals("ROLE_ADMIN")) {
-                admin = role.authority
-            } 
-        }
-        [ board : Board.get(1) , admin : admin , userInstance : userInstance ]
+        
+        [ board : Board.get(1)  ]
 
     }
 
