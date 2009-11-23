@@ -12,15 +12,16 @@
  margin: 0 2px 0 2px;
  padding: 2px;
  border-bottom: 1px solid #ddd;
+ position: relative;
 }
 
 #cardForm .header .assignee {
-				float: left; 
-				padding:2px; 
-				background-color: #fdfdfd; 
-				border: 1px solid #000;
-				position: fixed; 
-				z-index: 3000;
+ float: left;
+ padding:2px;
+ background-color: #fdfdfd;
+ border: 1px solid #000;
+ position: fixed;
+ z-index: 3000;
  min-height: 38px;
  min-width: 38px;
 }
