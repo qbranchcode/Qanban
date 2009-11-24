@@ -112,7 +112,7 @@ class PhaseController {
     }
 
     def ajaxPhaseForm = {
-        render(template:'phaseForm', model:[ phaseInstance: Phase.get(params.id)])
+       render(template:'phaseForm', model:[ phaseInstance: Phase.get(params.id),boardInstance: Board.get(params.'board.id')])
     }
 
     /****
@@ -136,7 +136,7 @@ class PhaseController {
                     if(phaseInstance.version > version) {
 
                         phaseInstance.errors.rejectValue("version", "phase.optimistic.locking.failure", "Another user has updated this Phase while you were editing.")
-                        return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
+			 return render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board])
                         
                     }
                 }
@@ -147,25 +147,31 @@ class PhaseController {
                     flash.message = "Phase ${params.id} updated"              
                 }
                 
-                return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
+                return render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board])
                 
             }
             else {
                 flash.message = "Phase not found with id ${params.id}"
-                return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
+                return render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board])
             }
 
         }else{
             phaseInstance = new Phase(params)
-
-            if(phaseInstance.validate() && board && board.addToPhases(phaseInstance) && phaseInstance.save()) {
-                
+	    def index = params."phase.idx"
+	     //TODO: IF Don't work properly?
+            if( phaseInstance.validate() ) {
+	        if( index > 0 )
+                    board.phases.add(params."phase.idx" as Integer, phaseInstance)
+		else
+		    board.addToPhases(phaseInstance)
+		   
+	        phaseInstance.save()
                 flash.message = "Phase ${phaseInstance.name} saved successfully"
             }
             else {
                 flash.message = null
             }
-            render(template:'phaseForm',model:[phaseInstance:phaseInstance])
+            render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board])
         }
     }
 

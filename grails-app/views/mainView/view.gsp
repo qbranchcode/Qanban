@@ -179,7 +179,7 @@
     $createPhaseDialog.dialog({
       autoOpen: false,
       modal: true,
-      width: 400,
+      width: 300,
       title: "<g:message code="mainView.jQuery.dialog.addPhaseForm.title"/>",
       close: function(){ $(this).empty(); },
       buttons: {
@@ -190,7 +190,21 @@
     });
 
     $('.addPhaseLink').click(function(event){
-      $createPhaseDialog.qLoad('${createLink(controller:'phase',action:'ajaxPhaseForm')}',{},function(){$createPhaseDialog.dialog('open');});
+       $createPhaseDialog.qLoad(
+	   '${createLink(controller:'phase',action:'ajaxPhaseForm')}',
+	   {'board.id':${board.id}},
+	   function(){$createPhaseDialog.dialog('open');},
+	   null,
+	   function(){
+	      $('#phasePlacer').sortable({
+		 cancel:'.old',
+		 placeholder:'phaseplaceholder',
+//		 containment: '.placementWrapper', 
+		 stop:function(event,ui){
+		    $createPhaseDialog.find('input[name="phase.idx"]').val(ui.item.prevAll().length);
+		    
+		 }});
+	   });
       event.preventDefault();
     });
 
@@ -219,9 +233,12 @@
 
     var sort = false;
 
-    /*  Enables the phases to be sortable
+    /*
     $('#phaseList').sortable({
-      
+    	 start: function(event,ui){ 
+	    $('#debug').html(ui.item.width());
+	    
+	 }
     });
     */
 
@@ -332,7 +349,7 @@
             var phaseId = $(this).attr('id').split('_')[1];
             $editPhaseDialog.qLoad(
                 '${createLink(controller:'phase',action:'ajaxPhaseForm')}',
-                {'id': phaseId },
+				   {'id': phaseId,'board.id': ${board.id} },
                 function(){
                     $editPhaseDialog.dialog(
                         'option',
@@ -520,9 +537,10 @@
   function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
       var url = "${createLink(controller:'phase',action:'show')}";
       $destination = $('#phaseList');
+     
 
       var updatePhases = function(data,textStatus,$element,injection){
-
+	 
 	  var $newPhase = $('#'+$element.attr('id')).find('ul');
 	  enableSortableOnPhase($newPhase);
 	  reconnectPhases();
@@ -540,15 +558,16 @@
 
   function cardFormRefresh(formData,dialogSelector,successTitle,successMessage){
       
-  	   formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first')/*,recalculateHeightAndUpdateCardCount*/);
+  	   formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first'),recalculateHeightAndUpdateCardCount);
   
   }
  
   function formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,beforeCloseFunction,beforeInjection){
       
       var $dialog = $(dialogSelector);
-      var id = $(formData).find('input[name="id"]').val();
-     
+      var $newContent = $(formData);
+      var id = $newContent.find('input[name="id"]').val();
+      
       if( $dialog.find('.errors').size() == 0 && id ){
       	  
       	  $.qGet(url+'/'+id,'html',function(data,textStatus){
@@ -561,7 +580,17 @@
 		  if ( beforeInjection ){
 		      beforeInjection();
 		  }
-	      	  $destination.append(data);
+		  
+		  var $indexInput = $newContent.find('input[name$=idx]');
+		  var $phases = $destination.find('.phaseWrapper');
+		  
+		  if( $indexInput.size() == 1 && ( $phases.size() > $indexInput.val() ) ) {
+		     var p = $phases.get($indexInput.val());
+		     $(data).insertBefore($(p));	 
+		  }else{
+	      	     $destination.append(data);
+		  }
+		  
 	      }else if( $oldElement.size() == 1 ){
 	      	  $oldElement.replaceWith($newElement);
 	      }else{

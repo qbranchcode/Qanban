@@ -45,7 +45,7 @@ class PhaseControllerTests extends ControllerUnitTestCase {
 
     }
 
-    void testSuccessfulAjaxSaveOrUpdateWithoutId() {
+    void testSuccessfulAjaxSaveOrUpdateWithoutIdAndIndex() {
         
         mockParams.name = "New Phase"
         mockParams."board.id" = "1"
@@ -56,6 +56,20 @@ class PhaseControllerTests extends ControllerUnitTestCase {
         assertEquals "New Phase", renderArgs.model.phaseInstance.name
 
     }
+   
+    void testSuccessfulAjaxSaveOrUpdateWithoutId()
+     {
+	mockParams.name = "First Phase"
+	mockParams."board.id" = "1"
+	mockParams."phase.idx" = "0"
+	  
+	controller.ajaxSaveOrUpdate()
+	
+        assertEquals 2, renderArgs.model.phaseInstance.id
+	assertEquals "First Phase", renderArgs.model.phaseInstance.name
+	assertEquals 0, renderArgs.model.boardInstance.phases.indexOf(renderArgs.model.phaseInstance)
+     }
+   
 
     void testAjaxSaveOrUpdateWithIllegalId(){
         mockParams.id = "12"
