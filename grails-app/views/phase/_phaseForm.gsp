@@ -41,10 +41,10 @@
         </div>
       </div>
     </div>
-
+    <input type="hidden" name="phase.idx" value="${boardInstance.phases.indexOf(phaseInstance)}"
     <input type="hidden" name="id" value="${phaseInstance.id}" />
-    <input type="hidden" name="board.id" value="1" />
-    <input style="display: none;" type="submit" value="<g:message code="_phaseForm.button.update"/>" />
+    <input type="hidden" name="board.id" value="${boardInstance.id}" />
+    <input style="display: none;" type="submit"  />
      
   </g:formRemote>
 </g:if>
@@ -56,25 +56,42 @@
 <g:else>
   <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="createPhaseDialog" name="phaseForm"
                 onSuccess="phaseFormRefresh(data,'#createPhaseDialog')">
+    <div class="content">
 
-    <div class="header">
-      <div class="info">
+       <div id="nameWrapper">
         <label for="name"><g:message code="_phaseForm.label.name"/></label>
-        <input type="text" id="name" name="name"
+        <input type="text" id="name" name="name" value="${phaseInstance?.name}"
                class="property ${hasErrors(bean:phaseInstance,field:'name','errors')}"/>
-
-        <span class="date"></span>
-
-        <div class="cardLimitWrapper">
-         <label for="caseNumber"><g:message code="_phaseForm.label.cardLimit"/></label>
-          <input type="text" id="cardLimit" name="cardLimit"
+       </div>
+       <div id="cardLimitWrapper">
+         <label for="cardLimit"><g:message code="_phaseForm.label.cardLimit"/></label>
+          <input type="text" id="cardLimit" name="cardLimit" value="${phaseInstance?.cardLimit}"
                  class="property ${hasErrors(bean:phaseInstance,field:'cardLimit','errors')}"/>
-        </div>
-      </div>
+       </div>
+       <div class="leveler"></div>
+       <div class="placementWrapper">
+	  <label for="phase.idx"><g:message code="_phaseForm.placement.label"/></label><br/>
+	  <input type="hidden" name="phase.idx" value="${boardInstance.phases.size()}"/>
+  	  <ul id="phasePlacer">
+	      <g:each var="phase" in="${boardInstance.phases}">
+	      	      <li class="phase old">
+		      	  <ul class="titleName">
+  		      	  <g:each var="ch" in="${phase.name}">
+			  	 <li>${ch}</li>
+			  </g:each>
+			  </ul>
+			  <img src="<g:resource dir="images" file="oldPhaseFade.png"/>" />
+  		      </li>
+	      </g:each>
+	      <li class="phase new"></li>
+	    </ul>
+	</div>
+
     </div>
 
-    <input type="hidden" name="board.id" value="1" />
-    <input style="display: none;" type="submit" value="<g:message code="_phaseForm.button.save"/>" />
+    <input type="hidden" name="id" value="${phaseInstance?.id}"/>
+    <input type="hidden" name="board.id" value="${boardInstance.id}" />
+    <input style="display: none;" type="submit" />
     
   </g:formRemote>
 </g:else>
