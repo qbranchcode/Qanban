@@ -90,6 +90,11 @@ li.phaseplaceholder{
  border: 1px solid red;
 }
 
+.current{
+ background-color: #8F9EAE !important;
+ border: 1px solid red;
+}
+
 .titleName {     
  list-style-type: none;
  list-style-image: none;

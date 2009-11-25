@@ -203,11 +203,19 @@ ul.phase {
     height: 7em;
 }
 
+
 #phaseList {
     list-style-type: none;
     list-style-position: outside;
     list-style-image: none;
 }
+
+.phaseListHolder{
+ background-color:red;
+ margin: 0 4px;
+ float: left;
+}
+
 .phaseWrapper { height: 100px; float: left; }
 .phaseHolder { width: 100%; }
 .phaseHeader {
