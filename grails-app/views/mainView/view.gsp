@@ -196,14 +196,8 @@
 	   function(){$createPhaseDialog.dialog('open');},
 	   null,
 	   function(){
-	      $('#phasePlacer').sortable({
-		 cancel:'.old',
-		 placeholder:'phaseplaceholder',
-//		 containment: '.placementWrapper', 
-		 stop:function(event,ui){
-		    $createPhaseDialog.find('input[name="phase.idx"]').val(ui.item.prevAll().length);
-		    
-		 }});
+              loadPhasePlacer($createPhaseDialog.attr('id'));
+
 	   });
       event.preventDefault();
     });
@@ -214,7 +208,9 @@
             modal: true,
             width: 400,
             title: "<g:message code="mainView.jQuery.dialog.editPhaseForm.title"/>",
-            close: function(){ $(this).empty(); }
+            close: function(){ 
+              $(this).empty();
+            }
       });
 
       $editCardDialog = $('<div id="editCardDialog"></div>');
@@ -223,7 +219,8 @@
             modal: true,
             title: "<g:message code="mainView.jQuery.dialog.editCardForm.title"/>",
             width: 400,
-	    close: function(){ $(this).empty(); },
+	    close: function(){ $(this).empty(); }
+
       });
       
     
@@ -233,12 +230,31 @@
 
     var sort = false;
 
+    // controller="mainView" action="movePhase" params="[newPhaseIndex: '1', id: '1']
+    // url, data, successCallback, dataType
+    // apa1
     /*
     $('#phaseList').sortable({
-    	 start: function(event,ui){ 
-	    $('#debug').html(ui.item.width());
-	    
-	 }
+         placeholder: 'phaseListHolder',
+         opacity: 0.6,
+         start: function(event, ui){
+            ui.placeholder.width(ui.item.width());
+            ui.placeholder.height(ui.item.find('.phaseHolder').height());
+            ui.placeholder.css('margin', '0 4px');
+            ui.placeholder.css('float','left');
+         },
+         stop: function(event, ui){
+
+            var posIdx = ui.item.prevAll().length - 1;
+            var phaseId = ui.item.attr('id').split('_')[1];
+
+            var callback = function(data, textStatus){
+                if( !data.result ){
+                  alert('error moving card!');
+                }
+            }
+            $.qPost('${createLink(controller:'mainView',action:'movePhase')}',{newPhaseIndex: posIdx, id: phaseId},callback,'json');
+         }
     });
     */
 
@@ -270,6 +286,16 @@
   </jq:jquery>
 
   <g:javascript>
+
+    function loadPhasePlacer(dialogSelector){
+      $('#phasePlacer').sortable({
+             cancel:'.old',
+             placeholder:'phaseplaceholder',
+             stop:function(event,ui){
+                $('input[name$=idx]').val(ui.item.prevAll().length);
+
+             }});
+    }
 
    function initAssigneeSelect(){
 	
@@ -379,8 +405,11 @@
    }
 
    function fixWidth(){
-      var width = 100/($('.phase').size())-1 + '%';
-      $('.phaseAutoWidth').width(width);
+          var numberOfPhases = $('#board').find('.phase').size();
+          var boardWidth = $('#board').width();
+          var newWidth = (boardWidth / numberOfPhases ) - 8 + 'px';
+          $('.phaseAutoWidth').width(newWidth);
+
    }
 
   function rescanBoardButtons(){
@@ -403,12 +432,14 @@
                             }
                         });
                     $editPhaseDialog.dialog('open');
+                },
+                null,
+                function(){
+                    loadPhasePlacer($editPhaseDialog.attr('id'));
                 }
             );
             event.preventDefault();
       });
-
-
 
       $('.editCardLink').click(function(event){
             var cardId = $(this).attr('id').split('_')[1];
@@ -527,40 +558,40 @@
   }
 
   function reconnectPhases(){
-  	   var $phases = $('.phase');
-	   var width = (100/$phases.size()) - 1;
-	   $('.phaseAutoWidth').width(width+'%');
-		
+           var $phases = $('.phase');
+           fixWidth();
+
 	   $phases.each(function(index,$phase){
 	   
 
 	       var $nextPhase = index < $phases.size() ? $( $phases[index+1] ) : false;
 	       
-	       	   var $currentPhase = $(this);
-		   $nextPhase.attr('id') != 'undefined' ? $(this).sortable('option','connectWith','#'+$nextPhase.attr('id')+'.available') : {} ;
-		   
-		   $currentPhase.sortable('option','start', function(event,ui){
-		      
-		        var fadeIgnore = $nextPhase.attr('id') != null ?
-			                     "#" + $(this).attr('id') + "','" + $(this).sortable('option','connectWith') :
-					     "#" + $(this).attr('id');
-			$('.phase').filter(function(){
-			     
-			     var notNext = $(this).attr('id') != $nextPhase.attr('id');
-			     var notCurr = $(this).attr('id') != $currentPhase.attr('id');
-			     
-			     return notCurr && notNext;
-			     
-			}).parent().animate({opacity:0.3},300);
-                    
-			var initPos = ui.item.prevAll().length + 1;
-                        var elementId = ui.item.attr('id');
-                        var initPhase = ui.item.parent().attr('id');
-			
-			$(this).sortable('option','initCardValues',
-				         {'elementId': elementId,'initPhase': initPhase, 'initPos': initPos});
-		      	    		    
-		   });			   
+               var $currentPhase = $(this);
+             
+               $nextPhase.attr('id') != 'undefined' ? $(this).sortable('option','connectWith','#'+$nextPhase.attr('id')+'.available') : {} ;
+
+               $currentPhase.sortable('option','start', function(event,ui){
+
+                    var fadeIgnore = $nextPhase.attr('id') != null ?
+                                         "#" + $(this).attr('id') + "','" + $(this).sortable('option','connectWith') :
+                                         "#" + $(this).attr('id');
+                    $('.phase').filter(function(){
+
+                         var notNext = $(this).attr('id') != $nextPhase.attr('id');
+                         var notCurr = $(this).attr('id') != $currentPhase.attr('id');
+
+                         return notCurr && notNext;
+
+                    }).parent().animate({opacity:0.3},300);
+
+                    var initPos = ui.item.prevAll().length + 1;
+                    var elementId = ui.item.attr('id');
+                    var initPhase = ui.item.parent().attr('id');
+
+                    $(this).sortable('option','initCardValues',
+                                     {'elementId': elementId,'initPhase': initPhase, 'initPos': initPos});
+
+               });
 	   });
   }
 
@@ -609,7 +640,11 @@
           rescanBoardButtons();
       };
 
-      formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,updatePhases,fixWidth);
+      var incompleteForm = function(formData,dialogSelector){
+          loadPhasePlacer(dialogSelector);
+      };
+
+      formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,updatePhases,fixWidth,incompleteForm);
   }
   
 
@@ -620,7 +655,7 @@
   
   }
  
-  function formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,beforeCloseFunction,beforeInjection){
+  function formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,beforeCloseFunction,beforeInjection,incompleteFormCallback){
       
       var $dialog = $(dialogSelector);
       var $newContent = $(formData);
@@ -632,7 +667,8 @@
 	      var $newElement = $(data);
 	      var $oldElement = $('#'+$newElement.attr("id"));
 	      var createdNewElement = false;
-	      
+	      var $phases = $destination.find('.phaseWrapper');
+
 	      if( $oldElement.size() == 0 ){
 	      	  createdNewElement = true;
 		  if ( beforeInjection ){
@@ -640,17 +676,33 @@
 		  }
 		  
 		  var $indexInput = $newContent.find('input[name$=idx]');
-		  var $phases = $destination.find('.phaseWrapper');
 		  
+		
 		  if( $indexInput.size() == 1 && ( $phases.size() > $indexInput.val() ) ) {
 		     var p = $phases.get($indexInput.val());
 		     $(data).insertBefore($(p));	 
 		  }else{
+                 
 	      	     $destination.append(data);
 		  }
 		  
 	      }else if( $oldElement.size() == 1 ){
-	      	  $oldElement.replaceWith($newElement);
+                  $oldElement.replaceWith($newElement);
+                  
+                  var newIndex = 1 + parseInt($newContent.find('input[name$=idx]').val());
+                  var selector = '.phaseWrapper:nth-child('+ newIndex +')';
+                  var $elementAtDestination = $(selector);
+	      	  var idAtNewIndex = $elementAtDestination.attr('id');
+                  if( $newElement.attr('id') != idAtNewIndex  ){
+                      if( $phases.size() > newIndex ){
+                        $newElement.insertBefore($elementAtDestination);
+                      }else{
+                        $destination.append($newElement);
+                      }
+                  }
+
+                  
+
 	      }else{
 	      	  $('#debug').html('Error in formRefresh()');
 	      }
@@ -661,6 +713,8 @@
 	 
 	      closeDialog($dialog,successTitle,successMessage);
 	  });
+      }else if(incompleteFormCallback){
+          incompleteFormCallback(formData,dialogSelector);
       }
   }
   
