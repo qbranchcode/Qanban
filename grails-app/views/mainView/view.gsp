@@ -206,7 +206,7 @@
       $editPhaseDialog.dialog({
             autoOpen: false,
             modal: true,
-            width: 400,
+            width: 300,
             title: "<g:message code="mainView.jQuery.dialog.editPhaseForm.title"/>",
             close: function(){ 
               $(this).empty();
@@ -667,7 +667,7 @@
 	      var $newElement = $(data);
 	      var $oldElement = $('#'+$newElement.attr("id"));
 	      var createdNewElement = false;
-/**/	      var $phases = $destination.find('.phaseWrapper');
+	      var $phases = $destination.find('.phaseWrapper');
 
 	      if( $oldElement.size() == 0 ){
 	      	  createdNewElement = true;
@@ -678,10 +678,10 @@
 		  var $indexInput = $newContent.find('input[name$=idx]');
 		  
 		
-/**/		  if( $indexInput.size() == 1 && ( $phases.size() > $indexInput.val() ) ) {
+		  if( $indexInput.size() == 1 && ( $phases.size() > $indexInput.val() ) ) {
                       alert('if');
-/**/		     var p = $phases.get($indexInput.val());
-/**/		     $(data).insertBefore($(p));
+		     var p = $phases.get($indexInput.val());
+		     $(data).insertBefore($(p));
 		  }else{
                      alert('else');
 	      	     $destination.append(data);
@@ -696,7 +696,7 @@
 
                   var oldIndex = 1 + parseInt($newElement.prevAll().size());  
                   var newIndex = 1 + parseInt($newContent.find('input[name$=idx]').val());
-/**/                  var selector = '.phaseWrapper:nth-child('+ newIndex +')';
+                  var selector = '.phaseWrapper:nth-child('+ newIndex +')';
                   var $elementAtDestination = $(selector);
 	      	  var idAtNewIndex = $elementAtDestination.attr('id');
                   if( $newElement.attr('id') != idAtNewIndex  ){
