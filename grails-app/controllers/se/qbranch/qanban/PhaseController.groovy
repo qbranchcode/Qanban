@@ -110,7 +110,7 @@ class PhaseController {
     }
 
     def ajaxPhaseForm = {
-        render(template:'phaseForm', model:[ phaseInstance: Phase.get(params.id)])
+        render(template:'phaseForm', model:[ phaseInstance: Phase.get(params.id), boardInstance: Board.get(params.'board.id')])
     }
 
     /****
@@ -134,7 +134,7 @@ class PhaseController {
                     if(phaseInstance.version > version) {
 
                         phaseInstance.errors.rejectValue("version", "phase.optimistic.locking.failure", "Another user has updated this Phase while you were editing.")
-                        return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
+                        return render(template:'phaseForm',model:[phaseInstance:phaseInstance, boardInstance: board])
 
                     }
                 }
@@ -145,12 +145,12 @@ class PhaseController {
                     flash.message = "Phase ${params.id} updated"
                 }
 
-                return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
+                return render(template:'phaseForm',model:[phaseInstance:phaseInstance, boardInstance: board])
 
             }
             else {
                 flash.message = "Phase not found with id ${params.id}"
-                return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
+                return render(template:'phaseForm',model:[phaseInstance:phaseInstance, boardInstance: board])
             }
 
         }else{
@@ -163,7 +163,7 @@ class PhaseController {
             else {
                 flash.message = null
             }
-            render(template:'phaseForm',model:[phaseInstance:phaseInstance])
+            render(template:'phaseForm',model:[phaseInstance:phaseInstance, boardInstance: board])
         }
     }
 
