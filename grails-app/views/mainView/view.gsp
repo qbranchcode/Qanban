@@ -419,10 +419,12 @@
                     $editCardDialog.dialog(
                       'option',
                       'buttons',
-                      { 'Delete' : function() {
+                      { /*'Delete' : function() {
                           $(this).dialog("close");
                           deleteCardDialog(cardId);
                         },
+                        TODO: Make this admin only before implementing it live
+                        */
                         'Update' : function() {
                           $editCardDialog.find('input[type="submit"]').click();
                         }
