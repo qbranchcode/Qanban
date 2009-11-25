@@ -14,7 +14,8 @@
   <div id="menu">
 
     <div class="background">
-      <span class="red">Q</span>ANBAN
+
+      <img src="${resource(dir:'images',file:'qanbanlogo.gif')}" height="20px">
     </div>
 
     <ul>
@@ -30,6 +31,6 @@
   </div>
 
   <g:layoutBody />
-  
+
 </body>
 </html>

@@ -18,4 +18,22 @@ class QanbanTagLib {
 
     }
 
+    def autoCrop = { attrs, body ->
+        int maxChars = attrs.maxChars ? attrs.maxChars as Integer : 100
+
+        if(body.it.description.length() > maxChars) {
+
+            def text = body.it.description.substring(0, maxChars)
+            cropText(text)
+        }
+        else {
+            out << body.it.description
+        }
+    }
+
+    void cropText(text) {
+        text = text + "..."
+        out << text
+    }
+
 }

@@ -139,26 +139,71 @@ h4{}
 ul.phase {
     list-style: none;
     min-height: 30px;
-    padding-bottom: 40px;
+    padding-bottom: 100px;
 }
 
 .card {
     border: 1px solid;
-    margin: 1px 2px 0 2px; 
-    background-color: yellow;
+    margin: 1px 2px 0 2px;
+    background-color: #f3f164;
     text-align: center;
-    height: 30px;
+    height: 7em;
+    overflow: hidden;
 }
+
+.editCardLink {
+    position:relative;
+    font-size: 1.2em;
+    display: block;
+    border-bottom: solid;
+    border-width: 1px;
+    overflow: hidden;
+    line-height: 1.2em;
+    height: 1.3em;
+}
+
+.cardDescription {
+    position: relative;
+    border-style: dotted;
+    border-width: 1px;
+    height: 3em;
+    margin: 3px;
+    top: 13px;
+    padding: 2px;
+ }
+
+ p.cardDescriptionInside {
+    line-height: 1em;
+    font-size: 0.9em;
+    height: 3em;
+    overflow: hidden;
+    text-align: left;
+    position: absolute;
+ }
+
+ .cardCaseNumber {
+     position: relative;
+     float: left;
+     padding: 2px;
+     font-size: 8px;
+ }
+
+ .cardTimeOnBoard {
+     position: relative;
+     float: right;
+     font-size: 8px;
+     padding: 2px;
+ }
 
 .placeholder {
     border: 1px solid;
-    margin: 1px 2px 0 2px; 
-    background-color: fffeb5;
+    margin: 1px 2px 0 2px;
+    background-color: #fffeb5;
     text-align: center;
-    height: 30px;
+    height: 7em;
 }
 
-#phaseList { 
+#phaseList {
     list-style-type: none;
     list-style-position: outside;
     list-style-image: none;

@@ -6,7 +6,7 @@
 	
     <style type="text/css">
 	.phaseAutoWidth{ width: ${100/it.phases.size()-1}%; margin: 0 0.5%; }
-	.phaseAutoHeight{ height: <g:maxCardCount phases="${it.phases}" cardHeight="30" unit="px"/>; }
+	.phaseAutoHeight{ height: <g:maxCardCount phases="${it.phases}" cardHeight="7" unit="em"/>; }
     </style>
     
     <g:each var="phase" in="${it.phases}">	
