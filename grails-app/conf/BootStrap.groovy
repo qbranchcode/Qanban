@@ -49,7 +49,7 @@ class BootStrap {
             default:
 
             Role adminRole = new Role(description:"administrator access",authority:"ROLE_QANBANADMIN").save()
-            Role userRole = new Role(description:"administrator access",authority:"ROLE_QANBANUSER").save()
+            Role userRole = new Role(description:"regular user access",authority:"ROLE_QANBANUSER").save()
             Requestmap loginMap = new Requestmap(url:"/login/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
             Requestmap cssMap = new Requestmap(url:"/css/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
             Requestmap jsMap = new Requestmap(url:"/js/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
