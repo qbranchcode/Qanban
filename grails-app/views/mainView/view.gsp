@@ -654,7 +654,7 @@
   	   formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first'),recalculateHeightAndUpdateCardCount);
   
   }
- 
+ /* TODO: Change beforeInjection to getNewElementCallback to break out some missplaced logic */
   function formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,beforeCloseFunction,beforeInjection,incompleteFormCallback){
       
       var $dialog = $(dialogSelector);
@@ -667,7 +667,7 @@
 	      var $newElement = $(data);
 	      var $oldElement = $('#'+$newElement.attr("id"));
 	      var createdNewElement = false;
-	      var $phases = $destination.find('.phaseWrapper');
+/**/	      var $phases = $destination.find('.phaseWrapper');
 
 	      if( $oldElement.size() == 0 ){
 	      	  createdNewElement = true;
@@ -678,25 +678,28 @@
 		  var $indexInput = $newContent.find('input[name$=idx]');
 		  
 		
-		  if( $indexInput.size() == 1 && ( $phases.size() > $indexInput.val() ) ) {
-		     var p = $phases.get($indexInput.val());
-		     $(data).insertBefore($(p));	 
+/**/		  if( $indexInput.size() == 1 && ( $phases.size() > $indexInput.val() ) ) {
+                      alert('if');
+/**/		     var p = $phases.get($indexInput.val());
+/**/		     $(data).insertBefore($(p));
 		  }else{
-                 
+                     alert('else');
 	      	     $destination.append(data);
 		  }
 		  
 	      }else if( $oldElement.size() == 1 ){
                   
                   $oldElement.replaceWith($newElement);
-                  var oldIndex = 1 + parseInt($newElement.prevAll().size());
-                  //alert(oldIndex);
+
+                  if( $newElement.attr('id').split('_')[0] != 'card' ){
+
+
+                  var oldIndex = 1 + parseInt($newElement.prevAll().size());  
                   var newIndex = 1 + parseInt($newContent.find('input[name$=idx]').val());
-                  var selector = '.phaseWrapper:nth-child('+ newIndex +')';
+/**/                  var selector = '.phaseWrapper:nth-child('+ newIndex +')';
                   var $elementAtDestination = $(selector);
 	      	  var idAtNewIndex = $elementAtDestination.attr('id');
                   if( $newElement.attr('id') != idAtNewIndex  ){
-                      //alert('moving: ' + idAtNewIndex + ' - ' + $newElement.attr('id') + ' - ' + newIndex);
                       if( oldIndex > newIndex ){
                         $newElement.insertBefore($elementAtDestination);
                       }else{
@@ -704,6 +707,7 @@
                       }
                   }
 
+                  }
                   
 
 	      }else{
