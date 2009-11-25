@@ -1,13 +1,12 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+    <style type="text/css">
 
+	.phaseAutoWidth{ width: ${100/it.phases.size()-1}%; margin: 0 4px; }
+	.phaseAutoHeight{ height: <g:maxCardCount phases="${it.phases}" cardHeight="30" unit="px"/>; } /*7 em*/
+    </style>
 <div id="board">
 
   <ul id="phaseList">
-	
-    <style type="text/css">
-	.phaseAutoWidth{ width: ${100/it.phases.size()-1}%; margin: 0 0.5%; }
-	.phaseAutoHeight{ height: <g:maxCardCount phases="${it.phases}" cardHeight="7" unit="em"/>; }
-    </style>
     
     <g:each var="phase" in="${it.phases}">	
 	<g:render template="/phase/phase" bean="${phase}"/>
