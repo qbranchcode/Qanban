@@ -21,12 +21,12 @@ class CardController {
     def show = {
 
         if( !params.id )
-            return render(status: 400, text: "You must specify an id")
+        return render(status: 400, text: "You must specify an id")
             
         def cardInstance = Card.get( params.id )
 
         if(!cardInstance)
-            return render(status: 404, text: "Card with id ${params.id} not found.")
+        return render(status: 404, text: "Card with id ${params.id} not found.")
             
 
         withFormat {
@@ -89,14 +89,26 @@ class CardController {
         }
     }
 
+    def update = { UpdateCardCommand cmd ->
+
+        if(cmd.hasErrors()) {
+            return render([result: false] as JSON)
+        }else {
+            createCardEventUpdate(cmd)
+            cardUpdatedOrSaved(cmd.card, "Card ${params.id} updated")
+        }
+    }
 
     def saveOrUpdate = {
         def cardInstance
 
         // Update
-        if( params.id ){            
+        if( params.id ){
             cardInstance = Card.get( params.id )
+            def phase = Phase.get(params."phase.id")
+
             if(cardInstance) {
+                
                 if(params.version) {
                     def version = params.version.toLong()
                     if(cardInstance.version > version) {
@@ -107,7 +119,8 @@ class CardController {
                 }
 
                 cardInstance.properties = params
-                if(!cardInstance.hasErrors() && cardInstance.save()) {
+                
+                if(cardInstance.validate() && phase && cardInstance.save()) {
                     cardUpdatedOrSaved(cardInstance, "Card ${params.id} updated")
                 }
                 else {
@@ -119,7 +132,7 @@ class CardController {
                 redirect(action:list)
             }
 
-        // Save
+            // Save
         }else{
             cardInstance = new Card(params)
             def phase = cardInstance.phase
@@ -162,6 +175,16 @@ class CardController {
         }
     }
 
+    void createCardEventUpdate(cmd) {
+        def cardEventUpdate = new CardEventUpdate(
+            card: cmd.card,,
+            title: cmd.title,
+            description: cmd.description,
+            caseNumber: cmd.caseNumber,
+            user: authenticateService.userDomain())
+        cardEventUpdate.save()
+    }
+
     /****
      * Pure view related actions
      *
@@ -169,11 +192,11 @@ class CardController {
 
     def ajaxShowForm = {
         if(params.id == null)
-           render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list()])
+        render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list()])
         else if( params.newPhase == null )
-	   render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list(), cardInstance: Card.get(params.id)])
+        render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list(), cardInstance: Card.get(params.id)])
 	else
-           render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: Phase.get(params.newPhase) ,userList: User.list(), loggedInUser: authenticateService.userDomain()])
+        render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: Phase.get(params.newPhase) ,userList: User.list(), loggedInUser: authenticateService.userDomain()])
     }
 
     def ajaxSave = {
@@ -186,5 +209,44 @@ class CardController {
         }
         render (template: 'cardForm', model: [cardInstance:cardInstance, boardInstance:cardInstance.phase.board])
     }
-    
+
+    def ajaxDelete = {
+
+        if( params.id ){
+
+            def card = Card.get(params.id)
+
+            if( card ){
+                card.phase.cards.remove(card)
+                card.delete()
+                return render(status: 200, text: "Card with id $params.id deleted")
+            }else{
+                return render(status: 404, text: "There is no card with id $params.id")
+            }
+
+        }else{
+            return render(status: 400, text: "You must specify an id")
+        }
+    }
+}
+
+class UpdateCardCommand {
+
+    static constraints = {
+        id(min: 0, nullable: false, validator:{ val, obj ->
+                Card.exists(obj.id)
+            })
+        
+    }
+
+    Integer id
+    String description
+    String title
+    Integer caseNumber
+
+    def getCard() {
+        Card.get(id)
+    }
+
+
 }

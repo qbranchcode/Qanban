@@ -223,7 +223,7 @@
             modal: true,
             title: "<g:message code="mainView.jQuery.dialog.editCardForm.title"/>",
             width: 400,
-	    close: function(){ $(this).empty(); }
+	    close: function(){ $(this).empty(); },
       });
       
     
@@ -338,9 +338,49 @@
       });
    }
 
+   function deleteCardDialog(id){
+
+      $('<div><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to delete this card?</p></div>').dialog({
+        resizable: false,
+        height:140,
+        modal: true,
+        buttons: {
+            <g:message code="yes"/>: function() {
+
+                    $.ajax({  url: '${createLink(controller:'card',action:'ajaxDelete')}',
+                              data: {'id': id},
+                              type: 'POST',
+                              success: function() {
+                                $("#card_"+id).remove();
+                                recalculateHeightAndUpdateCardCount();
+                              },
+                              error: function (XMLHttpRequest, textStatus, errorThrown) {
+                                 $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.errorDeletingCard.content"/></p></div>').dialog({
+                                  modal: true,
+                                  buttons: {
+                                  <g:message code="ok"/>: function() {
+                                      $(this).dialog('close');
+                                    }
+                                  }
+                                });
+                              }});
+                    $(this).dialog('close');
+		    $(this).empty();
+		    $(this).dialog('destroy');
+
+            },
+            <g:message code="no"/>: function() {
+                    $(this).dialog('close');
+		    $(this).empty();
+		    $(this).dialog('destroy');
+            }
+        }
+      });
+   }
+
    function fixWidth(){
-          var width = 100/($('.phase').size())-1 + '%';
-          $('.phaseAutoWidth').width(width);
+      var width = 100/($('.phase').size())-1 + '%';
+      $('.phaseAutoWidth').width(width);
    }
 
   function rescanBoardButtons(){
@@ -372,8 +412,24 @@
 
       $('.editCardLink').click(function(event){
             var cardId = $(this).attr('id').split('_')[1];
-            $editCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id} , 'id':cardId},function(){$editCardDialog.dialog('open');}, null, initAssigneeSelect);
-
+            $editCardDialog.qLoad(
+                '${createLink(controller:'card',action:'ajaxShowForm')}',
+                                    {'board.id':${board.id} , 'id':cardId},
+                function(){
+                    $editCardDialog.dialog(
+                      'option',
+                      'buttons',
+                      { 'Delete' : function() {
+                          $(this).dialog("close");
+                          deleteCardDialog(cardId);
+                        },
+                        'Update' : function() {
+                          $editCardDialog.find('input[type="submit"]').click();
+                        }
+                    });
+                    $editCardDialog.dialog('open');
+                },
+                null, initAssigneeSelect);
             event.preventDefault();
       });
     

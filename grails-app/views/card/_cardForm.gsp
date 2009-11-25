@@ -12,6 +12,9 @@
   </div>
 </g:hasErrors>
 
+<%--
+	SET ASSIGNEE
+--%>
 
 <g:if test="${newPhase}">
   <div id="moveMessage">
@@ -89,13 +92,17 @@
     <input style="display: none;" type="submit"/>
   </g:formRemote>
 </g:if>
+
+<%--
+	EDIT / SHOW
+--%>
+
 <g:elseif test="${cardInstance?.id}">
-  <g:formRemote url="[controller:'card',action:'ajaxSave']"
+  <g:formRemote url="[controller:'card',action:'update', params: [format: 'html']]"
                 update="editCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')">
 
     <div class="header">
- 
 	
 	<div class="dropdownContainer assignee">   
  
@@ -150,7 +157,7 @@
 
       <label for="description"><g:message code="_cardForm.label.description"/></label>
       <textarea id="card.description" class="property ${hasErrors(bean:cardInstance,field:'description','errors')}"
-                name="description">"${fieldValue(bean:cardInstance,field:'description')}"</textarea>
+                name="description">${fieldValue(bean:cardInstance,field:'description')}</textarea>
 
 
       <g:if test="${cardInstance.events}">
@@ -167,12 +174,15 @@
 
     <input type="hidden" name="id" value="${cardInstance?.id}"/>
     <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
-    <input type="hidden" name="assignee.id" id="assigneeValue" value="${cardInstance.assignee?.id}"/>
+    <%-- <input type="hidden" name="assignee.id" id="assigneeValue" value="${cardInstance.assignee?.id}"/> --%>
     <input style="display: none;" type="submit"/>
   </g:formRemote>
 
 </g:elseif>
 
+<%--
+	CREATE
+--%>
 
 <g:else>
   <g:formRemote url="${[controller:'card',action:'saveOrUpdate', params: [format: 'html']]}"
