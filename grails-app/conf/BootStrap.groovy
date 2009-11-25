@@ -50,12 +50,14 @@ class BootStrap {
 
             Role adminRole = new Role(description:"administrator access",authority:"ROLE_QANBANADMIN").save()
             Role userRole = new Role(description:"regular user access",authority:"ROLE_QANBANUSER").save()
+            Requestmap logoutMap = new Requestmap(url:"/logout/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
             Requestmap loginMap = new Requestmap(url:"/login/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
             Requestmap cssMap = new Requestmap(url:"/css/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
             Requestmap jsMap = new Requestmap(url:"/js/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
             Requestmap imageMap = new Requestmap(url:"/images/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
             Requestmap userCMap = new Requestmap(url:"/user/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
-            Requestmap map = new Requestmap(url:"/**", configAttribute:"ROLE_QANBANUSER").save()
+            Requestmap map = new Requestmap(url:"/**", configAttribute:"ROLE_QANBANUSER,ROLE_QANBANADMIN").save()
+//            Requestmap adminMap = new Requestmap(url:"/**", configAttribute:"ROLE_QANBANADMIN").save()
 
             User regularUser = new User(username: "testuser",
                                      userRealName:"Test User",
