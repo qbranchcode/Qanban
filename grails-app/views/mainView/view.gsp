@@ -687,17 +687,20 @@
 		  }
 		  
 	      }else if( $oldElement.size() == 1 ){
-                  $oldElement.replaceWith($newElement);
                   
+                  $oldElement.replaceWith($newElement);
+                  var oldIndex = 1 + parseInt($newElement.prevAll().size());
+                  //alert(oldIndex);
                   var newIndex = 1 + parseInt($newContent.find('input[name$=idx]').val());
                   var selector = '.phaseWrapper:nth-child('+ newIndex +')';
                   var $elementAtDestination = $(selector);
 	      	  var idAtNewIndex = $elementAtDestination.attr('id');
                   if( $newElement.attr('id') != idAtNewIndex  ){
-                      if( $phases.size() > newIndex ){
+                      //alert('moving: ' + idAtNewIndex + ' - ' + $newElement.attr('id') + ' - ' + newIndex);
+                      if( oldIndex > newIndex ){
                         $newElement.insertBefore($elementAtDestination);
                       }else{
-                        $destination.append($newElement);
+                        $newElement.insertAfter($elementAtDestination);
                       }
                   }
 

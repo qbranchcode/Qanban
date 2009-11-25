@@ -2,7 +2,7 @@
     <style type="text/css">
 
 	.phaseAutoWidth{ width: ${100/it.phases.size()-1}%; margin: 0 4px; }
-	.phaseAutoHeight{ height: <g:maxCardCount phases="${it.phases}" cardHeight="30" unit="px"/>; } /*7 em*/
+	.phaseAutoHeight{ height: <g:maxCardCount phases="${it.phases}" cardHeight="7" unit="em"/>; } /*7 em*/
     </style>
 <div id="board">
 

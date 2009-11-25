@@ -271,7 +271,7 @@ class PhaseController {
     }
 
     boolean phaseIsMovedToANewPosition(cmd){
-         return newPhaseidx != obj.phase.board.phases.indexOf(obj.phase) 
+         return cmd.newPhaseidx != cmd.phase.board.phases.indexOf(cmd.phase)
     }
 
 }
