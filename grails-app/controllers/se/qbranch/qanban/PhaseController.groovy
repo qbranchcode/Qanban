@@ -110,7 +110,9 @@ class PhaseController {
     }
 
     def ajaxPhaseForm = {
+
         render(template:'phaseForm', model:[ phaseInstance: Phase.get(params.id), boardInstance: Board.get(params.'board.id')])
+
     }
 
     /****
@@ -134,6 +136,7 @@ class PhaseController {
                     if(phaseInstance.version > version) {
 
                         phaseInstance.errors.rejectValue("version", "phase.optimistic.locking.failure", "Another user has updated this Phase while you were editing.")
+
                         return render(template:'phaseForm',model:[phaseInstance:phaseInstance, boardInstance: board])
 
                     }
@@ -156,14 +159,24 @@ class PhaseController {
         }else{
             phaseInstance = new Phase(params)
 
-            if(phaseInstance.validate() && board && board.addToPhases(phaseInstance) && phaseInstance.save()) {
-
+	    Integer index = params."phase.idx" as Integer
+            //TODO: IF Don't work properly?
+            if( phaseInstance.validate() ) {
+	        if( index > -1 )
+                board.phases.add(index, phaseInstance)
+		else
+                board.addToPhases(phaseInstance)
+		   
+	        phaseInstance.save()
+                
                 flash.message = "Phase ${phaseInstance.name} saved successfully"
             }
             else {
                 flash.message = null
             }
-            render(template:'phaseForm',model:[phaseInstance:phaseInstance, boardInstance: board])
+
+            render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board, phasePosition:index])
+
         }
     }
 
@@ -192,4 +205,96 @@ class PhaseController {
         }
     }
 
+    def updateAndMove = { MovePhaseCommand cmd ->
+
+        def phaseInstance = Phase.get(params.id)
+        def board = Board.get(params."board.id")
+
+        if( phaseInstance ){
+        
+            if(params.version) {
+                def version = params.version.toLong()
+
+                if(phaseInstance.version > version) {
+
+                    phaseInstance.errors.rejectValue("version", "phase.optimistic.locking.failure", "Another user has updated this Phase while you were editing.")
+                    return render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board])
+                        
+                }
+            }
+
+            phaseInstance.properties = params
+
+            if( !cmd.hasErrors() && phaseInstance.validate() && board ){
+
+                phaseInstance.save()
+
+                createPhaseEventMove(cmd)
+
+                flash.message = "Phase ${params.id} updated"
+
+                return render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board])
+                
+            }
+
+        }else {
+            flash.message = "Phase not found with id ${params.id}"
+            return render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board])
+        }
+
+    }
+
+    def movePhase = { MovePhaseCommand cmd ->
+
+        if( cmd.hasErrors() ){
+            return render([result: false] as JSON)
+        }else{
+            def moveEvent = createPhaseEventMove(cmd)
+
+            render "Phase $moveEvent.phase.name Id $moveEvent.id"
+
+
+        }
+
+    }
+
+    def createPhaseEventMove(cmd){
+        if(phaseIsMovedToANewPosition(cmd)){
+            def moveEvent = new PhaseEventMove(
+                phase: cmd.phase,
+                newPhaseIndex: cmd.newPhaseidx,
+                user: authenticateService.userDomain()
+            )
+            moveEvent.save()
+            return moveEvent
+        }
+    }
+
+    boolean phaseIsMovedToANewPosition(cmd){
+         return newPhaseidx != obj.phase.board.phases.indexOf(obj.phase) 
+    }
+
+}
+
+class MovePhaseCommand {
+
+    static constraints = {
+
+        id( min: 0, nullable: false, validator:{ val, obj ->
+                Phase.exists(val)
+            })
+        newPhaseidx( min: 0, nullable: false, validator:{ val, obj ->
+                
+                return ( val < obj.phase.board.phases.size() )
+             
+            })
+    }
+
+    Integer id
+    Integer newPhaseidx
+
+    def getPhase() {
+        Phase.get(id)
+        
+    }
 }

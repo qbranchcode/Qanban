@@ -6,14 +6,6 @@ class MainViewController {
 
     def authenticateService
 
-    def setAssignee = { SetAssigneeCommand cmd ->
-
-        if(cmd.hasErrors()) {
-            return render([result: false] as JSON)
-        } else {
-            createCardEventSetAssignee(cmd);
-        }
-    }
 
     def index = { redirect(action:view,params:params)  }
 
@@ -27,6 +19,10 @@ class MainViewController {
         }
         [ board : Board.get(1) , admin : admin ]
 
+    }
+
+    def showBoard = {
+        render(template: "/board/board", bean: Board.get(1))
     }
 
     def moveCard = { MoveCardCommand cmd ->
@@ -47,6 +43,30 @@ class MainViewController {
         }
     }
 
+    def setAssignee = { SetAssigneeCommand cmd ->
+
+        if(cmd.hasErrors()) {
+            return render([result: false] as JSON)
+        } else {
+            createCardEventSetAssignee(cmd);
+        }
+    }
+
+
+    /**
+     * Move Card Event
+     **/
+
+    void createCardEventMove(cmd) {
+        if(checkActuallyMoving(cmd)) {
+            def cardEventMove = new CardEventMove(
+                newPhase: cmd.phase,
+                newCardIndex: cmd.moveToCardsIndex,
+                card: cmd.card,
+                user: authenticateService.userDomain())
+            cardEventMove.save()
+        }
+    }
     boolean isMoveLegal(oldPhaseIndex, newPhaseIndex) {
         if(oldPhaseIndex+1 == newPhaseIndex || oldPhaseIndex == newPhaseIndex)
         return true
@@ -60,26 +80,6 @@ class MainViewController {
         }
         else
         return true
-    }
-
-    void createCardEventMove(cmd) {
-        if(checkActuallyMoving(cmd)) {
-            def cardEventMove = new CardEventMove(
-                newPhase: cmd.phase,
-                newCardIndex: cmd.moveToCardsIndex,
-                card: cmd.card,
-                user: authenticateService.userDomain())
-            cardEventMove.save()
-        }
-    }
-
-    void createCardEventSetAssignee(cmd) {
-        def cardEventSetAssignee = new CardEventSetAssignee(
-            card: cmd.card,
-            user: authenticateService.userDomain(),
-            newAssignee: cmd.assignee)
-
-        cardEventSetAssignee.save()
     }
 
     boolean checkActuallyMoving(cmd) {
@@ -100,10 +100,22 @@ class MainViewController {
         cardEventMove.save()
     }
 
-    def showBoard = {
-        render(template: "/board/board", bean: Board.get(1))
+
+    /**
+     * Set Assignee Event
+     **/
+
+    void createCardEventSetAssignee(cmd) {
+        def cardEventSetAssignee = new CardEventSetAssignee(
+            card: cmd.card,
+            user: authenticateService.userDomain(),
+            newAssignee: cmd.assignee)
+
+        cardEventSetAssignee.save()
     }
+
 }
+
 
 class MoveCardCommand {
 
@@ -135,6 +147,7 @@ class MoveCardCommand {
 
 }
 
+
 class SetAssigneeCommand {
 
     static constraints = {
@@ -158,3 +171,4 @@ class SetAssigneeCommand {
 
 
 }
+
