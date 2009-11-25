@@ -77,8 +77,11 @@
       options.url = url;
       options.successCallback = successCallback;
       options.success = function(data, textStatus){
+        /* TODO: data.indexOf fails when the returned data is of the type JSON */
+       
         var fail = data.indexOf('<html>') != -1;
         if( fail ) {
+        
           $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.sessionTimeout"/></p></div>').dialog({
               modal: true,
               buttons: {
@@ -89,9 +92,11 @@
                 }
               }
           });
-        } else {
+        
+        }else {
           var successCallback = options.successCallback;
           if(successCallback) {
+
             successCallback(data, textStatus);
           }
         }
@@ -230,33 +235,6 @@
 
     var sort = false;
 
-    // controller="mainView" action="movePhase" params="[newPhaseIndex: '1', id: '1']
-    // url, data, successCallback, dataType
-    // apa1
-    /*
-    $('#phaseList').sortable({
-         placeholder: 'phaseListHolder',
-         opacity: 0.6,
-         start: function(event, ui){
-            ui.placeholder.width(ui.item.width());
-            ui.placeholder.height(ui.item.find('.phaseHolder').height());
-            ui.placeholder.css('margin', '0 4px');
-            ui.placeholder.css('float','left');
-         },
-         stop: function(event, ui){
-
-            var posIdx = ui.item.prevAll().length - 1;
-            var phaseId = ui.item.attr('id').split('_')[1];
-
-            var callback = function(data, textStatus){
-                if( !data.result ){
-                  alert('error moving card!');
-                }
-            }
-            $.qPost('${createLink(controller:'mainView',action:'movePhase')}',{newPhaseIndex: posIdx, id: phaseId},callback,'json');
-         }
-    });
-    */
 
     $('.card').click(function(){
       showCard( $(this).attr('id').split('_')[1] );
@@ -484,18 +462,20 @@
                         var cardId = ui.item.attr('id').split('_')[1];
                         var newPhase = ui.item.parent().attr('id').split('_')[1];
 
-			var updateCall = function(){ $.qPost(
-               	          '${createLink(controller:'mainView',action:'moveCard')}',
-               		  {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase},
-              		  function(data){
-                	     if( !data.result ){
-                       	        alert('error moving card!');
-                       	     }
-             		  },
-              		  "json");
+			var updateCall = function(){
+                          
+                          $.qPost(
+                            '${createLink(controller:'mainView',action:'moveCard')}',
+                            {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase},
+                            function(data){
+                               if( !data.result ){
+                                  alert('error moving card!');
+                               }
+                            },
+                            "json");
 			};
 
-
+                       
 			if( ui.item.parent().attr('id') != icv.initPhase ){
 	                   
     			    $moveCardDialog = $('<div id="moveCardDialog"></div>');
@@ -549,7 +529,7 @@
 						 initAssigneeSelect
 			   );
 
-			}else{    
+			}else{
 		           updateCall();
 			}
                
@@ -560,15 +540,14 @@
   function reconnectPhases(){
            var $phases = $('.phase');
            fixWidth();
-
 	   $phases.each(function(index,$phase){
-	   
+
 
 	       var $nextPhase = index < $phases.size() ? $( $phases[index+1] ) : false;
 	       
                var $currentPhase = $(this);
-             
-               $nextPhase.attr('id') != 'undefined' ? $(this).sortable('option','connectWith','#'+$nextPhase.attr('id')+'.available') : {} ;
+
+
 
                $currentPhase.sortable('option','start', function(event,ui){
 
@@ -577,10 +556,13 @@
                                          "#" + $(this).attr('id');
                     $('.phase').filter(function(){
 
-                         var notNext = $(this).attr('id') != $nextPhase.attr('id');
-                         var notCurr = $(this).attr('id') != $currentPhase.attr('id');
-
-                         return notCurr && notNext;
+                         if( $nextPhase.is('.phase') ){
+                          var notNext = $(this).attr('id') != $nextPhase.attr('id');
+                          var notCurr = $(this).attr('id') != $currentPhase.attr('id');
+                          return notCurr && notNext;
+                         }else{
+                          return $(this).attr('id') != $currentPhase.attr('id');
+                         }
 
                     }).parent().animate({opacity:0.3},300);
 
@@ -592,6 +574,10 @@
                                      {'elementId': elementId,'initPhase': initPhase, 'initPos': initPos});
 
                });
+
+               if ( $nextPhase.is('.phase') ){
+                  $currentPhase.sortable('option','connectWith','#'+$nextPhase.attr('id')+'.available')
+               }
 	   });
   }
 
@@ -631,12 +617,13 @@
       var updatePhases = function(data,textStatus,$element,injection){
 	 
 	  var $newPhase = $('#'+$element.attr('id')).find('ul');
-	  enableSortableOnPhase($newPhase);
+	  
 	  reconnectPhases();
 	  if( injection ){
 		var height = $(".phase:not('[id="+$newPhase.attr('id')+"]')").height();
 		$newPhase.height(height);
 	  }
+          enableSortableOnPhase($newPhase);
           rescanBoardButtons();
       };
 
@@ -679,11 +666,10 @@
 		  
 		
 		  if( $indexInput.size() == 1 && ( $phases.size() > $indexInput.val() ) ) {
-                      alert('if');
+
 		     var p = $phases.get($indexInput.val());
 		     $(data).insertBefore($(p));
 		  }else{
-                     alert('else');
 	      	     $destination.append(data);
 		  }
 		  
