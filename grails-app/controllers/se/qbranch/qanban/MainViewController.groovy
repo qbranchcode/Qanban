@@ -21,7 +21,7 @@ class MainViewController {
         def userInstance = authenticateService.userDomain()
         def admin
         for(role in userInstance.authorities) {
-            if(role.authority.equals("ROLE_ADMIN")) {
+            if(role.authority.equals("ROLE_QANBANADMIN")) {
                 admin = role.authority
             }
         }
@@ -89,7 +89,7 @@ class MainViewController {
         return false
         return true
     }
-    
+
     void createCardEventMove(cmd, board) {
         def user = authenticateService.userDomain()
         def cardEventMove = new CardEventMove(
@@ -132,7 +132,7 @@ class MoveCardCommand {
     def getPhase() {
         Phase.get(moveToPhase)
     }
-    
+
 }
 
 class SetAssigneeCommand {
@@ -156,5 +156,5 @@ class SetAssigneeCommand {
         Card.get(cardId)
     }
 
-    
+
 }

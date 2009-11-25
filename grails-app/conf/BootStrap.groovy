@@ -7,10 +7,11 @@ class BootStrap {
     def authenticateService
     def authenticationManager
     def sessionController
-    
+
     def init = { servletContext ->
         authenticationManager.sessionController = sessionController
-        
+
+
         switch (GrailsUtil.environment) {
 
             case "test":
@@ -47,13 +48,14 @@ class BootStrap {
 
             default:
 
-            Role adminRole = new Role(description:"administrator access",authority:"ROLE_ADMIN").save()
-            Role userRole = new Role(description:"administrator access",authority:"ROLE_USER").save()
+            Role adminRole = new Role(description:"administrator access",authority:"ROLE_QANBANADMIN").save()
+            Role userRole = new Role(description:"administrator access",authority:"ROLE_QANBANUSER").save()
             Requestmap loginMap = new Requestmap(url:"/login/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
             Requestmap cssMap = new Requestmap(url:"/css/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
             Requestmap jsMap = new Requestmap(url:"/js/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
             Requestmap imageMap = new Requestmap(url:"/images/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
-            Requestmap map = new Requestmap(url:"/**", configAttribute:"ROLE_USER").save()
+            Requestmap userCMap = new Requestmap(url:"/user/**", configAttribute: "IS_AUTHENTICATED_ANONYMOUSLY").save()
+            Requestmap map = new Requestmap(url:"/**", configAttribute:"ROLE_QANBANUSER").save()
 
             User regularUser = new User(username: "testuser",
                                      userRealName:"Test User",
@@ -96,4 +98,4 @@ class BootStrap {
     }
     def destroy = {
     }
-} 
+}

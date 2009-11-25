@@ -1,11 +1,9 @@
-
-
 package se.qbranch.qanban
 
 import grails.converters.*
 
 class PhaseController {
-    
+
     def authenticateService
 
     def index = { redirect(action:list,params:params) }
@@ -24,7 +22,7 @@ class PhaseController {
         def userInstance = authenticateService.userDomain()
         def admin
         for(role in userInstance.authorities) {
-            if(role.authority.equals("ROLE_ADMIN")) {
+            if(role.authority.equals("ROLE_QANBANADMIN")) {
                 admin = role.authority
             }
         }
@@ -73,7 +71,7 @@ class PhaseController {
             if(params.version) {
                 def version = params.version.toLong()
                 if(phaseInstance.version > version) {
-                    
+
                     phaseInstance.errors.rejectValue("version", "phase.optimistic.locking.failure", "Another user has updated this Phase while you were editing.")
                     render(view:'edit',model:[phaseInstance:phaseInstance])
                     return
@@ -112,7 +110,7 @@ class PhaseController {
     }
 
     def ajaxPhaseForm = {
-       render(template:'phaseForm', model:[ phaseInstance: Phase.get(params.id),boardInstance: Board.get(params.'board.id')])
+        render(template:'phaseForm', model:[ phaseInstance: Phase.get(params.id)])
     }
 
     /****
@@ -128,7 +126,7 @@ class PhaseController {
             phaseInstance = Phase.get(params.id)
 
             if(phaseInstance) {
-                
+
 
                 if(params.version) {
                     def version = params.version.toLong()
@@ -136,42 +134,36 @@ class PhaseController {
                     if(phaseInstance.version > version) {
 
                         phaseInstance.errors.rejectValue("version", "phase.optimistic.locking.failure", "Another user has updated this Phase while you were editing.")
-			 return render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board])
-                        
+                        return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
+
                     }
                 }
 
                 phaseInstance.properties = params
-               
+
                 if(phaseInstance.validate() && board && phaseInstance.save()) {
-                    flash.message = "Phase ${params.id} updated"              
+                    flash.message = "Phase ${params.id} updated"
                 }
-                
-                return render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board])
-                
+
+                return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
+
             }
             else {
                 flash.message = "Phase not found with id ${params.id}"
-                return render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board])
+                return render(template:'phaseForm',model:[phaseInstance:phaseInstance])
             }
 
         }else{
             phaseInstance = new Phase(params)
-	    def index = params."phase.idx"
-	     //TODO: IF Don't work properly?
-            if( phaseInstance.validate() ) {
-	        if( index > 0 )
-                    board.phases.add(params."phase.idx" as Integer, phaseInstance)
-		else
-		    board.addToPhases(phaseInstance)
-		   
-	        phaseInstance.save()
+
+            if(phaseInstance.validate() && board && board.addToPhases(phaseInstance) && phaseInstance.save()) {
+
                 flash.message = "Phase ${phaseInstance.name} saved successfully"
             }
             else {
                 flash.message = null
             }
-            render(template:'phaseForm',model:[phaseInstance:phaseInstance,boardInstance: board])
+            render(template:'phaseForm',model:[phaseInstance:phaseInstance])
         }
     }
 
