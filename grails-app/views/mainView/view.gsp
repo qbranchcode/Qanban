@@ -401,12 +401,13 @@
                     $editPhaseDialog.dialog(
                         'option',
                         'buttons',
-                        { '<g:message code="_phaseForm.button.delete"/>': function() {
-                                $(this).dialog("close");
-                                deletePhaseDialog(phaseId);
-                            },
+                        { 
                            'Update' : function(){
                                 $editPhaseDialog.find('input[type="submit"]').click();
+                            },
+                            '<g:message code="_phaseForm.button.delete"/>': function() {
+                                $(this).dialog("close");
+                                deletePhaseDialog(phaseId);
                             }
                         });
                     $editPhaseDialog.dialog('open');
@@ -466,7 +467,7 @@
                           
                           $.qPost(
                             '${createLink(controller:'mainView',action:'moveCard')}',
-                            {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase},
+                            {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase, user: <g:loggedInUserInfo field="id"></g:loggedInUserInfo>},
                             function(data){
                                if( !data.result ){
                                   alert('error moving card!');

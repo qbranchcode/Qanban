@@ -1,30 +1,31 @@
 
 <%@ page contentType="text/html;charset=UTF-8"%>
 
-<li class="phaseWrapper phaseAutoWidth" id="phaseWrapper_${it.id}">
+<li class="phaseWrapper phaseAutoWidth" id="phaseWrapper_${phase.id}">
    <div class="phaseHolder">
    	<div class="phaseHeader">
-          <g:if test="${admin}">
-            <h3><a href="${createLink(controller:'phase',action:'edit')}" class="editPhaseLink" id="phaseLink_${it.id}">${it.name}</a></h3>
-          </g:if>
-          <g:else>
-            <h3>${it.name}</h3>
-          </g:else>
+          <g:ifAllGranted role="ROLE_QANBANADMIN">
+            <h3><a href="${createLink(controller:'phase',action:'edit')}" class="editPhaseLink" id="phaseLink_${phase.id}">${phase.name}</a></h3>
+          </g:ifAllGranted>
+          <g:ifNotGranted role="ROLE_QANBANADMIN">
+            <h3>${phase.name}</h3>
+          </g:ifNotGranted>
             <div class="limitLine">
-		<g:if test="${it.cardLimit}">${it.cards.size()}/${it.cardLimit}</g:if>
+		<g:if test="${phase.cardLimit}">${phase.cards.size()}/${phase.cardLimit}</g:if>
 		<g:else><g:message code="_phase.noLimit"/></g:else>
 	    </div>
       	</div>
-        <ul class="phase phaseAutoHeight
-	    <g:if test="${it.cardLimit && it.cards.size() > 0 && (it.cardLimit/it.cards.size()) != 1 || it.cardLimit != it.cards.size()}">
-		available
-	    </g:if>  
-     	    <g:if test="${it.cardLimit}">
-		cardLimit_${it.cardLimit}
-	    </g:if>"
-                id="phase_${it.id}">
 
-            <g:each var="card" in="${it.cards}">
+        <ul class="phase phaseAutoHeight
+	    <g:if test="${phase.cardLimit && phase.cards.size() > 0 && (phase.cardLimit/phase.cards.size()) != 1 || phase.cardLimit != phase.cards.size()}">
+		available
+	    </g:if>
+     	    <g:if test="${phase.cardLimit}">
+		cardLimit_${phase.cardLimit}
+	    </g:if>"
+                id="phase_${phase.id}">
+
+            <g:each var="card" in="${phase.cards}">
 	    	<g:render template="/card/card" bean="${card}"/>
             </g:each>
 

@@ -1,7 +1,9 @@
 package se.qbranch.qanban
 
 import grails.converters.*
+import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 
+@Secured(['IS_AUTHENTICATED_FULLY'])
 class PhaseController {
 
     def authenticateService
@@ -19,23 +21,18 @@ class PhaseController {
     def show = {
 
         def phaseInstance = Phase.get( params.id )
-        def userInstance = authenticateService.userDomain()
-        def admin
-        for(role in userInstance.authorities) {
-            if(role.authority.equals("ROLE_QANBANADMIN")) {
-                admin = role.authority
-            }
-        }
 
         if(!phaseInstance) {
             flash.message = "Phase not found with id ${params.id}"
             redirect(action:list)
         }
-        else { return render (template:"phase", bean:phaseInstance, model:[ admin : admin ])}
+        else { return render (template:"phase", model:[phase:phaseInstance])}
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def delete = {
         def phaseInstance = Phase.get( params.id )
+        
         if(phaseInstance) {
             try {
                 phaseInstance.delete(flush:true)
@@ -53,6 +50,7 @@ class PhaseController {
         }
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def edit = {
         def phaseInstance = Phase.get( params.id )
 
@@ -65,6 +63,7 @@ class PhaseController {
         }
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def update = {
         def phaseInstance = Phase.get( params.id )
         if(phaseInstance) {
@@ -92,12 +91,14 @@ class PhaseController {
         }
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def create = {
         def phaseInstance = new Phase()
         phaseInstance.properties = params
         return ['phaseInstance':phaseInstance]
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def save = {
         def phaseInstance = new Phase(params)
         if(!phaseInstance.hasErrors() && phaseInstance.save()) {
@@ -119,6 +120,7 @@ class PhaseController {
      *  Temporary ajax call actions
      ****/
 
+    @Secured(['ROLE_QANBANADMIN'])
     def ajaxSaveOrUpdate = {
 
         def phaseInstance
@@ -180,12 +182,13 @@ class PhaseController {
         }
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def ajaxDelete = {
 
         if( params.id ){
 
             def phase = Phase.get(params.id)
-
+            println "phase: ${phase.name}"
             if( phase ){
 
                 if( phase.cards.size() == 0 ){
@@ -205,6 +208,7 @@ class PhaseController {
         }
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def updateAndMove = { MovePhaseCommand cmd ->
 
         def phaseInstance = Phase.get(params.id)
@@ -244,6 +248,7 @@ class PhaseController {
 
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def movePhase = { MovePhaseCommand cmd ->
 
         if( cmd.hasErrors() ){

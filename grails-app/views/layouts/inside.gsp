@@ -19,13 +19,18 @@
     </div>
 
     <ul>
-      <g:if test="${admin}">
-      <li><a href="${createLink(controller:'card',action:'create')}" class="addCardLink"><g:message code="layout.inside.menu.addCard"/></a></li>
-      <li><a href="${createLink(controller:'phase',action:'create')}" class="addPhaseLink"><g:message code="layout.inside.menu.addPhase"/></a></li>
-      </g:if>
+      <g:ifAllGranted role="ROLE_QANBANADMIN">
+        <li><a href="${createLink(controller:'card',action:'create')}" class="addCardLink"><g:message code="layout.inside.menu.addCard"/></a></li>
+        <li><a href="${createLink(controller:'phase',action:'create')}" class="addPhaseLink"><g:message code="layout.inside.menu.addPhase"/></a></li>
+      </g:ifAllGranted>
+
       <!--<li><a href="${createLink(controller:'user',action:'showOnlineUsers')}">Show Users</a></li>-->
-      <li><a href="${createLink(controller:'logout')}"><g:message code="layout.inside.menu.logOut"/></a></li>
+
+      <g:isLoggedIn>
+        <li><a href="${createLink(controller:'logout')}"><g:message code="layout.inside.menu.logOut"/></a></li>
+      </g:isLoggedIn>
       <li><span id="debug"></span></li>
+
     </ul>
 
   </div>

@@ -1,23 +1,17 @@
 package se.qbranch.qanban
 
 import grails.converters.*
+import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 
+@Secured(['IS_AUTHENTICATED_FULLY'])
 class MainViewController {
-
-    def authenticateService
-
 
     def index = { redirect(action:view,params:params)  }
 
+    
     def view = {
-        def userInstance = authenticateService.userDomain()
-        def admin
-        for(role in userInstance.authorities) {
-            if(role.authority.equals("ROLE_QANBANADMIN")) {
-                admin = role.authority
-            }
-        }
-        [ board : Board.get(1) , admin : admin ]
+
+        [ board : Board.get(1) ]
 
     }
 
@@ -63,7 +57,7 @@ class MainViewController {
                 newPhase: cmd.phase,
                 newCardIndex: cmd.moveToCardsIndex,
                 card: cmd.card,
-                user: authenticateService.userDomain())
+                user: User.get(params.user)) // TODO: Fixa så att den inloggade usern kommer med anropet
             cardEventMove.save()
         }
     }
@@ -91,7 +85,7 @@ class MainViewController {
     }
 
     void createCardEventMove(cmd, board) {
-        def user = authenticateService.userDomain()
+        def user = User.get(params.user) // TODO: Fixa så att den inloggade usern kommer med anropet
         def cardEventMove = new CardEventMove(
             newPhase: cmd.phase,
             newCardIndex: cmd.moveToCardsIndex,
@@ -108,7 +102,7 @@ class MainViewController {
     void createCardEventSetAssignee(cmd) {
         def cardEventSetAssignee = new CardEventSetAssignee(
             card: cmd.card,
-            user: authenticateService.userDomain(),
+            user:  User.get(1), // TODO: Fixa så att den inloggade usern kommer med anropet
             newAssignee: cmd.assignee)
 
         cardEventSetAssignee.save()
