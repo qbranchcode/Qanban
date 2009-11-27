@@ -18,6 +18,7 @@ class Card {
 
     static hasMany = [ events : CardEventMove ]
 
+    String domainId
     String title
     String description
     Integer caseNumber
