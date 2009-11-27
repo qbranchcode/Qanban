@@ -463,22 +463,8 @@
                         var cardId = ui.item.attr('id').split('_')[1];
                         var newPhase = ui.item.parent().attr('id').split('_')[1];
 
-			var updateCall = function(){
-                          
-                          $.qPost(
-                            '${createLink(controller:'mainView',action:'moveCard')}',
-                            {'id': cardId , 'moveToCardsIndex' : newPos , 'moveToPhase' : newPhase, user: <g:loggedInUserInfo field="id"></g:loggedInUserInfo>},
-                            function(data){
-                               if( !data.result ){
-                                  alert('error moving card!');
-                               }
-                            },
-                            "json");
-			};
-
-                       
 			if( ui.item.parent().attr('id') != icv.initPhase ){
-	                   
+	                    $('#moveCardDialog').empty().dialog('destroy');
     			    $moveCardDialog = $('<div id="moveCardDialog"></div>');
       		            $moveCardDialog.dialog({
       			       	      autoOpen: false,
@@ -487,8 +473,7 @@
 		      		      width: 400,
     		                      initCardValues: icv,
 			   	      buttons: {
-			      	         '<g:message code="ok"/>': function() {
-				      	    updateCall();
+			      	         '<g:message code="ok"/>': function() {				      	    
 					    $(this).find('input[type="submit"]').click();
 				      	    $(this).dialog('option','confirmed',true);
 			      	      	    $(this).dialog("close");
@@ -519,12 +504,11 @@
 			   	      card: ui.item,
 				      placementSelector: placementSelector
 			   });
-		   
+
 			   $moveCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',
-			      			 {
-'board.id':${board.id}, 'id':cardId , 'newPhase': newPhase},
+			      			 {'board.id' : ${board.id} , 'id' : cardId , 'newPhase' : newPhase , 'newPos' : newPos , 'user' : <g:loggedInUserInfo field="id"></g:loggedInUserInfo>},
 					         function(){
-					            $moveCardDialog.dialog('open'); 
+					            $moveCardDialog.dialog('open');
 			   			 },
 						 null,
 						 initAssigneeSelect

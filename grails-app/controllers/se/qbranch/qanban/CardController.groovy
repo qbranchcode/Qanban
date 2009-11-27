@@ -1,4 +1,3 @@
-
 package se.qbranch.qanban
 
 import grails.converters.*
@@ -11,7 +10,7 @@ class CardController {
     /*****
      *  C - R - U - D
      ****/
-    
+
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
@@ -22,15 +21,15 @@ class CardController {
 
         if( !params.id )
         return render(status: 400, text: "You must specify an id")
-            
+
         def cardInstance = Card.get( params.id )
 
         if(!cardInstance)
         return render(status: 404, text: "Card with id ${params.id} not found.")
-            
+
 
         withFormat {
-            
+
             html {
                 return render (template:"card", bean:cardInstance )
             }
@@ -108,7 +107,7 @@ class CardController {
             def phase = Phase.get(params."phase.id")
 
             if(cardInstance) {
-                
+
                 if(params.version) {
                     def version = params.version.toLong()
                     if(cardInstance.version > version) {
@@ -119,7 +118,7 @@ class CardController {
                 }
 
                 cardInstance.properties = params
-                
+
                 if(cardInstance.validate() && phase && cardInstance.save()) {
                     cardUpdatedOrSaved(cardInstance, "Card ${params.id} updated")
                 }
@@ -192,11 +191,12 @@ class CardController {
 
     def ajaxShowForm = {
         if(params.id == null)
-        render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list()])
+            render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list()])
         else if( params.newPhase == null )
-        render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list(), cardInstance: Card.get(params.id)])
-	else
-        render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: Phase.get(params.newPhase) ,userList: User.list(), loggedInUser: authenticateService.userDomain()])
+            render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list(), cardInstance: Card.get(params.id)])
+	else {
+            render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: params."newPhase", newPos: params."newPos" ,userList: User.list(), loggedInUser: User.get(params."user") , user: params."user"])
+        }
     }
 
     def ajaxSave = {
@@ -236,7 +236,7 @@ class UpdateCardCommand {
         id(min: 0, nullable: false, validator:{ val, obj ->
                 Card.exists(obj.id)
             })
-        
+
     }
 
     Integer id

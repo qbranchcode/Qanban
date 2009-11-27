@@ -149,14 +149,22 @@ ul.phase {
     text-align: center;
     height: 7em;
     overflow: hidden;
+    position: relative;
 }
 
-.editCardLink {
-    position:relative;
-    font-size: 1.2em;
-    display: block;
+.myCard {
+    background-color: #6ad46a;
+}
+
+.cardTop {
     border-bottom: solid;
     border-width: 1px;
+}
+
+.titleWrapper {
+    position:relative;
+    font-size: 1.0em;
+    display: block;
     overflow: hidden;
     line-height: 1.2em;
     height: 1.3em;
@@ -166,16 +174,16 @@ ul.phase {
     position: relative;
     border-style: dotted;
     border-width: 1px;
-    height: 3em;
+    height: 4em;
     margin: 3px;
-    top: 13px;
     padding: 2px;
+    top: 2px;
  }
 
  p.cardDescriptionInside {
     line-height: 1em;
     font-size: 0.9em;
-    height: 3em;
+    height: 4em;
     overflow: hidden;
     text-align: left;
     position: absolute;
@@ -193,6 +201,13 @@ ul.phase {
      float: right;
      font-size: 8px;
      padding: 2px;
+ }
+
+ .card .avatar {
+     position: absolute;
+     margin: 2px;
+     bottom: 0px;
+     right: 0px;
  }
 
 .placeholder {

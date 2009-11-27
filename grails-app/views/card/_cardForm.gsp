@@ -20,36 +20,36 @@
   <div id="moveMessage">
        <g:message code="_cardForm.move.message"/>
   </div>
-  <g:formRemote url="[controller:'mainView',action:'setAssignee']"
-                update="editCardDialog" name="cardForm"
-                onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')">
+  <g:formRemote url="[controller:'mainView',action:'moveCardAndSetAssignee']"
+                update="moveCardDialog" name="cardForm"
+                onSuccess="cardFormRefresh(data,'#moveCardDialog')">
 
     <div class="header">
- 
-	
-	<div class="dropdownContainer assignee">   
- 
+
+
+	<div class="dropdownContainer assignee">
+
     			<avatar:gravatar email="${loggedInUser.email}" size="38"/>
 			<span id="currentAssigneeName">${loggedInUser.userRealName}</span>
 		<div style="clear: both;"></div>
 		<ul id="assignees">
 			<li id="user_">
-				<img src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30" class="avatar"/>				
+				<img src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30" class="avatar"/>
 				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
 			</li>
 			<g:each var="user" in="${userList}">
 				<li id="user_${user.id}"
 				    class='<g:if test="${loggedInUser.id == user.id}">selected</g:if>' >
-					
+
 					<avatar:gravatar email="${user.email}" alt="${user.userRealName}" size="30"/>
 					<span class="name">${user.userRealName}</span>
 				</li>
 			</g:each>
 		</ul>
 		<div style="clear: both;"></div>
-	</div>    
+	</div>
 
-    
+
       <div class="info">
 
         <input type="text" id="card.title" disabled="disabled"
@@ -65,8 +65,7 @@
                  class="property ${hasErrors(bean:cardInstance,field:'caseNumber','errors')}"
                  value="${fieldValue(bean:cardInstance,field:'caseNumber')}" />
         </div>
-	
-	</textarea>
+
       </div>
     </div>
     <div class="content">
@@ -87,8 +86,11 @@
 
     </div>
 
-    <input type="hidden" name="cardId" value="${cardInstance?.id}"/>
+    <input type="hidden" name="id" value="${cardInstance?.id}"/>
     <input type="hidden" name="assigneeId" id="assigneeValue" value="${loggedInUser.id}"/>
+    <input type="hidden" name="newPhase" value="${newPhase}"/>
+    <input type="hidden" name="newPos" value="${newPos}"/>
+    <input type="hidden" name="user" value="${user}"/>
     <input style="display: none;" type="submit"/>
   </g:formRemote>
 </g:if>
@@ -103,9 +105,9 @@
                 onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')">
 
     <div class="header">
-	
-	<div class="dropdownContainer assignee">   
- 
+
+	<div class="dropdownContainer assignee">
+
 		<g:if test="${cardInstance.assignee}">
 			<avatar:gravatar email="${cardInstance.assignee.email}" size="38"/>
 			<span id="currentAssigneeName">${cardInstance.assignee.userRealName}</span>
@@ -119,22 +121,22 @@
 		<div style="clear: both;"></div>
 		<ul id="assignees">
 			<li id="user_null" <g:if test="${!cardInstance.assignee?.id}">class="selected"</g:if> >
-				<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30"/>				
+				<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30"/>
 				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
 			</li>
 			<g:each var="user" in="${userList}">
 				<li id="user_${user.id}"
 				    class='<g:if test="${cardInstance.assignee?.id == user.id}">selected</g:if>' >
-					
+
 					<avatar:gravatar email="${user.email}" alt="${user.userRealName}" size="30"/>
 					<span class="name">${user.userRealName}</span>
 				</li>
 			</g:each>
 		</ul>
 		<div style="clear: both;"></div>
-	</div>    
+	</div>
 
-    
+
       <div class="info">
 
         <input type="text" id="card.title" name="title"
@@ -194,7 +196,7 @@
       <div class="assignee">
         <!-- Gravatar -->
       </div>
-      <div class="info">        
+      <div class="info">
         <input type="text" id="card.title" name="title"
                class="property ${hasErrors(bean:cardInstance,field:'title','errors')}"
                value="Title...          " onfocus="if (this.value == 'Title...          ') this.value = '';"
@@ -214,10 +216,10 @@
       <textarea id="card.description" class="property ${hasErrors(bean:cardInstance,field:'description','errors')}"
                 name="description"></textarea>
     </div>
-    
+
     <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
     <input style="display: none;" type="submit"/>
-           
+
   </g:formRemote>
 </g:else>
 
