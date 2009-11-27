@@ -1,7 +1,7 @@
 package se.qbranch.qanban
 import org.codehaus.groovy.grails.plugins.codecs.MD5Codec
 
-class CardEventCreate extends Event{
+class CardEventCreate extends Event implements Comparable{
 
     static constraints = {
         assignee ( nullable : true )
@@ -12,15 +12,17 @@ class CardEventCreate extends Event{
     }
 
     static transients = ['card']
+
     String title
     String description
     Integer caseNumber
+    Card card
 
     //TODO: Change to checksum connections
     User assignee
     Phase phase
 
-    Card card
+    
 
 
     transient beforeInsert = {
@@ -35,6 +37,9 @@ class CardEventCreate extends Event{
         card.phase = phase
         card.description = description
         card.caseNumber = caseNumber
+
+        phase.addToCards(card)
+
         card.save()
     }
 

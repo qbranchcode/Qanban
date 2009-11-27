@@ -1,6 +1,6 @@
 package se.qbranch.qanban
 
-class CardEventMove implements Comparable {
+class CardEventMove extends Event implements Comparable {
 
     static constraints = {
 
@@ -24,6 +24,8 @@ class CardEventMove implements Comparable {
         card.phase.cards.remove(card)
         newPhase.cards.add(newCardIndex, card)
         card.phase = newPhase
+        card.save()
+        
     }
 
 
