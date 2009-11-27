@@ -1,14 +1,18 @@
 package se.qbranch.qanban
 
-class PhaseEventMove {
+class PhaseEventMove extends Event implements Comparable{
+  
+    static constraints = {
+
+    }
+
+    static transients = ['phase']
 
     Integer newPhaseIndex
     Phase phase
-    User user
-    Date dateCreated
 
-    static constraints = {
-
+    transient beforeInsert = {
+        domainId = phase.domainId
     }
 
     transient afterInsert = {
@@ -17,8 +21,8 @@ class PhaseEventMove {
     }
 
     int compareTo(Object o) {
-        if (o instanceof PhaseEventMove) {
-            PhaseEventMove event = (PhaseEventMove) o
+        if (o instanceof Event) {
+            Event event = (Event) o
             final int BEFORE = -1;
             final int EQUAL = 0;
             final int AFTER = 1;
@@ -31,8 +35,8 @@ class PhaseEventMove {
     }
 
     boolean equals(Object o) {
-        if(o instanceof PhaseEventMove) {
-            PhaseEventMove event = (PhaseEventMove) o
+        if(o instanceof Event) {
+            Event event = (Event) o
             if(this.id == event.id)
             return true
         }
