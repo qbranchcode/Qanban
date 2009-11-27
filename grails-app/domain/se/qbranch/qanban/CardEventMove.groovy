@@ -2,11 +2,22 @@ package se.qbranch.qanban
 
 class CardEventMove implements Comparable {
 
+    static constraints = {
+
+    }
+
+    static transients = ['card']
+
     Integer newCardIndex
     Card card
+
     User user
     Phase newPhase
-    Date dateCreated
+    //Date dateCreated
+
+    transient beforeInsert = {
+        domainId = card.domainId
+    }
 
     transient afterInsert = {
 
@@ -15,9 +26,6 @@ class CardEventMove implements Comparable {
         card.phase = newPhase
     }
 
-    def invalidateEvent() {
-        this.card = null
-    }
 
     int compareTo(Object o) {
         if (o instanceof CardEventMove) {
