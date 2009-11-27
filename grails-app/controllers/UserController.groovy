@@ -115,23 +115,25 @@ class UserController {
     }
 
     def create = {
-        [person: new User(params), authorityList: Role.list()]
+        render(template: '/user/create', model: [person: new User(params)])
     }
 
     /**
      * Person save action.
      */
     def save = {
-
         def person = new User()
         person.properties = params
         person.passwd = authenticateService.encodePassword(params.passwd)
         if (person.save()) {
-            addRoles(person)
-            redirect action: show, id: person.id
+            //Varför funkar inte detta?
+            flash.message = "${person.username} is now created"
+            redirect(controller:'login',action:'auth')
+                        
         }
         else {
-            render view: 'create', model: [authorityList: Role.list(), person: person]
+            flash.message = "${person.username} already exists"
+            redirect(controller:'login',action:'auth')
         }
     }
 

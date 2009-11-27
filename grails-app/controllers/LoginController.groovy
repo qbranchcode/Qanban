@@ -7,6 +7,8 @@ import org.springframework.security.context.SecurityContextHolder as SCH
 import org.springframework.security.ui.AbstractProcessingFilter
 import org.springframework.security.ui.webapp.AuthenticationProcessingFilter
 
+import se.qbranch.qanban.User
+
 /**
  * Login Controller (Example).
  */
@@ -66,7 +68,7 @@ class LoginController {
 			postUrl = "${request.contextPath}${config.filterProcessesUrl}"
 		}
 
-		render view: view, model: [postUrl: postUrl]
+		render view: view, model: [postUrl: postUrl , person: new User(params)]
 	}
 
 	/**

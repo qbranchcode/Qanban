@@ -118,35 +118,7 @@
           <div class="solid">
             <div class="bg"></div>
             <div class="content">
-              <h2><g:message code="loginPage.addUser.form.title"/></h2>
-              <form>
-                <ul>
-                  <li>
-                    <label for="firstName"><g:message code="loginPage.addUser.form.label.firstName"/></label>
-                    <input name="firstName" type="text"/>
-                  </li>
-
-                  <li>
-                    <label for="lastName"><g:message code="loginPage.addUser.form.label.lastName"/></label>
-                    <input name="lastName" type="text"/>
-                  </li>
-                  <li>
-                    <label for="email"><g:message code="loginPage.addUser.form.label.eMail"/></label>
-                    <input name="email" type="text"/>
-                  </li>
-                  <li>
-                    <label for="passwd1"><g:message code="loginPage.addUser.form.label.password1"/></label>
-                    <input name="passwd1" type="password"/>
-                  </li>
-                  <li>
-                    <label for="passwd2"><g:message code="loginPage.addUser.form.label.password2"/></label>
-                    <input name="passwd2" type="password"/>
-                  </li>
-                  <li>
-                    <input type="button" value="<g:message code="loginPage.addUser.form.button.submit"/>"/>
-                  </li>
-                </ul>
-              </form>
+              <g:render template="register" bean="${person}" />
             </div>
           </div>
 
