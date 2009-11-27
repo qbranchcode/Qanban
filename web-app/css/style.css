@@ -145,7 +145,7 @@ ul.phase {
 .card {
     border: 1px solid;
     margin: 1px 2px 0 2px;
-    background-color: #f3f164;
+    background-color: #d8dcdf;
     text-align: center;
     height: 7em;
     overflow: hidden;
@@ -153,7 +153,7 @@ ul.phase {
 }
 
 .myCard {
-    background-color: #6ad46a;
+    background-color: #f3f164;
 }
 
 .cardTop {

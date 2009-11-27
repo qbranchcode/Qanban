@@ -2,6 +2,9 @@
 
 package se.qbranch.qanban
 
+import org.codehaus.groovy.grails.plugins.springsecurity.Secured
+
+@Secured(['IS_AUTHENTICATED_FULLY'])
 class BoardController {
     
     def index = { redirect(action:list,params:params) }
@@ -24,6 +27,7 @@ class BoardController {
         else { return [ boardInstance : boardInstance ] }
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def delete = {
         def boardInstance = Board.get( params.id )
         if(boardInstance) {
@@ -43,6 +47,7 @@ class BoardController {
         }
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def edit = {
         def boardInstance = Board.get( params.id )
 
@@ -55,6 +60,7 @@ class BoardController {
         }
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def update = {
         def boardInstance = Board.get( params.id )
         if(boardInstance) {
@@ -82,12 +88,14 @@ class BoardController {
         }
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def create = {
         def boardInstance = new Board()
         boardInstance.properties = params
         return ['boardInstance':boardInstance]
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def save = {
         def boardInstance = new Board(params)
         if(!boardInstance.hasErrors() && boardInstance.save()) {
@@ -98,7 +106,4 @@ class BoardController {
             render(view:'create',model:[boardInstance:boardInstance])
         }
     }
-
-
-
 }

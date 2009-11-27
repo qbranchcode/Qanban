@@ -1,8 +1,9 @@
 package se.qbranch.qanban
 
 import grails.converters.*
+import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 
-
+@Secured(['IS_AUTHENTICATED_FULLY'])
 class CardController {
 
     def authenticateService
@@ -65,6 +66,7 @@ class CardController {
 
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def delete = {
 
         def cardInstance = Card.get( params.id )
@@ -210,6 +212,7 @@ class CardController {
         render (template: 'cardForm', model: [cardInstance:cardInstance, boardInstance:cardInstance.phase.board])
     }
 
+    @Secured(['ROLE_QANBANADMIN'])
     def ajaxDelete = {
 
         if( params.id ){

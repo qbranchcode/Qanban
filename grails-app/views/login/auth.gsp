@@ -66,35 +66,7 @@
             <div class='login_message'>${flash.message}</div>
           </g:if>
           <div id="login" class="framed">
-
-            <h2><g:message code="loginPage.auth.form.title"/></h2>
-            <form action='${postUrl}' method='POST' id='loginForm'>
-              <div class="fieldWrapper">
-                <label for='j_username'>
-                  <g:message code="loginPage.auth.form.label.username"/>
-                </label>
-                <input type='text' class='text_' name='j_username' id='j_username' value='${request.remoteUser}' />
-              </div>
-              <div class="fieldWrapper">
-                <label for='j_password'>
-                  <g:message code="loginPage.auth.form.label.password"/>
-                </label>
-                <input type='password' class='text_' name='j_password' id='j_password' />
-              </div>
-
-              <div class="checkboxWrapper">
-                
-                <label for='remember_me'>
-                  <g:message code="loginPage.auth.form.label.remember"/>
-                </label>
-
-                <input type='checkbox' class='chk' name='_spring_security_remember_me' id='remember_me'
-                     <g:if test='${hasCookie}'>checked='checked'</g:if> />
-              </div>
-
-              <input type='submit' value='<g:message code="loginPage.auth.form.button.login"/>' />
-
-            </form>
+            <g:render template="login" model="[postUrl:postUrl,person:person]" />
           </div>
         </div>
 
@@ -117,8 +89,8 @@
 
           <div class="solid">
             <div class="bg"></div>
-            <div class="content">
-              <g:render template="register" bean="${person}" />
+            <div class="content" id="registerFormRemote">
+              <g:render template="register" model="[person:person]" />
             </div>
           </div>
 

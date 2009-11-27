@@ -115,7 +115,7 @@ class UserController {
     }
 
     def create = {
-        render(template: '/user/create', model: [person: new User(params)])
+         [person: new User(params), authorityList: Role.list()]
     }
 
     /**
@@ -126,15 +126,12 @@ class UserController {
         person.properties = params
         person.passwd = authenticateService.encodePassword(params.passwd)
         if (person.save()) {
-            //Varför funkar inte detta?
             flash.message = "${person.username} is now created"
-            redirect(controller:'login',action:'auth')
-                        
         }
         else {
-            flash.message = "${person.username} already exists"
-            redirect(controller:'login',action:'auth')
+            flash.message = null
         }
+        return render(template: '/login/register' , model: [ person : person ])
     }
 
     def showOnlineUsers = {
