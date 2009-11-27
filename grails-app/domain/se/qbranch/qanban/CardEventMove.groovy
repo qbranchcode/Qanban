@@ -29,23 +29,23 @@ class CardEventMove extends Event implements Comparable {
 
 
     int compareTo(Object o) {
-        if (o instanceof CardEventMove) {
-            CardEventMove c = (CardEventMove) o
+        if (o instanceof Event) {
+            Event event = (Event) o
             final int BEFORE = -1;
             final int EQUAL = 0;
             final int AFTER = 1;
 
-            if(this.dateCreated < c.dateCreated) return AFTER
-            if(this.dateCreated > c.dateCreated) return BEFORE
+            if(this.dateCreated < event.dateCreated) return AFTER
+            if(this.dateCreated > event.dateCreated) return BEFORE
 
             return EQUAL
         }
     }
 
     boolean equals(Object o) {
-        if(o instanceof CardEventMove) {
-            CardEventMove c = (CardEventMove) o
-            if(this.id == c.id)
+        if(o instanceof Event) {
+            Event event = (Event) o
+            if(this.id == event.id)
             return true
         }
         return false
