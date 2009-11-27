@@ -1,8 +1,17 @@
 package se.qbranch.qanban
 import org.codehaus.groovy.grails.plugins.codecs.MD5Codec
 
-class CardEventCreate {
+class CardEventCreate extends Event{
 
+    static constraints = {
+        assignee ( nullable : true )
+        title( blank: false, length: 1..50 )
+        description(length:1..300)
+        phase()
+        caseNumber( )
+    }
+
+    static transients = ['card']
     String title
     String description
     Integer caseNumber
@@ -10,19 +19,18 @@ class CardEventCreate {
     //TODO: Change to checksum connections
     User assignee
     Phase phase
-    String cardDomainId
 
-    Date dateCreated
+    Card card
 
 
     transient beforeInsert = {
-        cardDomainId = MD5Codec.encode(dateCreated + title + description + caseNumber)
+        domainId = MD5Codec.encode(dateCreated + title + description + caseNumber)
     }
 
     transient afterInsert = {
         //println "timestamp: $dateCreated title: $title desc: $description case# $caseNumber" 
-        def card = new Card()
-        card.domainId = cardDomainId
+        card = new Card()
+        card.domainId = domainId
         card.title = title
         card.phase = phase
         card.description = description
@@ -30,14 +38,7 @@ class CardEventCreate {
         card.save()
     }
 
-    static constraints = {
-        assignee ( nullable : true )
-        title( blank: false, length: 1..50 )
-        description(length:1..300)
-        phase()
-        caseNumber()
-        cardDomainId( nullable: true )
-    }
+
 
     int compareTo(Object o) {
         if (o instanceof CardEventCreate) {

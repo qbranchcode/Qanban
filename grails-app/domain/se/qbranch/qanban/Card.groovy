@@ -8,6 +8,7 @@ class Card {
         caseNumber()
         assignee(nullable: true)
         phase()
+        domainId( unique: true )
     }
 
     static mapping = {
