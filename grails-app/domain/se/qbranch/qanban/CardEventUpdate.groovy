@@ -2,9 +2,11 @@ package se.qbranch.qanban
 
 class CardEventUpdate extends Event implements Comparable {
 
+    // TODO: Validera så att eventen inte sparas om inget värde har ändrats
+    
     static constraints = {
-        title( blank: false, length: 1..50 )
-        description(length:1..300, blank: true, nullable: true)
+        title( blank: false, length: 1..50)
+        description(length:1..300, blank: true, nullable: true )
         caseNumber( )
     }
 
@@ -32,7 +34,6 @@ class CardEventUpdate extends Event implements Comparable {
         card.description = description
         card.caseNumber = caseNumber
         card.save()
-        
     }
 
     int compareTo(Object o) {
