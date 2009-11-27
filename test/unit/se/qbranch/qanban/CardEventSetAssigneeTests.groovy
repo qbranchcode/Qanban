@@ -2,12 +2,11 @@ package se.qbranch.qanban
 
 import grails.test.*
 
-class CardEventUpdateTests extends GrailsUnitTestCase {
-
+class CardEventSetAssigneeTests extends GrailsUnitTestCase {
 
     def user1
     def user2
-
+    
     def board
 
     def phase1
@@ -18,9 +17,9 @@ class CardEventUpdateTests extends GrailsUnitTestCase {
     def card2onPhase1
     def card3onPhase2
 
+
     protected void setUp() {
         super.setUp()
-
 
         // User mock
 
@@ -28,7 +27,6 @@ class CardEventUpdateTests extends GrailsUnitTestCase {
         user2 = new User(username: "opsshba01", userRealName: "Shean Banan")
 
         mockDomain(User,[user1,user2])
-
 
         // Board mock
 
@@ -89,52 +87,37 @@ class CardEventUpdateTests extends GrailsUnitTestCase {
 
         // Specific mockups
 
-        mockDomain(CardEventUpdate)
+        mockDomain(CardEventSetAssignee)
 
 
     }
 
-    protected void tearDown() {
-        super.tearDown()
-    }
+    void testSetAndUnsetAssignee() {
 
-    void testSuccessfulUpdating() {
-        def newTitle = "Card #1 is updated"
-        def caseNo = 1337
+        assertNull "There should be no assignee", card1onPhase1.assignee
 
-        def updateEvent = new CardEventUpdate(
+        def setAssigneeEvent = new CardEventSetAssignee(
             card: card1onPhase1,
-            title: newTitle,
-            description: null,
-            caseNumber: caseNo,
-            user: user1
+            newAssignee: user1,
         )
 
-        updateEvent.validate()
-        updateEvent.beforeInsert()
-        updateEvent.save()
-        updateEvent.afterInsert()
+        setAssigneeEvent.beforeInsert()
+        setAssigneeEvent.save()
+        setAssigneeEvent.afterInsert()
 
-        assertEquals card1onPhase1.domainId, updateEvent.domainId
-        assertEquals newTitle, card1onPhase1.title
-        assertNull "There should be no description", card1onPhase1.description
+        assertEquals setAssigneeEvent.domainId, card1onPhase1.domainId
+        assertEquals user1, card1onPhase1.assignee
 
-    }
-
-    void testUnsuccessfulUpdateWidhoutCaseNumber(){
-        def newTitle = "Card #1 is updated"
-
-        def updateEvent = new CardEventUpdate(
-            card: card1onPhase1,
-            title: newTitle,
-            description: null,
-            user: user1
+        def unsetAssigneeEvent = new CardEventSetAssignee(
+            card: card1onPhase1
         )
 
-        updateEvent.validate()
+        unsetAssigneeEvent.beforeInsert()
+        unsetAssigneeEvent.save()
+        unsetAssigneeEvent.afterInsert()
 
-        updateEvent.errors.getAllErrors().each { println it}
+        assertEquals unsetAssigneeEvent.domainId, card1onPhase1.domainId
+        assertNull "There should not be a assignee", card1onPhase1.assignee
         
-        assertEquals 1, updateEvent.errors.getAllErrors().size()
     }
 }

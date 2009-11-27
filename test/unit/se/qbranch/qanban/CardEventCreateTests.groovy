@@ -4,6 +4,9 @@ import grails.test.*
 
 class CardEventCreateTests extends GrailsUnitTestCase {
 
+    def user1
+    def user2
+    
     def board
 
     def phase1
@@ -17,6 +20,14 @@ class CardEventCreateTests extends GrailsUnitTestCase {
     
     protected void setUp() {
         super.setUp()
+
+        // User mock
+
+        user1 = new User(username: "opsmrkr01", userRealName: "Mr. Krister")
+        user2 = new User(username: "opsshba01", userRealName: "Shean Banan")
+
+        mockDomain(User,[user1,user2])
+
 
         // Board mock
 
@@ -38,9 +49,9 @@ class CardEventCreateTests extends GrailsUnitTestCase {
         mockDomain(CardEventCreate)
         mockDomain(Card)
 
-        def cardEventCreate1 = new CardEventCreate(title:"Card #1",caseNumber:1,description:"The first card originally from First phase on the first position",phase:phase1)
-        def cardEventCreate2 = new CardEventCreate(title:"Card #2",caseNumber:1,description:"The second card originally from First phase on the second position",phase:phase1)
-        def cardEventCreate3 = new CardEventCreate(title:"Card #3",caseNumber:1,description:"The third card originally from Second phase on the first position",phase:phase2)
+        def cardEventCreate1 = new CardEventCreate(title:"Card #1",caseNumber:1,description:"The first card originally from First phase on the first position",phase:phase1,user:user1)
+        def cardEventCreate2 = new CardEventCreate(title:"Card #2",caseNumber:1,description:"The second card originally from First phase on the second position",phase:phase1,user:user1)
+        def cardEventCreate3 = new CardEventCreate(title:"Card #3",caseNumber:1,description:"The third card originally from Second phase on the first position",phase:phase2,user:user1)
 
         cardEventCreate1.beforeInsert()
         cardEventCreate1.save()
@@ -81,6 +92,7 @@ class CardEventCreateTests extends GrailsUnitTestCase {
         event.description = "Created By A Event"
         event.caseNumber = 4
         event.phase = Phase.get(1)
+        event.user = user1
 
         event.beforeInsert()
         event.save()

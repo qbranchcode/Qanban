@@ -1,43 +1,38 @@
 package se.qbranch.qanban
 
-class CardEventUpdate implements Comparable {
+class CardEventUpdate extends Event implements Comparable {
 
     static constraints = {
-            assignee ( nullable: true )
+        title( blank: false, length: 1..50 )
+        description(length:1..300, blank: true, nullable: true)
+        caseNumber( )
     }
+
 
     static mapping = {
-      columns {
-          description type:'text'
-      }
+        columns {
+            description type:'text'
+        }
     }
 
+    static transients = ['card']
     Card card
+
     String title
     String description
     Integer caseNumber
-    User assignee
-    Date dateCreated
-    User user
+
+    transient beforeInsert = {
+        domainId = card.domainId
+    }
 
     transient afterInsert = {
 
-        if( cardHasChangedProperties()) {
-            card.title = title
-            card.description = description
-            card.caseNumber = caseNumber
-            card.assignee = assignee
-            card.save()
-    
-        }
-    }
-    
-    boolean cardHasChangedProperties() {
-        if(this.card.title != this.title) return true
-        if(this.card.description != this.description) return true
-        if(this.card.caseNumber != this.caseNumber) return true
-        if(this.card.assignee != this.assignee) return true
-        else return false
+        card.title = title
+        card.description = description
+        card.caseNumber = caseNumber
+        card.save()
+        
     }
 
     int compareTo(Object o) {

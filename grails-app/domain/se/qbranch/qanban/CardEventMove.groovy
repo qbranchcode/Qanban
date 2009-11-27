@@ -11,7 +11,6 @@ class CardEventMove extends Event implements Comparable {
     Integer newCardIndex
     Card card
 
-    User user
     Phase newPhase
     //Date dateCreated
 

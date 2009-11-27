@@ -1,14 +1,19 @@
 package se.qbranch.qanban
 
-class CardEventSetAssignee implements Comparable {
+class CardEventSetAssignee extends Event implements Comparable {
 
     static constraints = {
-		newAssignee ( nullable: true )
-	}
+        newAssignee ( nullable: true )
+    }
+
+    static transients = ['card']
+
     Card card
-    User user
-    Date dateCreated
     User newAssignee
+
+    transient beforeInsert = {
+        domainId = card.domainId
+    }
 
     transient afterInsert = {
 	card.assignee = newAssignee

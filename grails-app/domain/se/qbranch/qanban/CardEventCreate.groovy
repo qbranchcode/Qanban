@@ -6,7 +6,7 @@ class CardEventCreate extends Event implements Comparable{
     static constraints = {
         assignee ( nullable : true )
         title( blank: false, length: 1..50 )
-        description(length:1..300)
+        description(length:1..300, blank: true, nullable: true)
         phase()
         caseNumber( )
     }
@@ -24,7 +24,7 @@ class CardEventCreate extends Event implements Comparable{
 
     
 
-
+    //TODO: dateCreated is not set?!
     transient beforeInsert = {
         domainId = MD5Codec.encode(dateCreated + title + description + caseNumber)
     }

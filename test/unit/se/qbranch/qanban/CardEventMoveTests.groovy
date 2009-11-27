@@ -4,7 +4,11 @@ import grails.test.*
 
 class CardEventMoveTests extends GrailsUnitTestCase {
 
-  def board
+
+    def user1
+    def user2
+
+    def board
 
     def phase1
     def phase2
@@ -18,6 +22,15 @@ class CardEventMoveTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
 
+
+        // User mock
+
+        user1 = new User(username: "opsmrkr01", userRealName: "Mr. Krister")
+        user2 = new User(username: "opsshba01", userRealName: "Shean Banan")
+
+        mockDomain(User,[user1,user2])
+
+        
         // Board mock
 
         board = new Board()
