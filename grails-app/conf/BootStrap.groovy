@@ -74,17 +74,17 @@ class BootStrap {
                 adminRole.addToPeople(adminUser)
             }
 
-            Phase p1 = new Phase(name:'Backlog')
-            p1.addToCards(new Card(title:"Card #1",caseNumber:1,description:'This is a card'))
-            .addToCards(new Card(title:"Card #2",caseNumber:2,description:'This is another card'))
+            Board board = new Board().save()
 
-            Board b = new Board()
-            .addToPhases(p1)
-            .addToPhases(new Phase(name:'WIP', cardLimit: 5))
-            .addToPhases(new Phase(name:'Done'))
-            .save()
+            new PhaseEventCreate(name: "Backlog", user: adminUser, board: board).save()
+            new PhaseEventCreate(name: "WIP", cardLimit: 5, user: adminUser, board: board).save()
+            new PhaseEventCreate(name: "Done", user: adminUser, board: board).save()
 
+            new CardEventCreate(title: "Card #1", caseNumber: 1, description: "The first card", phase: Phase.get(1), user: adminUser).save()
+            new CardEventCreate(title: "Card #2", caseNumber: 2, description: "The second card", phase: Phase.get(1), user: adminUser).save()
+            
             break
+
         }
 
     }
