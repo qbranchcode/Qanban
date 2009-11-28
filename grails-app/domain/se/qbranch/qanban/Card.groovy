@@ -11,20 +11,18 @@ class Card {
         domainId( unique: true, blank: false )
     }
 
+
     static mapping = {
       columns {
           description type:'text'
       }
     }
 
-    static hasMany = [ events : CardEventMove ]
 
     String domainId
     String title
     String description
     Integer caseNumber
-
-    SortedSet events
 
     // Auto timestamps (changed when db is updated)
     Date dateCreated
