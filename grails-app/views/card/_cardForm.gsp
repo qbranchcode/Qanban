@@ -75,11 +75,11 @@
       ${fieldValue(bean:cardInstance,field:'description')}</textarea>
 
 
-      <g:if test="${cardInstance.events}">
+      <g:if test="${events}">
         <select size="4" multiple>
-          <g:each in="${cardInstance.events}" var='event'>
+          <g:each in="${events}" var='event'>
             <option>${event.dateCreated}:
-              ${event.user.username} moved to ${event.newPhase.name}, on CardIndex: ${event.newCardIndex}
+              ${event}
             </option>
           </g:each>
         </select>
@@ -164,12 +164,14 @@
                 name="description">${fieldValue(bean:cardInstance,field:'description')}</textarea>
 
 
-      <g:if test="${cardInstance.events}">
+
+      <g:if test="${events}">
+
         <label for="events" class="descLabel"><g:message code="_cardForm.label.events" /></label>
         <select name="events" size="4" multiple>
-          <g:each in="${cardInstance.events}" var='event'>
-            <option>${event.dateCreated}:
-              ${event.user.username} moved to ${event.newPhase.name}, on CardIndex: ${event.newCardIndex}
+          <g:each in="${events}" var='event'>
+            <option>
+              ${event}
             </option>
           </g:each>
         </select>

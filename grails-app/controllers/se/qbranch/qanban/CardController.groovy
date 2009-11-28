@@ -28,7 +28,6 @@ class CardController {
         if(!cardInstance)
         return render(status: 404, text: "Card with id ${params.id} not found.")
 
-
         withFormat {
 
             html {
@@ -76,8 +75,9 @@ class CardController {
 
         if(cardInstance) {
             try {
-                cardInstance.phase.cards.remove(cardInstance)
-                cardInstance.delete(flush:true)
+//                cardInstance.phase.cards.remove(cardInstance)
+//                cardInstance.delete(flush:true)
+                CardEventDelete(cardInstance).save()
                 return render ("Successfully deleted card with id $params.id.")
 
             }
@@ -193,13 +193,20 @@ class CardController {
      ****/
 
     def ajaxShowForm = {
-        if(params.id == null)
+
+        if(params.id == null){
             render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list()])
-        else if( params.newPhase == null )
-            render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list(), cardInstance: Card.get(params.id)])
-	else {
-            render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: params."newPhase", newPos: params."newPos" ,userList: User.list(), loggedInUser: User.get(params."user") , user: params."user"])
+        
+        }else if( params.newPhase == null ){
+            def card = Card.get(params.id)
+            def events = Event.findAllByDomainId(card.domainId)
+            println "no of events: ${events.size()}"
+            render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list(), cardInstance: card, events: events ])
+	}else{
+            render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: params.newPhase , newPos: params.newPos, userList: User.list(), loggedInUser: User.get(params."user") , user: params."user", events: events])
+
         }
+        
     }
 
     def ajaxSave = {
