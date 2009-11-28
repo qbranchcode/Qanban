@@ -41,4 +41,8 @@ class CardEventSetAssignee extends Event implements Comparable {
         }
         return false
     }
+
+    String toString(){
+        return "$dateCreated: $user set the assignee to $newAssignee"
+    }
 }

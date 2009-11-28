@@ -5,7 +5,7 @@ class PhaseEventCreate extends Event implements Comparable{
 
     static constraints = {
         cardLimit ( nullable: true )
-
+        position ( nullable: true )
     }
 
     static transients = ['phase']

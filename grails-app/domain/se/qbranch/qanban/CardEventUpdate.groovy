@@ -58,4 +58,8 @@ class CardEventUpdate extends Event implements Comparable {
         }
         return false
     }
+
+    String toString(){
+        return "$dateCreated: $user updated the card info"
+    }
 }

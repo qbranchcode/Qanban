@@ -67,4 +67,9 @@ class CardEventCreate extends Event implements Comparable{
         }
         return false
     }
+
+    String toString() {
+        return "$dateCreated: $user created the card"
+    }
+
 }

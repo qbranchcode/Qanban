@@ -12,7 +12,6 @@ class CardEventMove extends Event implements Comparable {
     Card card
 
     Phase newPhase
-    //Date dateCreated
 
     transient beforeInsert = {
         domainId = card.domainId
@@ -49,5 +48,9 @@ class CardEventMove extends Event implements Comparable {
             return true
         }
         return false
+    }
+
+    String toString(){
+        return "$dateCreated: $user moved the card to $newPhase"
     }
 }
