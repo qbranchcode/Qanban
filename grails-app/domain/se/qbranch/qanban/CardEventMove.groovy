@@ -13,6 +13,22 @@ class CardEventMove extends Event implements Comparable {
     String phaseDomainId
     Integer newCardIndex
 
+
+    Card getCard(){
+        if( !card && domainId ){
+            card = Card.findByDomainId(domainId)
+        }
+        return card
+    }
+
+    Phase getNewPhase(){
+        if( !newPhase && phaseDomainId ){
+            newPhase = Phase.findByDomainId(phaseDomainId)
+        }
+        return phase
+    }
+
+
     transient beforeInsert = {
         domainId = card.domainId
         phaseDomainId = newPhase.domainId
@@ -24,11 +40,6 @@ class CardEventMove extends Event implements Comparable {
         card.phase = newPhase
         card.save()
         
-    }
-
-    transient onLoad = {
-        card = Card.findByDomainId(domainId)
-        newPhase = Phase.findByDomainId(phaseDomainId)
     }
 
     int compareTo(Object o) {

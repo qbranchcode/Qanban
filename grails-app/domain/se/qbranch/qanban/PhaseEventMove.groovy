@@ -11,6 +11,13 @@ class PhaseEventMove extends Event implements Comparable{
 
     Integer newPhaseIndex
 
+    Phase getPhase(){
+        if( !phase && domainId ){
+            phase = Phase.findByDomainId(domainId)
+        }
+        return phase
+    }
+
     transient beforeInsert = {
         domainId = phase.domainId
     }
@@ -19,11 +26,6 @@ class PhaseEventMove extends Event implements Comparable{
         phase.board.phases.remove(phase)
         phase.board.phases.add(newPhaseIndex, phase)
     }
-    
-    transient onLoad = {
-        phase = Phase.findByDomainId(domainId)
-    }
-
 
     int compareTo(Object o) {
         if (o instanceof Event) {

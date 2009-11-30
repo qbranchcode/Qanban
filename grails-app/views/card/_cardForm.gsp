@@ -187,6 +187,22 @@
 
 </g:elseif>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <%--
 	CREATE
 --%>
@@ -258,7 +274,7 @@
 
     <%-- Note: This is the id of the card, not the event --%>
     <input type="hidden" name="id" value="${createEvent?.card?.id}"/>
-    
+
     <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
     <input style="display: none;" type="submit"/>
 

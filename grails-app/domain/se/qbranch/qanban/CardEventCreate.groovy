@@ -25,16 +25,23 @@ class CardEventCreate extends Event implements Comparable{
     User assignee
     
 
-    Card getCard() {
-        if( card ){
-            return card
-        }else{
-            card = new Card( title: title, description: description, caseNumber: caseNumber, domainId: domainId, assignee: assignee, phase: phase )
-            card.validate()           
-            return card
+    Phase getPhase() {
+        if( !phase && phaseDomainId ){
+            phase = Phase.getByDomainId(phaseDomainId)
         }
+        return phase
     }
 
+    Card getCard(){
+        if( !card ){
+            if( domainId){
+               card = Card.findByDomainId(domainId)
+            }else{
+               card = new Card( title: title, description: description, caseNumber: caseNumber, domainId: domainId, assignee: assignee, phase: phase )
+            }
+        }
+        return card
+    }
     
     //TODO: Cleanup, check lazy settings.
     transient Board getBoard(){
@@ -61,13 +68,6 @@ class CardEventCreate extends Event implements Comparable{
         phase.addToCards(card)
 
         card.save()
-    }
-
-    transient onLoad = {
-        println "did: $domainId"
-        println "o.did: " + owner.domainId
-        //card = Card.findByDomainId(this.domainId)
-        //phase = Phase.findByDomainId(phaseDomainId)
     }
 
     int compareTo(Object o) {

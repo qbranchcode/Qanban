@@ -14,6 +14,13 @@ class PhaseEventUpdate extends Event implements Comparable{
     String name
     Integer cardLimit
 
+    Phase getPhase(){
+        if( !phase && domainId ){
+            phase = Phase.findByDomainId(domainId)
+        }
+        return phase
+    }
+
     transient beforeInsert = {
         domainId = phase.domainId
     }
@@ -24,10 +31,6 @@ class PhaseEventUpdate extends Event implements Comparable{
         phase.cardLimit = cardLimit
         phase.save()
 
-    }
-
-    transient onLoad = {
-        phase = Phase.findByDomainId(domainId)
     }
 
     int compareTo(Object o) {

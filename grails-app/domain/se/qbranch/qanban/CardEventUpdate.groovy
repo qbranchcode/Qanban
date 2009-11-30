@@ -24,6 +24,13 @@ class CardEventUpdate extends Event implements Comparable {
     String description
     Integer caseNumber
 
+    Card getCard(){
+        if( !card && domainId ){
+            card = Card.findByDomainId(domainId)
+        }
+        return card
+    }
+
     transient beforeInsert = {
         domainId = card.domainId
     }
@@ -34,10 +41,6 @@ class CardEventUpdate extends Event implements Comparable {
         card.description = description
         card.caseNumber = caseNumber
         card.save()
-    }
-
-    transient onLoad = {
-        card = Card.findyDomainId(domainId)
     }
 
     int compareTo(Object o) {

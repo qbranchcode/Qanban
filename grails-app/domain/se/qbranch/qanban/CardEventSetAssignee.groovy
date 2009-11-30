@@ -11,16 +11,19 @@ class CardEventSetAssignee extends Event implements Comparable {
     
     User newAssignee
 
+    Card getCard(){
+        if( !card && domainId ){
+            card = Card.findByDomainId(domainId)
+        }
+        return card
+    }
+
     transient beforeInsert = {
         domainId = card.domainId
     }
 
     transient afterInsert = {
 	card.assignee = newAssignee
-    }
-
-    transient onLoad = {
-        card = Card.findByDomainId(domainId)
     }
 
     int compareTo(Object o) {

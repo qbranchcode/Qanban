@@ -18,6 +18,13 @@ class PhaseEventDelete  extends Event implements Comparable{
     Integer cardLimit
     Integer position
 
+    Phase getPhase(){
+        if( !phase && domainId ){
+            phase = Phase.findByDomainId(domainId)
+        }
+        return phase
+    }
+
     transient beforeInsert = {
         domainId = phase.domainId
         name = phase.name
@@ -32,11 +39,6 @@ class PhaseEventDelete  extends Event implements Comparable{
         phase.delete(flush:true)
 
 
-    }
-
-    transient onLoad = {
-        phase = new Phase( name: name, board: board, cardLimit: cardLimit, domainId: domainId )
-        
     }
 
     int compareTo(Object o) {

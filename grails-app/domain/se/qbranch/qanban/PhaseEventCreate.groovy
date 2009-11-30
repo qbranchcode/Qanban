@@ -16,6 +16,13 @@ class PhaseEventCreate extends Event implements Comparable{
     Integer cardLimit
     Integer position
 
+    Phase getPhase(){
+        if( !phase && domainId ){
+            phase = Phase.findByDomainId(domainId)
+        }
+        return phase
+    }
+
     transient beforeInsert = {
         domainId = MD5Codec.encode(dateCreated + name + board )
     }
@@ -37,10 +44,6 @@ class PhaseEventCreate extends Event implements Comparable{
 
         phase.save()
         
-    }
-
-    transient onLoad = {
-        phase = Phase.findByDomainId(domainId)
     }
 
     int compareTo(Object o) {
