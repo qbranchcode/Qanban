@@ -579,7 +579,11 @@
              	 if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'cardLimit' ){
                      $phase.parent().find('.limitLine').html(numberOfChildren + '/' + classSubstings[1]);
              	 }
-                 if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'cardLimit' ){
+             });
+
+             $.each(classList, function(index, item){
+             	 var classSubstings = item.split('_');
+             	 if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'cardLimit' ){
                      if( classSubstings[1].replace(/^\s*|\s*$/g,'') == numberOfChildren ) {
                         $phase.removeClass("available");
                         reconnectPhases();
