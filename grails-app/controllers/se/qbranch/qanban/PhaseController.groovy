@@ -188,7 +188,6 @@ class PhaseController {
         if( params.id ){
 
             def phase = Phase.get(params.id)
-            println "phase: ${phase.name}"
             if( phase ){
 
                 if( phase.cards.size() == 0 ){

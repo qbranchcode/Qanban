@@ -317,6 +317,7 @@
                               success: function() {
                                 $("#phaseWrapper_"+id).remove();
                                 fixWidth();
+                                $('#editPhaseDialog').dialog("close");
                               },
                               error: function (XMLHttpRequest, textStatus, errorThrown) {
                                  $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.errorDeletingPhase.content"/></p></div>').dialog({
@@ -406,7 +407,6 @@
                                 $editPhaseDialog.find('input[type="submit"]').click();
                             },
                             '<g:message code="_phaseForm.button.delete"/>': function() {
-                                $(this).dialog("close");
                                 deletePhaseDialog(phaseId);
                             }
                         });
@@ -516,7 +516,7 @@
 			   );
 
 			}else{
-		           updateCall();
+		           /*What to do here?*/
 			}
                
 		    }
@@ -529,23 +529,20 @@
 	   $phases.each(function(index,$phase){
 
 
-	       var $nextPhase = index < $phases.size() ? $( $phases[index+1] ) : false;
-	       
+	       var $nextPhase = index < $phases.size() ? $( $phases[index+1] ) : false;	       
                var $currentPhase = $(this);
-
-
 
                $currentPhase.sortable('option','start', function(event,ui){
 
-                    var fadeIgnore = $nextPhase.attr('id') != null ?
-                                         "#" + $(this).attr('id') + "','" + $(this).sortable('option','connectWith') :
-                                         "#" + $(this).attr('id');
                     $('.phase').filter(function(){
 
                          if( $nextPhase.is('.phase') ){
+                          var notAvail = $nextPhase.attr('class').indexOf('available') == -1;
+
                           var notNext = $(this).attr('id') != $nextPhase.attr('id');
                           var notCurr = $(this).attr('id') != $currentPhase.attr('id');
-                          return notCurr && notNext;
+
+                          return notCurr && ( notNext || notAvail );
                          }else{
                           return $(this).attr('id') != $currentPhase.attr('id');
                          }
@@ -581,6 +578,18 @@
              	 var classSubstings = item.split('_');
              	 if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'cardLimit' ){
                      $phase.parent().find('.limitLine').html(numberOfChildren + '/' + classSubstings[1]);
+             	 }
+                 if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'cardLimit' ){
+                     if( classSubstings[1].replace(/^\s*|\s*$/g,'') == numberOfChildren ) {
+                        $phase.removeClass("available");
+                        reconnectPhases();
+                     }
+             	 }
+                 if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'cardLimit' ){
+                     if( classSubstings[1].replace(/^\s*|\s*$/g,'') > numberOfChildren ) {
+                        $phase.addClass("available");
+                        reconnectPhases();
+                     }
              	 }
              });
 
@@ -623,7 +632,6 @@
 
 
   function cardFormRefresh(formData,dialogSelector,successTitle,successMessage){
-      
   	   formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first'),recalculateHeightAndUpdateCardCount);
   
   }
@@ -696,7 +704,7 @@
           incompleteFormCallback(formData,dialogSelector);
       }
   }
-  
+
   function closeDialog($dialog,successTitle,successMessage){
 
       $dialog.dialog('close');
