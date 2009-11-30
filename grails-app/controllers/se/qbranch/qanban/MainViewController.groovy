@@ -122,7 +122,7 @@ class MainViewController {
     void createCardEventSetAssignee(cmd) {
         def cardEventSetAssignee = new CardEventSetAssignee(
             card: cmd.card,
-            user:  User.get(1), // TODO: Fixa så att den inloggade usern kommer med anropet
+            user:  User.get(params.user), // TODO: Fixa så att den inloggade usern kommer med anropet
             newAssignee: cmd.assignee)
 
         cardEventSetAssignee.save()

@@ -78,7 +78,7 @@
       <g:if test="${events}">
         <select size="4" multiple>
           <g:each in="${events}" var='event'>
-            <option>${event.dateCreated}:
+            <option>
               ${event}
             </option>
           </g:each>
@@ -190,9 +190,15 @@
 <%--
 	CREATE
 --%>
+<g:elseif test="$createEvent">
 
-<g:else>
-  <g:formRemote url="${[controller:'card',action:'saveOrUpdate', params: [format: 'html']]}"
+  <g:hasErrors bean="${createEvent}">
+  <div>
+    <g:renderErrors bean="${createEvent}" as="list" />
+  </div>
+</g:hasErrors>
+
+  <g:formRemote url="${[controller:'card',action:'eCreate', params: [format: 'html']]}"
                 update="createCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#createCardDialog')"
                 onComplete="toggleSpinner()"
@@ -234,7 +240,8 @@
                value="Title...          " onfocus="if (this.value == 'Title...          ') this.value = '';"
                onblur="if (this.value == '') this.value = 'Title...          '"/>
 
-       <span class="date"></span>
+        <span class="date"></span>
+
        <div class="caseNumberWrapper">
          <label for="caseNumber"><g:message code="_cardForm.label.caseNumber"/></label>
           <input type="text" id="card.caseNumber" name="caseNumber"
@@ -253,6 +260,6 @@
     <input style="display: none;" type="submit"/>
 
   </g:formRemote>
-</g:else>
+</g:elseif>
 
 

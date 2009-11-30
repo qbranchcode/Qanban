@@ -7,6 +7,7 @@ import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 class CardController {
 
     def authenticateService
+    def securityService
 
     /*****
      *  C - R - U - D
@@ -17,6 +18,30 @@ class CardController {
     // the delete, save and update actions only accept POST requests
     //static allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
+    def eCreate = {
+
+        CardEventCreate createEvent = new CardEventCreate(params)
+        createEvent.user = securityService.getLoggedInUser()
+        createEvent.save()
+
+        if( !createEvent.hasErrors() ){
+            flash.message = "Card ${createEvent.card.id} registred"
+        }
+
+        withFormat{
+            html{
+                def board = createEvent.board
+                return render(template:'cardForm',model:[createEvent:createEvent, boardInstance: board])
+            }
+            js{
+                return render ( [ cardInstance : createEvent.card ] as JSON)
+            }
+            xml{
+                return render ( [ cardInstance : createEvent.card ] as XML)
+            }
+        }
+        
+    }
 
     def show = {
 
@@ -75,8 +100,8 @@ class CardController {
 
         if(cardInstance) {
             try {
-//                cardInstance.phase.cards.remove(cardInstance)
-//                cardInstance.delete(flush:true)
+                //                cardInstance.phase.cards.remove(cardInstance)
+                //                cardInstance.delete(flush:true)
                 CardEventDelete(cardInstance).save()
                 return render ("Successfully deleted card with id $params.id.")
 
@@ -197,14 +222,15 @@ class CardController {
         if(params.id == null){
             render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list()])
         
-        }else if( params.newPhase == null ){
+        }else {
             def card = Card.get(params.id)
             def events = Event.findAllByDomainId(card.domainId)
-            println "no of events: ${events.size()}"
-            render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list(), cardInstance: card, events: events ])
-	}else{
-            render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: params.newPhase , newPos: params.newPos, userList: User.list(), loggedInUser: User.get(params."user") , user: params."user", events: events])
-
+    
+            if( params.newPhase == null ){
+                render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list(), cardInstance: card, events: events ])
+            }else{
+                render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: params.newPhase , newPos: params.newPos, userList: User.list(), loggedInUser: User.get(params."user") , user: params."user", events: events])
+            }
         }
         
     }
@@ -267,3 +293,4 @@ class UpdateCardCommand {
     }
 
 }
+
