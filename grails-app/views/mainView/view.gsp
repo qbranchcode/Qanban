@@ -422,6 +422,7 @@
 
       $('.editCardLink').click(function(event){
             var cardId = $(this).attr('id').split('_')[1];
+            $('#moveCardDialog').empty().dialog('destroy');
             $editCardDialog.qLoad(
                 '${createLink(controller:'card',action:'ajaxShowForm')}',
                                     {'board.id':${board.id} , 'id':cardId},

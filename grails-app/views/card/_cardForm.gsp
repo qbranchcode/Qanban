@@ -120,7 +120,7 @@
 
 		<div style="clear: both;"></div>
 		<ul id="assignees">
-			<li id="user_null" <g:if test="${!cardInstance.assignee?.id}">class="selected"</g:if> >
+			<li id="user_" <g:if test="${!cardInstance.assignee?.id}">class="selected"</g:if> >
 				<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30"/>
 				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
 			</li>
@@ -176,7 +176,7 @@
 
     <input type="hidden" name="id" value="${cardInstance?.id}"/>
     <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
-    <%-- <input type="hidden" name="assignee.id" id="assigneeValue" value="${cardInstance.assignee?.id}"/> --%>
+    <input type="hidden" name="assigneeId" id="assigneeValue" value="${cardInstance.assignee?.id}"/>
     <input style="display: none;" type="submit"/>
   </g:formRemote>
 

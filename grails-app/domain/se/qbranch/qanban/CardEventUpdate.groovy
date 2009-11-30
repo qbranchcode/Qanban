@@ -2,10 +2,15 @@ package se.qbranch.qanban
 
 class CardEventUpdate implements Comparable {
 
+    static constraints = {
+            assignee ( nullable: true )
+    }
+
     Card card
     String title
     String description
     Integer caseNumber
+    User assignee
     Date dateCreated
     User user
 
@@ -15,6 +20,7 @@ class CardEventUpdate implements Comparable {
             card.title = title
             card.description = description
             card.caseNumber = caseNumber
+            card.assignee = assignee
             card.save()
     
         }
@@ -24,6 +30,7 @@ class CardEventUpdate implements Comparable {
         if(this.card.title != this.title) return true
         if(this.card.description != this.description) return true
         if(this.card.caseNumber != this.caseNumber) return true
+        if(this.card.assignee != this.assignee) return true
         else return false
     }
 

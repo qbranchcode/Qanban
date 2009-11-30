@@ -20,7 +20,7 @@
  padding:2px;
  background-color: #fdfdfd;
  border: 1px solid #000;
- position: absolute;
+ position: fixed;
  z-index: 3000;
  min-height: 38px;
  min-width: 38px;

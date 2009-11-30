@@ -178,10 +178,11 @@ class CardController {
 
     void createCardEventUpdate(cmd) {
         def cardEventUpdate = new CardEventUpdate(
-            card: cmd.card,,
+            card: cmd.card,
             title: cmd.title,
             description: cmd.description,
             caseNumber: cmd.caseNumber,
+            assignee: cmd.assignee,
             user: authenticateService.userDomain())
         cardEventUpdate.save()
     }
@@ -239,17 +240,23 @@ class UpdateCardCommand {
         id(min: 0, nullable: false, validator:{ val, obj ->
                 Card.exists(obj.id)
             })
-
+        assigneeId(min: 0, nullable: true, validator:{ val, obj ->
+                !val || User.exists( val )
+            })
     }
 
     Integer id
     String description
     String title
     Integer caseNumber
+    Integer assigneeId
 
     def getCard() {
         Card.get(id)
     }
 
+    def getAssignee() {
+        User.get(assigneeId)
+    }
 
 }
