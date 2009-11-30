@@ -36,6 +36,10 @@ class CardEventUpdate extends Event implements Comparable {
         card.save()
     }
 
+    transient onLoad = {
+        card = Card.findyDomainId(domainId)
+    }
+
     int compareTo(Object o) {
         if (o instanceof Event) {
             Event event = (Event) o

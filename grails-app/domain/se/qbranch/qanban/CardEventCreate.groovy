@@ -7,30 +7,50 @@ class CardEventCreate extends Event implements Comparable{
         assignee ( nullable : true )
         title( blank: false, length: 1..50 )
         description(length:1..300, blank: true, nullable: true)
-        phase()
-        caseNumber( )
+        phaseDomainId( nullable: true, blank: false )
     }
 
-    static transients = ['card']
+    static transients = ['card','phase','board']
+
+    Card card
+    Phase phase
+
 
     String title
     String description
     Integer caseNumber
-    Card card
+    String phaseDomainId
 
     //TODO: Change to checksum connections
     User assignee
-    Phase phase
+    
+
+    Card getCard() {
+        if( card ){
+            return card
+        }else{
+            card = new Card( title: title, description: description, caseNumber: caseNumber, domainId: domainId, assignee: assignee, phase: phase )
+            card.validate()           
+            return card
+        }
+    }
 
     
+    //TODO: Cleanup, check lazy settings.
+    transient Board getBoard(){
+        Phase.get(phase.id).board
+    }
+
 
     //TODO: dateCreated is not set?!
     transient beforeInsert = {
         domainId = MD5Codec.encode(dateCreated + title + description + caseNumber)
+        phaseDomainId = phase.domainId
     }
 
     transient afterInsert = {
-        //println "timestamp: $dateCreated title: $title desc: $description case# $caseNumber" 
+        println "timestamp: $dateCreated title: $title desc: $description case# $caseNumber phase: $phase"
+        phase = Phase.get(phase.id)
         card = new Card()
         card.domainId = domainId
         card.title = title
@@ -43,7 +63,12 @@ class CardEventCreate extends Event implements Comparable{
         card.save()
     }
 
-
+    transient onLoad = {
+        println "did: $domainId"
+        println "o.did: " + owner.domainId
+        //card = Card.findByDomainId(this.domainId)
+        //phase = Phase.findByDomainId(phaseDomainId)
+    }
 
     int compareTo(Object o) {
         if (o instanceof Event) {
@@ -57,6 +82,7 @@ class CardEventCreate extends Event implements Comparable{
 
             return EQUAL
         }
+        
     }
 
     boolean equals(Object o) {

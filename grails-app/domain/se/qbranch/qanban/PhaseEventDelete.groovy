@@ -34,6 +34,11 @@ class PhaseEventDelete  extends Event implements Comparable{
 
     }
 
+    transient onLoad = {
+        phase = new Phase( name: name, board: board, cardLimit: cardLimit, domainId: domainId )
+        
+    }
+
     int compareTo(Object o) {
         if (o instanceof Event) {
             Event event = (Event) o

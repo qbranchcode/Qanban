@@ -3,22 +3,22 @@ package se.qbranch.qanban
 class CardEventMove extends Event implements Comparable {
 
     static constraints = {
-
+        phaseDomainId ( nullable: true, blank: false )
     }
 
-    static transients = ['card']
-
-    Integer newCardIndex
+    static transients = ['card','newPhase']
     Card card
-
     Phase newPhase
+
+    String phaseDomainId
+    Integer newCardIndex
 
     transient beforeInsert = {
         domainId = card.domainId
+        phaseDomainId = newPhase.domainId
     }
 
     transient afterInsert = {
-
         card.phase.cards.remove(card)
         newPhase.cards.add(newCardIndex, card)
         card.phase = newPhase
@@ -26,6 +26,10 @@ class CardEventMove extends Event implements Comparable {
         
     }
 
+    transient onLoad = {
+        card = Card.findByDomainId(domainId)
+        newPhase = Phase.findByDomainId(phaseDomainId)
+    }
 
     int compareTo(Object o) {
         if (o instanceof Event) {

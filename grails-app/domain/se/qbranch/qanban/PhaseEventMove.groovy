@@ -7,9 +7,9 @@ class PhaseEventMove extends Event implements Comparable{
     }
 
     static transients = ['phase']
+    Phase phase
 
     Integer newPhaseIndex
-    Phase phase
 
     transient beforeInsert = {
         domainId = phase.domainId
@@ -19,6 +19,11 @@ class PhaseEventMove extends Event implements Comparable{
         phase.board.phases.remove(phase)
         phase.board.phases.add(newPhaseIndex, phase)
     }
+    
+    transient onLoad = {
+        phase = Phase.findByDomainId(domainId)
+    }
+
 
     int compareTo(Object o) {
         if (o instanceof Event) {

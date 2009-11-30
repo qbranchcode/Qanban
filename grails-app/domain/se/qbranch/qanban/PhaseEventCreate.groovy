@@ -9,7 +9,6 @@ class PhaseEventCreate extends Event implements Comparable{
     }
 
     static transients = ['phase']
-
     Phase phase
 
     String name
@@ -38,6 +37,10 @@ class PhaseEventCreate extends Event implements Comparable{
 
         phase.save()
         
+    }
+
+    transient onLoad = {
+        phase = Phase.findByDomainId(domainId)
     }
 
     int compareTo(Object o) {

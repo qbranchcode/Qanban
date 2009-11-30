@@ -7,8 +7,8 @@ class CardEventSetAssignee extends Event implements Comparable {
     }
 
     static transients = ['card']
-
     Card card
+    
     User newAssignee
 
     transient beforeInsert = {
@@ -17,6 +17,10 @@ class CardEventSetAssignee extends Event implements Comparable {
 
     transient afterInsert = {
 	card.assignee = newAssignee
+    }
+
+    transient onLoad = {
+        card = Card.findByDomainId(domainId)
     }
 
     int compareTo(Object o) {

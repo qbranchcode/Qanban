@@ -9,7 +9,6 @@ class PhaseEventUpdate extends Event implements Comparable{
     }
 
     static transients = ['phase']
-
     Phase phase
 
     String name
@@ -25,6 +24,10 @@ class PhaseEventUpdate extends Event implements Comparable{
         phase.cardLimit = cardLimit
         phase.save()
 
+    }
+
+    transient onLoad = {
+        phase = Phase.findByDomainId(domainId)
     }
 
     int compareTo(Object o) {
