@@ -4,7 +4,7 @@ class Card {
 
     static constraints = {
         title(blank:false, length:1..50)
-        description(length:1..1500)
+        description()
         caseNumber()
         assignee(nullable: true)
         phase()
@@ -14,7 +14,7 @@ class Card {
       columns {
           description type:'text'
       }
-   }
+    }
 
     static hasMany = [ events : CardEventMove ]
 

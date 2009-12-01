@@ -6,6 +6,12 @@ class CardEventUpdate implements Comparable {
             assignee ( nullable: true )
     }
 
+    static mapping = {
+      columns {
+          description type:'text'
+      }
+    }
+
     Card card
     String title
     String description

@@ -218,9 +218,7 @@
             modal: true,
             width: 300,
             title: "<g:message code="mainView.jQuery.dialog.editPhaseForm.title"/>",
-            close: function(){ 
-              $(this).empty();
-            }
+            close: function(){ $(this).empty(); }
       });
 
       $editCardDialog = $('<div id="editCardDialog"></div>');
@@ -428,7 +426,6 @@
 
       $('.editCardLink').click(function(event){
             var cardId = $(this).attr('id').split('_')[1];
-            $('#moveCardDialog').empty().dialog('destroy');
             $editCardDialog.qLoad(
                 '${createLink(controller:'card',action:'ajaxShowForm')}',
                                     {'board.id':${board.id} , 'id':cardId},
@@ -479,8 +476,7 @@
                         var newPhase = ui.item.parent().attr('id').split('_')[1];
 
 			if( ui.item.parent().attr('id') != icv.initPhase ){
-	                    $('#moveCardDialog').empty().dialog('destroy');
-    			    $moveCardDialog = $('<div id="moveCardDialog"></div>');
+	                    $moveCardDialog = $('<div id="moveCardDialog"></div>');
       		            $moveCardDialog.dialog({
       			       	      autoOpen: false,
 		      		      modal: true,
@@ -512,8 +508,8 @@
 		       
 		       		      	       recalculateHeightAndUpdateCardCount();
 					    }
-					    $(this).empty();
 					    $(this).dialog('destroy');
+                                            $(this).remove();
   			   	      },
 			   	      confirmed: false,
 			   	      card: ui.item,
@@ -732,11 +728,11 @@
 			modal: true,
 			buttons: {
 				<g:message code="ok"/>: function() {
-					$(this).dialog('close');
+					$(this).dialog('close').remove();
 				}
 			},
                         open: function(){
-                                setTimeout(function(){$('#popup').dialog('close')},1250);
+                                setTimeout(function(){$('#popup').dialog('close').remove()},1250);
                         }
       	    });
       }
