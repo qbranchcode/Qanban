@@ -172,8 +172,7 @@ ul.phase {
 
 .cardDescription {
     position: relative;
-    border-style: dotted;
-    border-width: 1px;
+    border: 1px dotted #666666;
     height: 4em;
     margin: 3px;
     padding: 2px;

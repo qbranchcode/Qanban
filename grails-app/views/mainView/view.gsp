@@ -37,7 +37,7 @@
               buttons: {
                 <g:message code="ok"/>: function() {
                   $(this).dialog('close');
-                  //Redirect till mainView/index
+                  //Redirect to mainView/index
                   window.location = "${createLink(controller:'mainView')}";
                 }
               }
@@ -87,7 +87,7 @@
               buttons: {
                 <g:message code="ok"/>: function() {
                   $(this).dialog('close');
-                  //Redirect till mainView/index
+                  //Redirect to mainView/index
                   window.location = "${createLink(controller:'mainView')}";
                 }
               }
@@ -175,7 +175,12 @@
     });
 
     $('.addCardLink').click(function(event){
-      $createCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',{'board.id':${board.id}},function(){$createCardDialog.dialog('open');});
+      $createCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',
+                              {'board.id':${board.id}},
+                              function(){
+                                $createCardDialog.dialog('open');
+                              },
+                              null, initAssigneeSelect);
       event.preventDefault();
     });
 
@@ -222,7 +227,7 @@
       $editCardDialog.dialog({
             autoOpen: false,
             modal: true,
-            title: "<g:message code="mainView.jQuery.dialog.editCardForm.title"/>",
+            title: "<g:message code="mainView.jQuery.dialog.viewCardForm.title"/>",
             width: 400,
 	    close: function(){ $(this).empty(); }
 
@@ -358,6 +363,7 @@
                               success: function() {
                                 $("#card_"+id).remove();
                                 recalculateHeightAndUpdateCardCount();
+                                $('#editCardDialog').empty().dialog('close');
                               },
                               error: function (XMLHttpRequest, textStatus, errorThrown) {
                                  $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.errorDeletingCard.content"/></p></div>').dialog({
@@ -430,19 +436,27 @@
                     $editCardDialog.dialog(
                       'option',
                       'buttons',
-                      { /*'Delete' : function() {
-                          $(this).dialog("close");
-                          deleteCardDialog(cardId);
-                        },
-                        TODO: Make this admin only before implementing it live
-                        */
-                        'Update' : function() {
-                          $editCardDialog.find('input[type="submit"]').click();
+                      { '<g:message code="_cardForm.button.edit"/>' : function() {
+                          initAssigneeSelect();
+                          $('#editCardDialog').dialog('option', 'title', '<g:message code="mainView.jQuery.dialog.editCardForm.title"/>');
+                          $('#editCardDialog').find("input").removeAttr([readonly='readonly']);
+                          $('#editCardDialog').find("input").addClass("edit");
+                          $('#editCardDialog').find("textarea").removeAttr([readonly='readonly']);
+                          $('#editCardDialog').find("textarea").addClass("edit");
+                          $('#editCardDialog').dialog('option', 'buttons',  {
+                            '<g:message code="_cardForm.button.update"/>' : function() {
+                                            $editCardDialog.find('input[type="submit"]').click();
+                                        },
+                                      <g:ifAllGranted role="ROLE_QANBANADMIN">'<g:message code="_cardForm.button.delete"/>' : function() {
+                                      deleteCardDialog(cardId);
+                                    }</g:ifAllGranted>
+                          });
+
+
                         }
                     });
                     $editCardDialog.dialog('open');
-                },
-                null, initAssigneeSelect);
+                });
             event.preventDefault();
       });
     
@@ -470,7 +484,7 @@
       		            $moveCardDialog.dialog({
       			       	      autoOpen: false,
 		      		      modal: true,
-		      	     	      title: "<g:message code="mainView.jQuery.moveCardForm.preCardTitle"/>" + ui.item.find('a').html(),
+		      	     	      title: "<g:message code="mainView.jQuery.moveCardForm.preCardTitle"/> " + ui.item.find('a').html(),
 		      		      width: 400,
     		                      initCardValues: icv,
 			   	      buttons: {
@@ -691,8 +705,7 @@
                       }
                   }
 
-                  }
-                  
+                }
 
 	      }else{
 	      	  $('#debug').html('Error in formRefresh()');
@@ -718,7 +731,7 @@
 			bgiframe: true,
 			modal: true,
 			buttons: {
-				Ok: function() {
+				<g:message code="ok"/>: function() {
 					$(this).dialog('close');
 				}
 			},
@@ -740,15 +753,8 @@
   </g:javascript>
 
   <style type="text/css">
-    
-
-
-
-
 
   </style>
-
-
 
 </head>
 

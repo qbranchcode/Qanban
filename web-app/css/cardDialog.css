@@ -1,3 +1,8 @@
+.descLabel {
+    padding-left: 1px;
+    font-weight: bold;
+}
+
 #moveCardDialog #moveMessage{
  padding: 10px;
 
@@ -29,8 +34,21 @@
 #cardForm .header input{
  font-size: 20px;
  font-weight: bold;
+ width: 323px;
+ margin-left: 3px;
+ text-indent: 4px;
+}
+
+.edit{
+ background-color: transparent !important;
+ border: 1px solid #e3e3e3 !important;
+}
+
+#cardForm .header .show{
+ font-size:20px;
+ font-weight: bold;
  width: 326px;
- text-indent: 8px;
+ text-indent: 4px;
 }
 
 
@@ -50,9 +68,10 @@
  float: left;
 }
 
-#cardForm .caseNumberWrapper{ float: left; width: 111px; padding-left: 40px;}
+#cardForm .caseNumberWrapper{ float: left; width: 112px; padding-left: 39px;}
 #cardForm .caseNumberWrapper *{ line-height: 1.7em; font-size: 1.0em !important;}
-#cardForm .caseNumberWrapper input{  width: 35px !important; }
+#cardForm .caseNumberWrapper input{  width: 34px !important; }
+#cardForm .caseNumberWrapper .show{  width: 36px !important; }
 #cardForm .content {
  margin: 0 2px 0 2px;
  padding: 2px;
@@ -60,91 +79,107 @@
 
 #cardForm  .content textarea {
  margin: 0px;
- width: 369px;
+ width: 370px;
  padding: 2px;
+ min-height: 10em;
 }
 
-#cardForm  select { width: 370px;}
+#cardForm  select { width: 370px; margin-top: 10px;}
 
 #cardForm .top { background-color: #cc0000; }
+
+.editField {
+  background-color: transparent !important;
+  border: 1px solid black !important;
+}
 
 #createCardDialog .property {
  background-color: transparent;
  border: 1px solid black;
  }
 
-#editCardDialog .property, #moveCardDialog .property {
+ #editCardDialog .property {
  background-color: transparent;
  border: 1px solid transparent;
  border-bottom: 1px solid #fff;
  border-right: 1px solid #fff;
 }
 
+#editCardDialog .descriptionProp {
+ max-height: 10em;
+ overflow: auto;
+}
+
+#moveCardDialog .property {
+ background-color: transparent;
+ border: 1px solid transparent;
+ border-bottom: 1px solid #fff;
+ border-right: 1px solid #fff;
+}
+
+.dropdownContainer{
+    float: left;
+    padding:2px;
+    background-color: #fdfdfd;
+    border: 1px solid #000;
+    position: absolute;
+    z-index: 3000;
+
+}
+
+#assignees{
+    display: none;
+    max-height: 120px;
+    overflow-y: auto;
+    position:relative;
+    padding-top: 2px;
+    border-top: 1px solid #000;
+    margin-top:2px;
+}
+
+#assignees li {
+    float: none;
+    display: block;
+    height: 30px;
+    cursor: pointer;
+    margin-top: 1px;
+}
 
 
-			.dropdownContainer{
-				float: left; 
-				padding:2px; 
-				background-color: #fdfdfd; 
-				border: 1px solid #000;
-				position: absolute; 
-				z-index: 3000;
+#assignees li:hover {
+    background-color: #eeeeee;
+}
 
-			}
+#assignees li.selected {
+    background-color: #e3a1a1;
+}
 
-			#assignees{
-				display: none;
-				max-height: 120px;	
-				overflow-y: auto; 
-				position:relative; 
-				padding-top: 2px; 
-				border-top: 1px solid #000; 
-				margin-top:2px;				
-			}
+#assignees li.selected:hover {
+    background-color: #cc0000;
+}
 
-			#assignees li {
-				float: none;
-				display: block;
-				height: 30px;	
-				cursor: pointer;
-				margin-top: 1px;
-			}
+#assignees li img, .assignee .avatar{
+    display: block;
+    float: left;
+}
 
+#assignees li .name, #currentAssigneeName {
+    float: left;
+    font-size: 12px;
+    font-weight: bold;
+    height: 15px;
+    padding: 12px 13px 3px 4px;
+    display: block;
+}
 
-			#assignees li:hover {
-				background-color: #eeeeee;	
-			}
+#currentAssigneeName{
+    display: none;
+    cursor: pointer;
+    padding-right: 3px;
+}
 
-			#assignees li.selected {
-				background-color: #e3a1a1;
-			}
+.assignee .avatar {
+    cursor: pointer;
 
-			#assignees li.selected:hover {
-				background-color: #cc0000;
-			}
-
-			#assignees li img, .assignee .avatar{	
-				display: block; 
-				float: left;
-			}
-
-			#assignees li .name, #currentAssigneeName {
-				float: left;
-				font-size: 12px;	
-				font-weight: bold; 
-				height: 15px; 
-				padding: 12px 13px 3px 4px;
-				display: block; 
-			}
-
-			#currentAssigneeName{
-				display: none;
-				cursor: pointer;
-				padding-right: 3px;
-			}
-
-			.assignee .avatar {
-				cursor: pointer;
-				
-			}
+}
 

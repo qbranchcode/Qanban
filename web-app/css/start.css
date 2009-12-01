@@ -1,21 +1,21 @@
 
 
-		
-#header h1{ 
- font-size: 10.2em; 
+
+#header h1{
+ font-size: 10.2em;
 }
 
-#header h1 * { 
+#header h1 * {
  font-size: 1em;
-}	
+}
 
 
 
-#header{ 
+#header{
  background-image: url(../images/head_fade.png);
- background-repeat: repeat-x; 
- position: relative; 
- height: 180px; 
+ background-repeat: repeat-x;
+ position: relative;
+ height: 180px;
  color: #fdfdfd;
  border-bottom: 1px solid red;
 }
@@ -29,7 +29,7 @@
 #header .wrap { height: 100%;}
 
 
-#logo{ 
+#logo{
  padding: 30px 0 0 0;
 }
 
@@ -42,10 +42,10 @@
 #mainmenu { bottom: 2px; #}
 
 #mainmenu ul{
- list-style-type: none; 
- list-style-image: none; 
+ list-style-type: none;
+ list-style-image: none;
  margin: 0px;
- padding: 0px; 
+ padding: 0px;
 }
 
 #mainmenu li{
@@ -73,10 +73,10 @@
  cursor: pointer;
 }
 
-#mainmenu a.active{ 
- color: #000; 
+#mainmenu a.active{
+ color: #000;
  background-color: #f2f2f2;
- cursor: default; 
+ cursor: default;
  -webkit-border-top-left-radius: 6px;
  -webkit-border-top-right-radius: 6px;
  -moz-border-radius-topleft:6px;
@@ -87,7 +87,7 @@
 }
 
 #content {
-overflow-x: hidden; 
+overflow-x: hidden;
 min-height: 400px;
 }
 
@@ -99,9 +99,9 @@ min-height: 400px;
 }
 
 .col-1, .col-2, .wideCol{ padding: 40px 0 0 0;}
-.col-1{ 
+.col-1{
  float: left;
- width: 310px;  
+ width: 310px;
 }
 .col-2{
 text-align: justify;
@@ -122,7 +122,7 @@ input[type='text'], input[type='password']{ border: 1px solid #000; }
 .big{ font-size: 1.4em; }
 #login form { margin-top: 30px; }
 #login input{ margin-bottom: 10px;}
-#login input[type='submit']{ float: right;}
+#login input[type='submit']{ float: right; margin-right: 60px; margin-top: 7px;}
 #login input[type='text'], #login input[type='password'] { width: 150px; margin: 0; position: relative; top: -3px;}
 #login label { font-weight: bold; font-size: 2em; width: 1.3em; display: inline-block; padding-top: 3px; line-height: 0.7em; text-align: right;}
 #login .fieldWrapper{ width: 190px; margin: auto;  }

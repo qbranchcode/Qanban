@@ -13,16 +13,6 @@
     <input type='password' class='text_' name='j_password' id='j_password' />
   </div>
 
-  <div class="checkboxWrapper">
-
-    <label for='remember_me'>
-      <g:message code="loginPage.auth.form.label.remember"/>
-    </label>
-
-    <input type='checkbox' class='chk' name='_spring_security_remember_me' id='remember_me'
-           <g:if test='${hasCookie}'>checked='checked'</g:if> />
-  </div>
-
   <input type='submit' value='<g:message code="loginPage.auth.form.button.login"/>' />
 
 </form>

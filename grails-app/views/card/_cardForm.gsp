@@ -52,7 +52,7 @@
 
       <div class="info">
 
-        <input type="text" id="card.title" disabled="disabled"
+        <input type="text" id="card.title" readonly="readonly"
                class="property ${hasErrors(bean:cardInstance,field:'title','errors')}"
                value="${fieldValue(bean:cardInstance,field:'title')}" />
 
@@ -61,7 +61,7 @@
 
         <div class="caseNumberWrapper">
           <label for="caseNumber"><g:message code="_cardForm.label.caseNumber"/></label>
-          <input type="text" id="card.caseNumber" disabled="disabled"
+          <input type="text" id="card.caseNumber" readonly="readonly"
                  class="property ${hasErrors(bean:cardInstance,field:'caseNumber','errors')}"
                  value="${fieldValue(bean:cardInstance,field:'caseNumber')}" />
         </div>
@@ -70,8 +70,9 @@
     </div>
     <div class="content">
 
-      <label for="description"><g:message code="_cardForm.label.description"/></label>
-      <textarea id="card.description" disabled="disabled" class="property ${hasErrors(bean:cardInstance,field:'description','errors')}">"${fieldValue(bean:cardInstance,field:'description')}"</textarea>
+      <label for="description" class="descLabel"><g:message code="_cardForm.label.description"/></label>
+      <textarea id="card.description" readonly="readonly" class="property ${hasErrors(bean:cardInstance,field:'description','errors')}">
+      ${fieldValue(bean:cardInstance,field:'description')}</textarea>
 
 
       <g:if test="${cardInstance.events}">
@@ -139,7 +140,7 @@
 
       <div class="info">
 
-        <input type="text" id="card.title" name="title"
+        <input readonly="readonly" type="text" id="card.title" name="title"
                class="property ${hasErrors(bean:cardInstance,field:'title','errors')}"
                value="${fieldValue(bean:cardInstance,field:'title')}" />
 
@@ -148,7 +149,7 @@
 
         <div class="caseNumberWrapper">
           <label for="caseNumber"><g:message code="_cardForm.label.caseNumber"/></label>
-          <input type="text" id="card.caseNumber" name="caseNumber"
+          <input readonly="readonly" type="text" id="card.caseNumber" name="caseNumber"
                  class="property ${hasErrors(bean:cardInstance,field:'caseNumber','errors')}"
                  value="${fieldValue(bean:cardInstance,field:'caseNumber')}" />
         </div>
@@ -157,8 +158,8 @@
     </div>
     <div class="content">
 
-      <label for="description"><g:message code="_cardForm.label.description"/></label>
-      <textarea id="card.description" class="property ${hasErrors(bean:cardInstance,field:'description','errors')}"
+      <label for="description" class="descLabel"><g:message code="_cardForm.label.description"/></label>
+      <textarea readonly="readonly" id="card.description" class="property ${hasErrors(bean:cardInstance,field:'description','errors')}"
                 name="description">${fieldValue(bean:cardInstance,field:'description')}</textarea>
 
 
@@ -193,9 +194,35 @@
                 before="if(\$('[name=title]').val() == 'Title...          ') \$('[name=title]').val('');">
 
     <div class="header">
-      <div class="assignee">
-        <!-- Gravatar -->
-      </div>
+	<div class="dropdownContainer assignee">
+
+		<g:if test="${cardInstance?.assignee}">
+			<avatar:gravatar email="${cardInstance?.assignee?.email}" size="38"/>
+			<span id="currentAssigneeName">${cardInstance?.assignee?.userRealName}</span>
+		</g:if>
+		<g:else>
+			<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="<g:message code='_cardForm.assignee.trigger'/>"
+				width="38" height="38"/>
+			<span id="currentAssigneeName"><g:message code='_cardForm.assignee.noAssignee'/></span>
+		</g:else>
+
+		<div style="clear: both;"></div>
+		<ul id="assignees">
+			<li id="user_" <g:if test="${!cardInstance?.assignee?.id}">class="selected"</g:if> >
+				<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30"/>
+				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
+			</li>
+			<g:each var="user" in="${userList}">
+				<li id="user_${user?.id}"
+				    class='<g:if test="${cardInstance?.assignee?.id == user.id}">selected</g:if>' >
+
+					<avatar:gravatar email="${user?.email}" alt="${user?.userRealName}" size="30"/>
+					<span class="name">${user?.userRealName}</span>
+				</li>
+			</g:each>
+		</ul>
+		<div style="clear: both;"></div>
+	</div>
       <div class="info">
         <input type="text" id="card.title" name="title"
                class="property ${hasErrors(bean:cardInstance,field:'title','errors')}"
@@ -212,7 +239,7 @@
       </div>
     </div>
     <div class="content">
-      <label for="description"><g:message code="_cardForm.label.description"/></label>
+      <label for="description" class="descLabel"><g:message code="_cardForm.label.description"/></label>
       <textarea id="card.description" class="property ${hasErrors(bean:cardInstance,field:'description','errors')}"
                 name="description"></textarea>
     </div>
