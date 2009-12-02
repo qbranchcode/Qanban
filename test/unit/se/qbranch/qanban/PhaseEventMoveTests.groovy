@@ -60,30 +60,6 @@ class PhaseEventMoveTests extends GrailsUnitTestCase {
         phase2 = phaseEventCreate2.phase
         phase3 = phaseEventCreate3.phase
 
-
-        mockDomain(PhaseEventCreate)
-        mockDomain(Phase)
-
-        def phaseEventCreate1 = new PhaseEventCreate(name: "First phase", cardLimit: 5, user: user1, board: board)
-        def phaseEventCreate2 = new PhaseEventCreate(name: "Second phase", cardLimit: 10, user: user1 , board: board)
-        def phaseEventCreate3 = new PhaseEventCreate(name: "Third phase", user: user1, board: board)
-
-        phaseEventCreate1.beforeInsert()
-        phaseEventCreate1.save()
-        phaseEventCreate1.process()
-
-        phaseEventCreate2.beforeInsert()
-        phaseEventCreate2.save()
-        phaseEventCreate2.process()
-
-        phaseEventCreate3.beforeInsert()
-        phaseEventCreate3.save()
-        phaseEventCreate3.process()
-
-        phase1 = phaseEventCreate1.phase
-        phase2 = phaseEventCreate2.phase
-        phase3 = phaseEventCreate3.phase
-
         assertEquals phase1, Phase.findByDomainId(phase1.domainId)
 
         // Card / CardEventCreate mock
