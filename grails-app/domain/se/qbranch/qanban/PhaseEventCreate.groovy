@@ -17,7 +17,7 @@ class PhaseEventCreate extends Event implements Comparable{
     Integer cardLimit
     Integer position
 
-    Phase getPhase(){
+    public Phase getPhase(){
         if( !phase && domainId ){
             phase = Phase.findByDomainId(domainId)
         }

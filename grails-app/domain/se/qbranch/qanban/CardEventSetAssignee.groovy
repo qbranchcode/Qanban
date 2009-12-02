@@ -11,7 +11,7 @@ class CardEventSetAssignee extends Event implements Comparable {
     
     User newAssignee
 
-    Card getCard(){
+    public Card getCard(){
         if( !card && domainId ){
             card = Card.findByDomainId(domainId)
         }

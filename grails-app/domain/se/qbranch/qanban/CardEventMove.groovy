@@ -14,14 +14,14 @@ class CardEventMove extends Event implements Comparable {
     Integer newCardIndex
 
 
-    Card getCard(){
+    public Card getCard(){
         if( !card && domainId ){
             card = Card.findByDomainId(domainId)
         }
         return card
     }
 
-    Phase getNewPhase(){
+    public Phase getNewPhase(){
         if( !newPhase && phaseDomainId ){
             newPhase = Phase.findByDomainId(phaseDomainId)
         }

@@ -15,7 +15,7 @@ class PhaseEventMove extends Event implements Comparable{
 
     Integer position
 
-    Phase getPhase(){
+    public Phase getPhase(){
         if( !phase && domainId ){
             phase = Phase.findByDomainId(domainId)
         }

@@ -29,7 +29,7 @@ class CardEventCreate extends Event implements Comparable{
     User assignee
     
 
-    Phase getPhase() {
+    public Phase getPhase() {
         def phase
         
         if( phaseDomainId ){
@@ -38,7 +38,7 @@ class CardEventCreate extends Event implements Comparable{
         return phase
     }
 
-    Card getCard(){
+    public Card getCard(){
         if( !card ){
             if( domainId){
                card = Card.findByDomainId(domainId)
