@@ -131,55 +131,55 @@ class MainViewController {
 }
 
 
-class MoveCardCommand {
-
-    static constraints = {
-        id(min: 0, nullable: false, validator:{ val, obj ->
-                Card.exists(val)
-            })
-        newPos(min: 0, nullable: false)
-        newPhase(min: 0, nullable: false, validator:{val, obj ->
-                Phase.exists(val)
-            })
-    }
-
-    static mapping = {
-        version false
-    }
-
-    Integer id
-    Integer newPos
-    Integer newPhase
-
-    def getCard() {
-        Card.get(id)
-    }
-
-    def getPhase() {
-        Phase.get(newPhase)
-    }
-
-}
-
-
-class SetAssigneeCommand {
-
-    static constraints = {
-        assigneeId(min: 0, nullable: true, validator:{ val, obj ->
-                !val || User.exists( val )
-            })
-        id(min: 0, nullable: false, validator:{ val, obj ->
-                Card.exists(val)
-            })
-    }
-    Integer assigneeId
-    Integer id
-
-    def getAssignee() {
-        User.get(assigneeId)
-    }
-
-    def getCard() {
-        Card.get(id)
-    }
-}
+//class MoveCardCommand {
+//
+//    static constraints = {
+//        id(min: 0, nullable: false, validator:{ val, obj ->
+//                Card.exists(val)
+//            })
+//        newPos(min: 0, nullable: false)
+//        newPhase(min: 0, nullable: false, validator:{val, obj ->
+//                Phase.exists(val)
+//            })
+//    }
+//
+//    static mapping = {
+//        version false
+//    }
+//
+//    Integer id
+//    Integer newPos
+//    Integer newPhase
+//
+//    def getCard() {
+//        Card.get(id)
+//    }
+//
+//    def getPhase() {
+//        Phase.get(newPhase)
+//    }
+//
+//}
+//
+//
+//class SetAssigneeCommand {
+//
+//    static constraints = {
+//        assigneeId(min: 0, nullable: true, validator:{ val, obj ->
+//                !val || User.exists( val )
+//            })
+//        id(min: 0, nullable: false, validator:{ val, obj ->
+//                Card.exists(val)
+//            })
+//    }
+//    Integer assigneeId
+//    Integer id
+//
+//    def getAssignee() {
+//        User.get(assigneeId)
+//    }
+//
+//    def getCard() {
+//        Card.get(id)
+//    }
+//}

@@ -7,11 +7,80 @@ import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 class PhaseController {
 
     def authenticateService
-
+    def securityService
+    def eventService
+    
     def index = { redirect(action:list,params:params) }
 
     // the delete, save and update actions only accept POST requests
     static allowedMethods = [delete:'POST', save:'POST', update:'POST']
+
+    @Secured(['ROLE_QANBANADMIN'])
+    def eEdit = {
+        def updateEvent = new PhaseEventUpdate()
+        updateEvent.phase = Phase.get(params.id)
+        render(template:'phaseForm', model:[ updateEvent: updateEvent ])
+    }
+
+    @Secured(['ROLE_QANBANADMIN'])
+    def eUpdate = {
+        def updateEvent = new PhaseEventUpdate()
+        def phase = Phase.get(params.id)
+        phase.properties = params
+        updateEvent.phase = phase
+        println "ev: [ $updateEvent.name, $updateEvent.cardLimit, $updateEvent.phase  - $phase.id]"
+        updateEvent.user = securityService.getLoggedInUser()
+        updateEvent.save()
+
+        if( !updateEvent.hasErrors() ){
+            flash.message = "$updateEvent.phase.name updated"
+        }
+
+        withFormat{
+            html{
+                return render(template:'phaseForm',model:[updateEvent:updateEvent ])
+            }
+            js{
+                return render ( [ phaseInstance : updateEvent.phase ] as JSON)
+            }
+            xml{
+                return render ( [ phaseInstance : updateEvent.phase ] as XML)
+            }
+        }
+
+    }
+
+    @Secured(['ROLE_QANBANADMIN'])
+    def eCreate = {
+        render(template:'phaseForm', model:[ createEvent: new PhaseEventCreate(), boardInstance: Board.get(params.'board.id')])
+    }
+
+    @Secured(['ROLE_QANBANADMIN'])
+    def eSave = {
+
+        def createEvent = new PhaseEventCreate(params)
+        createEvent.user = securityService.getLoggedInUser()
+        eventService.persist(createEvent)
+        
+        if( !createEvent.hasErrors() ){
+            flash.message = "Phase ${createEvent.phase.id} registred"
+        }
+
+        withFormat{
+            html{
+                def board = createEvent.board
+                return render(template:'phaseForm',model:[createEvent:createEvent, boardInstance: board])
+            }
+            js{
+                return render ( [ phaseInstance : createEvent.phase] as JSON)
+            }
+            xml{
+                return render ( [ phaseInstance : createEvent.phase ] as XML)
+            }
+        }
+    }
+
+
 
     def list = {
         params.max = Math.min( params.max ? params.max.toInteger() : 10,  100)
@@ -262,6 +331,7 @@ class PhaseController {
 
     }
 
+
     def createPhaseEventMove(cmd){
         if(phaseIsMovedToANewPosition(cmd)){
             def moveEvent = new PhaseEventMove(
@@ -275,7 +345,7 @@ class PhaseController {
     }
 
     boolean phaseIsMovedToANewPosition(cmd){
-         return cmd.newPhaseidx != cmd.phase.board.phases.indexOf(cmd.phase)
+        return cmd.newPhaseidx != cmd.phase.board.phases.indexOf(cmd.phase)
     }
 
 }

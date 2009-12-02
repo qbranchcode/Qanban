@@ -6,28 +6,30 @@ import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 @Secured(['IS_AUTHENTICATED_FULLY'])
 class CardController {
 
-    def authenticateService
     def securityService
+    def eventService
+    def ruleService
 
-    /*****
-     *  C - R - U - D
-     ****/
 
-    def index = { redirect(action:list,params:params) }
+    // Create
 
-    // the delete, save and update actions only accept POST requests
-    //static allowedMethods = [delete:'POST', save:'POST', update:'POST']
+    def create = {
+        if ( !params.boardId )
+            return render(status: 400, text: "The parameter 'boardId' must be specified")
+        println "create"
+        CardEventCreate createEvent = createCardEventCreate(params)      
+        eventService.persist(createEvent)
+        renderCreateResult(createEvent)
+    }
 
-    def eCreate = {
+    private CardEventCreate createCardEventCreate(params){
+        def event = new CardEventCreate(params)
+        event.user = securityService.getLoggedInUser()
+        event.phaseDomainId = Board.get(params.boardId).phases[0].domainId
+        return event
+    }
 
-        CardEventCreate createEvent = new CardEventCreate(params)
-        createEvent.user = securityService.getLoggedInUser()
-        createEvent.save()
-
-        if( !createEvent.hasErrors() ){
-            flash.message = "Card ${createEvent.card.id} registred"
-        }
-
+    private renderCreateResult(createEvent){
         withFormat{
             html{
                 def board = createEvent.board
@@ -40,257 +42,184 @@ class CardController {
                 return render ( [ cardInstance : createEvent.card ] as XML)
             }
         }
-        
     }
+
+
+    // Retrive
 
     def show = {
-
         if( !params.id )
-        return render(status: 400, text: "You must specify an id")
-
-        def cardInstance = Card.get( params.id )
-
-        if(!cardInstance)
-        return render(status: 404, text: "Card with id ${params.id} not found.")
-
-        withFormat {
-
-            html {
-                return render (template:"card", bean:cardInstance )
-            }
-
-            js {
-                return render ([ cardInstance : cardInstance  ] as JSON)
-            }
-
-            xml {
-                return render ([ cardInstance : cardInstance ] as XML )
-            }
-
-        }
-
+            return renderShowResultWithoutIdParam(params)
+        if( !Card.exist(params.id) )
+            return render(status: 404, text: "Card with id $params.id not found")
+        renderShowResult(params)
     }
 
-    def list = {
-        params.max = Math.min( params.max ? params.max.toInteger() : 10,  100)
-
-        withFormat {
-            html {
-                return [ cardInstanceList: Card.list( params ), cardInstanceTotal: Card.count() ]
-            }
-
-            js {
-                return render( [ cardInstanceList: Card.list( params ), cardInstanceTotal: Card.count() ] as JSON )
-            }
-
-            xml {
-                return render( [ cardInstanceList: Card.list( params ), cardInstanceTotal: Card.count() ] as XML )
-            }
-        }
-
-    }
-
-    @Secured(['ROLE_QANBANADMIN'])
-    def delete = {
-
-        def cardInstance = Card.get( params.id )
-
-        if( !params.id )
-        return render(status: 400, text: "You must specify an id")
-
-        if(cardInstance) {
-            try {
-                //                cardInstance.phase.cards.remove(cardInstance)
-                //                cardInstance.delete(flush:true)
-                CardEventDelete(cardInstance).save()
-                return render ("Successfully deleted card with id $params.id.")
-
-            }
-            catch(org.springframework.dao.DataIntegrityViolationException e) {
-                return render(status: 404, text: "Card not found with id ${params.id}")
-            }
-        }
-        else {
-            return render(status: 404, text: "Card not found with id ${params.id}")
-        }
-    }
-
-    def update = { UpdateCardCommand cmd ->
-
-        if(cmd.hasErrors()) {
-            return render([result: false] as JSON)
-        }else {
-            createCardEventUpdate(cmd)
-            cardUpdatedOrSaved(cmd.card, "Card ${params.id} updated")
-        }
-    }
-
-    def saveOrUpdate = {
-        def cardInstance
-
-        // Update
-        if( params.id ){
-            cardInstance = Card.get( params.id )
-            def phase = Phase.get(params."phase.id")
-
-            if(cardInstance) {
-
-                if(params.version) {
-                    def version = params.version.toLong()
-                    if(cardInstance.version > version) {
-
-                        cardInstance.errors.rejectValue("version", "card.optimistic.locking.failure", "Another user has updated this Card while you were editing.")
-                        return render(view:'edit',model:[cardInstance:cardInstance])
-                    }
-                }
-
-                cardInstance.properties = params
-
-                if(cardInstance.validate() && phase && cardInstance.save()) {
-                    cardUpdatedOrSaved(cardInstance, "Card ${params.id} updated")
-                }
-                else {
-                    render(view:'edit',model:[cardInstance:cardInstance])
-                }
-            }
-            else {
-                flash.message = "Card not found with id ${params.id}"
-                redirect(action:list)
-            }
-
-            // Save
-        }else{
-            cardInstance = new Card(params)
-            def phase = cardInstance.phase
-            if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
-                cardUpdatedOrSaved(cardInstance, "Card ${cardInstance.id} registred")
-            } else {
-                cardDidntSave(cardInstance)
-            }
-        }
-    }
-
-    void cardUpdatedOrSaved(cardInstance, message) {
+    private def renderShowResultWithoutIdParam(params){
         withFormat{
             html{
-                flash.message = message
-                return render(template:'cardForm',model:[cardInstance:cardInstance, boardInstance: cardInstance.phase.board])
+                def board = Board.get(params.'board.id')
+                return render(template:'cardForm',model:[ boardInstance: board])
             }
             js{
-                return render ([ cardInstance : cardInstance  ] as JSON)
+                return render(status: 400, text: "You have to specify an id")
             }
             xml{
-                return render ([ cardInstance : cardInstance  ] as XML)
+                return render(status: 400, text: "You have to specify an id")
             }
         }
     }
 
-    void cardDidntSave(cardInstance) {
+    private def renderShowResult(params){
         withFormat{
             html{
-                return render(template:'cardForm',model:[cardInstance])
+                def card = Card.get(params.id)
+                def board = card.phase.board
+                return render(template:'cardForm',model:[cardInstance: card , boardInstance: board])
             }
-            js {
-                response.status = 500 //Internal Server Error
-                return render( "Could not create new Card due to errors:\n ${cardInstance.errors}" )
+            js{
+                return render ( [ cardInstance : createEvent.card ] as JSON)
             }
-            xml {
-                response.status = 500 //Internal Server Error
-                return render( "Could not create new Card due to errors:\n ${cardInstance.errors}" )
+            xml{
+                return render ( [ cardInstance : createEvent.card ] as XML)
             }
         }
     }
 
-    void createCardEventUpdate(cmd) {
-        def cardEventUpdate = new CardEventUpdate(
+    // Update
+
+    def update = {
+
+        CardEventUpdate updateEvent = new CardEventUpdate(params)
+        eventService.persist(updateEvent)
+
+        withFormat{
+            html{
+                def board = updateEvent.board
+                return render (template: 'cardForm', model:[createEvent:createEvent, boardInstance: board])
+            }
+            js{
+                return render ( [cardInstance : updateEvent.card] as JSON )
+            }
+            xml{
+                return render ( [cardInstance : updateEvent.card] as XML )
+            }
+        }
+
+    }
+
+    private CardEventSetAssignee createCardEventSetAssignee(cmd) {
+
+        def event = new CardEventSetAssignee(
             card: cmd.card,
-            title: cmd.title,
-            description: cmd.description,
-            caseNumber: cmd.caseNumber,
-            assignee: cmd.assignee,
-            user: authenticateService.userDomain())
-        cardEventUpdate.save()
+            user:  User.get(params.user), // TODO: Fixa så att den inloggade usern kommer med anropet
+            newAssignee: cmd.assignee)
+
+        return event
     }
 
-    /****
-     * Pure view related actions
-     *
-     ****/
+    // Delete
 
-    def ajaxShowForm = {
+    def delete = {
 
-        if(params.id == null){
-            render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list()])
-        
-        }else {
-            def card = Card.get(params.id)
-            def events = Event.findAllByDomainId(card.domainId)
-    
-            if( params.newPhase == null ){
-                render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), userList: User.list(), cardInstance: card, events: events ])
-            }else{
-                render(template:'cardForm', model: [ boardInstance: Board.get(params."board.id"), cardInstance: Card.get(params.id), newPhase: params.newPhase , newPos: params.newPos, userList: User.list(), loggedInUser: User.get(params."user") , user: params."user", events: events])
-            }
-        }
-        
     }
 
-    def ajaxSave = {
-        def cardInstance = new Card(params)
-        def phase = cardInstance.phase
-        if(cardInstance.validate() && phase && phase.addToCards(cardInstance) && cardInstance.save()) {
-            flash.message = "Card ${cardInstance.title} registered"
+    // Move
+
+    def move = { MoveCardCommand mcc, SetAssigneeCommand sac ->
+
+        if( mcc.hasErrors() || sac.hasErrors() || !ruleService.isMoveLegal(mcc) ){
+            return response.status = 400 // Bad request
         } else {
-            flash.message = null
-        }
-        render (template: 'cardForm', model: [cardInstance:cardInstance, boardInstance:cardInstance.phase.board])
-    }
+            def saEvent = createEventSetAssignee(sac)
+            def mcEvent = null
 
-    @Secured(['ROLE_QANBANADMIN'])
-    def ajaxDelete = {
-
-        if( params.id ){
-
-            def card = Card.get(params.id)
-
-            if( card ){
-                card.phase.cards.remove(card)
-                card.delete()
-                return render(status: 200, text: "Card with id $params.id deleted")
-            }else{
-                return render(status: 404, text: "There is no card with id $params.id")
+            if( isMovingToANewPosition(mcc) ){
+                mcEvent = createCardEventMove(mcc)
             }
 
-        }else{
-            return render(status: 400, text: "You must specify an id")
+            eventService.persist(mcEvent)
+            eventSertice.persist(saEvent)
+
+
         }
+
     }
+
+
+
+    private CardEventMove createCardEventMove(cmd, board) {
+        def user = User.get(params.user) // TODO: Fixa så att den inloggade usern kommer med anropet
+        def cardEventMove = new CardEventMove(
+            newPhase: cmd.phase,
+            newCardIndex: cmd.newPos,
+            card: cmd.card,
+            user: user)
+        return cardEventMove
+    }
+
+    private boolean isMovingToANewPosition(MoveCardCommand cmd) {
+
+        def initialCardIndex = cmd.card.phase.cards.indexOf(cmd.card)
+        def initialPhase = cmd.card.phase
+
+        if(initialCardIndex == cmd.newPos && initialPhase.equals(cmd.phase))
+        return false
+        return true
+    }
+    
 }
 
-class UpdateCardCommand {
+
+class MoveCardCommand {
 
     static constraints = {
         id(min: 0, nullable: false, validator:{ val, obj ->
-                Card.exists(obj.id)
+                Card.exists(val)
             })
-        assigneeId(min: 0, nullable: true, validator:{ val, obj ->
-                !val || User.exists( val )
+        newPos(min: 0, nullable: false)
+        newPhase(min: 0, nullable: false, validator:{val, obj ->
+                Phase.exists(val)
             })
     }
 
+    static mapping = {
+        version false
+    }
+
     Integer id
-    String description
-    String title
-    Integer caseNumber
-    Integer assigneeId
+    Integer newPos
+    Integer newPhase
 
     def getCard() {
         Card.get(id)
     }
 
-    def getAssignee() {
-        User.get(assigneeId)
+    def getPhase() {
+        Phase.get(newPhase)
     }
 
 }
 
+class SetAssigneeCommand {
+
+    static constraints = {
+        assigneeId(min: 0, nullable: true, validator:{ val, obj ->
+                !val || User.exists( val )
+            })
+        id(min: 0, nullable: false, validator:{ val, obj ->
+                Card.exists(val)
+            })
+
+    }
+    Integer assigneeId
+    Integer id
+
+    def getAssignee() {
+        User.get(assigneeId)
+    }
+
+    def getCard() {
+        Card.get(id)
+    }
+}

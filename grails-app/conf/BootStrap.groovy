@@ -7,6 +7,7 @@ class BootStrap {
     def authenticateService
     def authenticationManager
     def sessionController
+    def eventService
 
     def init = { servletContext ->
         authenticationManager.sessionController = sessionController
@@ -54,7 +55,7 @@ class BootStrap {
                                      passwd:authenticateService.passwordEncoder("testuser"),
                                      enabled:true,
                                      description:"This is a regular user",
-                                     email:"test@test.com",
+                                     email:"mattias.mirhagen@gmail.com",
                                      authorities:userRole)
 
             if(regularUser.save()) {
@@ -66,7 +67,7 @@ class BootStrap {
                                      passwd:authenticateService.passwordEncoder("testadmin"),
                                      enabled:true,
                                      description:"This is an admin user",
-                                     email:"test@test.com",
+                                     email:"patrik.gardeman@gmail.com",
                                      authorities:adminRole)
 
             if(adminUser.save()) {
@@ -76,12 +77,12 @@ class BootStrap {
 
             Board board = new Board().save()
 
-            new PhaseEventCreate(name: "Backlog", user: adminUser, board: board).save()
-            new PhaseEventCreate(name: "WIP", cardLimit: 5, user: adminUser, board: board).save()
-            new PhaseEventCreate(name: "Done", user: adminUser, board: board).save()
+            eventService.persist(new PhaseEventCreate(name: "Backlog", user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(name: "WIP", cardLimit: 5, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(name: "Done", user: adminUser, board: board))
 
-            new CardEventCreate(title: "Card #1", caseNumber: 1, description: "The first card", phase: Phase.get(1), user: adminUser).save()
-            new CardEventCreate(title: "Card #2", caseNumber: 2, description: "The second card", phase: Phase.get(1), user: adminUser).save()
+            eventService.persist(new CardEventCreate(title: "Card #1", caseNumber: 1, description: "The first card", phaseDomainId: (Phase.get(1).domainId), user: adminUser))
+            eventService.persist(new CardEventCreate(title: "Card #2", caseNumber: 2, description: "The second card",phaseDomainId: (Phase.get(1).domainId), user: adminUser))
             
             break
 
