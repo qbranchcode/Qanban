@@ -98,5 +98,22 @@ class CardEventMoveTests extends GrailsUnitTestCase {
 
     }
 
+  void testCompareOfCardEventMove() {
+    def cardOld = new CardEventMove(newCardIndex: 0,
+                        card: Card.get(0),
+                        user: null,
+                        newPhase: null,
+                        dateCreated: new Date().previous())
+    def cardNewer = new CardEventMove(newCardIndex: 0,
+                        card: Card.get(0),
+                        user: null,
+                        newPhase: null,
+                        dateCreated: new Date())
+    assert cardOld.compareTo(cardNewer) > 0
+    assert cardNewer.compareTo(cardOld) < 0
+    assert cardNewer.compareTo(cardNewer) == 0
+
+  }
+
 
 }
