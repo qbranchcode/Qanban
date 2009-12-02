@@ -21,6 +21,7 @@
 
     /*Ajax Load Wrapper */
     $.fn.qLoad = function(options) {
+
       var $element = $(this);
       var checked = 'false';
       var sessionTO = 'false';
@@ -165,10 +166,9 @@
 
     $('.addCardLink').click(function(event){
 
-
       var loadAddCardLink = function(tries) {
         $createCardDialog.qLoad({
-            url : '${createLink(controller:'card',action:'show')}',
+            url : '${createLink(controller:'card',action:'form')}',
             data : {'board.id':${board.id}},
             successCallback : function(){
                                 $createCardDialog.dialog('open');
@@ -180,7 +180,6 @@
       }
 
       loadAddCardLink();
-
       event.preventDefault();
 
       });
@@ -407,10 +406,10 @@
 
       $('.editPhaseLink').click(function(event){
             var phaseId = $(this).attr('id').split('_')[1];
-<<<<<<< HEAD:grails-app/views/mainView/view.gsp
+
             var loadEditPhaseLink = function(tries) {
               $editPhaseDialog.qLoad({
-                  url : '${createLink(controller:'phase',action:'eEdit')}',
+                  url : '${createLink(controller:'phase',action:'form')}',
                   data : {'id': phaseId },
                   successCallback : function(){
                       $editPhaseDialog.dialog(
@@ -677,8 +676,9 @@
 
     formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first'),recalculateHeightAndUpdateCardCount);
 
-    }
- /* TODO: Change beforeInjection to getNewElementCallback to break out some missplaced logic */
+  }
+
+  /* TODO: Change beforeInjection to getNewElementCallback to break out some missplaced logic */
   function formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,beforeCloseFunction,beforeInjection,incompleteFormCallback){
       
       var $dialog = $(dialogSelector);

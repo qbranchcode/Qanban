@@ -14,9 +14,10 @@ class CardController {
     // Create
 
     def create = {
+        println 'create'
         if ( !params.boardId )
-            return render(status: 400, text: "The parameter 'boardId' must be specified")
-        println "create"
+        return render(status: 400, text: "The parameter 'boardId' must be specified")
+        println 'b exist'
         CardEventCreate createEvent = createCardEventCreate(params)      
         eventService.persist(createEvent)
         renderCreateResult(createEvent)
@@ -30,6 +31,7 @@ class CardController {
     }
 
     private renderCreateResult(createEvent){
+        println 'render'
         withFormat{
             html{
                 def board = createEvent.board
@@ -48,42 +50,51 @@ class CardController {
     // Retrive
 
     def show = {
+
         if( !params.id )
-            return renderShowResultWithoutIdParam(params)
-        if( !Card.exist(params.id) )
+            return render(status: 400, text: "You need to specify an id")
+
+        if( !Card.exists(params.id) )
             return render(status: 404, text: "Card with id $params.id not found")
-        renderShowResult(params)
-    }
 
-    private def renderShowResultWithoutIdParam(params){
-        withFormat{
+        def card = Card.get(params.id)
+
+        withFormat {
+
             html{
-                def board = Board.get(params.'board.id')
-                return render(template:'cardForm',model:[ boardInstance: board])
+                return render (template: 'card', bean: card)
             }
             js{
-                return render(status: 400, text: "You have to specify an id")
+                return render ( [cardInstance : card] as JSON )
             }
             xml{
-                return render(status: 400, text: "You have to specify an id")
+                return render ( [cardInstance : card] as XML )
             }
         }
     }
+    
+    def form = {
 
-    private def renderShowResult(params){
-        withFormat{
-            html{
-                def card = Card.get(params.id)
-                def board = card.phase.board
-                return render(template:'cardForm',model:[cardInstance: card , boardInstance: board])
-            }
-            js{
-                return render ( [ cardInstance : createEvent.card ] as JSON)
-            }
-            xml{
-                return render ( [ cardInstance : createEvent.card ] as XML)
-            }
-        }
+        if( !params.id )
+            return renderFormCreateMode(params)
+
+        if( !Card.exists(params.id) )
+            return render(status: 404, text: "Card with id $params.id not found")
+
+        return renderFormEditMode(params)
+        
+    }
+
+    private def renderFormCreateMode(params){
+        def board = Board.get(params.'board.id')
+        def users = User.list();
+        return render(template:'cardForm',model:[ boardInstance: board, userList: users])
+    }
+
+    private def renderFormEditMode(params){
+        def card = Card.get(params.id)
+        def board = card.phase.board
+        return render(template:'cardForm',model:[cardInstance: card , boardInstance: board])
     }
 
     // Update

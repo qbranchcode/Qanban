@@ -223,16 +223,15 @@
 
 		<div style="clear: both;"></div>
 		<ul id="assignees">
-			<li id="user_" <g:if test="${cardInstance?.assignee?.id}">class="selected"</g:if> >
+
+			<li id="user_" class="selected">
 				<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30"/>
 				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
 			</li>
 			<g:each var="user" in="${userList}">
-				<li id="user_${user?.id}"
-				    class='<g:if test="${cardInstance?.assignee?.id == user.id}">selected</g:if>' >
-
-					<avatar:gravatar email="${user?.email}" alt="${user?.userRealName}" size="30"/>
-					<span class="name">${user?.userRealName}</span>
+				<li id="user_${user.id}">
+					<avatar:gravatar email="${user.email}" alt="${user.userRealName}" size="30"/>
+					<span class="name">${user.userRealName}</span>
 				</li>
 			</g:each>
 		</ul>
@@ -262,7 +261,7 @@
 
     <%-- Note: This is the id of the card, not the event --%>
     <input type="hidden" name="id" value="${createEvent?.card?.id}"/>
-
+    <input type="hidden" name="assigneeId" id="assigneeValue" value=""/>
     <input type="hidden" name="boardId" value="${boardInstance.id}" />
     <input style="display: none;" type="submit"/>
 

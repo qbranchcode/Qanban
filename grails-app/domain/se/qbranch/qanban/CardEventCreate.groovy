@@ -6,8 +6,14 @@ class CardEventCreate extends Event implements Comparable{
     static constraints = {
         assignee ( nullable : true )
         title( blank: false, length: 1..50 )
-        description(length:1..300, blank: true, nullable: true)
+        description(blank: true, nullable: true)
         phaseDomainId( nullable: false, blank: false )
+    }
+
+    static mapping = {
+      columns {
+          description type:'text'
+      }
     }
 
     static transients = ['card','phase','board']

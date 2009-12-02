@@ -4,7 +4,7 @@ class Card {
 
     static constraints = {
         title(blank:false, length:1..50)
-        description()
+        description( blank: true, nullable: true)
         caseNumber()
         assignee(nullable: true)
         phase()
