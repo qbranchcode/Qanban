@@ -4,6 +4,7 @@ import grails.test.*
 
 class PhaseEventMoveTests extends GrailsUnitTestCase {
 
+
     def user1
     def user2
 
@@ -117,17 +118,15 @@ class PhaseEventMoveTests extends GrailsUnitTestCase {
     void testLegalMoveOfFirstPhaseToNextIndex() {
 
         assertEquals 0, phase1.board.phases.indexOf(phase1)
-        
-        def updateEvent = new PhaseEventMove( phase: phase1, newPhaseIndex: 2 )
 
-        updateEvent.validate()
-        updateEvent.beforeInsert()
-        updateEvent.save()
-        updateEvent.process()
+        def pem = new PhaseEventMove( phase: phase1, position: 2 )
 
-        assertEquals card1onPhase1.domainId, updateEvent.domainId
-        assertEquals newTitle, card1onPhase1.title
-        assertNull "There should be no description", card1onPhase1.description
+        pem.beforeInsert()
+        pem.save()
+        pem.process()
+
+        assertEquals 2, phase1.board.phases.indexOf(phase1)
+
 
     }
 }
