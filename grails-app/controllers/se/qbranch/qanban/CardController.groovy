@@ -12,7 +12,7 @@ class CardController {
 
 
     // Create
-
+    @Secured(['ROLE_QANBANADMIN'])
     def create = {
 
         if ( !params.boardId )
@@ -110,7 +110,6 @@ class CardController {
     }
 
     // Update
-
     def update = { SetAssigneeCommand sac ->
         
         CardEventUpdate updateEvent = new CardEventUpdate()
@@ -155,6 +154,7 @@ class CardController {
 
     // Delete
 
+    @Secured(['ROLE_QANBANADMIN'])
     def delete = {
         println "del"
         if( !params.id )
