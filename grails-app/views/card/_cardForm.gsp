@@ -164,6 +164,7 @@
 
 
       <g:if test="${cardInstance.events}">
+        <label for="events" class="descLabel"><g:message code="_cardForm.label.events" /></label>
         <select name="events" size="4" multiple>
           <g:each in="${cardInstance.events}" var='event'>
             <option>${event.dateCreated}:

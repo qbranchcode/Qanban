@@ -307,7 +307,7 @@
 
    function deletePhaseDialog(id){
   
-      $('<div><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to delete the phase?</p></div>').dialog({
+      $('<div><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><g:message code="_phaseForm.delete.confirm"/></p></div>').dialog({
         resizable: false,
         height:140,
         modal: true,
@@ -348,7 +348,7 @@
 
    function deleteCardDialog(id){
 
-      $('<div><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>Are you sure you want to delete this card?</p></div>').dialog({
+      $('<div><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><g:message code="_cardForm.delete.confirm"/></p></div>').dialog({
         resizable: false,
         height:140,
         modal: true,
