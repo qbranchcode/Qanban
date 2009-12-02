@@ -5,3 +5,6 @@ Qanban*.war
 web-app/plugins/
 *~
 grails-app/conf/SecurityConfig.groovy
+*.iml
+*.ipr
+*.iws
