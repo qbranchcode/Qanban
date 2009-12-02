@@ -122,13 +122,13 @@ class CardEventUpdateTests extends GrailsUnitTestCase {
         def newTitle = "Card #1 is updated"
         def caseNo = 1337
 
-        def updateEvent = new CardEventUpdate(
-            card: card1onPhase1,
-            title: newTitle,
-            description: null,
-            caseNumber: caseNo,
-            user: user1
-        )
+        def updateEvent = new CardEventUpdate()
+        updateEvent.card = card1onPhase1;
+        updateEvent.title =  newTitle;
+        updateEvent.description = null;
+        updateEvent.caseNumber = caseNo;
+        updateEvent.user = user1;
+        
 
         updateEvent.validate()
         updateEvent.beforeInsert()
