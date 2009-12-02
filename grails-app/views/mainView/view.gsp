@@ -154,6 +154,23 @@
 
     }
 
+    /*Dialog wrapper*/
+
+    $.fn.qDialog = function(options) {
+       options.width = options.width ? options.width : options.width = 300;
+       options.autoOpen = options.autoOpen ? options.autoOpen : options.autoOpen = false;
+       options.modal = options.modal ? options.modal : options.modal = true;
+       options.title = options.title;
+       options.buttons = options.buttons;
+       if( options.close ){
+          var closeFunction = options.close;
+          options.close = function(){ closeFunction(); $(this).empty(); };
+       }else{
+          options.close = function(){ $(this).empty(); };
+       }
+       $(this).dialog(options);
+    }
+
     
 /***********/
 /* DIALOGS */
@@ -161,16 +178,23 @@
 
     $createCardDialog = $('<div id="createCardDialog"></div>');
 
-    $createCardDialog.dialog({
-      autoOpen: false,
-      modal: true,
+    $createCardDialog.qDialog({
       width: 400,
-      close: function(){ $(this).empty(); },
+      close: function(){
+                var _wait_button = $('.ui-dialog-buttonpane button:contains(<g:message code="button.wait"/>)');
+                _wait_button.text('<g:message code="_cardForm.button.submit"/>');
+                _wait_button.removeClass('ui-state-disabled');
+                _wait_button.removeAttr('disabled');
+              },
       title: "<g:message code="mainView.jQuery.dialog.addCardForm.title"/>",
       buttons: {
-                    <g:message code="_cardForm.button.submit"/> : function(){ 
-                      $createCardDialog.find('input[type="submit"]').click();                      
-                    }
+                  <g:message code="_cardForm.button.submit"/> : function(){
+                    $createCardDialog.find('input[type="submit"]').click();
+                    var _create_button = $('.ui-dialog-buttonpane button:contains(<g:message code="_cardForm.button.submit"/>)');
+                    _create_button.text('<g:message code="button.wait"/>');
+                    _create_button.addClass('ui-state-disabled');
+                    _create_button.attr('disabled','disabled');
+              }
       } 
     });
 
@@ -186,16 +210,23 @@
 
     $createPhaseDialog = $('<div id="createPhaseDialog"></div>');
     
-    $createPhaseDialog.dialog({
-      autoOpen: false,
-      modal: true,
-      width: 300,
+    $createPhaseDialog.qDialog({
       title: "<g:message code="mainView.jQuery.dialog.addPhaseForm.title"/>",
-      close: function(){ $(this).empty(); },
+      close: function(){
+            var _wait_button = $('.ui-dialog-buttonpane button:contains(<g:message code="button.wait"/>)');
+            _wait_button.text('<g:message code="_phaseForm.button.save"/>');
+            _wait_button.removeClass('ui-state-disabled');
+            _wait_button.removeAttr('disabled');
+          },
       buttons: {
-                    <g:message code="_phaseForm.button.save"/> : function(){
-                      $createPhaseDialog.find('input[type="submit"]').click();
-                    }
+                  <g:message code="_phaseForm.button.save"/> : function(){
+                  $createPhaseDialog.find('input[type="submit"]').click();
+                  var _create_button = $('.ui-dialog-buttonpane button:contains(<g:message code="_phaseForm.button.save"/>)');
+                  var original_text = _create_button.text();
+                  _create_button.text('<g:message code="button.wait"/>');
+                  _create_button.addClass('ui-state-disabled');
+                  _create_button.attr('disabled','disabled');
+               }
       }
     });
 
@@ -213,22 +244,14 @@
     });
 
       $editPhaseDialog = $('<div id="editPhaseDialog"></div>');
-      $editPhaseDialog.dialog({
-            autoOpen: false,
-            modal: true,
-            width: 300,
+      $editPhaseDialog.qDialog({
             title: "<g:message code="mainView.jQuery.dialog.editPhaseForm.title"/>",
-            close: function(){ $(this).empty(); }
       });
 
       $editCardDialog = $('<div id="editCardDialog"></div>');
-      $editCardDialog.dialog({
-            autoOpen: false,
-            modal: true,
+      $editCardDialog.qDialog({
             title: "<g:message code="mainView.jQuery.dialog.viewCardForm.title"/>",
             width: 400,
-	    close: function(){ $(this).empty(); }
-
       });
       
     
@@ -407,8 +430,13 @@
                         'option',
                         'buttons',
                         { 
-                           'Update' : function(){
+                           '<g:message code="_phaseForm.button.update"/>' : function(){
                                 $editPhaseDialog.find('input[type="submit"]').click();
+                                var _update_button = $('.ui-dialog-buttonpane button:contains(<g:message code="_phaseForm.button.update"/>)');
+                                _update_button.text('<g:message code="button.wait"/>');
+                                _update_button.addClass('ui-state-disabled');
+                                _update_button.attr('disabled','disabled');
+
                             },
                             '<g:message code="_phaseForm.button.delete"/>': function() {
                                 deletePhaseDialog(phaseId);
@@ -443,13 +471,15 @@
                           $('#editCardDialog').dialog('option', 'buttons',  {
                             '<g:message code="_cardForm.button.update"/>' : function() {
                                             $editCardDialog.find('input[type="submit"]').click();
+                                            var _update_button = $('.ui-dialog-buttonpane button:contains(<g:message code="_cardForm.button.update"/>)');
+                                            _update_button.text('<g:message code="button.wait"/>');
+                                            _update_button.addClass('ui-state-disabled');
+                                            _update_button.attr('disabled','disabled');
                                         },
                                       <g:ifAllGranted role="ROLE_QANBANADMIN">'<g:message code="_cardForm.button.delete"/>' : function() {
                                       deleteCardDialog(cardId);
                                     }</g:ifAllGranted>
                           });
-
-
                         }
                     });
                     $editCardDialog.dialog('open');
