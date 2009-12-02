@@ -164,9 +164,11 @@
     });
 
     $('.addCardLink').click(function(event){
+
+
       var loadAddCardLink = function(tries) {
         $createCardDialog.qLoad({
-            url : '${createLink(controller:'card',action:'ajaxShowForm')}',
+            url : '${createLink(controller:'card',action:'show')}',
             data : {'board.id':${board.id}},
             successCallback : function(){
                                 $createCardDialog.dialog('open');
@@ -176,9 +178,12 @@
             caller : loadAddCardLink
         });
       }
+
       loadAddCardLink();
+
       event.preventDefault();
-    });
+
+      });
 
     $createPhaseDialog = $('<div id="createPhaseDialog"></div>');
     
@@ -193,9 +198,10 @@
     });
 
     $('.addPhaseLink').click(function(event){
+
       var loadCreatePhaseLink = function(tries) {
        $createPhaseDialog.qLoad({
-	   url : '${createLink(controller:'phase',action:'ajaxPhaseForm')}',
+	   url : '${createLink(controller:'phase',action:'create')}',
 	   data : {'board.id':${board.id}},
 	   successCallback : function(){$createPhaseDialog.dialog('open');},
 	   completeCallback : function(){
@@ -205,8 +211,10 @@
            caller : loadCreatePhaseLink
        });
       }
+
       loadCreatePhaseLink();
       event.preventDefault();
+
     });
 
       $editPhaseDialog = $('<div id="editPhaseDialog"></div>');
@@ -273,7 +281,7 @@
              cancel:'.old',
              placeholder:'phaseplaceholder',
              stop:function(event,ui){
-                $('input[name$=idx]').val(ui.item.prevAll().length);
+                $('input[name=position]').val(ui.item.prevAll().length);
 
              }});
     }
@@ -399,10 +407,11 @@
 
       $('.editPhaseLink').click(function(event){
             var phaseId = $(this).attr('id').split('_')[1];
+<<<<<<< HEAD:grails-app/views/mainView/view.gsp
             var loadEditPhaseLink = function(tries) {
               $editPhaseDialog.qLoad({
-                  url : '${createLink(controller:'phase',action:'ajaxPhaseForm')}',
-                  data : {'id': phaseId,'board.id': ${board.id} },
+                  url : '${createLink(controller:'phase',action:'eEdit')}',
+                  data : {'id': phaseId },
                   successCallback : function(){
                       $editPhaseDialog.dialog(
                           'option',
@@ -426,6 +435,7 @@
               });
             }
             loadEditPhaseLink();
+
             event.preventDefault();
       });
 
@@ -664,9 +674,10 @@
 
 
   function cardFormRefresh(formData,dialogSelector,successTitle,successMessage){
-  	   formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first'),recalculateHeightAndUpdateCardCount);
-  
-  }
+
+    formRefresh(formData,dialogSelector,successTitle,successMessage,'${createLink(controller:"card",action:"show")}',$('.phase:first'),recalculateHeightAndUpdateCardCount);
+
+    }
  /* TODO: Change beforeInjection to getNewElementCallback to break out some missplaced logic */
   function formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,beforeCloseFunction,beforeInjection,incompleteFormCallback){
       
@@ -688,7 +699,7 @@
 		      beforeInjection();
 		  }
 		  
-		  var $indexInput = $newContent.find('input[name$=idx]');
+		  var $indexInput = $newContent.find('input[name=position]');
 		  
 		
 		  if( $indexInput.size() == 1 && ( $phases.size() > $indexInput.val() ) ) {
@@ -701,13 +712,13 @@
 		  
 	      }else if( $oldElement.size() == 1 ){
                   
-                  $oldElement.replaceWith($newElement);
+                $oldElement.replaceWith($newElement);
 
-                  if( $newElement.attr('id').split('_')[0] != 'card' ){
+                if( $newElement.attr('id').split('_')[0] != 'card' ){
 
 
                   var oldIndex = 1 + parseInt($newElement.prevAll().size());  
-                  var newIndex = 1 + parseInt($newContent.find('input[name$=idx]').val());
+                  var newIndex = 1 + parseInt($newContent.find('input[name=position]').val());
                   var selector = '.phaseWrapper:nth-child('+ newIndex +')';
                   var $elementAtDestination = $(selector);
 	      	  var idAtNewIndex = $elementAtDestination.attr('id');

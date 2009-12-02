@@ -191,22 +191,10 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 <%--
 	CREATE
 --%>
-<g:elseif test="$createEvent">
+<g:else>
 
   <g:hasErrors bean="${createEvent}">
   <div>
@@ -214,7 +202,7 @@
   </div>
 </g:hasErrors>
 
-  <g:formRemote url="${[controller:'card',action:'eCreate', params: [format: 'html']]}"
+  <g:formRemote url="${[controller:'card',action:'create', params: [format: 'html']]}"
                 update="createCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#createCardDialog')"
                 onComplete="toggleSpinner()"
@@ -252,33 +240,34 @@
 	</div>
       <div class="info">
         <input type="text" id="card.title" name="title"
-               class="property ${hasErrors(bean:cardInstance,field:'title','errors')}"
-               value="Title...          " onfocus="if (this.value == 'Title...          ') this.value = '';"
-               onblur="if (this.value == '') this.value = 'Title...          '"/>
+               class="property ${hasErrors(bean:createEvent,field:'title','errors')}" value="${createEvent?.title}"
+              <%-- value="Title...          " onfocus="if (this.value == 'Title...          ') this.value = '';"
+               onblur="if (this.value == '') this.value = 'Title...          '"/> --%>
 
         <span class="date"></span>
 
        <div class="caseNumberWrapper">
          <label for="caseNumber"><g:message code="_cardForm.label.caseNumber"/></label>
-          <input type="text" id="card.caseNumber" name="caseNumber"
-                 class="property ${hasErrors(bean:cardInstance,field:'caseNumber','errors')}"/>
+          <input type="text" id="card.caseNumber" name="caseNumber" value="${createEvent?.caseNumber}"
+                 class="property ${hasErrors(bean:createEvent,field:'caseNumber','errors')}"/>
         </div>
 
       </div>
     </div>
     <div class="content">
       <label for="description" class="descLabel"><g:message code="_cardForm.label.description"/></label>
-      <textarea id="card.description" class="property ${hasErrors(bean:cardInstance,field:'description','errors')}"
+      <textarea id="card.description" class="property ${hasErrors(bean:createEvent,field:'description','errors')}"
                 name="description"></textarea>
     </div>
 
     <%-- Note: This is the id of the card, not the event --%>
     <input type="hidden" name="id" value="${createEvent?.card?.id}"/>
 
-    <input type="hidden" name="phase.id" value="${boardInstance.phases[0].id}" />
+    <input type="hidden" name="boardId" value="${boardInstance.id}" />
     <input style="display: none;" type="submit"/>
 
   </g:formRemote>
-</g:elseif>
+
+</g:else>
 
 
