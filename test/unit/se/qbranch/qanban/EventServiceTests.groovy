@@ -1,7 +1,8 @@
 package se.qbranch.qanban
+
 import grails.test.*
 
-class SecurityServiceTests extends GrailsUnitTestCase {
+class EventServiceTests extends GrailsUnitTestCase {
     protected void setUp() {
         super.setUp()
     }

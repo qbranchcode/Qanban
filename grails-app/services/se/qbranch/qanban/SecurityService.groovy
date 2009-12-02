@@ -5,6 +5,8 @@ import org.codehaus.groovy.grails.plugins.springsecurity.AuthorizeTools
 
 class SecurityService {
 
+    String ADMIN_ROLE = "ROLE_QANBANADMIN"
+
     boolean transactional = true
 
     def getLoggedInUser() {
@@ -13,6 +15,12 @@ class SecurityService {
             user = User.get(determineSource().id)
         }
         return user
+    }
+
+    boolean isUserAdmin(){
+        if (AuthorizeTools.ifAllGranted(ADMIN_ROLE))
+            return true
+        return false
     }
 
     private def determineSource() {
