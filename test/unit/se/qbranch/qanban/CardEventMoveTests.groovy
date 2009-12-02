@@ -19,7 +19,7 @@ class CardEventMoveTests extends GrailsUnitTestCase {
     def card3onPhase2
 
 
-    protected void setUp() {
+     protected void setUp() {
         super.setUp()
 
         // User mock
@@ -45,18 +45,17 @@ class CardEventMoveTests extends GrailsUnitTestCase {
         def phaseEventCreate2 = new PhaseEventCreate(name: "Second phase", cardLimit: 10, user: user1 , board: board)
         def phaseEventCreate3 = new PhaseEventCreate(name: "Third phase", user: user1, board: board)
 
-        phaseEventCreate1.validate()
         phaseEventCreate1.beforeInsert()
         phaseEventCreate1.save()
-        phaseEventCreate1.afterInsert()
+        phaseEventCreate1.process()
 
         phaseEventCreate2.beforeInsert()
         phaseEventCreate2.save()
-        phaseEventCreate2.afterInsert()
+        phaseEventCreate2.process()
 
         phaseEventCreate3.beforeInsert()
         phaseEventCreate3.save()
-        phaseEventCreate3.afterInsert()
+        phaseEventCreate3.process()
 
         phase1 = phaseEventCreate1.phase
         phase2 = phaseEventCreate2.phase
@@ -69,21 +68,21 @@ class CardEventMoveTests extends GrailsUnitTestCase {
         mockDomain(CardEventCreate)
         mockDomain(Card)
 
-        def cardEventCreate1 = new CardEventCreate(title:"Card #1",caseNumber:1,description:"The first card originally from First phase on the first position",phase:phase1,user:user1)
-        def cardEventCreate2 = new CardEventCreate(title:"Card #2",caseNumber:2,description:"The second card originally from First phase on the second position",phase:phase1,user:user1)
-        def cardEventCreate3 = new CardEventCreate(title:"Card #3",caseNumber:3,description:"The third card originally from Second phase on the first position",phase:phase2,user:user1)
+        def cardEventCreate1 = new CardEventCreate(title:"Card #1",caseNumber:1,description:"The first card originally from First phase on the first position",phaseDomainId:phase1.domainId,user:user1)
+        def cardEventCreate2 = new CardEventCreate(title:"Card #2",caseNumber:2,description:"The second card originally from First phase on the second position",phaseDomainId:phase1.domainId,user:user1)
+        def cardEventCreate3 = new CardEventCreate(title:"Card #3",caseNumber:3,description:"The third card originally from Second phase on the first position",phaseDomainId:phase2.domainId,user:user1)
 
         cardEventCreate1.beforeInsert()
         cardEventCreate1.save()
-        cardEventCreate1.afterInsert()
+        cardEventCreate1.process()
 
         cardEventCreate2.beforeInsert()
         cardEventCreate2.save()
-        cardEventCreate2.afterInsert()
+        cardEventCreate2.process()
 
         cardEventCreate3.beforeInsert()
         cardEventCreate3.save()
-        cardEventCreate3.afterInsert()
+        cardEventCreate3.process()
 
         card1onPhase1 = cardEventCreate1.card
         card2onPhase1 = cardEventCreate2.card
@@ -109,6 +108,7 @@ class CardEventMoveTests extends GrailsUnitTestCase {
         assertEquals 2, card2onPhase1.id
         assertEquals 3, card3onPhase2.id
 
+
         mockDomain(CardEventMove)
 
     }
@@ -127,7 +127,7 @@ class CardEventMoveTests extends GrailsUnitTestCase {
 
         cardEventMove.beforeInsert()
         cardEventMove.save()
-        cardEventMove.afterInsert()
+        cardEventMove.process()
 
         assertEquals 0, card2onPhase1.phase.cards.indexOf(card2onPhase1)
         assertEquals 0, card2onPhase1.phase.board.phases.indexOf(card2onPhase1.phase)
@@ -143,7 +143,7 @@ class CardEventMoveTests extends GrailsUnitTestCase {
 
         cardEventMove.beforeInsert()
         cardEventMove.save()
-        cardEventMove.afterInsert()
+        cardEventMove.process()
 
         assertEquals 0, card2onPhase1.phase.cards.indexOf(card2onPhase1)
         assertEquals 1, card2onPhase1.phase.board.phases.indexOf(card2onPhase1.phase)

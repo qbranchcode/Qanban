@@ -1,5 +1,5 @@
 package se.qbranch.qanban
-import org.codehaus.groovy.grails.plugins.codecs.MD5Codec
+
 
 class CardEventCreate extends Event implements Comparable{
 
@@ -7,14 +7,12 @@ class CardEventCreate extends Event implements Comparable{
         assignee ( nullable : true )
         title( blank: false, length: 1..50 )
         description(length:1..300, blank: true, nullable: true)
-        phaseDomainId( nullable: true, blank: false )
+        phaseDomainId( nullable: false, blank: false )
     }
 
     static transients = ['card','phase','board']
 
     Card card
-    Phase phase
-
 
     String title
     String description
@@ -26,8 +24,10 @@ class CardEventCreate extends Event implements Comparable{
     
 
     Phase getPhase() {
-        if( !phase && phaseDomainId ){
-            phase = Phase.getByDomainId(phaseDomainId)
+        def phase
+        
+        if( phaseDomainId ){
+            phase = Phase.findByDomainId(phaseDomainId)
         }
         return phase
     }
@@ -45,28 +45,22 @@ class CardEventCreate extends Event implements Comparable{
     
     //TODO: Cleanup, check lazy settings.
     transient Board getBoard(){
-        Phase.get(phase.id).board
+        Phase.findByDomainId(phaseDomainId).board
     }
 
-
-    //TODO: dateCreated is not set?!
-    transient beforeInsert = {
-        domainId = MD5Codec.encode(dateCreated + title + description + caseNumber)
-        phaseDomainId = phase.domainId
+    def beforeInsert = {
+        generateDomainId(title, caseNumber)
     }
 
-    transient afterInsert = {
-        println "timestamp: $dateCreated title: $title desc: $description case# $caseNumber phase: $phase"
-        phase = Phase.get(phase.id)
+    def process(){
+        def phase = getPhase()
         card = new Card()
         card.domainId = domainId
         card.title = title
         card.phase = phase
         card.description = description
         card.caseNumber = caseNumber
-
         phase.addToCards(card)
-
         card.save()
     }
 
@@ -78,6 +72,7 @@ class CardEventCreate extends Event implements Comparable{
             final int AFTER = 1;
 
             if(this.dateCreated < event.dateCreated) return AFTER
+            
             if(this.dateCreated > event.dateCreated) return BEFORE
 
             return EQUAL

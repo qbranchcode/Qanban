@@ -6,7 +6,7 @@ class CardEventUpdate extends Event implements Comparable {
     
     static constraints = {
         title( blank: false, length: 1..50)
-        description(length:1..300, blank: true, nullable: true )
+        description( blank: true, nullable: true )
         caseNumber( )
     }
 
@@ -35,7 +35,7 @@ class CardEventUpdate extends Event implements Comparable {
         domainId = card.domainId
     }
 
-    transient afterInsert = {
+    transient process(){
 
         card.title = title
         card.description = description

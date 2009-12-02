@@ -6,19 +6,19 @@ class CardEventCreateTests extends GrailsUnitTestCase {
 
     def user1
     def user2
-    
+
     def board
 
     def phase1
     def phase2
     def phase3
-    
+
     def card1onPhase1
     def card2onPhase1
     def card3onPhase2
 
-    
-    protected void setUp() {
+
+     protected void setUp() {
         super.setUp()
 
         // User mock
@@ -39,50 +39,49 @@ class CardEventCreateTests extends GrailsUnitTestCase {
 
         mockDomain(PhaseEventCreate)
         mockDomain(Phase)
-        
+
         def phaseEventCreate1 = new PhaseEventCreate(name: "First phase", cardLimit: 5, user: user1, board: board)
         def phaseEventCreate2 = new PhaseEventCreate(name: "Second phase", cardLimit: 10, user: user1 , board: board)
         def phaseEventCreate3 = new PhaseEventCreate(name: "Third phase", user: user1, board: board)
 
-        phaseEventCreate1.validate()
         phaseEventCreate1.beforeInsert()
         phaseEventCreate1.save()
-        phaseEventCreate1.afterInsert()
+        phaseEventCreate1.process()
 
         phaseEventCreate2.beforeInsert()
         phaseEventCreate2.save()
-        phaseEventCreate2.afterInsert()
+        phaseEventCreate2.process()
 
         phaseEventCreate3.beforeInsert()
         phaseEventCreate3.save()
-        phaseEventCreate3.afterInsert()
+        phaseEventCreate3.process()
 
         phase1 = phaseEventCreate1.phase
         phase2 = phaseEventCreate2.phase
         phase3 = phaseEventCreate3.phase
 
         assertEquals phase1, Phase.findByDomainId(phase1.domainId)
-        
+
         // Card / CardEventCreate mock
 
         mockDomain(CardEventCreate)
         mockDomain(Card)
 
-        def cardEventCreate1 = new CardEventCreate(title:"Card #1",caseNumber:1,description:"The first card originally from First phase on the first position",phase:phase1,user:user1)
-        def cardEventCreate2 = new CardEventCreate(title:"Card #2",caseNumber:2,description:"The second card originally from First phase on the second position",phase:phase1,user:user1)
-        def cardEventCreate3 = new CardEventCreate(title:"Card #3",caseNumber:3,description:"The third card originally from Second phase on the first position",phase:phase2,user:user1)
+        def cardEventCreate1 = new CardEventCreate(title:"Card #1",caseNumber:1,description:"The first card originally from First phase on the first position",phaseDomainId:phase1.domainId,user:user1)
+        def cardEventCreate2 = new CardEventCreate(title:"Card #2",caseNumber:2,description:"The second card originally from First phase on the second position",phaseDomainId:phase1.domainId,user:user1)
+        def cardEventCreate3 = new CardEventCreate(title:"Card #3",caseNumber:3,description:"The third card originally from Second phase on the first position",phaseDomainId:phase2.domainId,user:user1)
 
         cardEventCreate1.beforeInsert()
         cardEventCreate1.save()
-        cardEventCreate1.afterInsert()
+        cardEventCreate1.process()
 
         cardEventCreate2.beforeInsert()
         cardEventCreate2.save()
-        cardEventCreate2.afterInsert()
+        cardEventCreate2.process()
 
         cardEventCreate3.beforeInsert()
         cardEventCreate3.save()
-        cardEventCreate3.afterInsert()
+        cardEventCreate3.process()
 
         card1onPhase1 = cardEventCreate1.card
         card2onPhase1 = cardEventCreate2.card
@@ -121,12 +120,12 @@ class CardEventCreateTests extends GrailsUnitTestCase {
         event.title = "Card #4"
         event.description = "Created By A Event"
         event.caseNumber = 4
-        event.phase = Phase.get(1)
+        event.phaseDomainId = Phase.get(1).domainId
         event.user = user1
 
         event.beforeInsert()
         event.save()
-        event.afterInsert()
+        event.process()
 
         event.errors.getAllErrors().each { println it}
         println event.domainId
@@ -142,12 +141,12 @@ class CardEventCreateTests extends GrailsUnitTestCase {
 
         event.title = "Card #4"
         event.description = "Created By A Event"
-        event.phase = Phase.get(1)
+        event.phaseDomainId = Phase.get(1).domainId
 
         event.beforeInsert()
         event.save()
-        event.afterInsert()
-        event.errors.getAllErrors().each { println it}
+        event.process()
+        event.errors.getAllErrors().each { println it }
 
         assertTrue 'The event should have errors' ,event.hasErrors()
         assertEquals null, event.id

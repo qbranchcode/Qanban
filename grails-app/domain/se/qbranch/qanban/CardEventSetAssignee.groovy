@@ -22,8 +22,9 @@ class CardEventSetAssignee extends Event implements Comparable {
         domainId = card.domainId
     }
 
-    transient afterInsert = {
+    transient process(){
 	card.assignee = newAssignee
+        card.save()
     }
 
     int compareTo(Object o) {

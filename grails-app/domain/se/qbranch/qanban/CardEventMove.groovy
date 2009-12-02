@@ -25,7 +25,7 @@ class CardEventMove extends Event implements Comparable {
         if( !newPhase && phaseDomainId ){
             newPhase = Phase.findByDomainId(phaseDomainId)
         }
-        return phase
+        return newPhase
     }
 
 
@@ -34,7 +34,8 @@ class CardEventMove extends Event implements Comparable {
         phaseDomainId = newPhase.domainId
     }
 
-    transient afterInsert = {
+    transient process = {
+        
         card.phase.cards.remove(card)
         newPhase.cards.add(newCardIndex, card)
         card.phase = newPhase
