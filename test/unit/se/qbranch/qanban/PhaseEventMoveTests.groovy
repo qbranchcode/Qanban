@@ -60,6 +60,30 @@ class PhaseEventMoveTests extends GrailsUnitTestCase {
         phase2 = phaseEventCreate2.phase
         phase3 = phaseEventCreate3.phase
 
+
+        mockDomain(PhaseEventCreate)
+        mockDomain(Phase)
+
+        def phaseEventCreate1 = new PhaseEventCreate(name: "First phase", cardLimit: 5, user: user1, board: board)
+        def phaseEventCreate2 = new PhaseEventCreate(name: "Second phase", cardLimit: 10, user: user1 , board: board)
+        def phaseEventCreate3 = new PhaseEventCreate(name: "Third phase", user: user1, board: board)
+
+        phaseEventCreate1.beforeInsert()
+        phaseEventCreate1.save()
+        phaseEventCreate1.process()
+
+        phaseEventCreate2.beforeInsert()
+        phaseEventCreate2.save()
+        phaseEventCreate2.process()
+
+        phaseEventCreate3.beforeInsert()
+        phaseEventCreate3.save()
+        phaseEventCreate3.process()
+
+        phase1 = phaseEventCreate1.phase
+        phase2 = phaseEventCreate2.phase
+        phase3 = phaseEventCreate3.phase
+
         assertEquals phase1, Phase.findByDomainId(phase1.domainId)
 
         // Card / CardEventCreate mock
@@ -97,8 +121,11 @@ class PhaseEventMoveTests extends GrailsUnitTestCase {
         }
 
         assertEquals 1, board.id
+        assertEquals 3, board.phases.size()
         assertEquals 1, phase1.id
+        assertEquals 2, phase1.cards.size()
         assertEquals 2, phase2.id
+        assertEquals 1, phase2.cards.size()
         assertEquals 3, phase3.id
         assertEquals 1, card1onPhase1.id
         assertEquals 2, card2onPhase1.id
@@ -113,11 +140,10 @@ class PhaseEventMoveTests extends GrailsUnitTestCase {
 
     void testLegalMoveOfFirstPhaseToNextIndex() {
 
-<<<<<<< HEAD:test/unit/se/qbranch/qanban/PhaseEventMoveTests.groovy
         assertEquals 0, phase1.board.phases.indexOf(phase1)
         
-        def pem = new PhaseEventMove( phase: phase1, newPhaseIndex: 2 )
-=======
+        def updateEvent = new PhaseEventMove( phase: phase1, newPhaseIndex: 2 )
+
         updateEvent.validate()
         updateEvent.beforeInsert()
         updateEvent.save()
@@ -126,16 +152,6 @@ class PhaseEventMoveTests extends GrailsUnitTestCase {
         assertEquals card1onPhase1.domainId, updateEvent.domainId
         assertEquals newTitle, card1onPhase1.title
         assertNull "There should be no description", card1onPhase1.description
-
-    }
->>>>>>> Added some logic to the Event entity and refactored the CardEvents:test/unit/se/qbranch/qanban/CardEventUpdateTests.groovy
-
-        pem.beforeInsert()
-        pem.save()
-        pem.afterInsert()
-
-        assertEquals 2, phase1.board.phases.indexOf(phase1)
-
 
     }
 }

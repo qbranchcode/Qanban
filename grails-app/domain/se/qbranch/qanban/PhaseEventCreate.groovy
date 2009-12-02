@@ -6,6 +6,7 @@ class PhaseEventCreate extends Event implements Comparable{
     static constraints = {
         cardLimit ( nullable: true )
         position ( nullable: true )
+        name(nullable: false, blank: false)
     }
 
     static transients = ['phase']
@@ -24,10 +25,10 @@ class PhaseEventCreate extends Event implements Comparable{
     }
 
     transient beforeInsert = {
-        domainId = MD5Codec.encode(dateCreated + name + board )
+        generateDomainId(name, board )
     }
 
-    transient afterInsert = {
+    transient process = {
 
         phase = new Phase(
             name: name,

@@ -8,7 +8,7 @@ class Phase {
                 if(phaseInstance.cardLimit < phaseInstance.cards.size() && phaseInstance.id != null && phaseInstance.cardLimit != null)
                     return ['phase.cardLimit.lessThanCardsSize', limit]
             })
-        domainId( unique: true, blank: false)
+        domainId( nullable: false, unique: true, blank: false)
     }
 
     //TODO: Titta mer på det här!

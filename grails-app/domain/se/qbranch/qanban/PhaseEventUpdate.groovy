@@ -8,17 +8,30 @@ class PhaseEventUpdate extends Event implements Comparable{
         cardLimit ( nullable: true )
     }
 
-    static transients = ['phase']
+    static transients = ['phase','board']
     Phase phase
+
 
     String name
     Integer cardLimit
 
-    Phase getPhase(){
+    transient Phase getPhase(){
         if( !phase && domainId ){
             phase = Phase.findByDomainId(domainId)
         }
         return phase
+    }
+
+    transient void setPhase(phase){
+        this.phase = phase
+        cardLimit = phase.cardLimit
+        name = phase.name
+        domainId = phase.domainId
+    }
+
+        //TODO: Cleanup, check lazy settings.
+    transient Board getBoard(){
+        Phase.get(phase.id).board
     }
 
     transient beforeInsert = {

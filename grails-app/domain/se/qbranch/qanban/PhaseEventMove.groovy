@@ -3,13 +3,17 @@ package se.qbranch.qanban
 class PhaseEventMove extends Event implements Comparable{
   
     static constraints = {
+        position (min: 0, nullable: false, validator:{ val, obj ->
 
+                return ( val < obj.phase.board.phases.size() )
+
+            })
     }
 
     static transients = ['phase']
     Phase phase
 
-    Integer newPhaseIndex
+    Integer position
 
     Phase getPhase(){
         if( !phase && domainId ){
@@ -22,9 +26,9 @@ class PhaseEventMove extends Event implements Comparable{
         domainId = phase.domainId
     }
 
-    transient afterInsert = {
+    transient process(){
         phase.board.phases.remove(phase)
-        phase.board.phases.add(newPhaseIndex, phase)
+        phase.board.phases.add(position, phase)
     }
 
     int compareTo(Object o) {

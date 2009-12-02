@@ -33,7 +33,7 @@ class PhaseEventDelete  extends Event implements Comparable{
         position = board.phases.indexOf(phase)
     }
 
-    transient afterInsert = {
+    transient process(){
 
         board.phases.remove(phase)
         phase.delete(flush:true)
