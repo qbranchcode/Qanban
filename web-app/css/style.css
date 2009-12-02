@@ -113,6 +113,23 @@ h4{}
 /*********/
 
 
+#spinner {
+    z-index: 5000;
+    height: 100%;
+    width: 100%;
+    top: 0;
+    right: 0;
+    position: absolute;
+
+}
+#spinner img{
+    display: block;
+    margin: auto;
+    position: relative;
+    text-align: center;
+    top: 50%;
+}
+
 #wrapper {
     position: relative;
     padding-top: 100px;

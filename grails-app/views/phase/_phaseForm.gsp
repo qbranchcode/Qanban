@@ -22,7 +22,8 @@
 --%>
 <g:if test="${phaseInstance?.id}">
   <g:formRemote url="[controller:'phase',action:'updateAndMove']" update="editPhaseDialog" name="phaseForm"
-                onSuccess="phaseFormRefresh(data, '#editPhaseDialog', 'Success', 'Phase successfully updated')">
+                onSuccess="phaseFormRefresh(data, '#editPhaseDialog', 'Success', 'Phase successfully updated')"
+                onComplete="toggleSpinner()">
     
    
     <div class="content">
@@ -74,7 +75,8 @@
 
 <g:else>
   <g:formRemote url="[controller:'phase',action:'ajaxSaveOrUpdate']" update="createPhaseDialog" name="phaseForm"
-                onSuccess="phaseFormRefresh(data,'#createPhaseDialog')">
+                onSuccess="phaseFormRefresh(data,'#createPhaseDialog')"
+                onComplete="toggleSpinner()">
     <div class="content">
 
        <div id="nameWrapper">

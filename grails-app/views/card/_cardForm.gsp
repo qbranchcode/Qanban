@@ -103,7 +103,8 @@
 <g:elseif test="${cardInstance?.id}">
   <g:formRemote url="[controller:'card',action:'update', params: [format: 'html']]"
                 update="editCardDialog" name="cardForm"
-                onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')">
+                onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')"
+                onComplete="toggleSpinner()">
 
     <div class="header">
 
@@ -192,6 +193,7 @@
   <g:formRemote url="${[controller:'card',action:'saveOrUpdate', params: [format: 'html']]}"
                 update="createCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#createCardDialog')"
+                onComplete="toggleSpinner()"
                 before="if(\$('[name=title]').val() == 'Title...          ') \$('[name=title]').val('');">
 
     <div class="header">
@@ -209,7 +211,7 @@
 
 		<div style="clear: both;"></div>
 		<ul id="assignees">
-			<li id="user_" <g:if test="${!cardInstance?.assignee?.id}">class="selected"</g:if> >
+			<li id="user_" <g:if test="${cardInstance?.assignee?.id}">class="selected"</g:if> >
 				<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30"/>
 				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
 			</li>

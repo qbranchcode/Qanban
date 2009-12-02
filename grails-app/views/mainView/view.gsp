@@ -24,7 +24,7 @@
     /*Ajax Load Wrapper */
     $.fn.qLoad = function(url, data, successCallback, errorCallback, completeCallback) {
       var $element = $(this);
-
+      toggleSpinner();
       var options = {};
       options.url = url;
       options.cache = false;
@@ -63,7 +63,9 @@
             }
       };
       if( completeCallback ){
-	    options.complete = completeCallback;
+            options.complete = function() {completeCallback();toggleSpinner();};
+      } else {
+            options.complete = toggleSpinner();
       }
       options.type = "GET";
 
@@ -180,20 +182,11 @@
 
     $createCardDialog.qDialog({
       width: 400,
-      close: function(){
-                var _wait_button = $('.ui-dialog-buttonpane button:contains(<g:message code="button.wait"/>)');
-                _wait_button.text('<g:message code="_cardForm.button.submit"/>');
-                _wait_button.removeClass('ui-state-disabled');
-                _wait_button.removeAttr('disabled');
-              },
       title: "<g:message code="mainView.jQuery.dialog.addCardForm.title"/>",
       buttons: {
                   <g:message code="_cardForm.button.submit"/> : function(){
                     $createCardDialog.find('input[type="submit"]').click();
-                    var _create_button = $('.ui-dialog-buttonpane button:contains(<g:message code="_cardForm.button.submit"/>)');
-                    _create_button.text('<g:message code="button.wait"/>');
-                    _create_button.addClass('ui-state-disabled');
-                    _create_button.attr('disabled','disabled');
+                    toggleSpinner();
               }
       } 
     });
@@ -212,20 +205,10 @@
     
     $createPhaseDialog.qDialog({
       title: "<g:message code="mainView.jQuery.dialog.addPhaseForm.title"/>",
-      close: function(){
-            var _wait_button = $('.ui-dialog-buttonpane button:contains(<g:message code="button.wait"/>)');
-            _wait_button.text('<g:message code="_phaseForm.button.save"/>');
-            _wait_button.removeClass('ui-state-disabled');
-            _wait_button.removeAttr('disabled');
-          },
       buttons: {
                   <g:message code="_phaseForm.button.save"/> : function(){
                   $createPhaseDialog.find('input[type="submit"]').click();
-                  var _create_button = $('.ui-dialog-buttonpane button:contains(<g:message code="_phaseForm.button.save"/>)');
-                  var original_text = _create_button.text();
-                  _create_button.text('<g:message code="button.wait"/>');
-                  _create_button.addClass('ui-state-disabled');
-                  _create_button.attr('disabled','disabled');
+                  toggleSpinner();
                }
       }
     });
@@ -290,6 +273,14 @@
   </jq:jquery>
 
   <g:javascript>
+
+    function toggleSpinner() {
+      if( $('#spinner').size() == 0 ) {
+        $('<div id="spinner"><img src="<g:resource dir='images' file='spinner.gif'/>"/></div>').appendTo($('body'));
+      } else {
+        $('#spinner').remove();
+      }
+    }
 
     function loadPhasePlacer(dialogSelector){
       $('#phasePlacer').sortable({
@@ -432,11 +423,7 @@
                         { 
                            '<g:message code="_phaseForm.button.update"/>' : function(){
                                 $editPhaseDialog.find('input[type="submit"]').click();
-                                var _update_button = $('.ui-dialog-buttonpane button:contains(<g:message code="_phaseForm.button.update"/>)');
-                                _update_button.text('<g:message code="button.wait"/>');
-                                _update_button.addClass('ui-state-disabled');
-                                _update_button.attr('disabled','disabled');
-
+                                toggleSpinner();
                             },
                             '<g:message code="_phaseForm.button.delete"/>': function() {
                                 deletePhaseDialog(phaseId);
@@ -471,10 +458,7 @@
                           $('#editCardDialog').dialog('option', 'buttons',  {
                             '<g:message code="_cardForm.button.update"/>' : function() {
                                             $editCardDialog.find('input[type="submit"]').click();
-                                            var _update_button = $('.ui-dialog-buttonpane button:contains(<g:message code="_cardForm.button.update"/>)');
-                                            _update_button.text('<g:message code="button.wait"/>');
-                                            _update_button.addClass('ui-state-disabled');
-                                            _update_button.attr('disabled','disabled');
+                                            toggleSpinner();
                                         },
                                       <g:ifAllGranted role="ROLE_QANBANADMIN">'<g:message code="_cardForm.button.delete"/>' : function() {
                                       deleteCardDialog(cardId);
