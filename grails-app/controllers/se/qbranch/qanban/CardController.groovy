@@ -156,14 +156,25 @@ class CardController {
     // Delete
 
     def delete = {
-
+        println "del"
         if( !params.id )
             return render(status: 400, text: "You need to specify a card")
         if( !Card.exists(params.id) )
             return render(status: 404, text: "Card with id $params.id not found")
 
-         //TODO: Do it!
+         def deleteEvent = new CardEventDelete()
+         deleteEvent.user = securityService.getLoggedInUser()
+         deleteEvent.card = Card.get(params.id)
+         
+         eventService.persist(deleteEvent)
+         println 'postPersist - err: ' + deleteEvent.hasErrors()
+         deleteEvent.errors.getAllErrors().each{
+             println it
+         }
+         if( !deleteEvent.hasErrors() )
+            return render(status: 200, text: "Phase with id $params.id deleted")
 
+         return render(status: 503, text: "Server error: card delete error #173")
     }
 
     // Move

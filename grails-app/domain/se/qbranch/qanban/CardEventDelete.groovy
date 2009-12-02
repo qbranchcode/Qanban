@@ -8,6 +8,7 @@ class CardEventDelete  extends Event implements Comparable {
         description( nullable: true)
         phaseDomainId( nullable: true )
         position ( nullable: true )
+        caseNumber( nullable: true )
     }
 
     static mapping = {
@@ -36,6 +37,7 @@ class CardEventDelete  extends Event implements Comparable {
         phaseDomainId = card.phase.domainId
         position = card.phase.board.phases.indexOf(card)
         assignee = card.assignee
+        println "$title $description $caseNumber $phaseDomainId $position $assignee"
     }
 
     transient process(){
