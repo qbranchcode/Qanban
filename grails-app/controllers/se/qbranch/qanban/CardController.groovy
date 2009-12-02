@@ -6,18 +6,18 @@ import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 @Secured(['IS_AUTHENTICATED_FULLY'])
 class CardController {
 
-    def securityService
     def eventService
     def ruleService
+    def securityService
 
 
     // Create
 
     def create = {
-        println 'create'
+
         if ( !params.boardId )
-        return render(status: 400, text: "The parameter 'boardId' must be specified")
-        println 'b exist'
+            return render(status: 400, text: "The parameter 'boardId' must be specified")
+
         CardEventCreate createEvent = createCardEventCreate(params)      
         eventService.persist(createEvent)
         renderCreateResult(createEvent)
@@ -31,7 +31,6 @@ class CardController {
     }
 
     private renderCreateResult(createEvent){
-        println 'render'
         withFormat{
             html{
                 def board = createEvent.board
@@ -60,7 +59,6 @@ class CardController {
         def card = Card.get(params.id)
 
         withFormat {
-
             html{
                 return render (template: 'card', bean: card)
             }
@@ -81,33 +79,59 @@ class CardController {
         if( !Card.exists(params.id) )
             return render(status: 404, text: "Card with id $params.id not found")
 
+        if( params.newPos && params.newPhase )
+            return renderFormMoveMode(params)
+
         return renderFormEditMode(params)
         
     }
 
     private def renderFormCreateMode(params){
+        if ( !params.'board.id' ) return render(status: 400, text: "The parameter 'boardId' must be specified")
         def board = Board.get(params.'board.id')
         def users = User.list();
         return render(template:'cardForm',model:[ boardInstance: board, userList: users])
     }
 
+    private def renderFormMoveMode(params){
+        def moveEvent = new CardEventMove()
+        moveEvent.card =  Card.get(params.id)
+        return render(template:'cardForm', model:[ newPhase: params.newPhase, newPos: params.newPos, moveEvent: moveEvent, userList: User.list(), loggedInUser: securityService.getLoggedInUser() ])
+    }
+
     private def renderFormEditMode(params){
         def card = Card.get(params.id)
-        def board = card.phase.board
-        return render(template:'cardForm',model:[cardInstance: card , boardInstance: board])
+        def updateEvent = new CardEventUpdate()
+        updateEvent.card = card
+        
+        def users = User.list()
+
+        return render(template:'cardForm',model:[ updateEvent: updateEvent , userList: users])
     }
 
     // Update
 
-    def update = {
+    def update = { SetAssigneeCommand sac ->
+        
+        CardEventUpdate updateEvent = new CardEventUpdate()
+        updateEvent.card = Card.get(params.id)
+        updateEvent.properties = params
+        updateEvent.user = securityService.getLoggedInUser()
 
-        CardEventUpdate updateEvent = new CardEventUpdate(params)
+        if( sac.hasErrors() )
+            return render(status: 400, text: "Bad request; The assignee you tried to set is invalid")
+
+        CardEventSetAssignee assigneeEvent = createCardEventSetAssignee(sac)
+
+        // TODO: Do it like this? eventService.persist(updateEvent,assigneeEvent)
+
         eventService.persist(updateEvent)
+        eventService.persist(assigneeEvent)
 
         withFormat{
             html{
-                def board = updateEvent.board
-                return render (template: 'cardForm', model:[createEvent:createEvent, boardInstance: board])
+                def users = User.list();
+                return render (template: 'cardForm', model:[updateEvent:updateEvent, userList: users])
             }
             js{
                 return render ( [cardInstance : updateEvent.card] as JSON )
@@ -123,7 +147,7 @@ class CardController {
 
         def event = new CardEventSetAssignee(
             card: cmd.card,
-            user:  User.get(params.user), // TODO: Fixa så att den inloggade usern kommer med anropet
+            user: securityService.getLoggedInUser(),
             newAssignee: cmd.assignee)
 
         return event
@@ -133,16 +157,23 @@ class CardController {
 
     def delete = {
 
+        if( !params.id )
+            return render(status: 400, text: "You need to specify a card")
+        if( !Card.exists(params.id) )
+            return render(status: 404, text: "Card with id $params.id not found")
+
+         //TODO: Do it!
+
     }
 
     // Move
 
     def move = { MoveCardCommand mcc, SetAssigneeCommand sac ->
 
-        if( mcc.hasErrors() || sac.hasErrors() || !ruleService.isMoveLegal(mcc) ){
-            return response.status = 400 // Bad request
+        if( mcc.hasErrors() || sac.hasErrors() || !ruleService.isMoveLegal(mcc.oldPhaseEntity,mcc.newPhaseEntity) ){
+            return render(status: 400, text: "Bad Request")
         } else {
-            def saEvent = createEventSetAssignee(sac)
+            def saEvent = createCardEventSetAssignee(sac)
             def mcEvent = null
 
             if( isMovingToANewPosition(mcc) ){
@@ -150,32 +181,30 @@ class CardController {
             }
 
             eventService.persist(mcEvent)
-            eventSertice.persist(saEvent)
+            eventService.persist(saEvent)
 
+            return render(template:'cardForm', model:[ newPhase: params.newPhase, newPos: params.newPos, moveEvent: mcEvent, userList: User.list(), loggedInUser: securityService.getLoggedInUser() ])
 
         }
-
     }
 
-
-
-    private CardEventMove createCardEventMove(cmd, board) {
+    private CardEventMove createCardEventMove(cmd) {
         def user = User.get(params.user) // TODO: Fixa så att den inloggade usern kommer med anropet
         def cardEventMove = new CardEventMove(
-            newPhase: cmd.phase,
+            newPhase: cmd.newPhaseEntity,
             newCardIndex: cmd.newPos,
             card: cmd.card,
-            user: user)
+            user: securityService.getLoggedInUser())
         return cardEventMove
     }
 
     private boolean isMovingToANewPosition(MoveCardCommand cmd) {
-
         def initialCardIndex = cmd.card.phase.cards.indexOf(cmd.card)
         def initialPhase = cmd.card.phase
 
-        if(initialCardIndex == cmd.newPos && initialPhase.equals(cmd.phase))
-        return false
+        if(initialCardIndex == cmd.newPos && initialPhase.equals(cmd.newPhaseEntity))
+            return false
+            
         return true
     }
     
@@ -206,7 +235,10 @@ class MoveCardCommand {
         Card.get(id)
     }
 
-    def getPhase() {
+    def getOldPhaseEntity() {
+        Card.get(id).phase
+    }
+    def getNewPhaseEntity() {
         Phase.get(newPhase)
     }
 

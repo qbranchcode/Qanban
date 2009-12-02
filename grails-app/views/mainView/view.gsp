@@ -362,7 +362,7 @@
         buttons: {
             <g:message code="yes"/>: function() {
 
-                    $.ajax({  url: '${createLink(controller:'card',action:'ajaxDelete')}',
+                    $.ajax({  url: '${createLink(controller:'card',action:'delete')}',
                               data: {'id': id},
                               type: 'POST',
                               success: function() {
@@ -440,10 +440,12 @@
 
       $('.editCardLink').click(function(event){
             var cardId = $(this).attr('id').split('_')[1];
+
+
             var loadEditCardLink = function(tries) {
               $editCardDialog.qLoad({
-                  url : '${createLink(controller:'card',action:'ajaxShowForm')}',
-                  data : {'board.id':${board.id} , 'id':cardId},
+                  url : '${createLink(controller:'card',action:'form')}',
+                  data : { 'id':cardId},
                   successCallback : function(){
                       $editCardDialog.dialog(
                         'option',
@@ -469,7 +471,8 @@
                });
             }
             loadEditCardLink();
-        event.preventDefault();
+
+            event.preventDefault();
       });
     
   }
@@ -539,10 +542,11 @@
 			   	      card: ui.item,
 				      placementSelector: placementSelector
 			   });
+
                           var loadMoveCardDialog = function(tries) {
 			   $moveCardDialog.qLoad({
-                                      url : '${createLink(controller:'card',action:'ajaxShowForm')}',
-                                      data : {'board.id' : ${board.id} , 'id' : cardId , 'newPhase' : newPhase , 'newPos' : newPos , 'user' : <g:loggedInUserInfo field="id"></g:loggedInUserInfo>},
+                                      url : '${createLink(controller:'card',action:'form')}',
+                                      data : { 'id' : cardId , 'newPhase' : newPhase , 'newPos' : newPos },
                                       successCallback : function(){
                                                             $moveCardDialog.dialog('open');
                                                          },
@@ -552,6 +556,7 @@
 			   });
                           }
                           loadMoveCardDialog();
+
 			}else{
 		           /*What to do here?*/
 			}
@@ -680,11 +685,11 @@
 
   /* TODO: Change beforeInjection to getNewElementCallback to break out some missplaced logic */
   function formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,beforeCloseFunction,beforeInjection,incompleteFormCallback){
-      
+
       var $dialog = $(dialogSelector);
       var $newContent = $(formData);
       var id = $newContent.find('input[name="id"]').val();
-      
+      $('#debug').html('form refresh ' + $dialog.find('.errors').size());
       if( $dialog.find('.errors').size() == 0 && id ){
       	  
       	  $.qGet(url+'/'+id,'html',function(data,textStatus){
@@ -743,6 +748,7 @@
 	      closeDialog($dialog,successTitle,successMessage);
 	  });
       }else if(incompleteFormCallback){
+          $('#debug').append('-errors');
           incompleteFormCallback(formData,dialogSelector);
       }
   }

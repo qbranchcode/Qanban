@@ -24,11 +24,18 @@ class CardEventUpdate extends Event implements Comparable {
     String description
     Integer caseNumber
 
-    Card getCard(){
+    public Card getCard(){
         if( !card && domainId ){
             card = Card.findByDomainId(domainId)
         }
         return card
+    }
+
+    public void setCard(card){
+        this.card = card
+        title = card.title
+        description = card.description
+        caseNumber = card.caseNumber
     }
 
     transient beforeInsert = {
