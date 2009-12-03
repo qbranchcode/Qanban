@@ -12,6 +12,7 @@ class CardController {
 
 
     // Create
+
     @Secured(['ROLE_QANBANADMIN'])
     def create = {
 
@@ -58,6 +59,11 @@ class CardController {
 
         def card = Card.get(params.id)
 
+        renderShowResult(card)
+
+    }
+
+    private renderShowResult(card){
         withFormat {
             html{
                 return render (template: 'card', bean: card)
@@ -112,10 +118,7 @@ class CardController {
     // Update
     def update = { SetAssigneeCommand sac ->
         
-        CardEventUpdate updateEvent = new CardEventUpdate()
-        updateEvent.card = Card.get(params.id)
-        updateEvent.properties = params
-        updateEvent.user = securityService.getLoggedInUser()
+        def updateEvent = createUpdateEvent(params)
 
         if( sac.hasErrors() )
             return render(status: 400, text: "Bad request; The assignee you tried to set is invalid")
@@ -127,6 +130,11 @@ class CardController {
         eventService.persist(updateEvent)
         eventService.persist(assigneeEvent)
 
+        renderUpdateResult(updateEvent)
+
+    }
+    
+    private renderUpdateResult(updateEvent){
         withFormat{
             html{
                 def users = User.list();
@@ -139,7 +147,14 @@ class CardController {
                 return render ( [cardInstance : updateEvent.card] as XML )
             }
         }
+    }
 
+    private CardEventUpdate createUpdateEvent(params){
+        def event = new CardEventUpdate()
+        event.card = Card.get(params.id)
+        event.properties = params
+        event.user = securityService.getLoggedInUser()
+        return event
     }
 
     private CardEventSetAssignee createCardEventSetAssignee(cmd) {
@@ -156,7 +171,7 @@ class CardController {
 
     @Secured(['ROLE_QANBANADMIN'])
     def delete = {
-        println "del"
+
         if( !params.id )
             return render(status: 400, text: "You need to specify a card")
         if( !Card.exists(params.id) )
@@ -167,14 +182,11 @@ class CardController {
          deleteEvent.card = Card.get(params.id)
          
          eventService.persist(deleteEvent)
-         println 'postPersist - err: ' + deleteEvent.hasErrors()
-         deleteEvent.errors.getAllErrors().each{
-             println it
-         }
-         if( !deleteEvent.hasErrors() )
-            return render(status: 200, text: "Phase with id $params.id deleted")
 
-         return render(status: 503, text: "Server error: card delete error #173")
+         if( !deleteEvent.hasErrors() )
+            return render(status: 200, text: "Card with id $params.id deleted")
+
+         return render(status: 503, text: "Server error: card delete error #188")
     }
 
     // Move

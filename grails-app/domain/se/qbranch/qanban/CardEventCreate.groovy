@@ -25,7 +25,7 @@ class CardEventCreate extends Event implements Comparable{
     Integer caseNumber
     String phaseDomainId
 
-    //TODO: Change to checksum connections
+    //TODO: Change to checksum connections?
     User assignee
     
 
@@ -50,7 +50,7 @@ class CardEventCreate extends Event implements Comparable{
     }
     
     //TODO: Cleanup, check lazy settings.
-    transient Board getBoard(){
+    public Board getBoard(){
         Phase.findByDomainId(phaseDomainId).board
     }
 

@@ -5,7 +5,7 @@ class PhaseEventCreate extends Event implements Comparable{
 
     static constraints = {
         cardLimit ( nullable: true )
-        position ( nullable: true )
+        position ( nullable: false )
         name(nullable: false, blank: false)
     }
 
@@ -36,12 +36,7 @@ class PhaseEventCreate extends Event implements Comparable{
             cardLimit: cardLimit,
             domainId: domainId
         )
-
-        if( position ){
-            board.phases.add(position, phase)
-        }else{
-            board.addToPhases(phase)
-        }
+        board.phases.add(position, phase)
 
         phase.save()
         

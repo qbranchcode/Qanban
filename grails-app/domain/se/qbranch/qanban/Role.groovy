@@ -7,15 +7,16 @@ import se.qbranch.qanban.User
  */
 class Role {
 
+    	static constraints = {
+		authority(blank: false, unique: true)
+		description()
+	}
+        
 	static hasMany = [people: User]
 
-	/** description */
 	String description
 	/** ROLE String */
 	String authority
 
-	static constraints = {
-		authority(blank: false, unique: true)
-		description()
-	}
+
 }

@@ -200,7 +200,7 @@
 
       var loadCreatePhaseLink = function(tries) {
        $createPhaseDialog.qLoad({
-	   url : '${createLink(controller:'phase',action:'create')}',
+	   url : '${createLink(controller:'phase',action:'form')}',
 	   data : {'board.id':${board.id}},
 	   successCallback : function(){$createPhaseDialog.dialog('open');},
 	   completeCallback : function(){
@@ -321,7 +321,7 @@
         buttons: {
             <g:message code="yes"/>: function() {
 
-                    $.ajax({  url: '${createLink(controller:'phase',action:'ajaxDelete')}',
+                    $.ajax({  url: '${createLink(controller:'phase',action:'delete')}',
                               data: {'id': id},
                               type: 'POST',
                               success: function() {
@@ -406,6 +406,7 @@
 
       $('.editPhaseLink').click(function(event){
             var phaseId = $(this).attr('id').split('_')[1];
+
 
             var loadEditPhaseLink = function(tries) {
               $editPhaseDialog.qLoad({
@@ -689,7 +690,6 @@
       var $dialog = $(dialogSelector);
       var $newContent = $(formData);
       var id = $newContent.find('input[name="id"]').val();
-      $('#debug').html('form refresh ' + $dialog.find('.errors').size());
       if( $dialog.find('.errors').size() == 0 && id ){
       	  
       	  $.qGet(url+'/'+id,'html',function(data,textStatus){
@@ -748,7 +748,6 @@
 	      closeDialog($dialog,successTitle,successMessage);
 	  });
       }else if(incompleteFormCallback){
-          $('#debug').append('-errors');
           incompleteFormCallback(formData,dialogSelector);
       }
   }

@@ -5,6 +5,7 @@ class PhaseEventUpdate extends Event implements Comparable{
     // TODO: Validera så att eventen inte sparas om inget värde har ändrats
     
     static constraints = {
+        name ( nullable: false, blank: false )
         cardLimit ( nullable: true )
     }
 
@@ -38,7 +39,7 @@ class PhaseEventUpdate extends Event implements Comparable{
         domainId = phase.domainId
     }
 
-    transient afterInsert = {
+    transient process( ) {
 
         phase.name = name
         phase.cardLimit = cardLimit

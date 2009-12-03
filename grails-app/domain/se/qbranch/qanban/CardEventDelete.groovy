@@ -37,7 +37,6 @@ class CardEventDelete  extends Event implements Comparable {
         phaseDomainId = card.phase.domainId
         position = card.phase.board.phases.indexOf(card)
         assignee = card.assignee
-        println "$title $description $caseNumber $phaseDomainId $position $assignee"
     }
 
     transient process(){
