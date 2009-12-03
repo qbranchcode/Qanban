@@ -159,7 +159,7 @@ ul.phase {
     padding-bottom: 100px;
 }
 
-.card {
+/*.card {
     border: 1px solid;
     margin: 1px 2px 0 2px;
     background-color: #d8dcdf;
@@ -167,6 +167,17 @@ ul.phase {
     height: 7em;
     overflow: hidden;
     position: relative;
+}*/
+.card {
+    -moz-box-shadow: 3px 3px #888888;
+    -webkit-box-shadow: 3px 3px #888888;
+    background-color: #d8dcdf;
+    border: 1px solid;
+    height: 7em;
+    margin: 4px 4px 0;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
 }
 
 .myCard {

@@ -19,21 +19,22 @@
     /* Replace function */
     $.fn.replaceWith = function($newElement){ this.after($newElement).remove(); };
 
-
-
     /*Ajax Load Wrapper */
-    $.fn.qLoad = function(url, data, successCallback, errorCallback, completeCallback) {
+    $.fn.qLoad = function(options) {
       var $element = $(this);
       var checked = 'false';
+      var sessionTO = 'false';
       toggleSpinner();
       
-      var options = {};
-      options.url = url;
-      options.cache = false;
-      options.successCallback = successCallback;
-      options.success = function(data, textStatus){
+      options.tries = options.tries ? options.tries : options.tries = 1;
+      options.caller = options.caller;
+      options.url = options.url;
+      options.cache = options.cache ? options.cache : false;
+      options.successCallback = options.successCallback;
+      options.success = options.success ? options.success : function(data, textStatus){
         var fail = data.indexOf('<html>') != -1;
-        if( fail ) {
+        if( fail && sessionTO == 'false') {
+          sessionTO = 'true';
           $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.sessionTimeout"/></p></div>').dialog({
               modal: true,
               buttons: {
@@ -52,21 +53,26 @@
           $element.html(data);
         }
       };
-      options.data = data;
-      options.errorCallback = errorCallback;
-      options.error = function(XMLHttpRequest, textStatus, errorThrown){
+      options.data = options.data;
+      options.errorCallback = options.errorCallback;
+      options.error = options.error ? options.error : function(XMLHttpRequest, textStatus, errorThrown){
             var errorCallback = options.errorCallback;
             if(XMLHttpRequest.status == 0 && checked=='false') {
-                $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
-                modal: true });
-                checked = true;
-              }
+                if(options.tries > 3) {
+                    $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
+                    modal: true });
+                    checked = true;
+                } else {
+                    options.tries = options.tries + 1;
+                    options.caller(options.tries);
+                }
+            }
             if( errorCallback ){
               errorCallback(XMLHttpRequest, textStatus, errorThrown);
             }
       };
-      if( completeCallback ){
-            options.complete = function() {completeCallback();toggleSpinner();};
+      if( options.completeCallback ){
+            options.complete = function() {options.completeCallback();toggleSpinner();};
       } else {
             options.complete = toggleSpinner();
       }
@@ -76,63 +82,18 @@
 
     }
 
-    /*Ajax Post Wrapper*/
-    $.qPost = function(url, data, successCallback, dataType) {
-      var checked = 'false';
-
-      var options = {};
-      options.url = url;
-      options.successCallback = successCallback;
-      options.success = function(data, textStatus){
-        /* TODO: data.indexOf fails when the returned data is of the type JSON */
-       
-        var fail = data.indexOf('<html>') != -1;
-        if( fail ) {
-        
-          $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.sessionTimeout"/></p></div>').dialog({
-              modal: true,
-              buttons: {
-                <g:message code="ok"/>: function() {
-                  $(this).dialog('close');
-                  //Redirect to mainView/index
-                  window.location = "${createLink(controller:'mainView')}";
-                }
-              }
-          });
-        
-        }else {
-          var successCallback = options.successCallback;
-          if(successCallback) {
-
-            successCallback(data, textStatus);
-          }
-        }
-      };
-      options.data = data;
-      options.error = function(XMLHttpRequest, textStatus, errorThrown){
-            if(XMLHttpRequest.status == 0  && checked=='false') {
-              $('<div id="offlineWarning"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
-              modal: true });
-              checked = 'true';
-            }
-      };
-      options.dataType = dataType;
-      options.type = "POST";
-
-      $.ajax(options);
-
-    }
-
     /*Ajax Get Wrapper*/
     $.qGet = function(url, data, successCallback, dataType) {
       var checked = 'false';
+      var sessionTO = 'false';
 
       var options = {};
       options.url = url;
       options.successCallback = successCallback;
       options.success = function(data, textStatus){
         var fail = data.indexOf('<html>') != -1;
-        if( fail ) {
+        if( fail && sessionTO == 'false') {
+          sessionTO = 'true';
           $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.sessionTimeout"/></p></div>').dialog({
               modal: true,
               buttons: {
@@ -182,6 +143,8 @@
        $(this).dialog(options);
     }
 
+
+
     
 /***********/
 /* DIALOGS */
@@ -201,12 +164,19 @@
     });
 
     $('.addCardLink').click(function(event){
-      $createCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',
-                              {'board.id':${board.id}},
-                              function(){
+      var loadAddCardLink = function(tries) {
+        $createCardDialog.qLoad({
+            url : '${createLink(controller:'card',action:'ajaxShowForm')}',
+            data : {'board.id':${board.id}},
+            successCallback : function(){
                                 $createCardDialog.dialog('open');
                               },
-                              null, initAssigneeSelect);
+            completeCallback : initAssigneeSelect,
+            tries : tries,
+            caller : loadAddCardLink
+        });
+      }
+      loadAddCardLink();
       event.preventDefault();
     });
 
@@ -223,15 +193,19 @@
     });
 
     $('.addPhaseLink').click(function(event){
-       $createPhaseDialog.qLoad(
-	   '${createLink(controller:'phase',action:'ajaxPhaseForm')}',
-	   {'board.id':${board.id}},
-	   function(){$createPhaseDialog.dialog('open');},
-	   null,
-	   function(){
-              loadPhasePlacer($createPhaseDialog.attr('id'));
-
-	   });
+      var loadCreatePhaseLink = function(tries) {
+       $createPhaseDialog.qLoad({
+	   url : '${createLink(controller:'phase',action:'ajaxPhaseForm')}',
+	   data : {'board.id':${board.id}},
+	   successCallback : function(){$createPhaseDialog.dialog('open');},
+	   completeCallback : function(){
+                                loadPhasePlacer($createPhaseDialog.attr('id'));
+                             },
+           tries : tries,
+           caller : loadCreatePhaseLink
+       });
+      }
+      loadCreatePhaseLink();
       event.preventDefault();
     });
 
@@ -425,69 +399,79 @@
 
       $('.editPhaseLink').click(function(event){
             var phaseId = $(this).attr('id').split('_')[1];
-            $editPhaseDialog.qLoad(
-                '${createLink(controller:'phase',action:'ajaxPhaseForm')}',
-				   {'id': phaseId,'board.id': ${board.id} },
-                function(){
-                    $editPhaseDialog.dialog(
-                        'option',
-                        'buttons',
-                        { 
-                           '<g:message code="_phaseForm.button.update"/>' : function(){
-                                $editPhaseDialog.find('input[type="submit"]').click();
-                                toggleSpinner();
-                            },
-                            '<g:message code="_phaseForm.button.delete"/>': function() {
-                                deletePhaseDialog(phaseId);
-                            }
-                        });
-                    $editPhaseDialog.dialog('open');
-                },
-                null,
-                function(){
-                    loadPhasePlacer($editPhaseDialog.attr('id'));
-                }
-            );
+            var loadEditPhaseLink = function(tries) {
+              $editPhaseDialog.qLoad({
+                  url : '${createLink(controller:'phase',action:'ajaxPhaseForm')}',
+                  data : {'id': phaseId,'board.id': ${board.id} },
+                  successCallback : function(){
+                      $editPhaseDialog.dialog(
+                          'option',
+                          'buttons',
+                          {
+                             '<g:message code="_phaseForm.button.update"/>' : function(){
+                                  $editPhaseDialog.find('input[type="submit"]').click();
+                                  toggleSpinner();
+                              },
+                              '<g:message code="_phaseForm.button.delete"/>': function() {
+                                  deletePhaseDialog(phaseId);
+                              }
+                          });
+                      $editPhaseDialog.dialog('open');
+                  },
+                  completeCallback : function(){
+                                        loadPhasePlacer($editPhaseDialog.attr('id'));
+                                     },
+                  tries : tries,
+                  caller : loadEditPhaseLink
+              });
+            }
+            loadEditPhaseLink();
             event.preventDefault();
       });
 
       $('.editCardLink').click(function(event){
             var cardId = $(this).attr('id').split('_')[1];
-            $editCardDialog.qLoad(
-                '${createLink(controller:'card',action:'ajaxShowForm')}',
-                                    {'board.id':${board.id} , 'id':cardId},
-                function(){
-                    $editCardDialog.dialog(
-                      'option',
-                      'buttons',
-                      { '<g:message code="_cardForm.button.edit"/>' : function() {
-                          initAssigneeSelect();
-                          setEditMode('<g:message code="mainView.jQuery.dialog.editCardForm.title"/>', '#editCardDialog');
-                          $editCardDialog.dialog('option', 'buttons',  {
-                            '<g:message code="_cardForm.button.update"/>' : function() {
-                                            $editCardDialog.find('input[type="submit"]').click();
-                                            toggleSpinner();
-                                        },
-                                      <g:ifAllGranted role="ROLE_QANBANADMIN">'<g:message code="_cardForm.button.delete"/>' : function() {
-                                      deleteCardDialog(cardId);
-                                    }</g:ifAllGranted>
-                          });
-                        }
-                    });
-                    $editCardDialog.dialog('open');
-                });
-            event.preventDefault();
+            var loadEditCardLink = function(tries) {
+              $editCardDialog.qLoad({
+                  url : '${createLink(controller:'card',action:'ajaxShowForm')}',
+                  data : {'board.id':${board.id} , 'id':cardId},
+                  successCallback : function(){
+                      $editCardDialog.dialog(
+                        'option',
+                        'buttons',
+                        { '<g:message code="_cardForm.button.edit"/>' : function() {
+                            initAssigneeSelect();
+                            setEditMode('<g:message code="mainView.jQuery.dialog.editCardForm.title"/>', '#editCardDialog');
+                            $editCardDialog.dialog('option', 'buttons',  {
+                              '<g:message code="_cardForm.button.update"/>' : function() {
+                                              $editCardDialog.find('input[type="submit"]').click();
+                                              toggleSpinner();
+                                          },
+                                        <g:ifAllGranted role="ROLE_QANBANADMIN">'<g:message code="_cardForm.button.delete"/>' : function() {
+                                        deleteCardDialog(cardId);
+                                      }</g:ifAllGranted>
+                            });
+                          }
+                      });
+                      $editCardDialog.dialog('open');
+                  },
+                  tries : tries,
+                  caller : loadEditCardLink
+               });
+            }
+            loadEditCardLink();
+        event.preventDefault();
       });
     
   }
 
   function setEditMode(title, selector) {
-    var $editCardDialog = $(selector);
-    $editCardDialog.dialog('option', 'title', title);
-    $editCardDialog.find("input").removeAttr([readonly='readonly']);
-    $editCardDialog.find("input").addClass("edit");
-    $editCardDialog.find("textarea").removeAttr([readonly='readonly']);
-    $editCardDialog.find("textarea").addClass("edit");
+    var $editDialog = $(selector);
+    $editDialog.dialog('option', 'title', title);
+    $editDialog.find("input").removeAttr([readonly='readonly']);
+    $editDialog.find("input").addClass("edit");
+    $editDialog.find("textarea").removeAttr([readonly='readonly']);
+    $editDialog.find("textarea").addClass("edit");
   }
 
   function enableSortableOnPhase($phase){
@@ -546,16 +530,19 @@
 			   	      card: ui.item,
 				      placementSelector: placementSelector
 			   });
-
-			   $moveCardDialog.qLoad('${createLink(controller:'card',action:'ajaxShowForm')}',
-			      			 {'board.id' : ${board.id} , 'id' : cardId , 'newPhase' : newPhase , 'newPos' : newPos , 'user' : <g:loggedInUserInfo field="id"></g:loggedInUserInfo>},
-					         function(){
-					            $moveCardDialog.dialog('open');
-			   			 },
-						 null,
-						 initAssigneeSelect
-			   );
-
+                          var loadMoveCardDialog = function(tries) {
+			   $moveCardDialog.qLoad({
+                                      url : '${createLink(controller:'card',action:'ajaxShowForm')}',
+                                      data : {'board.id' : ${board.id} , 'id' : cardId , 'newPhase' : newPhase , 'newPos' : newPos , 'user' : <g:loggedInUserInfo field="id"></g:loggedInUserInfo>},
+                                      successCallback : function(){
+                                                            $moveCardDialog.dialog('open');
+                                                         },
+                                      completeCallback : initAssigneeSelect,
+                                      tries : tries,
+                                      caller : loadMoveCardDialog
+			   });
+                          }
+                          loadMoveCardDialog();
 			}else{
 		           /*What to do here?*/
 			}
@@ -770,10 +757,17 @@
   }
 
   function updateBoard(){
-      $('#boardWrapper').qLoad('${createLink(controller:'mainView',action:'showBoard')}',
-      function(){
-          rescanBoardButtons();
+    var loadUpdateBoard = function(tries) {
+      $('#boardWrapper').qLoad({
+                url : '${createLink(controller:'mainView',action:'showBoard')}',
+                successCallback : function(){
+                                    rescanBoardButtons();
+                                  },
+                tries : tries,
+                caller : loadUpdateBoard
       });
+    }
+    loadUpdateBoard();
   }
 
 
