@@ -40,9 +40,9 @@ class PhaseEventCreateTests extends GrailsUnitTestCase {
         mockDomain(PhaseEventCreate)
         mockDomain(Phase)
 
-        def phaseEventCreate1 = new PhaseEventCreate(name: "First phase", cardLimit: 5, user: user1, board: board)
-        def phaseEventCreate2 = new PhaseEventCreate(name: "Second phase", cardLimit: 10, user: user1 , board: board)
-        def phaseEventCreate3 = new PhaseEventCreate(name: "Third phase", user: user1, board: board)
+        def phaseEventCreate1 = new PhaseEventCreate(name: "First phase", cardLimit: 5, position: 0, user: user1, board: board)
+        def phaseEventCreate2 = new PhaseEventCreate(name: "Second phase", cardLimit: 10, position: 1, user: user1 , board: board)
+        def phaseEventCreate3 = new PhaseEventCreate(name: "Third phase", user: user1, position: 2, board: board)
 
         phaseEventCreate1.beforeInsert()
         phaseEventCreate1.save()
@@ -114,7 +114,7 @@ class PhaseEventCreateTests extends GrailsUnitTestCase {
         super.tearDown()
     }
 
-    void testCreatingAValidPhaseWithPositionSpecified() {
+    void testCreatingAValidPhase() {
         String name = 'Fourth phase'
         Integer position = 1
         Integer cardLimit = 100
@@ -127,7 +127,6 @@ class PhaseEventCreateTests extends GrailsUnitTestCase {
             user: user1
         )
 
-        createEvent.validate()
         createEvent.beforeInsert()
         createEvent.save()
         createEvent.process()
@@ -142,7 +141,7 @@ class PhaseEventCreateTests extends GrailsUnitTestCase {
     
     }
 
-     void testCreatingAValidPhase() {
+     void testCreatingPhaseWithoudPosition() {
         String name = 'Fourth phase'
         Integer cardLimit = 100
 
@@ -153,18 +152,13 @@ class PhaseEventCreateTests extends GrailsUnitTestCase {
             user: user1
         )
 
-        createEvent.validate()
-        createEvent.beforeInsert()
-        createEvent.save()
-        createEvent.process()
+        if( createEvent.validate() ){
+            createEvent.beforeInsert()
+            createEvent.save()
+            createEvent.process()
+        }
 
-        assertNotNull "There should be a phase", createEvent.phase
-
-        def newPhase = createEvent.phase
-
-        assertEquals newPhase.domainId, createEvent.domainId
-        assertEquals name, newPhase.name
-        assertEquals board.phases.size()-1, board.phases.indexOf(newPhase)
+        assertNull "There should not be a phase", createEvent.phase
 
     }
 }

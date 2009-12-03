@@ -43,9 +43,9 @@ class PhaseControllerTests extends ControllerUnitTestCase {
         mockDomain(PhaseEventCreate)
         mockDomain(Phase)
 
-        def phaseEventCreate1 = new PhaseEventCreate(name: "First phase", cardLimit: 5, user: user1, board: board)
-        def phaseEventCreate2 = new PhaseEventCreate(name: "Second phase", cardLimit: 10, user: user1 , board: board)
-        def phaseEventCreate3 = new PhaseEventCreate(name: "Third phase", user: user1, board: board)
+        def phaseEventCreate1 = new PhaseEventCreate(name: "First phase", cardLimit: 5, position: 0, user: user1, board: board)
+        def phaseEventCreate2 = new PhaseEventCreate(name: "Second phase", cardLimit: 10, position: 1, user: user1 , board: board)
+        def phaseEventCreate3 = new PhaseEventCreate(name: "Third phase", user: user1, position: 2, board: board)
 
         phaseEventCreate1.beforeInsert()
         phaseEventCreate1.save()
@@ -135,81 +135,21 @@ class PhaseControllerTests extends ControllerUnitTestCase {
     void testSave() {
 
         mockParams.name = "myPhase"
-        mockParams.board = board
+        mockParams.'board.id' = board.id
+        mockParams.position = "3"
         assertEquals 3, Phase.list().size()
 
-        def model = controller.eSave()
+        def model = controller.create()
 
         assertEquals 4, Phase.list().size()
         assertEquals "myPhase", model.createEvent.phase.name
     }
 
-    void testSaveWithoutName() {
-        mockParams.board = board
-        def model = controller.eSave()
-        assertEquals 1, model.createEvent.errors.getAllErrors().size()
+    void testSaveWithoutNameAndPos() {
+        mockParams.'board.id' = board.id
+        def model = controller.create()
+        assertEquals 2, model.createEvent.errors.getAllErrors().size()
     }
-
-//    void testSuccessfulAjaxSaveOrUpdateWithId() {
-//        mockParams.id = "1"
-//        mockParams.cardLimit = "2"
-//
-//        controller.ajaxSaveOrUpdate()
-//
-//        assertEquals 2, renderArgs.model.phaseInstance.cardLimit
-//        assertEquals 1, renderArgs.model.phaseInstance.id
-//
-//    }
-//
-//    void testSuccessfulAjaxSaveOrUpdateWithoutIdAndIndex() {
-//
-//        mockParams.name = "New Phase"
-//        mockParams."board.id" = "1"
-//
-//        controller.ajaxSaveOrUpdate()
-//
-//        assertEquals 2, renderArgs.model.phaseInstance.id
-//        assertEquals "New Phase", renderArgs.model.phaseInstance.name
-//
-//    }
-//
-//    void testSuccessfulAjaxSaveOrUpdateWithoutId()
-//     {
-//	mockParams.name = "First Phase"
-//	mockParams."board.id" = "1"
-//	mockParams."phase.idx" = "0"
-//
-//	controller.ajaxSaveOrUpdate()
-//
-//        assertEquals 2, renderArgs.model.phaseInstance.id
-//	assertEquals "First Phase", renderArgs.model.phaseInstance.name
-//	assertEquals 0, renderArgs.model.boardInstance.phases.indexOf(renderArgs.model.phaseInstance)
-//     }
-//
-//
-//    void testAjaxSaveOrUpdateWithIllegalId(){
-//        mockParams.id = "12"
-//        mockParams.cardLimit = "2"
-//
-//        controller.ajaxSaveOrUpdate()
-//
-//        assertEquals null, renderArgs.model.phaseInstance
-//
-//    }
-//
-//    void testAjaxDelete(){
-//        def board = Board.get(1)
-//        def phase = Phase.get(1)
-//        phase.board = board
-//        phase.save()
-//
-//        mockParams.id = "1"
-//
-//        controller.ajaxDelete()
-//
-//        assertEquals 0, Phase.list().size()
-//
-//    }
 
 
 }
