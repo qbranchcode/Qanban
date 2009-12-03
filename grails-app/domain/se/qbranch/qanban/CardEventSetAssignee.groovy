@@ -6,7 +6,7 @@ class CardEventSetAssignee extends Event implements Comparable {
         newAssignee ( nullable: true )
     }
 
-    static transients = ['card']
+    static transients = ['card','title']
     Card card
     
     User newAssignee
@@ -52,5 +52,12 @@ class CardEventSetAssignee extends Event implements Comparable {
 
     String toString(){
         return "$dateCreated: $user set the assignee to $newAssignee"
+    }
+
+    public String getTitle() {
+        if( !card && domainId){
+            card = Card.findByDomainId(domainId)
+        }
+        return card.title
     }
 }

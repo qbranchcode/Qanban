@@ -141,6 +141,11 @@ h4{}
     margin: 0 auto;
 }
 
+#log {
+    width: 80em;
+    margin: 0 auto;
+}
+
 .phaseHolder {
     float: left;
     background-color: #fff;

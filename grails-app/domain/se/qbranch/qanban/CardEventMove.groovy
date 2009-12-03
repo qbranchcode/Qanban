@@ -6,7 +6,7 @@ class CardEventMove extends Event implements Comparable {
         phaseDomainId ( nullable: true, blank: false )
     }
 
-    static transients = ['card','newPhase']
+    static transients = ['card','newPhase','title']
     Card card
     Phase newPhase
 
@@ -68,5 +68,12 @@ class CardEventMove extends Event implements Comparable {
 
     String toString(){
         return "$dateCreated: $user moved the card to $newPhase"
+    }
+
+    public String getTitle() {
+        if( !card && domainId){
+            card = Card.findByDomainId(domainId)
+        }
+        return card.title
     }
 }

@@ -16,7 +16,8 @@ class MainViewController {
     }
 
     def showLog = {
-        render(template: "/event/log", model: [events : Event.list()])
+        params.max = Math.min( params.max ? params.max.toInteger() : 10,  100)
+        render(template: "/event/log", model: [ eventInstanceList: Event.list( params ), eventInstanceTotal: Event.count() ])
     }
 
 }

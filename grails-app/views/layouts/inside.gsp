@@ -24,10 +24,9 @@
         <li><a href="${createLink(controller:'phase',action:'create')}" class="addPhaseLink"><g:message code="layout.inside.menu.addPhase"/></a></li>
       </g:ifAllGranted>
 
-      <!--<li><a href="${createLink(controller:'user',action:'showOnlineUsers')}">Show Users</a></li>-->
-
       <g:isLoggedIn>
         <li><a href="${createLink(controller:'logout')}"><g:message code="layout.inside.menu.logOut"/></a></li>
+        <li><a href="${createLink(controller:'mainView',action:'showLog')}"><g:message code="layout.inside.menu.showLog"/></a></li>
       </g:isLoggedIn>
       <li><span id="debug"></span></li>
 

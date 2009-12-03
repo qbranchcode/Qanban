@@ -1,5 +1,6 @@
 import org.springframework.security.context.SecurityContextHolder as SCH
 import org.codehaus.groovy.grails.plugins.springsecurity.AuthorizeTools
+import se.qbranch.qanban.*
 
 class QanbanTagLib {
 
@@ -40,6 +41,38 @@ class QanbanTagLib {
                 if( source.id == attrs.assigneeId ){
                    out << body()
                 }
+        }
+    }
+
+    def getEventSummary = { attrs, body ->
+        def event = attrs.event
+
+        if(event instanceof CardEventCreate) {
+            out << "created a new Card:"
+        }
+        if(event instanceof CardEventDelete) {
+            out << "deleted a Card:"
+        }
+        if(event instanceof CardEventMove) {
+            out << "moved a Card:"
+        }
+        if(event instanceof CardEventSetAssignee) {
+            out << "set Assignee on Card:"
+        }
+        if(event instanceof CardEventUpdate) {
+            out << "updated a Card:"
+        }
+        if(event instanceof PhaseEventCreate) {
+            out << "created a new Phase:"
+        }
+        if(event instanceof PhaseEventDelete) {
+            out << "deleted a Phase:"
+        }
+        if(event instanceof PhaseEventMove) {
+            out << "moved a Phase:"
+        }
+        if(event instanceof PhaseEventUpdate) {
+            out << "updated a Phase:"
         }
     }
 

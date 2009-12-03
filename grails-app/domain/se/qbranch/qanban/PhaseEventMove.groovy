@@ -10,7 +10,7 @@ class PhaseEventMove extends Event implements Comparable{
             })
     }
 
-    static transients = ['phase']
+    static transients = ['phase','title']
     Phase phase
 
     Integer position
@@ -52,5 +52,12 @@ class PhaseEventMove extends Event implements Comparable{
             return true
         }
         return false
+    }
+
+    public String getTitle() {
+        if( !phase && domainId){
+            phase = Phase.findByDomainId(domainId)
+        }
+        return phase.title
     }
 }
