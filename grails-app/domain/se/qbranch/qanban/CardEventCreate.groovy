@@ -66,6 +66,7 @@ class CardEventCreate extends Event implements Comparable{
         card.phase = phase
         card.description = description
         card.caseNumber = caseNumber
+        card.assignee = assignee
         phase.addToCards(card)
         card.save()
     }

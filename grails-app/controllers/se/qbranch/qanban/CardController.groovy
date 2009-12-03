@@ -28,6 +28,7 @@ class CardController {
         def event = new CardEventCreate(params)
         event.user = securityService.getLoggedInUser()
         event.phaseDomainId = Board.get(params.boardId).phases[0].domainId
+        event.assignee = User.get(params.assigneeId)
         return event
     }
 
@@ -112,7 +113,7 @@ class CardController {
         
         def users = User.list()
 
-        return render(template:'cardForm',model:[ updateEvent: updateEvent , userList: users])
+        return render(template:'cardForm',model:[ updateEvent: updateEvent , userList: users , events : Event.findAllByDomainId(card.domainId, [sort: 'dateCreated', order:'desc']) ])
     }
 
     // Update
