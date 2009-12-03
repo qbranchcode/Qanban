@@ -4,7 +4,7 @@ class PhaseEventDelete  extends Event implements Comparable{
 
     static constraints = {
         cardLimit ( nullable: true )
-        name ( nullable: true )
+        title ( nullable: true )
         board ( nullable: true )
         position ( nullable: true )
     }
@@ -13,7 +13,7 @@ class PhaseEventDelete  extends Event implements Comparable{
 
     Phase phase
 
-    String name
+    String title
     Board board
     Integer cardLimit
     Integer position
@@ -27,7 +27,7 @@ class PhaseEventDelete  extends Event implements Comparable{
 
     transient beforeInsert = {
         domainId = phase.domainId
-        name = phase.name
+        title = phase.title
         board = phase.board
         cardLimit = phase.cardLimit
         position = board.phases.indexOf(phase)

@@ -26,14 +26,14 @@
   </g:hasErrors>
 
   <g:formRemote url="[controller:'phase',action:'update',params: [format: 'html']]" update="editPhaseDialog" name="phaseForm"
-                onSuccess="phaseFormRefresh(data, '#editPhaseDialog', 'Success', 'Phase successfully updated')" onComplete="toggleS>pinner()">
+                onSuccess="phaseFormRefresh(data, '#editPhaseDialog', 'Success', 'Phase successfully updated')" onComplete="toggleSpinner()">
   
     <div class="content">
 
        <div id="nameWrapper">
-        <label for="name"><g:message code="_phaseForm.label.name"/></label>
-        <input type="text" id="name" name="name" value="${updateEvent?.name}"
-               class="property ${hasErrors(bean:updateEvent,field:'name','errors')}"/>
+        <label for="title"><g:message code="_phaseForm.label.title"/></label>
+        <input type="text" id="name" name="title" value="${updateEvent?.title}"
+               class="property ${hasErrors(bean:updateEvent,field:'title','errors')}"/>
        </div>
        <div id="cardLimitWrapper">
          <label for="cardLimit"><g:message code="_phaseForm.label.cardLimit"/></label>
@@ -50,7 +50,7 @@
                             <g:else>old</g:else>
                           ">
 		      	  <ul class="titleName">
-  		      	  <g:each var="ch" in="${phase.name}">
+  		      	  <g:each var="ch" in="${phase.title}">
 			  	 <li>${ch}</li>
 			  </g:each>
 			  </ul>
@@ -96,9 +96,9 @@
     <div class="content">
 
        <div id="nameWrapper">
-        <label for="name"><g:message code="_phaseForm.label.name"/></label>
-        <input type="text" id="name" name="name" value="${createEvent?.name}"
-               class="property ${hasErrors(bean:createEvent,field:'name','errors')}"/>
+        <label for="name"><g:message code="_phaseForm.label.title"/></label>
+        <input type="text" id="title" name="title" value="${createEvent?.title}"
+               class="property ${hasErrors(bean:createEvent,field:'title','errors')}"/>
        </div>
        <div id="cardLimitWrapper">
          <label for="cardLimit"><g:message code="_phaseForm.label.cardLimit"/></label>
@@ -117,7 +117,7 @@
                       </g:if>
 	      	      <li class="phase old ${index}">
 		      	  <ul class="titleName">
-  		      	  <g:each var="ch" in="${phase.name}">
+  		      	  <g:each var="ch" in="${phase.title}">
                               <li>${ch}</li>
 			  </g:each>
 			  </ul>

@@ -40,9 +40,9 @@ class PhaseEventCreateTests extends GrailsUnitTestCase {
         mockDomain(PhaseEventCreate)
         mockDomain(Phase)
 
-        def phaseEventCreate1 = new PhaseEventCreate(name: "First phase", cardLimit: 5, position: 0, user: user1, board: board)
-        def phaseEventCreate2 = new PhaseEventCreate(name: "Second phase", cardLimit: 10, position: 1, user: user1 , board: board)
-        def phaseEventCreate3 = new PhaseEventCreate(name: "Third phase", user: user1, position: 2, board: board)
+        def phaseEventCreate1 = new PhaseEventCreate(title: "First phase", cardLimit: 5, position: 0, user: user1, board: board)
+        def phaseEventCreate2 = new PhaseEventCreate(title: "Second phase", cardLimit: 10, position: 1, user: user1 , board: board)
+        def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", user: user1, position: 2, board: board)
 
         phaseEventCreate1.beforeInsert()
         phaseEventCreate1.save()
@@ -115,12 +115,12 @@ class PhaseEventCreateTests extends GrailsUnitTestCase {
     }
 
     void testCreatingAValidPhase() {
-        String name = 'Fourth phase'
+        String title = 'Fourth phase'
         Integer position = 1
         Integer cardLimit = 100
 
         def createEvent = new PhaseEventCreate(
-            name: name,
+            title: title,
             cardLimit: cardLimit,
             position: position,
             board: board,
@@ -136,17 +136,17 @@ class PhaseEventCreateTests extends GrailsUnitTestCase {
         def newPhase = createEvent.phase
 
         assertEquals newPhase.domainId, createEvent.domainId
-        assertEquals name, newPhase.name
+        assertEquals title, newPhase.title
         assertEquals position, board.phases.indexOf(newPhase)
     
     }
 
      void testCreatingPhaseWithoudPosition() {
-        String name = 'Fourth phase'
+        String title = 'Fourth phase'
         Integer cardLimit = 100
 
         def createEvent = new PhaseEventCreate(
-            name: name,
+            title: title,
             cardLimit: cardLimit,
             board: board,
             user: user1

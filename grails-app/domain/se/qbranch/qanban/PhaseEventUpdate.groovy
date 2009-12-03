@@ -5,7 +5,7 @@ class PhaseEventUpdate extends Event implements Comparable{
     // TODO: Validera så att eventen inte sparas om inget värde har ändrats
     
     static constraints = {
-        name ( nullable: false, blank: false )
+        title ( nullable: false, blank: false )
         cardLimit ( nullable: true )
     }
 
@@ -13,7 +13,7 @@ class PhaseEventUpdate extends Event implements Comparable{
     Phase phase
 
 
-    String name
+    String title
     Integer cardLimit
 
     public Phase getPhase(){
@@ -26,7 +26,7 @@ class PhaseEventUpdate extends Event implements Comparable{
     public void setPhase(phase){
         this.phase = phase
         cardLimit = phase.cardLimit
-        name = phase.name
+        title = phase.title
         domainId = phase.domainId
     }
 
@@ -41,7 +41,7 @@ class PhaseEventUpdate extends Event implements Comparable{
 
     transient process( ) {
 
-        phase.name = name
+        phase.title = title
         phase.cardLimit = cardLimit
         phase.save()
 

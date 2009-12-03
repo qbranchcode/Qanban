@@ -202,7 +202,7 @@ class PhaseController {
         }else{
             def moveEvent = createPhaseEventMove(cmd)
 
-            render "Phase $moveEvent.phase.name Id $moveEvent.id"
+            render "Phase $moveEvent.phase.title Id $moveEvent.id"
 
 
         }

@@ -6,13 +6,13 @@ class PhaseEventCreate extends Event implements Comparable{
     static constraints = {
         cardLimit ( nullable: true )
         position ( nullable: false )
-        name(nullable: false, blank: false)
+        title(nullable: false, blank: false)
     }
 
     static transients = ['phase']
     Phase phase
 
-    String name
+    String title
     Board board
     Integer cardLimit
     Integer position
@@ -25,13 +25,13 @@ class PhaseEventCreate extends Event implements Comparable{
     }
 
     transient beforeInsert = {
-        generateDomainId(name, board )
+        generateDomainId(title, board )
     }
 
     transient process = {
 
         phase = new Phase(
-            name: name,
+            title: title,
             board: board,
             cardLimit: cardLimit,
             domainId: domainId

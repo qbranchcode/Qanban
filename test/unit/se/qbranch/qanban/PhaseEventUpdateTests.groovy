@@ -4,7 +4,7 @@ import grails.test.*
 
 class PhaseEventUpdateTests extends GrailsUnitTestCase {
 
-        def user1
+    def user1
     def user2
 
     def board
@@ -40,9 +40,9 @@ class PhaseEventUpdateTests extends GrailsUnitTestCase {
         mockDomain(PhaseEventCreate)
         mockDomain(Phase)
 
-        def phaseEventCreate1 = new PhaseEventCreate(name: "First phase", cardLimit: 5, position: 0, user: user1, board: board)
-        def phaseEventCreate2 = new PhaseEventCreate(name: "Second phase", cardLimit: 10, position: 1, user: user1 , board: board)
-        def phaseEventCreate3 = new PhaseEventCreate(name: "Third phase", user: user1, position: 2, board: board)
+        def phaseEventCreate1 = new PhaseEventCreate(title: "First phase", cardLimit: 5, position: 0, user: user1, board: board)
+        def phaseEventCreate2 = new PhaseEventCreate(title: "Second phase", cardLimit: 10, position: 1, user: user1 , board: board)
+        def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", user: user1, position: 2, board: board)
 
         phaseEventCreate1.beforeInsert()
         phaseEventCreate1.save()

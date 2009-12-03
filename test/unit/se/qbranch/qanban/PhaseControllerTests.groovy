@@ -43,9 +43,9 @@ class PhaseControllerTests extends ControllerUnitTestCase {
         mockDomain(PhaseEventCreate)
         mockDomain(Phase)
 
-        def phaseEventCreate1 = new PhaseEventCreate(name: "First phase", cardLimit: 5, position: 0, user: user1, board: board)
-        def phaseEventCreate2 = new PhaseEventCreate(name: "Second phase", cardLimit: 10, position: 1, user: user1 , board: board)
-        def phaseEventCreate3 = new PhaseEventCreate(name: "Third phase", user: user1, position: 2, board: board)
+        def phaseEventCreate1 = new PhaseEventCreate(title: "First phase", cardLimit: 5, position: 0, user: user1, board: board)
+        def phaseEventCreate2 = new PhaseEventCreate(title: "Second phase", cardLimit: 10, position: 1, user: user1 , board: board)
+        def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", user: user1, position: 2, board: board)
 
         phaseEventCreate1.beforeInsert()
         phaseEventCreate1.save()
@@ -134,7 +134,7 @@ class PhaseControllerTests extends ControllerUnitTestCase {
 
     void testSave() {
 
-        mockParams.name = "myPhase"
+        mockParams.title = "myPhase"
         mockParams.'board.id' = board.id
         mockParams.position = "3"
         assertEquals 3, Phase.list().size()
@@ -142,10 +142,10 @@ class PhaseControllerTests extends ControllerUnitTestCase {
         def model = controller.create()
 
         assertEquals 4, Phase.list().size()
-        assertEquals "myPhase", model.createEvent.phase.name
+        assertEquals "myPhase", model.createEvent.phase.title
     }
 
-    void testSaveWithoutNameAndPos() {
+    void testSaveWithoutTitleAndPos() {
         mockParams.'board.id' = board.id
         def model = controller.create()
         assertEquals 2, model.createEvent.errors.getAllErrors().size()

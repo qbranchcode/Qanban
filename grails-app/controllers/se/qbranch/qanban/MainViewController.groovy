@@ -15,6 +15,10 @@ class MainViewController {
         render(template: "/board/board", bean: Board.get(1))
     }
 
+    def showLog = {
+        render(template: "/event/log", model: [events : Event.list()])
+    }
+
 }
 
 

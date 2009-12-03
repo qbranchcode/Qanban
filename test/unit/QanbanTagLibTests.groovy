@@ -21,9 +21,9 @@ class QanbanTagLibTests extends TagLibUnitTestCase {
 
         mockDomain(Card, [card1inPhase1,card2inPhase1,card1inPhase2])
 
-        phase1 = new Phase(name: "p1", cardLimit: 3)
-        phase2 = new Phase(name: "p1", cardLimit: 6)
-        phase3 = new Phase(name: "p1", cardLimit: 1)
+        phase1 = new Phase(title: "p1", cardLimit: 3)
+        phase2 = new Phase(title: "p1", cardLimit: 6)
+        phase3 = new Phase(title: "p1", cardLimit: 1)
 
         mockDomain(Phase, [phase1,phase2,phase3])
 

@@ -14,11 +14,11 @@ class PhaseTests extends GrailsUnitTestCase {
     void testCreatePhase() {
         mockDomain(Phase)
 
-        def phase = new Phase(name: "testPhase")
-        assertEquals "testPhase", phase.name
+        def phase = new Phase(title: "testPhase")
+        assertEquals "testPhase", phase.title
         
-        def notAllowedNamePhase = new Phase(name: "")
-        assertFalse 'validate should have failed', notAllowedNamePhase.validate()
+        def notAllowedTitlePhase = new Phase(title: "")
+        assertFalse 'validate should have failed', notAllowedTitlePhase.validate()
 
     }
 
@@ -26,7 +26,7 @@ class PhaseTests extends GrailsUnitTestCase {
         mockDomain(Card)
         mockDomain(Phase)
         Card card = new Card(description: "myCard")
-        Phase phase = new Phase(name: "myPhase")
+        Phase phase = new Phase(title: "myPhase")
 
         phase.addToCards(card)
 

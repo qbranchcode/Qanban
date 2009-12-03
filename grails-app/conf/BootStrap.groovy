@@ -33,14 +33,14 @@ class BootStrap {
                 role.addToPeople(user)
             }
 
-            Phase p1 = new Phase(name:'Backlog', cardLimit: 10)
+            Phase p1 = new Phase(title:'Backlog', cardLimit: 10)
             p1.addToCards(new Card(title:"Card #1",caseNumber:1,description:'blalbblalbabla'))
             .addToCards(new Card(title:"Card #2",caseNumber:2,description:'blöblöblöblöbl'))
 
             Board b = new Board()
             .addToPhases(p1)
-            .addToPhases(new Phase(name:'WIP', cardLimit: 5))
-            .addToPhases(new Phase(name:'Done', cardLimit: 5))
+            .addToPhases(new Phase(title:'WIP', cardLimit: 5))
+            .addToPhases(new Phase(title:'Done', cardLimit: 5))
             .save()
 
             break
@@ -77,9 +77,9 @@ class BootStrap {
 
             Board board = new Board().save()
 
-            eventService.persist(new PhaseEventCreate(name: "Backlog", position: 0, user: adminUser, board: board))
-            eventService.persist(new PhaseEventCreate(name: "WIP", position: 1, cardLimit: 5, user: adminUser, board: board))
-            eventService.persist(new PhaseEventCreate(name: "Done", position: 2, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "Backlog", position: 0, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "WIP", position: 1, cardLimit: 5, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "Done", position: 2, user: adminUser, board: board))
 
             eventService.persist(new CardEventCreate(title: "Card #1", caseNumber: 1, description: "The first card", phaseDomainId: (Phase.get(1).domainId), user: adminUser))
             eventService.persist(new CardEventCreate(title: "Card #2", caseNumber: 2, description: "The second card",phaseDomainId: (Phase.get(1).domainId), user: adminUser))

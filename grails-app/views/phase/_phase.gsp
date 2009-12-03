@@ -5,10 +5,10 @@
    <div class="phaseHolder">
    	<div class="phaseHeader">
           <g:ifAllGranted role="ROLE_QANBANADMIN">
-            <h3><a href="${createLink(controller:'phase',action:'edit')}" class="editPhaseLink" id="phaseLink_${phase.id}">${phase.name}</a></h3>
+            <h3><a href="${createLink(controller:'phase',action:'edit')}" class="editPhaseLink" id="phaseLink_${phase.id}">${phase.title}</a></h3>
           </g:ifAllGranted>
           <g:ifNotGranted role="ROLE_QANBANADMIN">
-            <h3>${phase.name}</h3>
+            <h3>${phase.title}</h3>
           </g:ifNotGranted>
             <div class="limitLine">
 		<g:if test="${phase.cardLimit}">${phase.cards.size()}/${phase.cardLimit}</g:if>
