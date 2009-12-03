@@ -24,7 +24,9 @@
     /*Ajax Load Wrapper */
     $.fn.qLoad = function(url, data, successCallback, errorCallback, completeCallback) {
       var $element = $(this);
+      var checked = 'false';
       toggleSpinner();
+      
       var options = {};
       options.url = url;
       options.cache = false;
@@ -54,10 +56,11 @@
       options.errorCallback = errorCallback;
       options.error = function(XMLHttpRequest, textStatus, errorThrown){
             var errorCallback = options.errorCallback;
-            if(XMLHttpRequest.status == 0) {
-              $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
-              modal: true });
-            }
+            if(XMLHttpRequest.status == 0 && checked=='false') {
+                $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
+                modal: true });
+                checked = true;
+              }
             if( errorCallback ){
               errorCallback(XMLHttpRequest, textStatus, errorThrown);
             }
@@ -75,6 +78,8 @@
 
     /*Ajax Post Wrapper*/
     $.qPost = function(url, data, successCallback, dataType) {
+      var checked = 'false';
+
       var options = {};
       options.url = url;
       options.successCallback = successCallback;
@@ -105,9 +110,10 @@
       };
       options.data = data;
       options.error = function(XMLHttpRequest, textStatus, errorThrown){
-            if(XMLHttpRequest.status == 0) {
-              $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
+            if(XMLHttpRequest.status == 0  && checked=='false') {
+              $('<div id="offlineWarning"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
               modal: true });
+              checked = 'true';
             }
       };
       options.dataType = dataType;
@@ -119,6 +125,8 @@
 
     /*Ajax Get Wrapper*/
     $.qGet = function(url, data, successCallback, dataType) {
+      var checked = 'false';
+
       var options = {};
       options.url = url;
       options.successCallback = successCallback;
@@ -144,9 +152,10 @@
       };
       options.data = data;
       options.error = function(XMLHttpRequest, textStatus, errorThrown){
-            if(XMLHttpRequest.status == 0) {
-              $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
+            if(XMLHttpRequest.status == 0 && checked=='false') {
+              $('<div id="offlineWarning"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
               modal: true });
+              checked = 'true';
             }
       };
       options.dataType = dataType;
@@ -235,6 +244,9 @@
       $editCardDialog.qDialog({
             title: "<g:message code="mainView.jQuery.dialog.viewCardForm.title"/>",
             width: 400,
+            close: function() {
+              $editCardDialog.dialog('option', 'title', '<g:message code="mainView.jQuery.dialog.viewCardForm.title"/>');
+            }
       });
       
     
@@ -450,12 +462,8 @@
                       'buttons',
                       { '<g:message code="_cardForm.button.edit"/>' : function() {
                           initAssigneeSelect();
-                          $('#editCardDialog').dialog('option', 'title', '<g:message code="mainView.jQuery.dialog.editCardForm.title"/>');
-                          $('#editCardDialog').find("input").removeAttr([readonly='readonly']);
-                          $('#editCardDialog').find("input").addClass("edit");
-                          $('#editCardDialog').find("textarea").removeAttr([readonly='readonly']);
-                          $('#editCardDialog').find("textarea").addClass("edit");
-                          $('#editCardDialog').dialog('option', 'buttons',  {
+                          setEditMode('<g:message code="mainView.jQuery.dialog.editCardForm.title"/>', '#editCardDialog');
+                          $editCardDialog.dialog('option', 'buttons',  {
                             '<g:message code="_cardForm.button.update"/>' : function() {
                                             $editCardDialog.find('input[type="submit"]').click();
                                             toggleSpinner();
@@ -471,6 +479,15 @@
             event.preventDefault();
       });
     
+  }
+
+  function setEditMode(title, selector) {
+    var $editCardDialog = $(selector);
+    $editCardDialog.dialog('option', 'title', title);
+    $editCardDialog.find("input").removeAttr([readonly='readonly']);
+    $editCardDialog.find("input").addClass("edit");
+    $editCardDialog.find("textarea").removeAttr([readonly='readonly']);
+    $editCardDialog.find("textarea").addClass("edit");
   }
 
   function enableSortableOnPhase($phase){

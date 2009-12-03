@@ -103,7 +103,7 @@
 <g:elseif test="${cardInstance?.id}">
   <g:formRemote url="[controller:'card',action:'update', params: [format: 'html']]"
                 update="editCardDialog" name="cardForm"
-                onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated')"
+                onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated');setEditMode();"
                 onComplete="toggleSpinner()">
 
     <div class="header">
