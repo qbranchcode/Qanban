@@ -65,7 +65,7 @@ h4{}
 
 #menu .background { text-align: center; font-weight: bold; font-size: 1.4em; top: 5px;}
 #menu {
-    background-color: #666;
+    background-color: #888;
     width: 100%;
     border-bottom: 2px solid #000;
     position: fixed;
@@ -97,7 +97,7 @@ h4{}
 }
 
 #menu a:hover {
-    background-color: #888;
+    background-color: #666;
     color: #fff;
 }
 
@@ -171,6 +171,8 @@ ul.phase {
 .card {
     -moz-box-shadow: 3px 3px #888888;
     -webkit-box-shadow: 3px 3px #888888;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
     background-color: #d8dcdf;
     border: 1px solid;
     height: 7em;
@@ -243,6 +245,8 @@ ul.phase {
     background-color: #fffeb5;
     text-align: center;
     height: 7em;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
 }
 
 
