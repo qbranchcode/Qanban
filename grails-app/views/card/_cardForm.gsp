@@ -24,7 +24,7 @@
 
   <g:formRemote url="[controller:'card',action:'move']"
                 update="moveCardDialog" name="cardForm"
-                onSuccess="cardFormRefresh(data,'#moveCardDialog')">
+                onSuccess="cardFormRefresh(data,'#moveCardDialog')" >
 
     <div class="header">
 
