@@ -33,59 +33,6 @@
  padding: 30px 0 0 0;
 }
 
-#mainmenu {
- position: absolute;
- bottom: 3px;
-}
-
-/* Not visible for safari */
-#mainmenu { bottom: 2px; #}
-
-#mainmenu ul{
- list-style-type: none;
- list-style-image: none;
- margin: 0px;
- padding: 0px;
-}
-
-#mainmenu li{
- float: left;
- background-color: #fff;
- color: #444;
- display: inline-block;
- height: 28px;
- margin-right: 3px;
- font-weight: bold;
- -webkit-border-top-left-radius: 6px;
- -webkit-border-top-right-radius: 6px;
- -moz-border-radius-topleft:6px;
- -moz-border-radius-topright:6px;
-}
-
-#mainmenu li a {
- padding: 0 18px;
- line-height: 30px;
- display: inline-block;
- outline: none;
-}
-
-#mainmenu a:hover{
- cursor: pointer;
-}
-
-#mainmenu a.active{
- color: #000;
- background-color: #f2f2f2;
- cursor: default;
- -webkit-border-top-left-radius: 6px;
- -webkit-border-top-right-radius: 6px;
- -moz-border-radius-topleft:6px;
- -moz-border-radius-topright:6px;
- border-top: 1px solid red;
- border-right: 1px solid red;
- border-left: 1px solid red;
-}
-
 #content {
 overflow-x: hidden;
 min-height: 400px;

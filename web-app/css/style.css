@@ -1,3 +1,58 @@
+
+#mainmenu {
+ position: absolute;
+ bottom: 3px;
+}
+
+/* Not visible for safari */
+#mainmenu { bottom: 2px; #}
+
+#mainmenu ul{
+ list-style-type: none;
+ list-style-image: none;
+ margin: 0px;
+ padding: 0px;
+}
+
+#mainmenu li{
+ float: left;
+ background-color: #fff;
+ color: #444;
+ display: inline-block;
+ height: 28px;
+ margin-right: 3px;
+ font-weight: bold;
+ -webkit-border-top-left-radius: 6px;
+ -webkit-border-top-right-radius: 6px;
+ -moz-border-radius-topleft:6px;
+ -moz-border-radius-topright:6px;
+}
+
+#mainmenu li a {
+ padding: 0 18px;
+ line-height: 30px;
+ display: inline-block;
+ outline: none;
+}
+
+#mainmenu a:hover{
+ cursor: pointer;
+}
+
+#mainmenu a.active{
+ color: #000;
+ background-color: #f2f2f2;
+ cursor: default;
+ -webkit-border-top-left-radius: 6px;
+ -webkit-border-top-right-radius: 6px;
+ -moz-border-radius-topleft:6px;
+ -moz-border-radius-topright:6px;
+ border-top: 1px solid red;
+ border-right: 1px solid red;
+ border-left: 1px solid red;
+}
+
+
 /***********/
 /* GENERAL */
 /***********/
@@ -11,8 +66,10 @@
 
 
 body{
-    background-color: #f2f2f2;
-
+    background-color: #fff;
+    background-image: url(../images/bg_fade.png);
+    background-repeat: repeat-x;
+    background-position: 0 34px;
     /*
  	Sets the font 'medium' / standard browser font size to 10px instead of 16px to ez the use of em units
  	1.2 em = 12px
@@ -132,8 +189,7 @@ h4{}
 
 #wrapper {
     position: relative;
-    padding-top: 100px;
-
+    margin-top: 43px;
 }
 
 #board {
@@ -149,6 +205,10 @@ h4{}
 .phaseHolder {
     float: left;
     background-color: #fff;
+    -moz-box-shadow: 1px 2px 5px #666;
+    -webkit-box-shadow: 1px 2px 5px #666;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
 }
 
 .phaseHolder h3 {
@@ -174,10 +234,10 @@ ul.phase {
     position: relative;
 }*/
 .card {
-    -moz-box-shadow: 3px 3px #888888;
-    -webkit-box-shadow: 3px 3px #888888;
-    -moz-border-radius: 5px;
-    -webkit-border-radius: 5px;
+    -moz-box-shadow: 1px 2px 5px #666;
+    -webkit-box-shadow: 1px 2px 5px #666;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
     background-color: #d8dcdf;
     border: 1px solid;
     height: 7em;

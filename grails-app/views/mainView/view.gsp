@@ -647,6 +647,7 @@
                         
  	  var height = ( maxCards * $('.card').height()) +'px';
       	  $phases.animate({height: height},300);
+
 	  rescanBoardButtons();
 
   }
@@ -802,6 +803,8 @@
     <div id="boardWrapper">
       <g:render template="/board/board" bean="${board}" />
     </div>
+   
+
 
   </div>
 
