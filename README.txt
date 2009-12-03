@@ -9,4 +9,7 @@ Information for developing on the Qanban application - basic instructions to get
    can edit the DataSource.groovy in the grails-app/conf folder.
 3. With git installed, "git init" and "git clone git://github.com/qbranchcode/Qanban.git" in your prefered folder.
 
+Good to know
+By default the application will create 2 users, testadmin and testuser (password and username is the same).
+
 Now you should be ready to start develop!
