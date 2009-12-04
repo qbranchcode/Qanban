@@ -16,6 +16,39 @@
   <g:javascript src="qanban.js"/>
   <jq:jquery>
 
+
+
+    $('.tab').click(function(event){
+        var $tab = $(this);
+        var $wrapper = $('#wrapper');
+        var url = $(this).attr('href');
+
+        
+        var tabLoader = function(n){
+          $wrapper.qLoad({
+            url: url,
+            tries: n,
+            caller: tabLoader,
+            successCallback: function(data,textstatus){
+              
+              $('.tab').removeClass('active');
+              $tab.addClass('active');
+              $wrapper.fadeIn('fast',function(){
+                $('.phase').each(function(){ enableSortableOnPhase($(this)); });
+                rescanBoardButtons();
+                reconnectPhases();
+              });
+            }
+          });
+        };
+        $wrapper.fadeOut('fast',function(){
+          tabLoader();
+        });
+
+        event.preventDefault();
+
+    });
+
     /* Replace function */
     $.fn.replaceWith = function($newElement){ this.after($newElement).remove(); };
 
@@ -23,19 +56,14 @@
     $.fn.qLoad = function(options) {
 
       var $element = $(this);
-      var checked = 'false';
-      var sessionTO = 'false';
+
       toggleSpinner();
       
       options.tries = options.tries ? options.tries : options.tries = 1;
-      options.caller = options.caller;
-      options.url = options.url;
       options.cache = options.cache ? options.cache : false;
-      options.successCallback = options.successCallback;
       options.success = options.success ? options.success : function(data, textStatus){
         var fail = data.indexOf('<html>') != -1;
-        if( fail && sessionTO == 'false') {
-          sessionTO = 'true';
+        if( fail ) {
           $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.sessionTimeout"/></p></div>').dialog({
               modal: true,
               buttons: {
@@ -54,15 +82,12 @@
           $element.html(data);
         }
       };
-      options.data = options.data;
-      options.errorCallback = options.errorCallback;
       options.error = options.error ? options.error : function(XMLHttpRequest, textStatus, errorThrown){
             var errorCallback = options.errorCallback;
-            if(XMLHttpRequest.status == 0 && checked=='false') {
+            if(XMLHttpRequest.status == 0 ) {
                 if(options.tries > 3) {
                     $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
                     modal: true });
-                    checked = true;
                 } else {
                     options.tries = options.tries + 1;
                     options.caller(options.tries);
@@ -182,7 +207,7 @@
       loadAddCardLink();
       event.preventDefault();
 
-      });
+    });
 
     $createPhaseDialog = $('<div id="createPhaseDialog"></div>');
     
@@ -499,7 +524,7 @@
 			var placementSelector = "#" + icv.initPhase + " .card:nth-child(" + ( icv.initPos  ) + ")" ;
 			var initPhaseSize = $('#' + icv.initPhase + '> .card').size();
 			
-			var newPos = ui.item.prevAll().length;
+			var newPos = ui.item.prevAll().length -1 ;
                         var cardId = ui.item.attr('id').split('_')[1];
                         var newPhase = ui.item.parent().attr('id').split('_')[1];
 
@@ -641,7 +666,7 @@
              });
 
              if( numberOfChildren > maxCards ){
-             	 maxCards = numberOfChildren;
+             	 maxCards = numberOfChildren - 1;
              }
       	  });
                         
@@ -798,15 +823,14 @@
 
 <body>
 
+
+
   <div id="wrapper">
 
-    <div id="boardWrapper">
-      <g:render template="/board/board" bean="${board}" />
-    </div>
-   
-
+        <g:render template="/board/board" bean="${board}" />
 
   </div>
+
 
 </body>
 

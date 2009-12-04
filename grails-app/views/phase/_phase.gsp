@@ -4,12 +4,12 @@
 <li class="phaseWrapper phaseAutoWidth" id="phaseWrapper_${phase.id}">
    <div class="phaseHolder">
    	<div class="phaseHeader">
-          <g:ifAllGranted role="ROLE_QANBANADMIN">
-            <h3><a href="${createLink(controller:'phase',action:'edit')}" class="editPhaseLink" id="phaseLink_${phase.id}">${phase.title}</a></h3>
-          </g:ifAllGranted>
-          <g:ifNotGranted role="ROLE_QANBANADMIN">
+
+            <g:ifAllGranted role="ROLE_QANBANADMIN">
+              <a href="#edit" class="editPhaseLink" id="phaseLink_${phase.id}"> </a>
+            </g:ifAllGranted>
             <h3>${phase.title}</h3>
-          </g:ifNotGranted>
+
             <div class="limitLine">
 		<g:if test="${phase.cardLimit}">${phase.cards.size()}/${phase.cardLimit}</g:if>
 		<g:else><g:message code="_phase.noLimit"/></g:else>
@@ -24,8 +24,9 @@
 		cardLimit_${phase.cardLimit}
 	    </g:if>"
                 id="phase_${phase.id}">
-
+            <li class="cardSpacer"></li>
             <g:each var="card" in="${phase.cards}">
+              
 	    	<g:render template="/card/card" bean="${card}"/>
             </g:each>
 

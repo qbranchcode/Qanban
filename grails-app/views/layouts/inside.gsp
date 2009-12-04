@@ -21,20 +21,31 @@
     }
 
     #logout{
-      height: 22px;
+      height: 28px;
       float: right;
-      margin: 6px 16px 0 0;
+      margin: 1px 3px;
+      text-align: right;
+      line-height: 14px;
     }
 
     #logout a{
       font-weight: bold;
       color: #fff;
-      line-height: 22px;
     }
 
     #logout a:hover{
       cursor: pointer;
       color: #fd0000;
+    }
+
+    #logout img{
+      float: right;
+      border: 1px solid #e3e3e3;
+      margin-left: 4px;
+    }
+
+    #logout .name{
+      color: #fff;
     }
 
     #adminmenu{
@@ -99,12 +110,14 @@
 
     <div id="mainmenu">
       <ul>
-        <li><a class="active" href="#board"><g:message code="mainView.tabs.board"/></a></li>
-        <li><a href="#log"><g:message code="mainView.tabs.log"/></a></li>
+        <li><a class="tab active" href="${createLink(controller:'mainView',action:'showBoard')}"><g:message code="mainView.tabs.board"/></a></li>
+        <li><a class="tab" href="${createLink(controller:'mainView',action:'showLog')}"><g:message code="mainView.tabs.log"/></a></li>
       </ul>
     </div>
     
     <div id="logout">
+      <avatar:gravatar email="${loggedInUser.email}" size="26" />
+      <span class="name">${loggedInUser.userRealName}</span><br/>
       <a href="${createLink(controller:'logout')}"><g:message code="layout.inside.menu.logOut"/></a>
     </div>
 
@@ -112,14 +125,7 @@
     
   </div>
 
-<g:ifAllGranted role="ROLE_QANBANADMIN">
-  <div id="adminmenu">
-    <ul>
-      <li><a href="${createLink(controller:'card',action:'create')}" class="addCardLink"><g:message code="layout.inside.menu.addCard"/></a></li>
-      <li><a href="${createLink(controller:'phase',action:'create')}" class="addPhaseLink"><g:message code="layout.inside.menu.addPhase"/></a></li>
-    </ul>
-  </div>
-</g:ifAllGranted>
+
 
 <g:layoutBody />
 

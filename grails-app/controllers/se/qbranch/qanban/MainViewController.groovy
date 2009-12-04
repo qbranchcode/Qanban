@@ -5,10 +5,11 @@ import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 @Secured(['IS_AUTHENTICATED_FULLY'])
 class MainViewController {
 
+    def securityService
     def index = { redirect(action:view,params:params)  }
 
     def view = {
-        [ board : Board.get(1) ]
+        [ board : Board.get(1), loggedInUser: securityService.getLoggedInUser() ]
     }
 
     def showBoard = {

@@ -1,23 +1,7 @@
-<g:javascript library="jquery"/>
-<g:javascript src="jquery/jquery.ui.core.js"/>
-<g:javascript src="jquery/jquery.tablesorter.min.js"/>
-<g:javascript src="jquery/jquery.tablesorter.pager.js"/>
 
-<jq:jquery>
-  $(document).ready(function()
-    {
-      $("#logTable").tablesorter({
-      sortList:[[0,0],[2,1]], widgets: ['zebra']
-      });
-    }
-  );
-
-</jq:jquery>
 
 <%@ page contentType="text/html;charset=UTF-8"%>
-<meta name="layout" content="inside"/>
-<div id="wrapper">
-  <div id="boardWrapper">
+
     <div id="log">
       <table id="logTable" cellspacing="5">
         <thead>
@@ -44,5 +28,3 @@
         </tbody>
       </table>
     </div>
-  </div>
-</div>

@@ -189,12 +189,13 @@ h4{}
 
 #wrapper {
     position: relative;
-    margin-top: 43px;
+
 }
+
 
 #board {
     width: 80em;
-    margin: 0 auto;
+    margin: 30px auto 0 auto;
 }
 
 #log {
@@ -209,13 +210,31 @@ h4{}
     -webkit-box-shadow: 1px 2px 5px #666;
     -moz-border-radius: 6px;
     -webkit-border-radius: 6px;
+    border: 1px solid #666;
 }
 
 .phaseHolder h3 {
     text-align: center;
     line-height: 1.1em;
     font-weight: bold;
-    overflow: hidden; /* TODO: A nicer way to do this... */
+    overflow: hidden;
+    margin-top: 6px;
+}
+
+.editPhaseLink{
+    display: block;
+    position: absolute;
+    top: -2px;
+    right: 4px;
+    width: 19px;
+    height: 19px;
+    padding: 1px;
+    background-image: url('../images/qgear.png');
+    background-repeat: no-repeat;
+}
+
+.editPhaseLink:hover{
+    background-image: url('../images/qgear_hover.png');
 }
 
 ul.phase {
@@ -247,6 +266,7 @@ ul.phase {
     text-align: center;
 }
 
+.cardSpacer{ margin-top: 4px;}
 .myCard {
     background-color: #f3f164;
 }
