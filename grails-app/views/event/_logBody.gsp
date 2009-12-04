@@ -1,6 +1,6 @@
 
   <g:each in="${eventInstanceList}" status="i" var="eventInstance">
-      <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
+      <tr class="${(i % 2) == 0 ? 'odd' : 'even'} event" id="index_${i}">
 
           <td><g:formatDate format="yyyy-MM-dd hh:mm:ss" date="${eventInstance.dateCreated}"/></td>
 

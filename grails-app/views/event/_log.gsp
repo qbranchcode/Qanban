@@ -4,16 +4,17 @@
         <thead class="logTableHeader fixedHeader">
           <tr>
             <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'dateCreated'])}" class="ajaxSortableColumn order_desc"><g:message code="log.dateCreated"/></a></th>
-            <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'user'])}" class="ajaxSortableColumn"><g:message code="log.user"/></a></th>
+            <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'user'])}" class="ajaxSortableColumn order_desc"><g:message code="log.user"/></a></th>
             <th><g:message code="log.summary"/></th>
-            <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'domainId'])}" class="ajaxSortableColumn"><g:message code="log.item"/></a></th>
+            <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'domainId'])}" class="ajaxSortableColumn order_desc"><g:message code="log.item"/></a></th>
           </tr>
         </thead>
         <tbody class="scrollContent">
           <g:render template="/event/logBody" model="[ 'eventInstanceList' : eventInstanceList , 'eventInstanceTotal' : eventInstanceTotal ]"/>
         </tbody>
       </table>
-      <div id="paginate">
-        <g:paginate controller="mainView" action="showLogBody" total="${eventInstanceTotal}"/>
-      </div>
     </div>
+
+<script type="text/javascript">
+  maxElements = ${eventInstanceTotal};
+</script>

@@ -16,7 +16,18 @@
   <g:javascript src="qanban.js"/>
   <jq:jquery>
 
+  /*  $('.logLink').click(function(event){
 
+        var loadLog = function(n){
+        $('#wrapper').qLoad({
+              url: '${createLink(controller:'mainView',action:'showLog')}',
+              tries: n,
+              caller: loadLog,
+              completeCallback: enableLogView
+        });
+        };
+        loadLog();
+    });*/
 
     $('.tab').click(function(event){
         var $tab = $(this);
@@ -34,9 +45,13 @@
               $('.tab').removeClass('active');
               $tab.addClass('active');
               $wrapper.fadeIn('fast',function(){
-                $('.phase').each(function(){ enableSortableOnPhase($(this)); });
-                rescanBoardButtons();
-                reconnectPhases();
+                if( data.indexOf('<div id="log">') != -1 ) {
+                  enableLogView(url);
+                } else {
+                  $('.phase').each(function(){ enableSortableOnPhase($(this)); });
+                  rescanBoardButtons();
+                  reconnectPhases();
+                }
               });
             }
           });
@@ -79,7 +94,11 @@
           if(successCallback) {
             successCallback(data, textStatus);
           }
-          $element.html(data);
+          if(options.append) {
+            $element.append(data);
+          } else {
+            $element.html(data);
+          }
         }
       };
       options.error = options.error ? options.error : function(XMLHttpRequest, textStatus, errorThrown){
@@ -251,28 +270,50 @@
 
     reloader();
 
-    $('.logLink').click(function(event){
 
-        var loadLog = function(n){
-        $('#wrapper').qLoad({
-              url: '${createLink(controller:'mainView',action:'showLog')}',
-              tries: n,
-              caller: loadLog,
-              completeCallback: enableLogView
-        });
-        };
-        loadLog();
-    });
     
   </jq:jquery>
 
   <g:javascript>
 
+    var originUrl = '${createLink(controller:'mainView',action:'showLogBody',params:['sort':'dateCreated'])}';
+    var originOrder = 'desc';
+    var maxElements;
+
+    function isScrollBottom() {
+      var $children = $('.scrollContent').children();
+      var documentHeight = $('.scrollContent').height();
+      var scrollPosition = $children.size() * $children.height() + $('.scrollContent').scrollTop();
+      var offset = parseInt($('.event:last-child').attr('id').split('_')[1])+1;
+      if (documentHeight <= scrollPosition && $children.size() < maxElements) {
+        fetchMoreLogEvents( offset );
+      }
+    }
+
+    function fetchMoreLogEvents(offset) {
+      var loadFetcher = function(n) {
+        $('tbody').qLoad({
+           append: true,
+           url: originUrl,
+           data: {order: originOrder , offset : offset},
+           tries: n,
+           caller: loadFetcher
+          });
+      };
+      loadFetcher();
+    }
+
+    function startTablePolling(){
+      setInterval("isScrollBottom()", 2000);
+    }
+
     var enableLogView = function (){
+      startTablePolling();
 
       $('.ajaxSortableColumn').click(function(event){
-        var url = $(this).attr('href');
 
+        var url = $(this).attr('href');
+        var $currentColumn = $(this);
         var classList = $(this).attr('class').split(' ');
         var orderClass;
         var order;
@@ -290,32 +331,20 @@
             url: url,
             tries: n,
             caller: loadSortableColumn,
-            data: {order : order}
+            data: {order : order},
+            successCallback: function() {
+                          originUrl = url;
+                          originOrder = order;
+                          $currentColumn.removeClass(orderClass);
+                          $currentColumn.addClass( order == 'asc' ? 'order_desc' : 'order_asc' );
+            }
           });
         };
         loadSortableColumn();
-
-        $(this).removeClass(orderClass);
-
-        $(this).addClass( order == 'asc' ? 'order_desc' : 'order_asc' );
+        
+        
         event.preventDefault();
       });
-
-      $('.nextLink').click(function(event){
-        var url = $(this).attr('href');
-
-        var loadRemotePaginate = function(n){
-          $('tbody').qLoad({
-            url: url,
-            tries: n,
-            caller: loadRemotePaginate,
-          });
-        };
-        loadRemotePaginate();
-
-        event.preventDefault();
-      });
-
     }
 
 
