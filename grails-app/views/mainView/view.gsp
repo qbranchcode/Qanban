@@ -224,19 +224,46 @@
 /* Board logic */
 /***************/
 
-    var sort = false;
 
 
-    $('.card').click(function(){
+    $('.card').dblclick(function(event){
       showCard( $(this).attr('id').split('_')[1] );
     });
 
 
-    function showCard(id){
-      if( !sort ){
-        //alert('klick on card #' + id);
-      }
-      sort = false;
+    function showCard(cardId){
+ 
+            var loadEditCardLink = function(tries) {
+              $editCardDialog.qLoad({
+                  url : '${createLink(controller:'card',action:'form')}',
+                  data : { 'id':cardId},
+                  successCallback : function(){
+                      $editCardDialog.dialog(
+                        'option',
+                        'buttons',
+                        { '<g:message code="_cardForm.button.edit"/>' : function() {
+                            initAssigneeSelect();
+                            setEditMode('<g:message code="mainView.jQuery.dialog.editCardForm.title"/>', '#editCardDialog');
+                            $editCardDialog.dialog('option', 'buttons',  {
+                              '<g:message code="_cardForm.button.update"/>' : function() {
+                                              $editCardDialog.find('input[type="submit"]').click();
+                                              toggleSpinner();
+                                          },
+                                        <g:ifAllGranted role="ROLE_QANBANADMIN">'<g:message code="_cardForm.button.delete"/>' : function() {
+                                        deleteCardDialog(cardId);
+                                      }</g:ifAllGranted>
+                            });
+                          }
+                      });
+                      $editCardDialog.dialog('open');
+                  },
+                  tries : tries,
+                  caller : loadEditCardLink
+               });
+            }
+            loadEditCardLink();
+
+            event.preventDefault();
     }
 
       $('.phase').each(function(){ enableSortableOnPhase($(this)); });
@@ -428,42 +455,6 @@
             event.preventDefault();
       });
 
-      $('.editCardLink').click(function(event){
-            var cardId = $(this).attr('id').split('_')[1];
-
-
-            var loadEditCardLink = function(tries) {
-              $editCardDialog.qLoad({
-                  url : '${createLink(controller:'card',action:'form')}',
-                  data : { 'id':cardId},
-                  successCallback : function(){
-                      $editCardDialog.dialog(
-                        'option',
-                        'buttons',
-                        { '<g:message code="_cardForm.button.edit"/>' : function() {
-                            initAssigneeSelect();
-                            setEditMode('<g:message code="mainView.jQuery.dialog.editCardForm.title"/>', '#editCardDialog');
-                            $editCardDialog.dialog('option', 'buttons',  {
-                              '<g:message code="_cardForm.button.update"/>' : function() {
-                                              $editCardDialog.find('input[type="submit"]').click();
-                                              toggleSpinner();
-                                          },
-                                        <g:ifAllGranted role="ROLE_QANBANADMIN">'<g:message code="_cardForm.button.delete"/>' : function() {
-                                        deleteCardDialog(cardId);
-                                      }</g:ifAllGranted>
-                            });
-                          }
-                      });
-                      $editCardDialog.dialog('open');
-                  },
-                  tries : tries,
-                  caller : loadEditCardLink
-               });
-            }
-            loadEditCardLink();
-
-            event.preventDefault();
-      });
 
     $('.addCardLink').click(function(event){
 

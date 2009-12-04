@@ -40,8 +40,10 @@
 
     #logout img{
       float: right;
-      border: 1px solid #e3e3e3;
-      margin-left: 4px;
+      margin-left: 7px;
+      -moz-box-shadow: 0px 0px 6px #B0D0FF !important;
+      -webkit-box-shadow: 0px 0px 6px #B0D0FF !important;
+      border: 1px solid #B0D0FF !important;
     }
 
     #logout .name{

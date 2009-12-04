@@ -3,11 +3,12 @@
   <div class="cardTop">
     <span class="cardCaseNumber">Case: ${it.caseNumber}</span>
     <span class="cardTimeOnBoard">Age: ${new Date()-it.dateCreated}</span>
-    <div class="titleWrapper"><a href="${createLink(controller:'card',action:'edit')}" class="editCardLink" id="cardLink_${it.id}">${it.title}</a></div>
+    <div class="titleWrapper">${it.title}</div>
   </div>
   <div class="cardDescription"><p class="cardDescriptionInside">${it.description}</p></div>
 <g:if test="${it.assignee}">
-  <avatar:gravatar email="${it.assignee.email}" size="20" />
+
+      <avatar:gravatar email="${it.assignee.email}" size="20" />
 </g:if>
 <g:else>
   <img src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="20" height="20" class="avatar"/>
