@@ -251,10 +251,73 @@
 
     reloader();
 
+    $('.logLink').click(function(event){
 
+        var loadLog = function(n){
+        $('#wrapper').qLoad({
+              url: '${createLink(controller:'mainView',action:'showLog')}',
+              tries: n,
+              caller: loadLog,
+              completeCallback: enableLogView
+        });
+        };
+        loadLog();
+    });
+    
   </jq:jquery>
 
   <g:javascript>
+
+    var enableLogView = function (){
+
+      $('.ajaxSortableColumn').click(function(event){
+        var url = $(this).attr('href');
+
+        var classList = $(this).attr('class').split(' ');
+        var orderClass;
+        var order;
+
+         $.each(classList, function(index, item){
+            var classSubstings = item.split('_');
+            if( classSubstings[0].trim() == 'order' ){
+                orderClass = item;
+                order = classSubstings[1];
+            }
+        });
+
+        var loadSortableColumn = function(n){
+          $('tbody').qLoad({
+            url: url,
+            tries: n,
+            caller: loadSortableColumn,
+            data: {order : order}
+          });
+        };
+        loadSortableColumn();
+
+        $(this).removeClass(orderClass);
+
+        $(this).addClass( order == 'asc' ? 'order_desc' : 'order_asc' );
+        event.preventDefault();
+      });
+
+      $('.nextLink').click(function(event){
+        var url = $(this).attr('href');
+
+        var loadRemotePaginate = function(n){
+          $('tbody').qLoad({
+            url: url,
+            tries: n,
+            caller: loadRemotePaginate,
+          });
+        };
+        loadRemotePaginate();
+
+        event.preventDefault();
+      });
+
+    }
+
 
     function toggleSpinner() {
       if( $('#spinner').size() == 0 ) {
