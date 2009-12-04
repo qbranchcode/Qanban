@@ -76,7 +76,6 @@ class QanbanTagLib {
         }
     }
 
-
     private void cropText(text) {
         text = text + "..."
         out << text

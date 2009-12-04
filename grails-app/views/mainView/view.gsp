@@ -16,7 +16,18 @@
   <g:javascript src="qanban.js"/>
   <jq:jquery>
 
+  /*  $('.logLink').click(function(event){
 
+        var loadLog = function(n){
+        $('#wrapper').qLoad({
+              url: '${createLink(controller:'mainView',action:'showLog')}',
+              tries: n,
+              caller: loadLog,
+              completeCallback: enableLogView
+        });
+        };
+        loadLog();
+    });*/
 
     $('.tab').click(function(event){
         var $tab = $(this);
@@ -34,9 +45,13 @@
               $('.tab').removeClass('active');
               $tab.addClass('active');
               $wrapper.fadeIn('fast',function(){
-                $('.phase').each(function(){ enableSortableOnPhase($(this)); });
-                rescanBoardButtons();
-                reconnectPhases();
+                if( data.indexOf('<div id="log">') != -1 ) {
+                  enableLogView(url);
+                } else {
+                  $('.phase').each(function(){ enableSortableOnPhase($(this)); });
+                  rescanBoardButtons();
+                  reconnectPhases();
+                }
               });
             }
           });
@@ -79,7 +94,11 @@
           if(successCallback) {
             successCallback(data, textStatus);
           }
-          $element.html(data);
+          if(options.append) {
+            $element.append(data);
+          } else {
+            $element.html(data);
+          }
         }
       };
       options.error = options.error ? options.error : function(XMLHttpRequest, textStatus, errorThrown){
@@ -279,9 +298,96 @@
     reloader();
 
 
+    
   </jq:jquery>
 
   <g:javascript>
+
+    var originUrl = '${createLink(controller:'mainView',action:'showLogBody',params:['sort':'dateCreated'])}';
+    var originOrder = 'desc';
+    var maxElements;
+
+    function isScrollAtBottom(){
+
+       var $scrollContent = $('.scrollContent');
+       var $children = $('.scrollContent').children();       
+
+       if ($scrollContent[0].scrollHeight - $scrollContent.scrollTop() == $scrollContent.outerHeight()) {
+          return true;
+       }
+       return false;
+    }
+
+    function isThereMoreEvents(){
+        if($('.scrollContent').children().size() < maxElements) {return true;}
+        return false;
+    }
+
+    function getOffset() {
+      return parseInt($('.event:last-child').attr('id').split('_')[1])+1;
+    }
+
+    function fetchMoreLogEvents() {
+
+      if(isScrollAtBottom() && isThereMoreEvents()) {
+        var loadFetcher = function(n) {
+          $('tbody').qLoad({
+             append: true,
+             url: originUrl,
+             data: {order: originOrder , offset : getOffset()},
+             tries: n,
+             caller: loadFetcher
+            });
+        };
+        loadFetcher();
+      }
+    }
+
+
+    function startTablePolling(){
+      setInterval("fetchMoreLogEvents()", 2000);
+    }
+
+    var enableLogView = function (){
+      startTablePolling();
+
+      $('.ajaxSortableColumn').click(function(event){
+
+        var url = $(this).attr('href');
+        var $currentColumn = $(this);
+        var classList = $(this).attr('class').split(' ');
+        var orderClass;
+        var order;
+
+         $.each(classList, function(index, item){
+            var classSubstings = item.split('_');
+            if( classSubstings[0].trim() == 'order' ){
+                orderClass = item;
+                order = classSubstings[1];
+            }
+        });
+
+        var loadSortableColumn = function(n){
+          $('tbody').qLoad({
+            url: url,
+            tries: n,
+            caller: loadSortableColumn,
+            data: {order : order},
+            successCallback: function() {
+                          originUrl = url;
+                          originOrder = order;
+                          $currentColumn.removeClass(orderClass);
+                          $currentColumn.addClass( order == 'asc' ? 'order_desc' : 'order_asc' );
+            }
+          });
+        };
+        loadSortableColumn();
+        
+        
+        event.preventDefault();
+      });
+    }
+
 
     function toggleSpinner() {
       if( $('#spinner').size() == 0 ) {

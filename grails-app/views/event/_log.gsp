@@ -1,30 +1,20 @@
-
-
 <%@ page contentType="text/html;charset=UTF-8"%>
-
     <div id="log">
-      <table id="logTable" cellspacing="5">
-        <thead>
+      <table id="logTable" cellspacing="5" class="tableContainer">
+        <thead class="logTableHeader fixedHeader">
           <tr>
-            <th><g:message code="log.dateCreated"/></th>
-            <th><g:message code="log.user"/></th>
+            <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'dateCreated'])}" class="ajaxSortableColumn order_desc"><g:message code="log.dateCreated"/></a></th>
+            <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'user'])}" class="ajaxSortableColumn order_desc"><g:message code="log.user"/></a></th>
             <th><g:message code="log.summary"/></th>
-            <th><g:message code="log.item"/></th>
+            <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'domainId'])}" class="ajaxSortableColumn order_desc"><g:message code="log.item"/></a></th>
           </tr>
         </thead>
-        <tbody>
-          <g:each in="${eventInstanceList}" status="i" var="eventInstance">
-              <tr class="${(i % 2) == 0 ? 'odd' : 'even'}">
-
-                  <td>${fieldValue(bean:eventInstance, field:'dateCreated')}</td>
-
-                  <td>${fieldValue(bean:eventInstance, field:'user')}</td>
-
-                  <td><g:getEventSummary event="${eventInstance}"/></td>
-
-                  <td>${eventInstance.title}</td>
-              </tr>
-          </g:each>
+        <tbody class="scrollContent">
+          <g:render template="/event/logBody" model="[ 'eventInstanceList' : eventInstanceList , 'eventInstanceTotal' : eventInstanceTotal ]"/>
         </tbody>
       </table>
     </div>
+
+<script type="text/javascript">
+  maxElements = ${eventInstanceTotal};
+</script>
