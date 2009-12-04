@@ -280,31 +280,45 @@
     var originOrder = 'desc';
     var maxElements;
 
-    function isScrollBottom() {
-      var $children = $('.scrollContent').children();
-      var documentHeight = $('.scrollContent').height();
-      var scrollPosition = $children.size() * $children.height() + $('.scrollContent').scrollTop();
-      var offset = parseInt($('.event:last-child').attr('id').split('_')[1])+1;
-      if (documentHeight <= scrollPosition && $children.size() < maxElements) {
-        fetchMoreLogEvents( offset );
+    function isScrollAtBottom(){
+
+       var $scrollContent = $('.scrollContent');
+       var $children = $('.scrollContent').children();       
+
+       if ($scrollContent[0].scrollHeight - $scrollContent.scrollTop() == $scrollContent.outerHeight()) {
+          return true;
+       }
+       return false;
+    }
+
+    function isThereMoreEvents(){
+        if($('.scrollContent').children().size() < maxElements) {return true;}
+        return false;
+    }
+
+    function getOffset() {
+      return parseInt($('.event:last-child').attr('id').split('_')[1])+1;
+    }
+
+    function fetchMoreLogEvents() {
+
+      if(isScrollAtBottom() && isThereMoreEvents()) {
+        var loadFetcher = function(n) {
+          $('tbody').qLoad({
+             append: true,
+             url: originUrl,
+             data: {order: originOrder , offset : getOffset()},
+             tries: n,
+             caller: loadFetcher
+            });
+        };
+        loadFetcher();
       }
     }
 
-    function fetchMoreLogEvents(offset) {
-      var loadFetcher = function(n) {
-        $('tbody').qLoad({
-           append: true,
-           url: originUrl,
-           data: {order: originOrder , offset : offset},
-           tries: n,
-           caller: loadFetcher
-          });
-      };
-      loadFetcher();
-    }
 
     function startTablePolling(){
-      setInterval("isScrollBottom()", 2000);
+      setInterval("fetchMoreLogEvents()", 2000);
     }
 
     var enableLogView = function (){
