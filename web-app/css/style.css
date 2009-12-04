@@ -382,8 +382,9 @@ ul.phase {
 /* LOG */
 /*******/
 #log {
-    width: 60em;
     margin: 0 auto;
+    position: relative;
+    top: 50px;
 }
 
 #logTable {
@@ -467,7 +468,7 @@ thead.fixedHeader a:hover {
 /* induced side effect is that child TDs no longer accept width: auto                     */
 html>body tbody.scrollContent {
 	display: block;
-	height: 262px;
+	height: 500px;
 	overflow: auto;
 	width: 100%
 }
