@@ -189,25 +189,7 @@
       } 
     });
 
-    $('.addCardLink').click(function(event){
 
-      var loadAddCardLink = function(tries) {
-        $createCardDialog.qLoad({
-            url : '${createLink(controller:'card',action:'form')}',
-            data : {'board.id':${board.id}},
-            successCallback : function(){
-                                $createCardDialog.dialog('open');
-                              },
-            completeCallback : initAssigneeSelect,
-            tries : tries,
-            caller : loadAddCardLink
-        });
-      }
-
-      loadAddCardLink();
-      event.preventDefault();
-
-    });
 
     $createPhaseDialog = $('<div id="createPhaseDialog"></div>');
     
@@ -221,25 +203,7 @@
       }
     });
 
-    $('.addPhaseLink').click(function(event){
 
-      var loadCreatePhaseLink = function(tries) {
-       $createPhaseDialog.qLoad({
-	   url : '${createLink(controller:'phase',action:'form')}',
-	   data : {'board.id':${board.id}},
-	   successCallback : function(){$createPhaseDialog.dialog('open');},
-	   completeCallback : function(){
-                                loadPhasePlacer($createPhaseDialog.attr('id'));
-                             },
-           tries : tries,
-           caller : loadCreatePhaseLink
-       });
-      }
-
-      loadCreatePhaseLink();
-      event.preventDefault();
-
-    });
 
       $editPhaseDialog = $('<div id="editPhaseDialog"></div>');
       $editPhaseDialog.qDialog({
@@ -500,6 +464,46 @@
 
             event.preventDefault();
       });
+
+    $('.addCardLink').click(function(event){
+
+      var loadAddCardLink = function(tries) {
+        $createCardDialog.qLoad({
+            url : '${createLink(controller:'card',action:'form')}',
+            data : {'board.id':${board.id}},
+            successCallback : function(){
+                                $createCardDialog.dialog('open');
+                              },
+            completeCallback : initAssigneeSelect,
+            tries : tries,
+            caller : loadAddCardLink
+        });
+      }
+
+      loadAddCardLink();
+      event.preventDefault();
+
+    });
+
+        $('.addPhaseLink').click(function(event){
+
+      var loadCreatePhaseLink = function(tries) {
+       $createPhaseDialog.qLoad({
+	   url : '${createLink(controller:'phase',action:'form')}',
+	   data : {'board.id':${board.id}},
+	   successCallback : function(){$createPhaseDialog.dialog('open');},
+	   completeCallback : function(){
+                                loadPhasePlacer($createPhaseDialog.attr('id'));
+                             },
+           tries : tries,
+           caller : loadCreatePhaseLink
+       });
+      }
+
+      loadCreatePhaseLink();
+      event.preventDefault();
+
+    });
     
   }
 

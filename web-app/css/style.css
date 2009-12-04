@@ -1,3 +1,4 @@
+/* blue: #2e83ff */
 
 #mainmenu {
  position: absolute;
@@ -229,12 +230,14 @@ h4{}
     width: 19px;
     height: 19px;
     padding: 1px;
-    background-image: url('../images/qgear.png');
+    background-image: url(custom-theme/images/ui-icons_222222_256x240.png);
     background-repeat: no-repeat;
+    background-position: -174px -110px;
 }
 
+
 .editPhaseLink:hover{
-    background-image: url('../images/qgear_hover.png');
+     background-image: url(custom-theme/images/ui-icons_fd0000_256x240.png);
 }
 
 ul.phase {
@@ -267,10 +270,17 @@ ul.phase {
 }
 
 .cardSpacer{ margin-top: 4px;}
+
 .myCard {
-    background-color: #f3f164;
+    background-color: #e3ebf7;
+    -moz-box-shadow: 1px 2px 5px #B0D0FF !important;
+    -webkit-box-shadow: 1px 2px 5px #B0D0FF !important;
+    border: 1px solid #2E83FF !important;
 }
 
+.myCard {
+
+}
 .cardTop {
     border-bottom: solid;
     border-width: 1px;
@@ -278,16 +288,16 @@ ul.phase {
 
 .titleWrapper {
     position:relative;
-    font-size: 1.0em;
+    font-size: 1.2em;
     display: block;
     overflow: hidden;
-    line-height: 1.2em;
+    line-height: 1.3em;
     height: 1.3em;
 }
 
 .cardDescription {
     position: relative;
-    border: 1px dotted #666666;
+    border: 1px solid #bbb;
     height: 4em;
     margin: 3px;
     padding: 2px;
@@ -296,7 +306,7 @@ ul.phase {
 
  p.cardDescriptionInside {
     line-height: 1em;
-    font-size: 0.9em;
+    font-size: 1em;
     height: 4em;
     overflow: hidden;
     text-align: left;
@@ -307,13 +317,13 @@ ul.phase {
      position: relative;
      float: left;
      padding: 2px;
-     font-size: 8px;
+     font-size: 1em;
  }
 
  .cardTimeOnBoard {
      position: relative;
      float: right;
-     font-size: 8px;
+     font-size: 1em;
      padding: 2px;
  }
 
@@ -325,13 +335,15 @@ ul.phase {
  }
 
 .placeholder {
-    border: 1px solid;
-    margin: 1px 2px 0 2px;
-    background-color: #fffeb5;
+    border: 1px solid #e3e3e3;
+    margin: 4px 4px 0;
+    background-color: #f3f3f3;
     text-align: center;
     height: 7em;
     -moz-border-radius: 5px;
     -webkit-border-radius: 5px;
+    -moz-box-shadow: 0 0 2px #e3e3e3 !important;
+    -webkit-box-shadow: 0 0 2px #e3e3e3 !important;
 }
 
 

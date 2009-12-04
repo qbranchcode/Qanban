@@ -1,7 +1,7 @@
 <html>
   <head>
     <title><g:layoutTitle default="Grails" /></title>
-    <link rel="stylesheet" href="${resource(dir:'css/jq_theme_blitzer',file:'jquery-ui.css')}"
+    <link rel="stylesheet" href="${resource(dir:'css/custom-theme',file:'jquery-ui-1.7.2.custom.css')}"
           <link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}" />
     <link rel="stylesheet" href="${resource(dir:'css',file:'cardDialog.css')}" />
     <link rel="stylesheet" href="${resource(dir:'css',file:'phaseDialog.css')}" />
@@ -23,7 +23,7 @@
     #logout{
       height: 28px;
       float: right;
-      margin: 1px 3px;
+      margin: 1px;
       text-align: right;
       line-height: 14px;
     }
