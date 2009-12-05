@@ -16,19 +16,6 @@
   <g:javascript src="qanban.js"/>
   <jq:jquery>
 
-  /*  $('.logLink').click(function(event){
-
-        var loadLog = function(n){
-        $('#wrapper').qLoad({
-              url: '${createLink(controller:'mainView',action:'showLog')}',
-              tries: n,
-              caller: loadLog,
-              completeCallback: enableLogView
-        });
-        };
-        loadLog();
-    });*/
-
     $('.tab').click(function(event){
         var $tab = $(this);
         var $wrapper = $('#wrapper');
@@ -48,6 +35,9 @@
                 if( data.indexOf('<div id="log">') != -1 ) {
                   enableLogView(url);
                 } else {
+                  if( pollingInterval > -1 ){
+                  	  window.clearInterval(pollingInterval);
+                  }
                   $('.phase').each(function(){ enableSortableOnPhase($(this)); });
                   rescanBoardButtons();
                   reconnectPhases();
@@ -245,12 +235,26 @@
 
 
 
-    $('.card').dblclick(function(event){
-      showCard( $(this).attr('id').split('_')[1] );
-    });
 
 
-    function showCard(cardId){
+          $('.phase').each(function(){ enableSortableOnPhase($(this)); });
+      reconnectPhases();
+
+    rescanBoardButtons();
+
+    // The time out value is set to be 18,000,000 milli-seconds (or 5 minutes)
+    function reloader(){
+      setTimeout(function(){updateBoard();reloader();},18000000);
+    }
+
+    reloader();
+
+
+    
+  </jq:jquery>
+
+  <g:javascript>
+function showCard(cardId){
  
             var loadEditCardLink = function(tries) {
               $editCardDialog.qLoad({
@@ -282,30 +286,13 @@
             }
             loadEditCardLink();
 
-            event.preventDefault();
     }
 
-      $('.phase').each(function(){ enableSortableOnPhase($(this)); });
-      reconnectPhases();
-
-    rescanBoardButtons();
-
-    // The time out value is set to be 18,000,000 milli-seconds (or 5 minutes)
-    function reloader(){
-      setTimeout(function(){updateBoard();reloader();},18000000);
-    }
-
-    reloader();
-
-
-    
-  </jq:jquery>
-
-  <g:javascript>
 
     var originUrl = '${createLink(controller:'mainView',action:'showLogBody',params:['sort':'dateCreated'])}';
     var originOrder = 'desc';
     var maxElements;
+    var pollingInterval;
 
     function isScrollAtBottom(){
 
@@ -345,7 +332,7 @@
 
 
     function startTablePolling(){
-      setInterval("fetchMoreLogEvents()", 2000);
+      pollingInterval = window.setInterval("fetchMoreLogEvents()", 2000);
     }
 
     var enableLogView = function (){
@@ -525,6 +512,11 @@
    }
 
   function rescanBoardButtons(){
+
+    $('.card').dblclick(function(event){
+      showCard( $(this).attr('id').split('_')[1] );
+    });
+
 
       $('.editPhaseLink').click(function(event){
             var phaseId = $(this).attr('id').split('_')[1];

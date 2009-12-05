@@ -241,15 +241,6 @@ ul.phase {
     padding-bottom: 100px;
 }
 
-/*.card {
-    border: 1px solid;
-    margin: 1px 2px 0 2px;
-    background-color: #d8dcdf;
-    text-align: center;
-    height: 7em;
-    overflow: hidden;
-    position: relative;
-}*/
 .card {
     -moz-box-shadow: 1px 2px 5px #666;
     -webkit-box-shadow: 1px 2px 5px #666;
@@ -262,6 +253,7 @@ ul.phase {
     overflow: hidden;
     position: relative;
     text-align: center;
+    cursor: pointer;
 }
 
 .cardSpacer{ margin-top: 4px;}
@@ -381,20 +373,25 @@ ul.phase {
 /*******/
 /* LOG */
 /*******/
+
 #log {
     margin: 0 auto;
     position: relative;
     top: 50px;
+    width: 781px;
+    -moz-box-shadow: 1px 2px 5px #666;
+    -webkit-box-shadow: 1px 2px 5px #666;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+	border: 1px solid #e3e3e3;
+	padding: 3px;
+	background: #fff;
 }
 
 #logTable {
     margin: auto;
     background-color: #fff;
-    width: 55em;
-}
-
-.logTableHeader {
-    background-color: #888;
+    width: 781px;
 }
 
 /* define height and width of scrollable area. Add 16px to width for scrollbar          */
@@ -403,25 +400,25 @@ div.tableContainer {
 	border: 1px solid;
 	height: 285px;
 	overflow: auto;
-	width: 756px
+	width: 781px
 }
 
 /* Reset overflow value to hidden for all non-IE browsers. */
 html>body div.tableContainer {
 	overflow: hidden;
-	width: 756px
+	width: 781px
 }
 
 /* define width of table. IE browsers only                 */
 div.tableContainer table {
 	float: left;
-	width: 740px
+	width: 765px
 }
 
 /* define width of table. Add 16px to width for scrollbar.           */
 /* All other non-IE browsers.                                        */
 html>body div.tableContainer table {
-	width: 756px
+	width: 781px
 }
 
 /* set table header to a fixed position. WinIE 6.x only                                       */
@@ -438,29 +435,16 @@ html>body thead.fixedHeader tr {
 	display: block
 }
 
-/* make the TH elements pretty */
-thead.fixedHeader th {
-	font-weight: normal;
-	padding: 4px 3px;
-	text-align: left
+thead.fixedHeader a {
+	display: block;
+	width: 100%
+	border: 1px solid #fff;
+	background-image: url(../images/head_fade.png);
+    background-repeat: repeat-x;
+    background-position: 0 0px;
+
 }
 
-/* make the A elements pretty. makes for nice clickable headers                */
-thead.fixedHeader a, thead.fixedHeader a:link, thead.fixedHeader a:visited {
-	color: #FFF;
-	display: block;
-	text-decoration: none;
-	width: 100%
-}
-
-/* make the A elements pretty. makes for nice clickable headers                */
-/* WARNING: swapping the background on hover may cause problems in WinIE 6.x   */
-thead.fixedHeader a:hover {
-	color: #FFF;
-	display: block;
-	text-decoration: underline;
-	width: 100%
-}
 
 /* define the table content to be scrollable                                              */
 /* set TBODY element to have block level attributes. All other non-IE browsers            */
@@ -468,76 +452,81 @@ thead.fixedHeader a:hover {
 /* induced side effect is that child TDs no longer accept width: auto                     */
 html>body tbody.scrollContent {
 	display: block;
-	height: 500px;
+	height: 390px;
 	overflow: auto;
 	width: 100%
-}
-
-/* make TD elements pretty. Provide alternating classes for striping the table */
-/* http://www.alistapart.com/articles/zebratables/                             */
-tbody.scrollContent td, tbody.scrollContent tr.normalRow td {
-	background: #FFF;
-        border: none;
-	padding: 2px 3px 3px 4px
-}
-
-tbody.scrollContent tr.alternateRow td {
-	background: #EEE;
-	border-bottom: none;
-	border-left: none;
-	border-right: 1px solid #CCC;
-	border-top: 1px solid #DDD;
-	padding: 2px 3px 3px 4px
 }
 
 /* define width of TH elements: 1st, 2nd, and 3rd respectively.          */
 /* Add 16px to last TH for scrollbar padding. All other non-IE browsers. */
 /* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
 html>body thead.fixedHeader th {
-	width: 200px
+	width: 165px
+}
+
+html>body thead.fixedHeader th a{
+	margin-right: 1px;
+	margin-bottom: 1px;
+    -webkit-border-top-left-radius: 5px;
+    -moz-border-radius-topleft:5px;
+    text-align: left;
+    color: #fff;
+    font-size: 14px;
+    padding: 3px 4px 2px 4px;
+    font-weight: bold;
 }
 
 html>body thead.fixedHeader th + th {
-	width: 240px
+	width: 200px
 }
 
-html>body thead.fixedHeader th + th + th {
-	width: 316px
+html>body thead.fixedHeader th + th a{
+    -webkit-border-top-left-radius: 0px;
+    -moz-border-radius-topleft:0px;
 }
+
+
+html>body thead.fixedHeader th + th + th {
+	width: 200px
+}
+
+html>body thead.fixedHeader th + th + th + th{
+	width: 217px;
+}
+
+html>body thead.fixedHeader th + th + th + th a {
+    -webkit-border-top-right-radius: 5px;
+    -moz-border-radius-topright:5px;
+    margin-right: 0;		
+}
+
 
 /* define width of TD elements: 1st, 2nd, and 3rd respectively.          */
 /* All other non-IE browsers.                                            */
 /* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
 html>body tbody.scrollContent td {
-	width: 200px
+	width: 165px;
+	text-indent: 4px;
 }
 
 html>body tbody.scrollContent td + td {
-	width: 240px
+	width: 200px
 }
 
 html>body tbody.scrollContent td + td + td {
-	width: 300px
+	width: 200px
 }
 
-
-
-
-
-/* Old dialog styles, remove when porting to qDialog!!!! */
-.dialog ul { list-style-type: none; list-style-position: outside; list-style-image: none; margin-top: 10px; }
-.dialog .prop { float: right; margin-top: 4px;}
-.dialog .prop input{ width: 180px; }
-
-.ui-dialog .ui-dialog-buttonpane input {
-    cursor: pointer;
-    float: right;
-    line-height: 1.4em;
-    margin: 0.5em 0.4em 0.5em 0;
-    overflow: visible;
-    padding: 0.2em 0.6em 0.3em;
+html>body tbody.scrollContent td + td + td + td{
+	width: 200px
 }
 
-.ui-dialog .ui-dilaog-content {
-    overflow: visible !important;
+tr.odd {
+	background: #e6e6e6;	
+}
+tr.odd:hover,tr.even:hover  {
+	background: #d3d3d3;
+}
+tr.even {
+	background: #f2f2f2;	
 }
