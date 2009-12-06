@@ -22,7 +22,7 @@ class MainViewController {
     }
 
     def showLogBody = {
-        params.max = Math.min( params.max ? params.max.toInteger() : 4s0,  100)
+        params.max = Math.min( params.max ? params.max.toInteger() : 40,  100)
         render(template: "/event/logBody", model: [ eventInstanceList: Event.list( params ), eventInstanceTotal: Event.count() , offset : params.offset as Integer ])
     }
 

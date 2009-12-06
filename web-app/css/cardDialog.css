@@ -68,7 +68,7 @@
  float: left;
 }
 
-#cardForm .caseNumberWrapper{ float: left; width: 112px; padding-left: 39px;}
+#cardForm .caseNumberWrapper{ float: left; width: 120px; padding-left: 31px;}
 #cardForm .caseNumberWrapper *{ line-height: 1.7em; font-size: 1.0em !important;}
 #cardForm .caseNumberWrapper input{  width: 34px !important; }
 #cardForm .caseNumberWrapper .show{  width: 36px !important; }

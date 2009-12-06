@@ -437,7 +437,7 @@ html>body thead.fixedHeader tr {
 
 thead.fixedHeader a {
 	display: block;
-	width: 100%
+
 	border: 1px solid #fff;
 	background-image: url(../images/head_fade.png);
     background-repeat: repeat-x;

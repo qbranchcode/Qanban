@@ -26,6 +26,7 @@
       margin: 1px;
       text-align: right;
       line-height: 14px;
+      min-width: 100px;
     }
 
     #logout a{

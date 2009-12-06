@@ -339,7 +339,7 @@ function showCard(cardId){
       startTablePolling();
 
       $('.ajaxSortableColumn').click(function(event){
-
+		
         var url = $(this).attr('href');
         var $currentColumn = $(this);
         var classList = $(this).attr('class').split(' ');
@@ -348,12 +348,12 @@ function showCard(cardId){
 
          $.each(classList, function(index, item){
             var classSubstings = item.split('_');
-            if( classSubstings[0].trim() == 'order' ){
+            if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'order' ){
                 orderClass = item;
                 order = classSubstings[1];
             }
         });
-
+        
         var loadSortableColumn = function(n){
           $('tbody').qLoad({
             url: url,

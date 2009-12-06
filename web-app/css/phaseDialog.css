@@ -12,8 +12,9 @@
 #phaseForm input { width: 100%;}
 
 #cardLimitWrapper{
- width: 80px;
+ width: 76px;
  float: left;
+ margin-left: 2px;
  border: 0px solid blue;
 }
 
