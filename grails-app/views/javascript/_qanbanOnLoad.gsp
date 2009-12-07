@@ -12,21 +12,13 @@
 
       toggleSpinner();
 
-      options.tries = options.tries ? options.tries : options.tries = 1;
+      options.tries = options.tries ? options.tries : 1;
       options.cache = options.cache ? options.cache : false;
+
       options.success = options.success ? options.success : function(data, textStatus){
         var fail = data.indexOf('<html>') != -1;
         if( fail ) {
-          $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.sessionTimeout"/></p></div>').dialog({
-              modal: true,
-              buttons: {
-                <g:message code="ok"/>: function() {
-                  $(this).dialog('close');
-                  //Redirect to mainView/index
-                  window.location = "${createLink(controller:'mainView')}";
-                }
-              }
-          });
+          showSessionTimeoutMesg();
         } else {
           var successCallback = options.successCallback;
           if(successCallback) {
@@ -43,8 +35,7 @@
             var errorCallback = options.errorCallback;
             if(XMLHttpRequest.status == 0 ) {
                 if(options.tries > 3) {
-                    $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
-                    modal: true });
+                    showServerDownMesg(options.tries);
                 } else {
                     options.tries = options.tries + 1;
                     options.caller(options.tries);
@@ -67,26 +58,14 @@
 
     <%-- Ajax Get Wrapper --%>
     $.qGet = function(url, data, successCallback, dataType) {
-      var checked = 'false';
-      var sessionTO = 'false';
 
       var options = {};
       options.url = url;
       options.successCallback = successCallback;
       options.success = function(data, textStatus){
         var fail = data.indexOf('<html>') != -1;
-        if( fail && sessionTO == 'false') {
-          sessionTO = 'true';
-          $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.sessionTimeout"/></p></div>').dialog({
-              modal: true,
-              buttons: {
-                <g:message code="ok"/>: function() {
-                  $(this).dialog('close');
-                  //Redirect till mainView/index
-                  window.location = "${createLink(controller:'mainView')}";
-                }
-              }
-          });
+        if( fail ) {
+          showSessionTimeoutMesg();
         } else {
           var successCallback = options.successCallback;
           if(successCallback) {
@@ -96,10 +75,8 @@
       };
       options.data = data;
       options.error = function(XMLHttpRequest, textStatus, errorThrown){
-            if(XMLHttpRequest.status == 0 && checked=='false') {
-              $('<div id="offlineWarning"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
-              modal: true });
-              checked = 'true';
+            if( XMLHttpRequest.status == 0 ) {
+              showServerDownMesg();
             }
       };
       options.dataType = dataType;
@@ -117,8 +94,6 @@
       options.width = options.width ? options.width : options.width = 300;
       options.autoOpen = options.autoOpen ? options.autoOpen : options.autoOpen = false;
       options.modal = options.modal ? options.modal : options.modal = true;
-      options.title = options.title;
-      options.buttons = options.buttons;
 
       if( options.close ){
         var closeFunction = options.close;

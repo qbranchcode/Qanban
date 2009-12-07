@@ -18,4 +18,26 @@
       }
    }
 
+   function showServerDownMesg(n) {
+      if( $('#offline').size() == 0 ){
+        $('<div id="timeout"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
+                    modal: true });
+      }
+   }
+
+   function showSessionTimeoutMesg() {
+      if( $('#timeout').size() == 0 ){
+        $('<div id="timeout"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.sessionTimeout"/></p></div>').dialog({
+              modal: true,
+              buttons: {
+                <g:message code="ok"/>: function() {
+                  $(this).dialog('close');
+                  window.location = "${createLink(controller:'mainView')}";
+                }
+              }
+          });
+        
+      }
+   }
+
 </script>
