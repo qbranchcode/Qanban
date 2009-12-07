@@ -487,7 +487,7 @@ html>body thead.fixedHeader th + th a{
 
 
 html>body thead.fixedHeader th + th + th {
-	width: 250px
+	width: 200px
 }
 
 html>body thead.fixedHeader th + th + th + th{
@@ -514,11 +514,11 @@ html>body tbody.scrollContent td + td {
 }
 
 html>body tbody.scrollContent td + td + td {
-	width: 250px;
+	width: 200px;
 }
 
 html>body tbody.scrollContent td + td + td + td{
-	width: 215px
+	width: 200px
 }
 
 tr.odd {
