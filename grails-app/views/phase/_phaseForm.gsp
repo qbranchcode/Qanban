@@ -26,7 +26,7 @@
   </g:hasErrors>
 
   <g:formRemote url="[controller:'phase',action:'update',params: [format: 'html']]" update="editPhaseDialog" name="phaseForm"
-                onSuccess="phaseFormRefresh(data, '#editPhaseDialog', 'Success', 'Phase successfully updated')" onComplete="toggleSpinner()">
+                onSuccess="phaseFormRefresh(data, '#editPhaseDialog', 'Success', 'Phase successfully updated')" onClose="toggleSpinner()">
   
     <div class="content">
 
@@ -88,7 +88,7 @@
   </g:hasErrors>
   
   <g:formRemote url="[controller:'phase',action:'create',params: [format: 'html']]" update="createPhaseDialog" name="phaseForm"
-                onSuccess="phaseFormRefresh(data,'#createPhaseDialog')" onComplete="toggleSpinner()">
+                onSuccess="phaseFormRefresh(data,'#createPhaseDialog')" onClose="toggleSpinner()">
 
     <div class="content">
 

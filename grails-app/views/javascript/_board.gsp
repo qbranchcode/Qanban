@@ -172,6 +172,7 @@
   function closeDialog($dialog,successTitle,successMessage){
 
       $dialog.dialog('close');
+      removeSpinner();
 
       if( successTitle && successMessage ){
             $('<div id="popup" title="'+successTitle+'">'+successMessage+'</div>').dialog({

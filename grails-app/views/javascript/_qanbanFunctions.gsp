@@ -18,6 +18,10 @@
       }
    }
 
+   function removeSpinner() {
+      $('#spinner').remove();
+   }
+
    function showServerDownMesg(n) {
       if( $('#offline').size() == 0 ){
         $('<div id="timeout"><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span><g:message code="mainView.jQuery.dialog.serverOffline"/></p></div>').dialog({
