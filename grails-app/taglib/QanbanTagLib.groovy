@@ -59,32 +59,31 @@ class QanbanTagLib {
         def event = attrs.event
 
         if(event instanceof CardEventCreate) {
-            out << "created a new Card:"
+            out << g.message(code:"eventSummary.cardEventCreate")
         }
         if(event instanceof CardEventDelete) {
-            out << "deleted a Card:"
+            out << g.message(code:"eventSummary.cardEventDelete")
         }
         if(event instanceof CardEventMove) {
-            def text = "moved ${event.card.title} to ${event.newPhase.title}"
-            out << text
+            out << g.message(code:"eventSummary.cardEventMove", args:[event.card.title, event.newPhase.title])
         }
         if(event instanceof CardEventSetAssignee) {
-            out << "${event.newAssignee} is Assignee on"
+            out << g.message(code:"eventSummary.cardEventSetAssignee", args:[event.newAssignee.userRealName])
         }
         if(event instanceof CardEventUpdate) {
-            out << "updated a Card:"
+            out << g.message(code:"eventSummary.cardEventUpdate")
         }
         if(event instanceof PhaseEventCreate) {
-            out << "created a new Phase:"
+            out << g.message(code:"eventSummary.phaseEventCreate")
         }
         if(event instanceof PhaseEventDelete) {
-            out << "deleted a Phase:"
+            out << g.message(code:"eventSummary.phaseEventDelete")
         }
         if(event instanceof PhaseEventMove) {
-            out << "moved a Phase:"
+            out << g.message(code:"eventSummary.phaseEventMove")
         }
         if(event instanceof PhaseEventUpdate) {
-            out << "updated a Phase:"
+            out << g.message(code:"eventSummary.phaseEventUpdate")
         }
     }
 

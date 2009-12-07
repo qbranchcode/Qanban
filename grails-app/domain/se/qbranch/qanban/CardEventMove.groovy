@@ -50,6 +50,10 @@ class CardEventMove extends CardEvent {
     }
 
     String toString(){
-        return "$dateCreated: $user moved the card to $newPhase"
+        def phase = Phase.findByDomainId(phaseDomainId)
+        if (phase)
+            return "$dateCreated: $user moved the card to $phase.title"
+        else
+            return "$dateCreated: $user moved the card to a deleted phase"
     }
 }
