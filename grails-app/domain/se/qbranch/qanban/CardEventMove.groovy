@@ -1,12 +1,12 @@
 package se.qbranch.qanban
 
-class CardEventMove extends Event implements Comparable {
+class CardEventMove extends CardEvent {
 
     static constraints = {
         phaseDomainId ( nullable: true, blank: false )
     }
 
-    static transients = ['card','newPhase','title']
+    static transients = ['card','newPhase']
     Card card
     Phase newPhase
 
@@ -17,6 +17,9 @@ class CardEventMove extends Event implements Comparable {
     public Card getCard(){
         if( !card && domainId ){
             card = Card.findByDomainId(domainId)
+            if(!card) {
+                card = CardEventDelete.findByDomainId(domainId).card
+            }
         }
         return card
     }
@@ -24,6 +27,9 @@ class CardEventMove extends Event implements Comparable {
     public Phase getNewPhase(){
         if( !newPhase && phaseDomainId ){
             newPhase = Phase.findByDomainId(phaseDomainId)
+            if(!newPhase) {
+                newPhase = PhaseEventDelete.findByDomainId(phaseDomainId).phase
+            }
         }
         return newPhase
     }
@@ -43,37 +49,7 @@ class CardEventMove extends Event implements Comparable {
         
     }
 
-    int compareTo(Object o) {
-        if (o instanceof Event) {
-            Event event = (Event) o
-            final int BEFORE = -1;
-            final int EQUAL = 0;
-            final int AFTER = 1;
-
-            if(this.dateCreated < event.dateCreated) return AFTER
-            if(this.dateCreated > event.dateCreated) return BEFORE
-
-            return EQUAL
-        }
-    }
-
-    boolean equals(Object o) {
-        if(o instanceof Event) {
-            Event event = (Event) o
-            if(this.id == event.id)
-            return true
-        }
-        return false
-    }
-
     String toString(){
         return "$dateCreated: $user moved the card to $newPhase"
-    }
-
-    public String getTitle() {
-        if( !card && domainId){
-            card = Card.findByDomainId(domainId)
-        }
-        return card.title
     }
 }

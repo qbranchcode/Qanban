@@ -44,6 +44,17 @@ class QanbanTagLib {
         }
     }
 
+    def domainStatus = { attrs, body ->
+        def event = attrs.event
+        if( event.doesDomainExist() ) out << "alive"
+        else out << "dead"
+    }
+
+    def getCurrentTitle = { attrs, body ->
+        def event = attrs.event
+        out << event.checkCurrentTitle()
+    }
+
     def getEventSummary = { attrs, body ->
         def event = attrs.event
 
@@ -54,10 +65,11 @@ class QanbanTagLib {
             out << "deleted a Card:"
         }
         if(event instanceof CardEventMove) {
-            out << "moved a Card:"
+            def text = "moved ${event.card.title} to ${event.newPhase.title}"
+            out << text
         }
         if(event instanceof CardEventSetAssignee) {
-            out << "set Assignee on Card:"
+            out << "${event.newAssignee} is Assignee on"
         }
         if(event instanceof CardEventUpdate) {
             out << "updated a Card:"

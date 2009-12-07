@@ -525,8 +525,11 @@ tr.odd {
 	background: #e6e6e6;	
 }
 tr.odd:hover,tr.even:hover  {
-	background: #d3d3d3;
+	background: #d3d3d3; color: #000
 }
 tr.even {
 	background: #f2f2f2;	
+}
+tr.dead {
+    color: #888;
 }

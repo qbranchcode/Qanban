@@ -1,6 +1,6 @@
 package se.qbranch.qanban
 
-class PhaseEventDelete  extends Event implements Comparable{
+class PhaseEventDelete  extends PhaseEvent {
 
     static constraints = {
         cardLimit ( nullable: true )
@@ -20,7 +20,7 @@ class PhaseEventDelete  extends Event implements Comparable{
 
     public Phase getPhase(){
         if( !phase && domainId ){
-            phase = Phase.findByDomainId(domainId)
+            phase = new Phase(title: title, board: board, cardLimit: cardLimit);
         }
         return phase
     }
@@ -39,28 +39,5 @@ class PhaseEventDelete  extends Event implements Comparable{
         phase.delete(flush:true)
 
 
-    }
-
-    int compareTo(Object o) {
-        if (o instanceof Event) {
-            Event event = (Event) o
-            final int BEFORE = -1;
-            final int EQUAL = 0;
-            final int AFTER = 1;
-
-            if(this.dateCreated < event.dateCreated) return AFTER
-            if(this.dateCreated > event.dateCreated) return BEFORE
-
-            return EQUAL
-        }
-    }
-
-    boolean equals(Object o) {
-        if(o instanceof Event) {
-            Event event = (Event) o
-            if(this.id == event.id)
-            return true
-        }
-        return false
     }
 }

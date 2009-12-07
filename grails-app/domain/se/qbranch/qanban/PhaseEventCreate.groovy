@@ -1,7 +1,7 @@
 package se.qbranch.qanban
 import org.codehaus.groovy.grails.plugins.codecs.MD5Codec
 
-class PhaseEventCreate extends Event implements Comparable{
+class PhaseEventCreate extends PhaseEvent {
 
     static constraints = {
         cardLimit ( nullable: true )
@@ -40,28 +40,5 @@ class PhaseEventCreate extends Event implements Comparable{
 
         phase.save()
         
-    }
-
-    int compareTo(Object o) {
-        if (o instanceof Event) {
-            Event event = (Event) o
-            final int BEFORE = -1;
-            final int EQUAL = 0;
-            final int AFTER = 1;
-
-            if(this.dateCreated < event.dateCreated) return AFTER
-            if(this.dateCreated > event.dateCreated) return BEFORE
-
-            return EQUAL
-        }
-    }
-
-    boolean equals(Object o) {
-        if(o instanceof Event) {
-            Event event = (Event) o
-            if(this.id == event.id)
-            return true
-        }
-        return false
     }
 }
