@@ -1,7 +1,8 @@
 <%-- Loaded through _qanbanFunctions.gsp --%>
 
 var originUrl = '${createLink(controller:'mainView',action:'showLogBody',params:['sort':'dateCreated'])}';
-var originOrder = 'desc';
+var originOrder = 'asc';
+
 var maxElements;
 var pollingInterval;
 

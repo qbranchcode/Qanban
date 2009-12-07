@@ -45,10 +45,7 @@
 	  <label for="phase.idx"><g:message code="_phaseForm.placement.label"/></label><br/>
   	  <ul id="phasePlacer">
 	      <g:each var="phase" in="${updateEvent.board.phases}">
-	      	      <li class="phase
-                            <g:if test='${phase.id == updateEvent.phase.id}'>current</g:if>
-                            <g:else>old</g:else>
-                          ">
+	      	      <li class="phase <g:if test='${phase.id == updateEvent.phase.id}'>current</g:if><g:else>old</g:else>">
 		      	  <ul class="titleName">
   		      	  <g:each var="ch" in="${phase.title}">
 			  	 <li>${ch}</li>
@@ -115,7 +112,7 @@
                       <g:if test="${createEvent?.position==index}">
                           <li class="phase new"></li>
                       </g:if>
-	      	      <li class="phase old ${index}">
+	      	      <li class="phase old">
 		      	  <ul class="titleName">
   		      	  <g:each var="ch" in="${phase.title}">
                               <li>${ch}</li>
