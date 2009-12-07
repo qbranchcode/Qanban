@@ -82,7 +82,8 @@ function fixWidth(){
       $('.phaseAutoWidth').width(newWidth);
 }
 
-  function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
+function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
+
       var url = "${createLink(controller:'phase',action:'show')}";
       $destination = $('#phaseList');
 
@@ -91,19 +92,20 @@ function fixWidth(){
 
 	  var $newPhase = $('#'+$element.attr('id')).find('ul');
 
-	  reconnectPhases();
+	  
 	  if( injection ){
 		var height = $(".phase:not('[id="+$newPhase.attr('id')+"]')").height();
 		$newPhase.height(height);
 	  }
           enableSortableOnPhase($newPhase);
+          reconnectPhases();
           rescanBoardButtons();
       };
 
       var incompleteForm = function(formData,dialogSelector){
           loadPhasePlacer(dialogSelector);
       };
-
+      
       formRefresh(formData,dialogSelector,successTitle,successMessage,url,$destination,updatePhases,fixWidth,incompleteForm);
   }
 
