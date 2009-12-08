@@ -217,7 +217,7 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
                       $moveCardDialog.dialog({
                                 autoOpen: false,
                                 modal: true,
-                                title: "<g:message code="mainView.jQuery.moveCardForm.preCardTitle"/> " + ui.item.find('a').html(),
+                                title: "<g:message code="mainView.jQuery.moveCardForm.preCardTitle"/> " + ui.item.find('.titleWrapper').html(),
                                 width: 400,
                                 initCardValues: icv,
                                 buttons: {
