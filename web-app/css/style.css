@@ -502,22 +502,28 @@ html>body thead.fixedHeader th + th + th + th a {
 /* All other non-IE browsers.                                            */
 /* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
 html>body tbody.scrollContent td {
-	width: 165px;
-	text-indent: 4px;
+	width: 159px;
+	padding-left: 4px;
+        padding-top: 2px;
+        vertical-align: top;
 }
 
 html>body tbody.scrollContent td + td {
-	width: 200px
+	width: 196px
 }
 
 html>body tbody.scrollContent td + td + td {
-	width: 200px;
+	width: 196px;
 }
 
 html>body tbody.scrollContent td + td + td + td{
-	width: 200px
+	width: 196px
 }
 
+tbody.scrollContent tr{
+    display: inline-block;
+    border-bottom: 1px solid #d3d3d3;
+}
 tr.odd {
 	background: #e6e6e6;	
 }
