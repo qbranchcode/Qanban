@@ -167,6 +167,9 @@
       }else if(incompleteFormCallback){
           incompleteFormCallback(formData,dialogSelector);
       }
+      if( $dialog.find('.errors').size() > 0 ){
+        removeSpinner();
+      }
   }
 
   function closeDialog($dialog,successTitle,successMessage){
