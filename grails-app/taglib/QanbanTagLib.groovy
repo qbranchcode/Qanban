@@ -4,6 +4,8 @@ import se.qbranch.qanban.*
 
 class QanbanTagLib {
 
+    static namespace = 'qb'
+
     def maxCardCount = { attrs ->
         def maxNumberOfCards = 0
         attrs.phases?.each{

@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<li class="card <g:viewerIsAssignee assigneeId="${it.assignee?.id}">myCard</g:viewerIsAssignee>" id="card_${it.id}">
+<li class="card <qb:viewerIsAssignee assigneeId="${it.assignee?.id}">myCard</qb:viewerIsAssignee>" id="card_${it.id}">
   <div class="cardTop">
     <span class="cardCaseNumber">Case: ${it.caseNumber}</span>
     <span class="cardTimeOnBoard">Age: ${new Date()-it.dateCreated}</span>
