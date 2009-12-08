@@ -35,6 +35,9 @@ class CardEventUpdate extends CardEvent {
     public Card getCard(){
         if( !card && domainId ){
             card = Card.findByDomainId(domainId)
+            if(!card) {
+                card = CardEventDelete.findByDomainId(domainId).card
+            }
         }
         return card
     }
