@@ -1,7 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
     <style type="text/css">
 	.phaseAutoWidth{ width: ${100/it.phases.size()-1}%; margin: 0 4px; }
-	.phaseAutoHeight{ height: <g:maxCardCount phases="${it.phases}" cardHeight="7" unit="em"/>; } /*7 em*/
+	.phaseAutoHeight{ height: <qb:maxCardCount phases="${it.phases}" cardHeight="7" unit="em"/>; } /*7 em*/
     </style>
       <g:ifAllGranted role="ROLE_QANBANADMIN">
   <div id="adminmenu">
