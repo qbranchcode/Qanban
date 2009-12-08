@@ -378,7 +378,7 @@ ul.phase {
     margin: 0 auto;
     position: relative;
     top: 50px;
-    width: 781px;
+    width: 900px;
     -moz-box-shadow: 1px 2px 5px #666;
     -webkit-box-shadow: 1px 2px 5px #666;
     -moz-border-radius: 6px;
@@ -391,7 +391,7 @@ ul.phase {
 #logTable {
     margin: auto;
     background-color: #fff;
-    width: 781px;
+    width: 900px;
 }
 
 /* define height and width of scrollable area. Add 16px to width for scrollbar          */
@@ -459,7 +459,7 @@ html>body tbody.scrollContent {
 /* Add 16px to last TH for scrollbar padding. All other non-IE browsers. */
 /* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
 html>body thead.fixedHeader th {
-	width: 165px
+	width: 155px
 }
 
 html>body thead.fixedHeader th a{
@@ -483,16 +483,20 @@ html>body thead.fixedHeader th + th a{
     -moz-border-radius-topleft:0px;
 }
 
-
 html>body thead.fixedHeader th + th + th {
-	width: 200px
+        width: 230px;
 }
 
-html>body thead.fixedHeader th + th + th + th{
+
+html>body thead.fixedHeader th + th + th + th {
+	width: 98px
+}
+
+html>body thead.fixedHeader th + th + th + th + th {
 	width: 217px;
 }
 
-html>body thead.fixedHeader th + th + th + th a {
+html>body thead.fixedHeader th + th + th + th + th a {
     -webkit-border-top-right-radius: 5px;
     -moz-border-radius-topright:5px;
     margin-right: 0;		
@@ -502,7 +506,7 @@ html>body thead.fixedHeader th + th + th + th a {
 /* All other non-IE browsers.                                            */
 /* http://www.w3.org/TR/REC-CSS2/selector.html#adjacent-selectors        */
 html>body tbody.scrollContent td {
-	width: 159px;
+	width: 152px;
 	padding-left: 4px;
         padding-top: 2px;
         vertical-align: top;
@@ -513,11 +517,15 @@ html>body tbody.scrollContent td + td {
 }
 
 html>body tbody.scrollContent td + td + td {
-	width: 196px;
+	width: 226px;
 }
 
-html>body tbody.scrollContent td + td + td + td{
-	width: 196px
+html>body tbody.scrollContent td + td + td + td {
+	width: 95px;
+}
+
+html>body tbody.scrollContent td + td + td + td + td {
+        width: 196px;
 }
 
 tbody.scrollContent tr{

@@ -6,6 +6,7 @@
             <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'dateCreated'])}" class="ajaxSortableColumn order_desc"><g:message code="log.dateCreated"/></a></th>
             <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'user'])}" class="ajaxSortableColumn order_desc"><g:message code="log.user"/></a></th>
             <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'summary'])}" class="ajaxSortableColumn order_desc"><g:message code="log.summary"/></a></th>
+            <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'type'])}" class="ajaxSortableColumn order_desc"><g:message code="log.type"/></a></th>
             <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'domainId'])}" class="ajaxSortableColumn order_desc"><g:message code="log.item"/></a></th>
           </tr>
         </thead>

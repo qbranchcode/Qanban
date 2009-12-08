@@ -56,7 +56,7 @@ class QanbanTagLib {
         def event = attrs.event
         out << event.checkCurrentTitle()
     }
-
+    
     def getDialogLog = { attrs, body ->
         def event = attrs.event
         def type = event.class.simpleName

@@ -8,6 +8,8 @@
 
           <td><qb:getEventSummary event="${eventInstance}"/></td>
 
+          <td>${eventInstance.class.simpleName.split("Event")[0]}</td>
+
           <td><qb:getCurrentTitle event="${eventInstance}" /></td>
       </tr>
   </g:each>

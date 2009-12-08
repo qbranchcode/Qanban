@@ -47,11 +47,10 @@ class CardEventCreate extends CardEvent {
     }
 
     public Card getCard(){
-        if( !card ){
-            if( domainId){
-               card = Card.findByDomainId(domainId)
-            }else{
-               card = new Card( title: title, description: description, caseNumber: caseNumber, domainId: domainId, assignee: assignee, phase: phase )
+        if( !card && domainId ){
+            card = Card.findByDomainId(domainId)
+            if(!card) {
+                card = CardEventDelete.findByDomainId(domainId).card
             }
         }
         return card
