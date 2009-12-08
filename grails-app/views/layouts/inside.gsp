@@ -122,7 +122,12 @@
       <a href="${createLink(controller:'logout')}"><g:message code="layout.inside.menu.logOut"/></a>
     </div>
 
-    <img id="logo" src="${resource(dir:'images',file:'small_logo.png')}" alt="qanban"/>
+    <!--<img id="logo" src="${resource(dir:'images',file:'small_logo.png')}" alt="qanban"/>-->
+    <!--<img id="logo" src="${resource(dir:'images',file:'qanban_jap_small.png')}" alt="qanban"/>-->
+    <!--<img id="logo" src="${resource(dir:'images',file:'qanban_jap_small_w.png')}" alt="qanban"/>-->
+    <!--<img id="logo" src="${resource(dir:'images',file:'qanban_red_small.png')}" alt="qanban"/>-->
+    <img id="logo" src="${resource(dir:'images',file:'qanban_small.png')}" alt="qanban"/>
+
     
   </div>
 
