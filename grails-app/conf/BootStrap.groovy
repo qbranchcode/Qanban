@@ -81,8 +81,16 @@ class BootStrap {
             eventService.persist(new PhaseEventCreate(title: "WIP", position: 1, cardLimit: 5, user: adminUser, board: board))
             eventService.persist(new PhaseEventCreate(title: "Done", position: 2, user: adminUser, board: board))
 
-            eventService.persist(new CardEventCreate(title: "Card #1", caseNumber: 1, description: "The first card", phaseDomainId: (Phase.get(1).domainId), user: adminUser))
-            eventService.persist(new CardEventCreate(title: "Card #2", caseNumber: 2, description: "The second card",phaseDomainId: (Phase.get(1).domainId), user: adminUser))
+            eventService.persist(new CardEventCreate(title: "Deploy QANBAN to Production",
+                                                     caseNumber: 123,
+                                                     description: "Log into Hudson environment and start the build 'Release to Prod'.",
+                                                     phaseDomainId: (Phase.get(1).domainId),
+                                                     user: adminUser))
+            eventService.persist(new CardEventCreate(title: "Prepare QANBAN demo",
+                                                     caseNumber: 456,
+                                                     description: "Talk to the team about the new features and add them to the demo instructions.",
+                                                     phaseDomainId: (Phase.get(1).domainId),
+                                                     user: adminUser))
             
             break
 
