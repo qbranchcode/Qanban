@@ -29,5 +29,9 @@ class Card {
 
     User assignee
     Phase phase
+
+    public String toString() {
+        return "$title"
+    }
     
 }

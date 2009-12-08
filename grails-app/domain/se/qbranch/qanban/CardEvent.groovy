@@ -4,7 +4,7 @@ class CardEvent extends Event {
 
     static constraints = {
     }
-
+    
     transient public String checkCurrentTitle() {
         if( domainId ){
             def card = Card.findByDomainId(domainId)

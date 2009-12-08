@@ -9,16 +9,23 @@ class PhaseEventUpdate extends PhaseEvent {
         cardLimit ( nullable: true )
     }
 
-    static transients = ['phase','board']
+    static transients = ['phase','board','summaryItems']
     Phase phase
 
 
     String title
     Integer cardLimit
 
+    public List getSummaryItems() {
+        return [getPhase().title]
+    }
+
     public Phase getPhase(){
         if( !phase && domainId ){
             phase = Phase.findByDomainId(domainId)
+            if(!phase) {
+                phase = PhaseEventDelete.findByDomainId(domainId).phase
+            }
         }
         return phase
     }

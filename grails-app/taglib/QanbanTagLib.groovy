@@ -59,28 +59,17 @@ class QanbanTagLib {
 
     def getDialogLog = { attrs, body ->
         def event = attrs.event
-
-        if(event instanceof CardEventCreate) out << g.message(code:"event.cardEventCreate", args:[event.dateCreated, event.user])
-        if(event instanceof CardEventUpdate) out << g.message(code:"event.cardEventUpdate", args:[event.dateCreated, event.user])
-        if(event instanceof CardEventMove) out << g.message(code:"event.cardEventMove", args:[event.dateCreated, event.user, event.newPhase.title])
-        if(event instanceof CardEventSetAssignee) out << g.message(code:"event.cardEventSetAssignee", args:[event.dateCreated, event.user, event.newAssignee])
-        if(event instanceof PhaseEventCreate) out << g.message(code:"event.phaseEventCreate")
-        if(event instanceof PhaseEventUpdate) out << g.message(code:"event.phaseEventUpdate")
-        if(event instanceof PhaseEventMove) out << g.message(code:"event.phaseEventMove")
+        def type = event.class.simpleName
+        def items = event.dialogItems
+        out << g.message(code:"event.$type", args:items)
+        
     }
 
     def getEventSummary = { attrs, body ->
         def event = attrs.event
-
-        if(event instanceof CardEventCreate) out << g.message(code:"eventSummary.cardEventCreate")
-        if(event instanceof CardEventDelete) out << g.message(code:"eventSummary.cardEventDelete")
-        if(event instanceof CardEventMove) out << g.message(code:"eventSummary.cardEventMove", args:[event.card.title, event.newPhase.title])
-        if(event instanceof CardEventSetAssignee) out << g.message(code:"eventSummary.cardEventSetAssignee", args:[event.newAssignee.userRealName])
-        if(event instanceof CardEventUpdate) out << g.message(code:"eventSummary.cardEventUpdate")
-        if(event instanceof PhaseEventCreate) out << g.message(code:"eventSummary.phaseEventCreate")
-        if(event instanceof PhaseEventDelete) out << g.message(code:"eventSummary.phaseEventDelete")
-        if(event instanceof PhaseEventMove) out << g.message(code:"eventSummary.phaseEventMove")
-        if(event instanceof PhaseEventUpdate) out << g.message(code:"eventSummary.phaseEventUpdate")
+        def type = event.class.simpleName
+        def items = event.summaryItems
+        out << g.message(code:"eventSummary.$type", args:items)
     }
 
     private void cropText(text) {

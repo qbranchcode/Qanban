@@ -18,6 +18,9 @@ class PhaseEventMove extends PhaseEvent {
     public Phase getPhase(){
         if( !phase && domainId ){
             phase = Phase.findByDomainId(domainId)
+            if(!phase) {
+                phase = PhaseEventDelete.findByDomainId(domainId).phase
+            }
         }
         return phase
     }

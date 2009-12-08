@@ -182,7 +182,7 @@
         <select name="events" size="4" multiple>
           <g:each in="${events}" var='event'>
             <option>
-              <g:getDialogLog event="${event}"/>
+              <qb:getDialogLog event="${event}"/>
             </option>
           </g:each>
         </select>

@@ -17,12 +17,20 @@ class CardEventUpdate extends CardEvent {
         }
     }
 
-    static transients = ['card']
+    static transients = ['card','dialogItems','summaryItems']
     Card card
 
     String title
     String description
     String caseNumber
+
+    public List getSummaryItems() {
+        return [getCard().title]
+    }
+
+    public List getDialogItems() {
+        return [dateCreated, user]
+    }
 
     public Card getCard(){
         if( !card && domainId ){

@@ -9,7 +9,7 @@ class PhaseEventDelete  extends PhaseEvent {
         position ( nullable: true )
     }
 
-    static transients = ['phase']
+    static transients = ['phase','getSummaryItems']
 
     Phase phase
 
@@ -17,6 +17,10 @@ class PhaseEventDelete  extends PhaseEvent {
     Board board
     Integer cardLimit
     Integer position
+
+    public List getSummaryItems() {
+        return [getPhase().title]
+    }
 
     public Phase getPhase(){
         if( !phase && domainId ){

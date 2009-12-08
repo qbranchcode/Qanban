@@ -28,4 +28,8 @@ class Phase {
         }
         return false
     }
+
+    public String toString() {
+        return "$title"
+    }
 }

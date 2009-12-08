@@ -6,13 +6,20 @@ class CardEventMove extends CardEvent {
         phaseDomainId ( nullable: true, blank: false )
     }
 
-    static transients = ['card','newPhase']
+    static transients = ['card','newPhase','dialogItems','summaryItems']
     Card card
     Phase newPhase
 
     String phaseDomainId
     Integer newCardIndex
 
+    public List getSummaryItems() {
+        return [getCard().title, getNewPhase().title]
+    }
+
+    public List getDialogItems() {
+        return [dateCreated, user, getNewPhase().title]
+    }
 
     public Card getCard(){
         if( !card && domainId ){

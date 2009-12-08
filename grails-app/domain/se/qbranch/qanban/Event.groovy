@@ -7,10 +7,20 @@ class Event implements Comparable {
         domainId( nullable:true, blank: false )
         user(nullable: false)
     }
-    
+
+    static transients = ['summaryItems','dialogItems']
+
     Date dateCreated
     String domainId
     User user
+
+    public List getDialogItems() {
+        return []
+    }
+
+    public List getSummaryItems() {
+        return []
+    }
 
     def generateDomainId( Object[] notNullableProperties ){
         domainId = Codec.encode( new Date().time + notNullableProperties.toString() )

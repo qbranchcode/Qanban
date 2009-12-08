@@ -17,7 +17,7 @@ class CardEventDelete  extends CardEvent {
       }
     }
 
-    static transients = ['card']
+    static transients = ['card','getSummaryItems']
 
     Card card
 
@@ -27,6 +27,10 @@ class CardEventDelete  extends CardEvent {
     String phaseDomainId
     Integer position
     User assignee
+
+    public List getSummaryItems() {
+        return [getCard().title]
+    }
 
     public Card getCard(){
         if(!card && domainId) {
