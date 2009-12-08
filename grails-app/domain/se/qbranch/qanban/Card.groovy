@@ -5,7 +5,7 @@ class Card {
     static constraints = {
         title(blank:false, length:1..50)
         description( blank: true, nullable: true)
-        caseNumber()
+        caseNumber( blank: false )
         assignee(nullable: true)
         phase()
         domainId( unique: true, blank: false )
@@ -22,7 +22,7 @@ class Card {
     String domainId
     String title
     String description
-    Integer caseNumber
+    String caseNumber
 
     Date dateCreated
     Date lastUpdated

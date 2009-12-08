@@ -23,7 +23,7 @@ class CardEventDelete  extends CardEvent {
 
     String title
     String description
-    Integer caseNumber
+    String caseNumber
     String phaseDomainId
     Integer position
     User assignee

@@ -7,7 +7,7 @@ class CardEventUpdate extends CardEvent {
     static constraints = {
         title( blank: false, length: 1..50)
         description( blank: true, nullable: true )
-        caseNumber( )
+        caseNumber( blank: false)
     }
 
 
@@ -22,7 +22,7 @@ class CardEventUpdate extends CardEvent {
 
     String title
     String description
-    Integer caseNumber
+    String caseNumber
 
     public Card getCard(){
         if( !card && domainId ){

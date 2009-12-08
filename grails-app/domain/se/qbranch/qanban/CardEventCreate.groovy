@@ -8,6 +8,7 @@ class CardEventCreate extends CardEvent {
         title( blank: false, length: 1..50 )
         description(blank: true, nullable: true)
         phaseDomainId( nullable: false, blank: false )
+        caseNumber( blank: false )
     }
 
     static mapping = {
@@ -22,7 +23,7 @@ class CardEventCreate extends CardEvent {
 
     String title
     String description
-    Integer caseNumber
+    String caseNumber
     String phaseDomainId
 
     //TODO: Change to checksum connections?
