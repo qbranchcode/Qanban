@@ -73,8 +73,7 @@
     <div class="content">
 
       <label for="description" class="descLabel"><g:message code="_cardForm.label.description"/></label>
-      <textarea id="card.description" readonly="readonly" class="property">
-      ${fieldValue(bean:moveEvent.card,field:'description')}</textarea>
+      <textarea id="card.description" readonly="readonly" class="property">${fieldValue(bean:moveEvent.card,field:'description')}</textarea>
 
 
       <g:if test="${events}">
