@@ -8,17 +8,13 @@ class Event implements Comparable {
         user(nullable: false)
     }
 
-    static transients = ['summaryItems','dialogItems']
+    static transients = ['items']
 
     Date dateCreated
     String domainId
     User user
 
-    public List getDialogItems() {
-        return []
-    }
-
-    public List getSummaryItems() {
+    public List getItems() {
         return []
     }
 

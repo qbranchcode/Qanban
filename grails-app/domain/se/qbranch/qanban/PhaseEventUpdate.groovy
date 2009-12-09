@@ -9,14 +9,14 @@ class PhaseEventUpdate extends PhaseEvent {
         cardLimit ( nullable: true )
     }
 
-    static transients = ['phase','board','summaryItems']
+    static transients = ['phase','board','items']
     Phase phase
 
 
     String title
     Integer cardLimit
 
-    public List getSummaryItems() {
+    public List getItems() {
         return [getPhase().title]
     }
 

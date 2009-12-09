@@ -17,7 +17,7 @@ class CardEventDelete  extends CardEvent {
       }
     }
 
-    static transients = ['card','getSummaryItems']
+    static transients = ['card','items']
 
     Card card
 
@@ -28,7 +28,7 @@ class CardEventDelete  extends CardEvent {
     Integer position
     User assignee
 
-    public List getSummaryItems() {
+    public List getItems() {
         return [getCard().title]
     }
 

@@ -60,7 +60,7 @@ class QanbanTagLib {
     def getDialogLog = { attrs, body ->
         def event = attrs.event
         def type = event.class.simpleName
-        def items = event.dialogItems
+        def items = event.items
         out << g.message(code:"event.$type", args:items)
         
     }
@@ -68,7 +68,7 @@ class QanbanTagLib {
     def getEventSummary = { attrs, body ->
         def event = attrs.event
         def type = event.class.simpleName
-        def items = event.summaryItems
+        def items = event.items
         out << g.message(code:"eventSummary.$type", args:items)
     }
 

@@ -17,7 +17,7 @@ class CardEventCreate extends CardEvent {
       }
     }
 
-    static transients = ['card','phase','board','dialogItems','summaryItems']
+    static transients = ['card','phase','board','items']
 
     Card card
 
@@ -29,12 +29,8 @@ class CardEventCreate extends CardEvent {
     //TODO: Change to checksum connections?
     User assignee
 
-    public List getSummaryItems() {
-        return [getCard().title]
-    }
-
-    public List getDialogItems() {
-        return [dateCreated, user]
+    public List getItems() {
+        return [dateCreated, user, getCard().title]
     }
 
     public Phase getPhase() {

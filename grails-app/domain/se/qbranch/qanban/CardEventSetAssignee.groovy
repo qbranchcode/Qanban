@@ -6,16 +6,12 @@ class CardEventSetAssignee extends CardEvent {
         newAssignee ( nullable: true )
     }
 
-    static transients = ['card','dialogItems','summaryItems']
+    static transients = ['card','items']
     Card card
     
     User newAssignee
 
-    public List getSummaryItems() {
-        return [newAssignee]
-    }
-
-    public List getDialogItems() {
+    public List getItems() {
         return [dateCreated, user, newAssignee]
     }
 
