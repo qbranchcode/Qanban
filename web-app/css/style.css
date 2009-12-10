@@ -33,7 +33,7 @@
  padding: 0 18px;
  line-height: 30px;
  display: inline-block;
- outline: none;
+ 
 }
 
 #mainmenu a:hover{
@@ -91,6 +91,7 @@ a {
     font-size: 1.2em;
     color: #333;
     text-decoration: none;
+    outline: none;
 }
 
 a:hover {
@@ -235,6 +236,30 @@ h4{}
      background-image: url(custom-theme/images/ui-icons_fd0000_256x240.png);
 }
 
+#archiveBtn {
+    display: block;
+    position: absolute;
+    top: -2px;
+    right: 23px;
+    width: 19px;
+    height: 19px;
+    padding: 1px;
+    background-image: url(custom-theme/images/ui-icons_222222_256x240.png);
+    background-repeat: no-repeat;
+    background-position: 3px -94px;
+}
+
+#archiveBtn:hover {
+    background-image: url(custom-theme/images/ui-icons_fd0000_256x240.png);
+}
+
+#archiveBtn.cardHover {
+    background-image: url(custom-theme/images/ui-icons_fd0000_256x240.png);
+    background-position: -13px -94px;
+}
+
+
+
 ul.phase {
     list-style: none;
     min-height: 30px;
@@ -265,9 +290,7 @@ ul.phase {
     border: 1px solid #2E83FF !important;
 }
 
-.myCard {
 
-}
 .cardTop {
     border-bottom: solid;
     border-width: 1px;
@@ -362,12 +385,13 @@ ul.phase {
 */
 .phaseHeader .limitLine {
     height: 1em;
-    background-color: #bbb;
+    background-image: url(../images/head_fade.png);
     text-align: center;
     line-height: 1em;
     position: absolute;
     width: 100%;
     bottom: 0;
+    color: #fff;
 }
 
 /*******/

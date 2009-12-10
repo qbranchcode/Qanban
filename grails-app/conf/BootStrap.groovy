@@ -118,9 +118,10 @@ class BootStrap {
         if( Board.list().size() == 0 ){
             Board board = new Board().save()
 
-            eventService.persist(new PhaseEventCreate(title: "Backlog", phasePos: 0, user: adminUser, board: board))
-            eventService.persist(new PhaseEventCreate(title: "WIP", phasePos: 1, cardLimit: 5, user: adminUser, board: board))
-            eventService.persist(new PhaseEventCreate(title: "Done", phasePos: 2, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "Backlog", position: 0, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "WIP", position: 1, cardLimit: 5, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "Done", position: 2, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "Archive", position: 3, user: adminUser, board: board))
         }
     }
 

@@ -22,6 +22,35 @@ class QanbanTagLib {
 
     static namespace = 'qb'
 
+    def renderPhases = { attrs ->
+        if( !attrs.template )
+          return out << "You need to specify a template"
+        if( !attrs.phases )
+          return out << "You need to specify a collection of phases"
+        if( attrs.showArchive &&  attrs.showArchive != "true" && attrs.showArchive != "false"  )
+          return out << "The attribute 'showArchive' can only be true/false"
+
+
+        def output = ""
+        def elementNumber = 0
+      
+        attrs.phases.each{
+            elementNumber += 1
+            if( elementNumber < attrs.phases.size() || attrs.showArchive == "true" ) {
+              output += render(template:attrs.template,model:[phase:it])
+            }
+        }
+        out << output
+    }
+
+    def enableArchiveButton = { attrs->
+        if( isSecondLastPhase(attrs.phase) ) out << '<div id="archiveBtn"> </div>'
+    }
+
+    private boolean isSecondLastPhase(phase){
+        phase.board.phases.indexOf(phase) == phase.board.phases.size()-2
+    }
+    
     def maxCardCount = { attrs ->
         def maxNumberOfCards = 0
         attrs.phases?.each{

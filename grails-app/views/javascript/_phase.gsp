@@ -180,6 +180,7 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
                    }
 
               }).parent().animate({opacity:0.3},300);
+              ui.item.animate({opacity:0.6},300);
 
               var initPos = ui.item.prevAll().length + 1;
               var elementId = ui.item.attr('id');
@@ -191,8 +192,14 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
          });
 
          if ( $nextPhase.is('.phase') ){
-            $currentPhase.sortable('option','connectWith','#'+$nextPhase.attr('id')+'.available')
+         
+            $currentPhase.sortable('option','connectWith','#'+$nextPhase.attr('id')+'.available');
+
+         }else if ( $currentPhase.parent().find('#archiveBtn').size() == 1 ){
+
+            $currentPhase.sortable('option','connectWith','#archiveBtn');
          }
+
      });
   }
 
@@ -200,7 +207,7 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
      $phase.sortable({
             placeholder: 'placeholder',
             stop: function(event,ui){
-
+                  ui.item.animate({opacity:1},300);
                   recalculateHeightAndUpdateCardCount();
                   $('.phase').parent().animate({opacity: 1},300);
 
@@ -280,6 +287,22 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
 
               }
      });
+
+     var $archiveBtn = $phase.parent().find('#archiveBtn');
+     if( $archiveBtn.size() == 1 ){
+      var acceptSelector = '#' + $phase.attr('id') + ' > .card';
+      $archiveBtn.droppable({
+        hoverClass: 'cardHover',
+        accept: acceptSelector,
+        tolerance: 'pointer',
+        drop: function(event,ui){
+         // $.qPost(${createLink(controller:'card',action:'archive')})
+          ui.draggable.remove();
+        }
+
+      });
+     }
+     
   }
 
 
