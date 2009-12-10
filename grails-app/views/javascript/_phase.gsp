@@ -239,7 +239,7 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
 
                                          var initPhaseSize = $('#' + icv.initPhase + '> .card').size();
 
-                                         initPhaseSize  == 0 || initPhaseSize < icv.initPos ? $('#'+icv.initPhase).append(card) : function(){
+                                         initPhaseSize  == 0 || initPhaseSize+1 < icv.initPos ? $('#'+icv.initPhase).append(card) : function(){
                                             card.insertBefore($(placementSelector));
                                          }();
 
