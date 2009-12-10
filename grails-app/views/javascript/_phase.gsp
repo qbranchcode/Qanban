@@ -296,7 +296,23 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
         accept: acceptSelector,
         tolerance: 'pointer',
         drop: function(event,ui){
-         // $.qPost(${createLink(controller:'card',action:'archive')})
+
+          var id = ui.draggable.attr('id').split('_')[1];
+          var newPos = 0;
+          var newPhase;
+
+          var classList = $archiveBtn.attr('class').split(' ');
+
+          $.each(classList, function(index, item){
+             var classSubstings = item.split('_');
+             if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'archId' ){
+                 newPhase = classSubstings[1];
+             }
+          });
+
+          alert('id: ' + id + ' newPhase: ' + newPhase + ' newPos: ' + newPos); 
+          //$.ajax({ url: '${createLink(controller:'card',action:'sort')}',data:{id: id, newPos: newPos, newPhase: newPhase });
+
           ui.draggable.remove();
         }
 
