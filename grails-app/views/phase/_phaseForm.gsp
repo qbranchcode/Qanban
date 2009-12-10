@@ -32,12 +32,14 @@
 
        <div id="nameWrapper">
         <label for="title"><g:message code="_phaseForm.label.title"/></label>
-        <input type="text" id="name" name="title" value="${updateEvent?.title}"
+        <input type="text" id="name" name="title"
+               value="${fieldValue(bean:updateEvent,field:'title')}"
                class="property ${hasErrors(bean:updateEvent,field:'title','errors')}"/>
        </div>
        <div id="cardLimitWrapper">
          <label for="cardLimit"><g:message code="_phaseForm.label.cardLimit"/></label>
-          <input type="text" id="cardLimit" name="cardLimit" value="${updateEvent?.cardLimit}"
+          <input type="text" id="cardLimit" name="cardLimit"
+                  value="${fieldValue(bean:updateEvent,field:'cardLimit')}"
                  class="property ${hasErrors(bean:updateEvent,field:'cardLimit','errors')}"/>
        </div>
        <div class="leveler"></div>
@@ -94,12 +96,14 @@
 
        <div id="nameWrapper">
         <label for="name"><g:message code="_phaseForm.label.title"/></label>
-        <input type="text" id="title" name="title" value="${createEvent?.title}"
+        <input type="text" id="title" name="title"
+               value="${fieldValue(bean:createEvent,field:'title')}"
                class="property ${hasErrors(bean:createEvent,field:'title','errors')}"/>
        </div>
        <div id="cardLimitWrapper">
          <label for="cardLimit"><g:message code="_phaseForm.label.cardLimit"/></label>
-          <input type="text" id="cardLimit" name="cardLimit" value="${createEvent?.cardLimit}"
+          <input type="text" id="cardLimit" name="cardLimit"
+                 value="${fieldValue(bean:createEvent,field:'cardLimit')}"
                  class="property ${hasErrors(bean:createEvent,field:'cardLimit','errors')}"/>
        </div>
        <div class="leveler"></div>

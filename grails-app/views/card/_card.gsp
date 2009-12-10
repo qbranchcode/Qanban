@@ -1,11 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <li class="card <qb:viewerIsAssignee assigneeId="${it.assignee?.id}">myCard</qb:viewerIsAssignee>" id="card_${it.id}">
   <div class="cardTop">
-    <span class="cardCaseNumber">Case: ${it.caseNumber}</span>
+    <span class="cardCaseNumber">Case: <g:fieldValue bean="${it}" field="caseNumber" /></span>
     <span class="cardTimeOnBoard">Age: ${new Date()-it.dateCreated}</span>
-    <div class="titleWrapper">${it.title}</div>
+    <div class="titleWrapper"><g:fieldValue bean="${it}" field="title" /></div>
   </div>
-  <div class="cardDescription"><p class="cardDescriptionInside">${it.description}</p></div>
+  <div class="cardDescription"><p class="cardDescriptionInside"><g:fieldValue bean="${it}" field="description" /></p></div>
 <g:if test="${it.assignee}">
 
       <avatar:gravatar email="${it.assignee.email}" size="20" />

@@ -8,7 +8,7 @@
             <g:ifAllGranted role="ROLE_QANBANADMIN">
               <a href="#edit" class="editPhaseLink" id="phaseLink_${phase.id}"> </a>
             </g:ifAllGranted>
-            <h3>${phase.title}</h3>
+            <h3><g:fieldValue bean="${phase}" field="title" /></h3>
 
             <div class="limitLine">
 		<g:if test="${phase.cardLimit}">${phase.cards.size()}/${phase.cardLimit}</g:if>
@@ -21,12 +21,12 @@
 		available
 	    </g:if>
      	    <g:if test="${phase.cardLimit}">
-		cardLimit_${phase.cardLimit}
+		cardLimit_<g:fieldValue bean="${phase}" field="cardLimit" />
 	    </g:if>"
                 id="phase_${phase.id}">
             <li class="cardSpacer"></li>
             <g:each var="card" in="${phase.cards}">
-              
+
 	    	<g:render template="/card/card" bean="${card}"/>
             </g:each>
 
