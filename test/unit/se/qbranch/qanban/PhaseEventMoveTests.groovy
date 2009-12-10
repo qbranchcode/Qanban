@@ -57,9 +57,9 @@ class PhaseEventMoveTests extends GrailsUnitTestCase {
         mockDomain(PhaseEventCreate)
         mockDomain(Phase)
 
-        def phaseEventCreate1 = new PhaseEventCreate(title: "First phase", cardLimit: 5, position: 0, user: user1, board: board)
-        def phaseEventCreate2 = new PhaseEventCreate(title: "Second phase", cardLimit: 10, position: 1, user: user1 , board: board)
-        def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", user: user1, position: 2, board: board)
+        def phaseEventCreate1 = new PhaseEventCreate(title: "First phase", cardLimit: 5, phasePos: 0, user: user1, board: board)
+        def phaseEventCreate2 = new PhaseEventCreate(title: "Second phase", cardLimit: 10, phasePos: 1, user: user1 , board: board)
+        def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", user: user1, phasePos: 2, board: board)
 
         phaseEventCreate1.beforeInsert()
         phaseEventCreate1.save()
@@ -135,7 +135,7 @@ class PhaseEventMoveTests extends GrailsUnitTestCase {
 
         assertEquals 0, phase1.board.phases.indexOf(phase1)
 
-        def pem = new PhaseEventMove( phase: phase1, position: 2 )
+        def pem = new PhaseEventMove( phase: phase1, phasePos: 2 )
 
         pem.beforeInsert()
         pem.save()

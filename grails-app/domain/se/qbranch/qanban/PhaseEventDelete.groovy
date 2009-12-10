@@ -22,7 +22,7 @@ class PhaseEventDelete  extends PhaseEvent {
         cardLimit ( nullable: true )
         title ( nullable: true )
         board ( nullable: true )
-        position ( nullable: true )
+        phasePos ( nullable: true )
     }
 
     static transients = ['phase','items']
@@ -32,7 +32,7 @@ class PhaseEventDelete  extends PhaseEvent {
     String title
     Board board
     Integer cardLimit
-    Integer position
+    Integer phasePos
 
     public List getItems() {
         return [getPhase().title]
@@ -50,7 +50,7 @@ class PhaseEventDelete  extends PhaseEvent {
         title = phase.title
         board = phase.board
         cardLimit = phase.cardLimit
-        position = board.phases.indexOf(phase)
+        phasePos = board.phases.indexOf(phase)
     }
 
     transient process(){

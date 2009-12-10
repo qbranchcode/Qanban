@@ -19,7 +19,7 @@ package se.qbranch.qanban
 class PhaseEventMove extends PhaseEvent {
   
     static constraints = {
-        position (min: 0, nullable: false, validator:{ val, obj ->
+        phasePos (min: 0, nullable: false, validator:{ val, obj ->
 
                 return ( val < obj.phase.board.phases.size() )
 
@@ -29,7 +29,7 @@ class PhaseEventMove extends PhaseEvent {
     static transients = ['phase']
     Phase phase
 
-    Integer position
+    Integer phasePos
 
     public Phase getPhase(){
         if( !phase && domainId ){
@@ -47,6 +47,6 @@ class PhaseEventMove extends PhaseEvent {
 
     transient process(){
         phase.board.phases.remove(phase)
-        phase.board.phases.add(position, phase)
+        phase.board.phases.add(phasePos, phase)
     }
 }

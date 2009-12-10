@@ -5,7 +5,7 @@ function loadPhasePlacer(dialogSelector){
          cancel:'.old',
          placeholder:'phaseplaceholder',
          stop:function(event,ui){
-            $('input[name=position]').val(ui.item.prevAll().length);
+            $('input[name=phasePos]').val(ui.item.prevAll().length);
 
          }});
 }
