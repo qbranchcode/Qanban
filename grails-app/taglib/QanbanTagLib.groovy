@@ -43,8 +43,21 @@ class QanbanTagLib {
         out << output
     }
 
+    def getArchiveId = { attrs ->
+        if( !attrs.board )
+          return out << "You need to specify a board"
+        out << attrs.board.phases.get(attrs.board.phases.size()-1)
+    }
+
     def enableArchiveButton = { attrs->
-        if( isSecondLastPhase(attrs.phase) ) out << '<div id="archiveBtn"> </div>'
+        if( isSecondLastPhase(attrs.phase) ){
+          def lastId = getLastPhaseId(attrs.phase.board)
+          out << "<div id='archiveBtn' class='archId_$lastId'> </div>"
+        }
+    }
+
+    private Integer getLastPhaseId(board){
+        return board.phases.get(board.phases.size()-1).id
     }
 
     private boolean isSecondLastPhase(phase){
