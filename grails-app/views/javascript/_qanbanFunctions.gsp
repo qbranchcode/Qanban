@@ -38,6 +38,9 @@
                   $(this).dialog('close');
                   window.location = "${createLink(controller:'mainView')}";
                 }
+              },
+              close: function() {
+                window.location = "${createLink(controller:'mainView')}";
               }
           });
         
