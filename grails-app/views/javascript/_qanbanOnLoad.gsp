@@ -56,6 +56,49 @@
 
     }
 
+    <%-- Ajax Post Wrapper --%>
+    $.qPost = function(options) {
+
+      var $element = $(this);
+
+      options.tries = options.tries ? options.tries : 1;
+      options.cache = options.cache ? options.cache : false;
+
+      options.success = options.success ? options.success : function(data, textStatus){
+        var fail = data.indexOf('<html>') != -1;
+        if( fail ) {
+          showSessionTimeoutMesg();
+        } else {
+          var successCallback = options.successCallback;
+          if(successCallback) {
+            successCallback(data, textStatus);
+          }
+          if(options.append) {
+            $element.append(data);
+          } else {
+            $element.html(data);
+          }
+        }
+      };
+      options.error = options.error ? options.error : function(XMLHttpRequest, textStatus, errorThrown){
+            var errorCallback = options.errorCallback;
+            if(XMLHttpRequest.status == 0 ) {
+                if(options.tries > 3) {
+                    showServerDownMesg(options.tries);
+                } else {
+                    options.tries = options.tries + 1;
+                    options.caller(options.tries);
+                }
+            }
+            if( errorCallback ){
+              errorCallback(XMLHttpRequest, textStatus, errorThrown);
+            }
+      };
+      options.type = "POST";
+
+      $.ajax(options);
+    }
+
     <%-- Ajax Get Wrapper --%>
     $.qGet = function(url, data, successCallback, dataType) {
 

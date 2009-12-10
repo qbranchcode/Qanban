@@ -254,21 +254,28 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
                      });
 
                     var loadMoveCardDialog = function(tries) {
-                     $moveCardDialog.qLoad({
-                                url : '${createLink(controller:'card',action:'form')}',
-                                data : { 'id' : cardId , 'newPhase' : newPhase , 'newPos' : newPos },
-                                successCallback : function(){
-                                                      $moveCardDialog.dialog('open');
-                                                   },
-                                completeCallback : initAssigneeSelect,
-                                tries : tries,
-                                caller : loadMoveCardDialog
-                     });
+                       $moveCardDialog.qLoad({
+                                  url : '${createLink(controller:'card',action:'form')}',
+                                  data : { 'id' : cardId , 'newPhase' : newPhase , 'newPos' : newPos },
+                                  successCallback : function(){
+                                                        $moveCardDialog.dialog('open');
+                                                     },
+                                  completeCallback : initAssigneeSelect,
+                                  tries : tries,
+                                  caller : loadMoveCardDialog
+                       });
                     }
                     loadMoveCardDialog();
 
                   }else{
-                     /*What to do here?*/
+                    var loadCardSort = function(tries) {
+                        $.ajax({  url: '${createLink(controller:'card',action:'sort')}',
+                                  data : { 'id' : cardId , 'newPhase' : newPhase , 'newPos' : newPos },
+                                  tries : tries,
+                                  caller : loadCardSort
+                        });
+                    }
+                    loadCardSort();
                   }
 
               }
