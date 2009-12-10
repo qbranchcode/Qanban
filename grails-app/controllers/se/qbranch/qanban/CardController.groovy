@@ -223,7 +223,8 @@ class CardController {
                 mcEvent = createCardEventMove(mcc)
             }
 
-            eventService.persist(mcEvent)
+            if(mcEvent)
+                eventService.persist(mcEvent)
 
             return render(status: 200, text: "Sort successfull")
 

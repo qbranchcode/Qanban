@@ -269,7 +269,7 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
 
                   }else{
                     var loadCardSort = function(tries) {
-                        $.ajax({  url: '${createLink(controller:'card',action:'sort')}',
+                        $.qPost({ url: '${createLink(controller:'card',action:'sort')}',
                                   data : { 'id' : cardId , 'newPhase' : newPhase , 'newPos' : newPos },
                                   tries : tries,
                                   caller : loadCardSort
