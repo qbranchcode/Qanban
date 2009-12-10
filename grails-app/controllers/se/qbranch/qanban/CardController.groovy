@@ -212,6 +212,24 @@ class CardController {
         }
     }
 
+    def sort = { MoveCardCommand mcc ->
+
+        if( mcc.hasErrors() || !ruleService.isMoveLegal(mcc.oldPhaseEntity,mcc.newPhaseEntity) ){
+            return render(status: 400, text: "Bad Request")
+        } else {
+            def mcEvent = null
+
+            if( isMovingToANewPosition(mcc) ){
+                mcEvent = createCardEventMove(mcc)
+            }
+
+            eventService.persist(mcEvent)
+
+            return render(status: 200, text: "Sort successfull")
+
+        }
+    }
+
     private CardEventMove createCardEventMove(cmd) {
         def user = User.get(params.user) // TODO: Fixa så att den inloggade usern kommer med anropet
         def cardEventMove = new CardEventMove(
