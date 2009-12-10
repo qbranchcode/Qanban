@@ -10,6 +10,7 @@
   <g:javascript src="jquery/jquery.ui.core.js"/>
   <g:javascript src="jquery/jquery.ui.sortable.js"/>
   <g:javascript src="jquery/jquery.ui.draggable.js"/>
+  <g:javascript src="jquery/jquery.ui.droppable.js"/>
   <g:javascript src="jquery/jquery.ui.dialog.js"/>
   <g:render template="/javascript/qanbanOnLoad"/>
   <g:render template="/javascript/qanbanFunctions"/>

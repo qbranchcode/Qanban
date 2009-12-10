@@ -99,6 +99,16 @@
 
     });
 
+/*    $('#archiveBtn').click(function(event){
+    
+      if( $(this).css('background-position') == '3px -94px' ){
+          $(this).css('background-position','-13px -94px');
+      }else{
+          $(this).css('background-position','3px -94px');
+      }
+      event.preventDefault();
+    });
+*/
   }
 
   /* TODO: Change beforeInjection to getNewElementCallback to break out some missplaced logic */

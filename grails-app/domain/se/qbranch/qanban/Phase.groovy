@@ -27,7 +27,6 @@ class Phase {
         domainId( nullable: false, unique: true, blank: false)
     }
 
-    //TODO: Titta mer på det här!
     static hasMany = [cards:Card]
 
     String title

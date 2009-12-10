@@ -29,7 +29,7 @@ class BoardTests extends GrailsUnitTestCase {
 
     void testHasPhases() {
         mockDomain(Board)
-        def b = new Board().save()
+        def b = new Board(domainId: 'domainId').save()
         assertEquals 0, b.phases.size()
     }
 }

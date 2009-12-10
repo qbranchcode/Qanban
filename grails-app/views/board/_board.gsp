@@ -6,7 +6,9 @@
 	.phaseAutoHeight{ height: <qb:maxCardCount phases="${it.phases}" cardHeight="7" unit="em"/>; } /*7 em*/
     </style>
 </g:if>
-      <g:ifAllGranted role="ROLE_QANBANADMIN">
+
+
+<g:ifAllGranted role="ROLE_QANBANADMIN">
   <div id="adminmenu">
     <ul>
       <li><a href="${createLink(controller:'card',action:'create')}" class="addCardLink"><g:message code="layout.inside.menu.addCard"/></a></li>
@@ -20,10 +22,8 @@
 
 
   <ul id="phaseList">
-    
-    <g:each var="phase" in="${it.phases}">	
-	<g:render template="/phase/phase" model="['phase':phase]"/>
-    </g:each>
+
+    <qb:renderPhases phases="${it.phases}" showArchive="false" template="/phase/phase"/>
 
   </ul>
 
