@@ -35,6 +35,9 @@ class Phase {
     Integer cardLimit
     String domainId
 
+    Date dateCreated
+    Date lastUpdated
+  
     boolean equals(Object o) {
         if(o instanceof Phase) {
             Phase p = (Phase) o

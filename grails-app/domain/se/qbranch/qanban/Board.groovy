@@ -24,4 +24,7 @@ class Board {
     static hasMany = [phases:Phase]
     List phases = []
 
+    Date dateCreated
+    Date lastUpdated
+
 }
