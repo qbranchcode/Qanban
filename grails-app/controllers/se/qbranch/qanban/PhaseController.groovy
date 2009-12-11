@@ -68,10 +68,10 @@ class PhaseController {
 
   def show = {
     if( !params.id )
-      return render(status: 400, text: "You need to specify an id")
+    return render(status: 400, text: "You need to specify an id")
 
     if( !Phase.exists(params.id) )
-      return render(status: 404, text: "Phase with id $params.id not found")
+    return render(status: 404, text: "Phase with id $params.id not found")
 
     def phase = Phase.read(params.id)
 
@@ -125,7 +125,7 @@ class PhaseController {
       return cardLimit as Integer
     }
   }
-  
+
   private renderShowResult(phase){
     withFormat {
       html{
@@ -183,7 +183,9 @@ class PhaseController {
       eventService.persist(moveEvent)
       eventService.persist(updateEvent)
 
-    renderUpdateResult(updateEvent)
+      renderUpdateResult(updateEvent)
+
+    }
 
   }
 
@@ -209,20 +211,20 @@ class PhaseController {
     return event
   }
 
-   private PhaseEventMove createPhaseEventMove(cmd){
-        if(phaseIsMovedToANewPosition(cmd)){
-            def moveEvent = new PhaseEventMove(
-                phase: cmd.phase,
-                phasePos: cmd.phasePos,
-                user: securityService.getLoggedInUser()
-            )
-            return moveEvent
-        }
+  private PhaseEventMove createPhaseEventMove(cmd){
+    if(phaseIsMovedToANewPosition(cmd)){
+      def moveEvent = new PhaseEventMove(
+              phase: cmd.phase,
+              phasePos: cmd.phasePos,
+              user: securityService.getLoggedInUser()
+      )
+      return moveEvent
     }
+  }
 
-    private boolean phaseIsMovedToANewPosition(cmd){
-        return cmd.phasePos != cmd.phase.board.phases.indexOf(cmd.phase)
-    }
+  private boolean phaseIsMovedToANewPosition(cmd){
+    return cmd.phasePos != cmd.phase.board.phases.indexOf(cmd.phase)
+  }
 
 
 
@@ -276,36 +278,20 @@ class MovePhaseCommand {
 
   static constraints = {
 
-<<<<<<< HEAD:grails-app/controllers/se/qbranch/qanban/PhaseController.groovy
-        id( min: 0, nullable: false, validator:{ val, obj ->
-                Phase.exists(val)
-            })
-        phasePos( min: 0, nullable: false, validator:{ val, obj ->
-                
-                return ( val < obj.phase.board.phases.size() )
-             
-            })
-    }
-
-    Integer id
-    Integer phasePos
-=======
     id( min: 0, nullable: false, validator:{ val, obj ->
       Phase.exists(val)
     })
-    position( min: 0, nullable: false, validator:{ val, obj ->
+    phasePos( min: 0, nullable: false, validator:{ val, obj ->
 
       return ( val < obj.phase.board.phases.size() )
->>>>>>> Added logic in the show action to enable limitations of the number of:grails-app/controllers/se/qbranch/qanban/PhaseController.groovy
 
     })
   }
 
   Integer id
-  Integer position
+  Integer phasePos
 
   def getPhase() {
     Phase.get(id)
-
   }
 }
