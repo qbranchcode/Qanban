@@ -1,4 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<link rel="stylesheet" href="${resource(dir:'css',file:'log.css')}" />
     <div id="log">
       <table id="logTable" border="0" cellspacing="0" class="tableContainer">
         <thead class="logTableHeader fixedHeader">
