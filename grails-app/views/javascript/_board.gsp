@@ -99,16 +99,84 @@
 
     });
 
-/*    $('#archiveBtn').click(function(event){
-    
+    $('#archiveBtn').unbind('click');
+    $('#archiveBtn').click(function(event){
+
       if( $(this).css('background-position') == '3px -94px' ){
           $(this).css('background-position','-13px -94px');
+
+          var archId;
+          var classList = $(this).attr('class').split(' ');
+
+          $.each(classList, function(index, item){
+             var classSubstings = item.split('_');
+             if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'archId' ){
+                 archId = classSubstings[1];
+             }
+          });
+
+          var lastPhaseSelector = null;
+          var $phaseList = $('#phaseList');
+          $phaseList.qLoad({
+            url:'${createLink(controller:'phase',action:'show')}',
+            data:{id:archId, cardLimit: 'auto'},
+            append:true,
+            successCallback: function(){
+              lastPhaseSelector = '#'+ $phaseList.find('.phaseWrapper:last-child').find('.phase').attr('id');
+            },
+            completeCallback: function(){
+
+              fixWidth();
+              recalculateHeightAndUpdateCardCount();
+              var archiveSelector = '#' + $phaseList.find('.phaseWrapper:last-child').find('.phase').attr('id');
+              $(archiveSelector).sortable({
+                receive: function(event, ui){
+                    $(archiveSelector).find('.card:first').slideUp('slow',function(){
+                      $(this).remove();
+                      recalculateHeightAndUpdateCardCount();
+                    });
+                },
+                items: "thisPhase'sCardsShouldNotBeSortable"
+
+              });
+              $(lastPhaseSelector).sortable('option','connectWith', archiveSelector).sortable('option','stop',function(event,ui){
+                  ui.item.animate({opacity:1},300);
+
+                  $('.phase').parent().animate({opacity: 1},300);
+                  
+                  var icv = $(this).sortable('option','initCardValues');
+                  var placementSelector = "#" + icv.initPhase + " .card:nth-child(" + ( icv.initPos  ) + ")" ;
+                  var initPhaseSize = $('#' + icv.initPhase + '> .card').size();
+
+                  var newPos = ui.item.prevAll().length - 1;
+                  var cardId = ui.item.attr('id').split('_')[1];
+                  var newPhase = ui.item.parent().attr('id').split('_')[1];
+
+                    var loadCardSort = function(tries) {
+                        $.qPost({ url: '${createLink(controller:'card',action:'sort')}',
+                                  data : { 'id' : cardId , 'newPhase' : newPhase , 'newPos' : newPos },
+                                  tries : tries,
+                                  caller : loadCardSort
+                        });
+                    }
+                    loadCardSort();
+
+
+              });
+
+            }
+          });
+
       }else{
           $(this).css('background-position','3px -94px');
+          $('.phaseWrapper:last-child').remove();
+          enableSortableOnPhase($('.phaseWrapper:last-child').find('.phase'));
+          fixWidth();
       }
       event.preventDefault();
+
     });
-*/
+
   }
 
   /* TODO: Change beforeInjection to getNewElementCallback to break out some missplaced logic */

@@ -2,6 +2,7 @@
 
   jQuery().ready(function(){
 
+    
     <%-- Replace function --%>
     $.fn.replaceWith = function($newElement){ this.after($newElement).remove(); };
 
