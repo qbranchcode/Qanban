@@ -2,7 +2,7 @@
   <head>
     <title><g:layoutTitle default="Grails" /></title>
     <link rel="stylesheet" href="${resource(dir:'css/custom-theme',file:'jquery-ui-1.7.2.custom.css')}"
-          <link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}" />
+    <link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}" />
     <link rel="stylesheet" href="${resource(dir:'css',file:'cardDialog.css')}" />
     <link rel="stylesheet" href="${resource(dir:'css',file:'phaseDialog.css')}" />
     <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
@@ -112,7 +112,8 @@
     <div id="mainmenu">
       <ul>
         <li><a class="tab active" href="${createLink(controller:'mainView',action:'showBoard',params:[ 'board.id': board.id])}"><g:message code="mainView.tabs.board"/></a></li>
-        <li><a class="tab" href="${createLink(controller:'mainView',action:'showLog',params:['board.id': board.id ])}"><g:message code="mainView.tabs.log"/></a></li>
+        <li><a class="tab" href="${createLink(controller:'mainView',action:'showLog',params:[ 'board.id': board.id])}"><g:message code="mainView.tabs.log"/></a></li>
+        <li><a class="tab" href="${createLink(controller:'mainView',action:'showArchive',params:[ 'board.id': board.id])}"><g:message code="mainView.tabs.archive"/></a></li>
       </ul>
     </div>
     
