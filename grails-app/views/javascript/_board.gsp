@@ -121,7 +121,7 @@
 		      beforeInjection();
 		  }
 
-		  var $indexInput = $newContent.find('input[name=position]');
+		  var $indexInput = $newContent.find('input[name=phasePos]');
 
 
 		  if( $indexInput.size() == 1 && ( $phases.size() > $indexInput.val() ) ) {
@@ -140,7 +140,7 @@
 
 
                   var oldIndex = 1 + parseInt($newElement.prevAll().size());
-                  var newIndex = 1 + parseInt($newContent.find('input[name=position]').val());
+                  var newIndex = 1 + parseInt($newContent.find('input[name=phasePos]').val());
                   var selector = '.phaseWrapper:nth-child('+ newIndex +')';
                   var $elementAtDestination = $(selector);
 	      	  var idAtNewIndex = $elementAtDestination.attr('id');

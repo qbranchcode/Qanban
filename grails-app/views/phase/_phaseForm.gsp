@@ -32,12 +32,14 @@
 
        <div id="nameWrapper">
         <label for="title"><g:message code="_phaseForm.label.title"/></label>
-        <input type="text" id="name" name="title" value="${updateEvent?.title}"
+        <input type="text" id="name" name="title"
+               value="${fieldValue(bean:updateEvent,field:'title')}"
                class="property ${hasErrors(bean:updateEvent,field:'title','errors')}"/>
        </div>
        <div id="cardLimitWrapper">
          <label for="cardLimit"><g:message code="_phaseForm.label.cardLimit"/></label>
-          <input type="text" id="cardLimit" name="cardLimit" value="${updateEvent?.cardLimit}"
+          <input type="text" id="cardLimit" name="cardLimit"
+                  value="${fieldValue(bean:updateEvent,field:'cardLimit')}"
                  class="property ${hasErrors(bean:updateEvent,field:'cardLimit','errors')}"/>
        </div>
        <div class="leveler"></div>
@@ -60,7 +62,7 @@
 	</div>
 
     </div>
-    <input type="hidden" name="position" value="${updateEvent.board.phases.indexOf(updateEvent.phase)}"
+    <input type="hidden" name="phasePos" value="${updateEvent.board.phases.indexOf(updateEvent.phase)}"
     <input type="hidden" name="id" value="${updateEvent.phase.id}" />
     <input style="display: none;" type="submit"  />
      
@@ -94,12 +96,14 @@
 
        <div id="nameWrapper">
         <label for="name"><g:message code="_phaseForm.label.title"/></label>
-        <input type="text" id="title" name="title" value="${createEvent?.title}"
+        <input type="text" id="title" name="title"
+               value="${fieldValue(bean:createEvent,field:'title')}"
                class="property ${hasErrors(bean:createEvent,field:'title','errors')}"/>
        </div>
        <div id="cardLimitWrapper">
          <label for="cardLimit"><g:message code="_phaseForm.label.cardLimit"/></label>
-          <input type="text" id="cardLimit" name="cardLimit" value="${createEvent?.cardLimit}"
+          <input type="text" id="cardLimit" name="cardLimit"
+                 value="${fieldValue(bean:createEvent,field:'cardLimit')}"
                  class="property ${hasErrors(bean:createEvent,field:'cardLimit','errors')}"/>
        </div>
        <div class="leveler"></div>
@@ -109,7 +113,7 @@
   	  <ul id="phasePlacer">
 	      <g:each var="phase" status="index" in="${boardInstance.phases}">
 
-                      <g:if test="${createEvent?.position==index}">
+                      <g:if test="${createEvent?.phasePos==index}">
                           <li class="phase new"></li>
                       </g:if>
 	      	      <li class="phase old">
@@ -121,14 +125,14 @@
 			  <img src="<g:resource dir="images" file="oldPhaseFade.png"/>" />
   		      </li>
 	      </g:each>
-              <g:if test="${ createEvent?.position == null || createEvent?.position == boardInstance.phases.size()}">
+              <g:if test="${ createEvent?.phasePos == null || createEvent?.phasePos == boardInstance.phases.size()}">
                 <li class="phase new"></li>
               </g:if>
 	    </ul>
 	</div>
 
     </div>
-    <input type="hidden" name="position" value="<g:if test='${createEvent?.position != null}'>${createEvent?.position}</g:if><g:else>${boardInstance.phases.size()}</g:else>"/>
+    <input type="hidden" name="phasePos" value="<g:if test='${createEvent?.phasePos != null}'>${createEvent?.phasePos}</g:if><g:else>${boardInstance.phases.size()}</g:else>"/>
     <input type="hidden" name="id" value="${createEvent?.phase?.id}"/>
     <input type="hidden" name="board.id" value="${boardInstance.id}" />
     <input style="display: none;" type="submit" />

@@ -169,7 +169,7 @@ class PhaseController {
         if(phaseIsMovedToANewPosition(cmd)){
             def moveEvent = new PhaseEventMove(
                 phase: cmd.phase,
-                position: cmd.position,
+                phasePos: cmd.phasePos,
                 user: securityService.getLoggedInUser()
             )
             return moveEvent
@@ -177,7 +177,7 @@ class PhaseController {
     }
 
     private boolean phaseIsMovedToANewPosition(cmd){
-        return cmd.position != cmd.phase.board.phases.indexOf(cmd.phase)
+        return cmd.phasePos != cmd.phase.board.phases.indexOf(cmd.phase)
     }
 
 
@@ -234,7 +234,7 @@ class MovePhaseCommand {
         id( min: 0, nullable: false, validator:{ val, obj ->
                 Phase.exists(val)
             })
-        position( min: 0, nullable: false, validator:{ val, obj ->
+        phasePos( min: 0, nullable: false, validator:{ val, obj ->
                 
                 return ( val < obj.phase.board.phases.size() )
              
@@ -242,7 +242,7 @@ class MovePhaseCommand {
     }
 
     Integer id
-    Integer position
+    Integer phasePos
 
     def getPhase() {
         Phase.get(id)

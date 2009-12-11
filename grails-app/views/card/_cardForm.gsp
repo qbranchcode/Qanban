@@ -249,7 +249,8 @@
 	</div>
       <div class="info">
         <input type="text" id="card.title" name="title"
-               class="property ${hasErrors(bean:createEvent,field:'title','errors')}" value="${createEvent?.title}"
+               class="property ${hasErrors(bean:createEvent,field:'title','errors')}"
+               value="${fieldValue(bean:createEvent,field:'title')}"
               <%-- value="Title...          " onfocus="if (this.value == 'Title...          ') this.value = '';"
                onblur="if (this.value == '') this.value = 'Title...          '"/> --%>
 
@@ -257,7 +258,8 @@
 
        <div class="caseNumberWrapper">
          <label for="caseNumber"><g:message code="_cardForm.label.caseNumber"/></label>
-          <input type="text" id="card.caseNumber" name="caseNumber" value="${createEvent?.caseNumber}"
+          <input type="text" id="card.caseNumber" name="caseNumber"
+                 value="${fieldValue(bean:createEvent,field:'caseNumber')}"
                  class="property ${hasErrors(bean:createEvent,field:'caseNumber','errors')}"/>
         </div>
 

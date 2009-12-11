@@ -8,3 +8,4 @@ grails-app/conf/SecurityConfig.groovy
 *.iml
 *.ipr
 *.iws
+.idea

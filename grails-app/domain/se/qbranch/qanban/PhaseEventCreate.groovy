@@ -22,7 +22,7 @@ class PhaseEventCreate extends PhaseEvent {
 
     static constraints = {
         cardLimit ( nullable: true )
-        position ( nullable: false )
+        phasePos ( nullable: false )
         title(nullable: false, blank: false)
     }
 
@@ -32,7 +32,7 @@ class PhaseEventCreate extends PhaseEvent {
     String title
     Board board
     Integer cardLimit
-    Integer position
+    Integer phasePos
 
     public List getItems() {
         return [getPhase().title]
@@ -60,7 +60,7 @@ class PhaseEventCreate extends PhaseEvent {
             cardLimit: cardLimit,
             domainId: domainId
         )
-        board.phases.add(position, phase)
+        board.phases.add(phasePos, phase)
 
         phase.save()
         

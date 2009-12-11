@@ -59,9 +59,9 @@ class PhaseControllerTests extends ControllerUnitTestCase {
         mockDomain(PhaseEventCreate)
         mockDomain(Phase)
 
-        def phaseEventCreate1 = new PhaseEventCreate(title: "First phase", cardLimit: 5, position: 0, user: user1, board: board)
-        def phaseEventCreate2 = new PhaseEventCreate(title: "Second phase", cardLimit: 10, position: 1, user: user1 , board: board)
-        def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", user: user1, position: 2, board: board)
+        def phaseEventCreate1 = new PhaseEventCreate(title: "First phase", cardLimit: 5, phasePos: 0, user: user1, board: board)
+        def phaseEventCreate2 = new PhaseEventCreate(title: "Second phase", cardLimit: 10, phasePos: 1, user: user1 , board: board)
+        def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", user: user1, phasePos: 2, board: board)
 
         phaseEventCreate1.beforeInsert()
         phaseEventCreate1.save()
@@ -152,7 +152,7 @@ class PhaseControllerTests extends ControllerUnitTestCase {
 
         mockParams.title = "myPhase"
         mockParams.'board.id' = board.id
-        mockParams.position = "3"
+        mockParams.phasePos = "3"
         assertEquals 3, Phase.list().size()
 
         def model = controller.create()

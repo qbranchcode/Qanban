@@ -23,7 +23,7 @@ class CardEventDelete  extends CardEvent {
         title( nullable: true )
         description( nullable: true)
         phaseDomainId( nullable: true )
-        position ( nullable: true )
+        phasePos ( nullable: true )
         caseNumber( nullable: true )
     }
 
@@ -41,7 +41,7 @@ class CardEventDelete  extends CardEvent {
     String description
     String caseNumber
     String phaseDomainId
-    Integer position
+    Integer phasePos
     User assignee
 
     public List getItems() {
@@ -61,7 +61,7 @@ class CardEventDelete  extends CardEvent {
         description = card.description
         caseNumber = card.caseNumber
         phaseDomainId = card.phase.domainId
-        position = card.phase.board.phases.indexOf(card)
+        phasePos = card.phase.board.phases.indexOf(card)
         assignee = card.assignee
     }
 
