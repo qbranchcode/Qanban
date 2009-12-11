@@ -36,6 +36,7 @@
           <h1>
             <span class="red">Q</span>ANBAN
           </h1>
+
         </div>
         <div id="mainmenu">
           <ul>
@@ -50,6 +51,7 @@
             </li>
           </ul>
         </div>
+        <div class="version">v ${version}</div>
       </div>
     </div>
 
@@ -67,10 +69,12 @@
           </g:if>
           <div id="login" class="framed">
             <g:render template="login" model="[postUrl:postUrl,person:person]" />
+
           </div>
         </div>
 
         <div class="col-2">
+
           <h2>
             <g:message code="lorem.qanban"/>
           </h2>
@@ -98,6 +102,7 @@
       </div>
 
       <div id="tabs-3" class="tab">
+
         <div class="col-2">
           <h2>
             <g:message code="lorem.qanban"/>

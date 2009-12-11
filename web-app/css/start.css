@@ -43,8 +43,13 @@ min-height: 400px;
 #tabs .tab{
  width: 800px;
  float: left;
+ position: relative;
 }
-
+.version{
+ position: absolute;
+ right: 3px;
+ bottom: 3px;
+}
 .col-1, .col-2, .wideCol{ padding: 40px 0 0 0;}
 .col-1{
  float: left;
