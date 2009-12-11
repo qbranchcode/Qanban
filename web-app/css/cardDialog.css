@@ -129,7 +129,7 @@
 
 #assignees{
     display: none;
-    max-height: 120px;
+    max-height: 150px;
     overflow-y: auto;
     position:relative;
     padding-top: 2px;
@@ -145,7 +145,6 @@
     margin-top: 1px;
 }
 
-
 #assignees li:hover {
     background-color: #eeeeee;
 }
@@ -158,28 +157,37 @@
     background-color: #cc0000;
 }
 
-#assignees li img, .assignee .avatar{
-    display: block;
-    float: left;
+#assignees .licontent {
+    witdh: 100%;
+    height: 100%;
 }
 
-#assignees li .name, #currentAssigneeName {
-    float: left;
+.licontent img{
+}
+
+.licontent .name{
+    line-height: 25px;
+    height: 30px;
+    margin: 5px 0 0 3px;
+    font-weight:bold;
+    display: inline-block;
+}
+
+#currentAssigneeName {
+    white-space: nowrap;
     font-size: 12px;
     font-weight: bold;
     height: 15px;
     padding: 12px 13px 3px 4px;
-    display: block;
-}
-
-#currentAssigneeName{
+    float: left;
     display: none;
     cursor: pointer;
-    padding-right: 3px;
 }
 
 .assignee .avatar {
     cursor: pointer;
+    display: block;
+    float: left;
 
 }
 
