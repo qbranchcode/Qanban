@@ -100,16 +100,18 @@ class PhaseController {
       }
     }
 
-    def cardList = Card.withCriteria {
-      inList('domainId', domainIdList )
+    if( domainIdList.size() > 0 ){
+      def cardList = Card.withCriteria {
+        inList('domainId', domainIdList )
+      }
+
+      cardList.sort{ card ->
+        domainIdList.indexOf(card.domainId)
+      }
+
+      return cardList.reverse()
     }
-
-    cardList.sort{ card ->
-      domainIdList.indexOf(card.domainId)
-    }
-
-    cardList.reverse()
-
+    return []
   }
 
   private getCardLimit(phase, cardLimit){
