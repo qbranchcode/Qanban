@@ -111,8 +111,8 @@
 
     <div id="mainmenu">
       <ul>
-        <li><a class="tab active" href="${createLink(controller:'mainView',action:'showBoard')}"><g:message code="mainView.tabs.board"/></a></li>
-        <li><a class="tab" href="${createLink(controller:'mainView',action:'showLog')}"><g:message code="mainView.tabs.log"/></a></li>
+        <li><a class="tab active" href="${createLink(controller:'mainView',action:'showBoard',params:[ 'board.id': board.id])}"><g:message code="mainView.tabs.board"/></a></li>
+        <li><a class="tab" href="${createLink(controller:'mainView',action:'showLog',params:['board.id': board.id ])}"><g:message code="mainView.tabs.log"/></a></li>
       </ul>
     </div>
     
