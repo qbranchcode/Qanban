@@ -6,6 +6,7 @@
     the script in $.fn.qLoad = function(options) {...};
    --%>
 
+   <g:render template="/javascript/archive"/>
    <g:render template="/javascript/log"/>
    <g:render template="/javascript/board"/>
 

@@ -36,16 +36,28 @@ class MainViewController {
     render(template: "/event/logBody", model: [ eventInstanceList: Event.list( params ), offset : params.offset as Integer ])
   }
 
-    def showArchive = {
-        params.max = Math.min( params.max ? params.max.toInteger() : 40,  100)
-        render(template: "/archive/archive", model: [ archiveCardList: Board.get(1).phases[-1].cards, archiveCardTotal: Board.get(1).phases[-1].cards.size() ])
+  def showArchive = {
+    def phases = Board.get(params.board.id).phases
+    params.sort = 'lastUpdated'
+    params.max = params.max ? params.max as Integer : 40
+    params.order = params.order ? params.order : 'desc'
+    def cardList = Card.withCriteria{
+      eq('phase', phases[-1])
+      order(params.sort, params.order)
     }
+    render(template: "/archive/archive", model: [ archiveCardList: cardList, archiveCardTotal: phases[-1].cards.size() , board : Board.get(params.'board.id') ])
+  }
 
-    def showArchiveBody = {
-        params.max = Math.min( params.max ? params.max.toInteger() : 40,  100)
-        println "ArchiveCardList: ${Board.get(1).phases[-1].cards}"   
-        render(template: "/archive/archiveBody", model: [ archiveCardList: Board.get(1).phases[-1].cards, archiveCardTotal: Board.get(1).phases[-1].cards.size() , offset : params.offset as Integer ])
+  def showArchiveBody = {
+    def phases = Board.get(params.'board.id').phases
+    params.max = params.max ? params.max as Integer : 40
+    params.order = params.order ? params.order : 'desc'
+    def cardList = Card.withCriteria{
+      eq('phase', phases[-1])
+      order(params.sort, params.order)
     }
+    render(template: "/archive/archiveBody", model: [ archiveCardList: cardList, offset : params.offset as Integer ])
+  }
 
 }
 

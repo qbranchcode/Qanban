@@ -165,6 +165,8 @@
               $wrapper.fadeIn('fast',function(){
                 if( data.indexOf('<div id="log">') != -1 ) {
                   enableLogView(url);
+                } if ( data.indexOf('<div id="archive">') != -1 ) {
+                  enableArchiveView(url);                  
                 } else {
                   if( pollingInterval > -1 ){
                           window.clearInterval(pollingInterval);

@@ -5,10 +5,10 @@
         <thead class="archiveTableHeader fixedHeader">
           <tr>
             <th><a href="#"><div class="showCardHeader"></div></a></th>
-            <th><a href="${createLink(controller:'mainView',action:'showArchive',params:['sort':'title'])}" class="ajaxSortableColumn order_desc"><g:message code="archive.title"/></a></th>
-            <th><a href="${createLink(controller:'mainView',action:'showArchive',params:['sort':'description'])}" class="ajaxSortableColumn order_desc"><g:message code="archive.description"/></a></th>
-            <th><a href="${createLink(controller:'mainView',action:'showArchive',params:['sort':'caseNumber'])}" class="ajaxSortableColumn order_desc"><g:message code="archive.caseNumber"/></a></th>
-            <th><a href="${createLink(controller:'mainView',action:'showArchive',params:['sort':'assignee'])}" class="ajaxSortableColumn order_desc"><g:message code="archive.assignee"/></a></th>
+            <th><a href="${createLink(controller:'mainView',action:'showArchiveBody',params:['sort':'lastUpdated','board.id':board.id])}" class="ajaxSortableColumn order_desc"><g:message code="archive.archiveDate"/></a></th>
+            <th><a href="${createLink(controller:'mainView',action:'showArchiveBody',params:['sort':'caseNumber','board.id':board.id])}" class="ajaxSortableColumn order_desc"><g:message code="archive.caseNumber"/></a></th>
+            <th><a href="${createLink(controller:'mainView',action:'showArchiveBody',params:['sort':'title','board.id':board.id])}" class="ajaxSortableColumn order_desc"><g:message code="archive.title"/></a></th>
+            <th><a href="${createLink(controller:'mainView',action:'showArchiveBody',params:['sort':'description','board.id':board.id])}" class="ajaxSortableColumn order_desc"><g:message code="archive.description"/></a></th>
           </tr>
         </thead>
         <tbody class="scrollContent">

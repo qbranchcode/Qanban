@@ -97,20 +97,20 @@ html > body thead.fixedHeader th a {
     text-align:left;
 }
 html > body thead.fixedHeader th + th {
-    width:265px;
+    width:135px;
 }
 html > body thead.fixedHeader th + th a {
     padding:3px 4px 2px;
     -moz-border-radius-topleft:0;
 }
 html > body thead.fixedHeader th + th + th {
-    width:440px;
+    width:115px;
 }
 html > body thead.fixedHeader th + th + th + th {
-    width:120px;
+    width:205px;
 }
 html > body thead.fixedHeader th + th + th + th + th {
-    width:160px;
+    width:415px;
 }
 html > body thead.fixedHeader th + th + th + th + th a {
     -moz-border-radius-topright:5px;
@@ -120,19 +120,19 @@ html > body tbody.scrollContent td {
     padding-left:4px;
     padding-top:2px;
     vertical-align:top;
-    width:21px;
+    width:25px;
 }
 html > body tbody.scrollContent td + td {
-    width:228px;
+    width:135px;
 }
 html > body tbody.scrollContent td + td + td {
-    width:382px;
-}
-html > body tbody.scrollContent td + td + td + td {
     width:110px;
 }
+html > body tbody.scrollContent td + td + td + td {
+    width:199px;
+}
 html > body tbody.scrollContent td + td + td + td + td {
-    width:125px;
+    width:400px;
 }
 tbody.scrollContent tr {
     border-bottom:1px solid #D3D3D3;
