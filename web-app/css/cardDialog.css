@@ -41,7 +41,7 @@
 
 .edit{
  background-color: transparent !important;
- border: 1px solid #e3e3e3 !important;
+ border: 1px solid #ddd !important;
 }
 
 #cardForm .header .show{
@@ -70,7 +70,7 @@
 
 #cardForm .caseNumberWrapper{ float: left; width: 120px; padding-left: 31px;}
 #cardForm .caseNumberWrapper *{ line-height: 1.7em; font-size: 1.0em !important;}
-#cardForm .caseNumberWrapper input{  width: 34px !important; }
+#cardForm .caseNumberWrapper input{  width: 34px !important; line-height: 1.3em; margin-top: 2px;}
 #cardForm .caseNumberWrapper .show{  width: 36px !important; }
 #cardForm .content {
  margin: 0 2px 0 2px;
@@ -95,7 +95,7 @@
 
 #createCardDialog .property {
  background-color: transparent;
- border: 1px solid black;
+ border: 1px solid #ddd;
  }
 
  #editCardDialog .property {
