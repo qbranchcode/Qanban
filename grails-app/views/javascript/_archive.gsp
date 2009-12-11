@@ -47,12 +47,16 @@ function startTablePolling(){
   pollingInterval = window.setInterval("fetchMoreArchiveCards()", 2000);
 }
 
+function enableShowCardClick() {
+  $('.showCardLink').click(function(event){
+    showCard( $(this).attr('id').split('_')[1] , false );
+  });
+}
+
 var enableArchiveView = function (){
 
-    $('.showCardLink').click(function(event){
-      showCard( $(this).attr('id').split('_')[1] , false );
-    });
-
+  enableShowCardClick();
+  
   startTablePolling();
 
   $('.ajaxSortableColumn').click(function(event){
@@ -83,7 +87,8 @@ var enableArchiveView = function (){
                       originOrder = order;
                       $currentColumn.removeClass(orderClass);
                       $currentColumn.addClass( order == 'asc' ? 'order_desc' : 'order_asc' );
-        }
+        },
+        completeCallback: function() { enableShowCardClick(); }
       });
     };
     loadSortableColumn();
