@@ -22,150 +22,194 @@ import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 @Secured(['IS_AUTHENTICATED_FULLY'])
 class PhaseController {
 
-    def securityService
-    def eventService
+  def securityService
+  def eventService
 
-    // the delete, save and update actions only accept POST requests
-    static allowedMethods = [delete:'POST', save:'POST', update:'POST']
+  // the delete, save and update actions only accept POST requests
+  static allowedMethods = [delete:'POST', save:'POST', update:'POST']
 
-    // Create
+  // Create
 
-    @Secured(['ROLE_QANBANADMIN'])
-    def create = {
-    
-        if( !params.'board.id' )
-            return render(status: 400, text: "The parameter 'boardId' must be specified")
+  @Secured(['ROLE_QANBANADMIN'])
+  def create = {
 
-        def createEvent = createPhaseEventCreate(params);
-        eventService.persist(createEvent)
+    if( !params.'board.id' )
+    return render(status: 400, text: "The parameter 'boardId' must be specified")
 
-        renderCreateResult(createEvent)
+    def createEvent = createPhaseEventCreate(params);
+    eventService.persist(createEvent)
 
+    renderCreateResult(createEvent)
+
+  }
+
+  private PhaseEventCreate createPhaseEventCreate(params){
+    def event = new PhaseEventCreate(params)
+    event.user = securityService.getLoggedInUser()
+    return event
+  }
+
+  private renderCreateResult(createEvent){
+    withFormat{
+      html{
+        def board = createEvent.board
+        return render(template:'phaseForm',model:[createEvent:createEvent, boardInstance: board])
+      }
+      js{
+        return render ( [ phaseInstance : createEvent.phase] as JSON)
+      }
+      xml{
+        return render ( [ phaseInstance : createEvent.phase ] as XML)
+      }
+    }
+  }
+
+  // Retrieve
+
+  def show = {
+    if( !params.id )
+      return render(status: 400, text: "You need to specify an id")
+
+    if( !Phase.exists(params.id) )
+      return render(status: 404, text: "Phase with id $params.id not found")
+
+    def phase = Phase.read(params.id)
+
+    // Lets the user limit the amount of cards retrieved from a phase's card collection
+    // auto = the max number of cards retrieved is set to the max number of cards that is stored on any other phase on the board except the one thats returned
+    // 0..N = sets the limit manually
+    if( params.cardLimit ){
+      def maxResults = getCardLimit(phase,params.cardLimit)
+      phase.cards = getCardsLastMovedToPhase(phase, maxResults)
+      return renderShowResult(phase)
     }
 
-    private PhaseEventCreate createPhaseEventCreate(params){
-        def event = new PhaseEventCreate(params)
-        event.user = securityService.getLoggedInUser()
-        return event
+    renderShowResult(phase)
+
+  }
+
+  private getCardsLastMovedToPhase(phase, maxNumberOfCards){
+
+    def domainIdList = CardEventMove.withCriteria {
+      eq('phaseDomainId', phase.domainId)
+      order('dateCreated', 'desc')
+      maxResults(maxNumberOfCards)
+
+      projections {
+        property('domainId')
+      }
     }
 
-    private renderCreateResult(createEvent){
-        withFormat{
-            html{
-                def board = createEvent.board
-                return render(template:'phaseForm',model:[createEvent:createEvent, boardInstance: board])
-            }
-            js{
-                return render ( [ phaseInstance : createEvent.phase] as JSON)
-            }
-            xml{
-                return render ( [ phaseInstance : createEvent.phase ] as XML)
-            }
+    def cardList = Card.withCriteria {
+      inList('domainId', domainIdList )
+    }
+
+    cardList.sort{ card ->
+      domainIdList.indexOf(card.domainId)
+    }
+
+    cardList.reverse()
+
+  }
+
+  private getCardLimit(phase, cardLimit){
+    if( cardLimit == "auto" ){
+      def maxResults = 1
+      Phase.findAllByBoard(phase.board).each {
+        if( maxResults < it.cards.size() && it != phase ){
+          maxResults = it.cards.size()
         }
+      }
+      return maxResults
+    }else{
+      return cardLimit as Integer
     }
-
-    // Retrieve
-
-    def show = {
-
-        if( !params.id )
-            return render(status: 400, text: "You need to specify an id")
-
-        if( !Phase.exists(params.id) )
-            return render(status: 404, text: "Phase with id $params.id not found")
-
-        def phase = Phase.get(params.id)
-
-        renderShowResult(phase)
-        
+  }
+  
+  private renderShowResult(phase){
+    withFormat {
+      html{
+        return render (template: 'phase', model:[phase:phase])
+      }
+      js{
+        return render ( [phaseInstance : phase] as JSON )
+      }
+      xml{
+        return render ( [phaseInstance : phase] as XML )
+      }
     }
+  }
 
-    private renderShowResult(phase){
-        withFormat {
-            html{
-                return render (template: 'phase', model:[phase:phase])
-            }
-            js{
-                return render ( [phaseInstance : phase] as JSON )
-            }
-            xml{
-                return render ( [phaseInstance : phase] as XML )
-            }
-        }
+
+  @Secured(['ROLE_QANBANADMIN'])
+  def form = {
+
+    if( !params.id )
+    return renderFormCreateMode(params)
+
+    if( !Phase.exists(params.id) )
+    return render(status: 404, text: "Phase with id $params.id not found")
+
+    return renderFormEditMode(params)
+
+  }
+
+
+  private def renderFormCreateMode(params){
+    if ( !params.'board.id' )
+    return render(status: 400, text: "The parameter 'boardId' must be specified")
+    def board = Board.get(params.'board.id')
+    return render(template:'phaseForm',model:[createEvent: new PhaseEventCreate(), boardInstance: board ])
+  }
+
+  private def renderFormEditMode(params){
+    def updateEvent = new PhaseEventUpdate()
+    updateEvent.phase = Phase.get(params.id)
+    return render(template:'phaseForm',model:[ updateEvent: updateEvent ])
+  }
+
+// Update
+
+// TODO: Fixa så att eventen endast sparas när man ändrar nåt samt flytta
+  @Secured(['ROLE_QANBANADMIN'])
+  def update = { MovePhaseCommand cmd ->
+
+    def updateEvent = createUpdateEvent(params)
+
+    if ( !cmd.hasErrors() && updateEvent.validate() ){
+
+      def moveEvent = createPhaseEventMove(cmd)
+      if( moveEvent )
+      eventService.persist(moveEvent)
+      eventService.persist(updateEvent)
+
+    renderUpdateResult(updateEvent)
+
+  }
+
+  private renderUpdateResult(updateEvent){
+    withFormat{
+      html{
+        return render(template:'phaseForm',model:[ updateEvent:updateEvent ])
+      }
+      js{
+        return render ( [ phaseInstance : updateEvent.phase ] as JSON)
+      }
+      xml{
+        return render ( [ phaseInstance : updateEvent.phase ] as XML)
+      }
     }
+  }
 
-    @Secured(['ROLE_QANBANADMIN'])
-    def form = {
+  private PhaseEventUpdate createUpdateEvent(params){
+    def event = new PhaseEventUpdate()
+    event.phase = Phase.get(params.id)
+    event.properties = params
+    event.user = securityService.getLoggedInUser()
+    return event
+  }
 
-        if( !params.id )
-            return renderFormCreateMode(params)
-
-        if( !Phase.exists(params.id) )
-            return render(status: 404, text: "Phase with id $params.id not found")
-
-        return renderFormEditMode(params)
-
-    }
-
-
-    private def renderFormCreateMode(params){
-        if ( !params.'board.id' )
-            return render(status: 400, text: "The parameter 'boardId' must be specified")
-        def board = Board.get(params.'board.id')
-        return render(template:'phaseForm',model:[createEvent: new PhaseEventCreate(), boardInstance: board ])
-    }
-
-    private def renderFormEditMode(params){
-        def updateEvent = new PhaseEventUpdate()
-        updateEvent.phase = Phase.get(params.id)
-        return render(template:'phaseForm',model:[ updateEvent: updateEvent ])
-    }
-
-    // Update
-    
-    // TODO: Fixa så att eventen endast sparas när man ändrar nåt samt flytta
-    @Secured(['ROLE_QANBANADMIN'])
-    def update = { MovePhaseCommand cmd ->
-
-        def updateEvent = createUpdateEvent(params)
-
-        if ( !cmd.hasErrors() && updateEvent.validate() ){
-            
-            def moveEvent = createPhaseEventMove(cmd)
-            if( moveEvent )
-                eventService.persist(moveEvent)
-            eventService.persist(updateEvent)
-            
-        }
-
-        renderUpdateResult(updateEvent)
-
-    }
-
-    private renderUpdateResult(updateEvent){
-        withFormat{
-            html{
-                return render(template:'phaseForm',model:[ updateEvent:updateEvent ])
-            }
-            js{
-                return render ( [ phaseInstance : updateEvent.phase ] as JSON)
-            }
-            xml{
-                return render ( [ phaseInstance : updateEvent.phase ] as XML)
-            }
-        }
-    }
-
-    private PhaseEventUpdate createUpdateEvent(params){
-        def event = new PhaseEventUpdate()
-        event.phase = Phase.get(params.id)
-        event.properties = params
-        event.user = securityService.getLoggedInUser()
-        return event
-    }
-
-
-    private PhaseEventMove createPhaseEventMove(cmd){
+   private PhaseEventMove createPhaseEventMove(cmd){
         if(phaseIsMovedToANewPosition(cmd)){
             def moveEvent = new PhaseEventMove(
                 phase: cmd.phase,
@@ -181,56 +225,58 @@ class PhaseController {
     }
 
 
-    // Delete
 
-    @Secured(['ROLE_QANBANADMIN'])
-    def delete = {
-        
-        if( !params.id )
-            return render(status: 400, text: "You need to specify a phase")
-        if( !Phase.exists(params.id) )
-            return render(status: 404, text: "Phase with id $params.id not found")
+// Delete
 
-        def deleteEvent = new PhaseEventDelete()
-        deleteEvent.user = securityService.getLoggedInUser()
-        deleteEvent.phase = Phase.get( params.id )
+  @Secured(['ROLE_QANBANADMIN'])
+  def delete = {
 
-        eventService.persist(deleteEvent)
+    if( !params.id )
+    return render(status: 400, text: "You need to specify a phase")
+    if( !Phase.exists(params.id) )
+    return render(status: 404, text: "Phase with id $params.id not found")
 
-        if( !deleteEvent.hasErrors() )
-            return render(status: 200, text: "Phase with id $params.id deleted")
+    def deleteEvent = new PhaseEventDelete()
+    deleteEvent.user = securityService.getLoggedInUser()
+    deleteEvent.phase = Phase.get( params.id )
 
-        return render(status: 503, text: "Server error: phase delete error #186")
+    eventService.persist(deleteEvent)
+
+    if( !deleteEvent.hasErrors() )
+    return render(status: 200, text: "Phase with id $params.id deleted")
+
+    return render(status: 503, text: "Server error: phase delete error #186")
+
+  }
+
+
+/****
+ *  Temporary ajax call actions
+ ****/
+
+
+  @Secured(['ROLE_QANBANADMIN'])
+  def movePhase = { MovePhaseCommand cmd ->
+
+    if( cmd.hasErrors() ){
+      return render([result: false] as JSON)
+    }else{
+      def moveEvent = createPhaseEventMove(cmd)
+
+      render "Phase $moveEvent.phase.title Id $moveEvent.id"
+
 
     }
 
-
-    /****
-     *  Temporary ajax call actions
-     ****/
-
-
-    @Secured(['ROLE_QANBANADMIN'])
-    def movePhase = { MovePhaseCommand cmd ->
-
-        if( cmd.hasErrors() ){
-            return render([result: false] as JSON)
-        }else{
-            def moveEvent = createPhaseEventMove(cmd)
-
-            render "Phase $moveEvent.phase.title Id $moveEvent.id"
-
-
-        }
-
-    }
+  }
 
 }
 
 class MovePhaseCommand {
 
-    static constraints = {
+  static constraints = {
 
+<<<<<<< HEAD:grails-app/controllers/se/qbranch/qanban/PhaseController.groovy
         id( min: 0, nullable: false, validator:{ val, obj ->
                 Phase.exists(val)
             })
@@ -243,9 +289,23 @@ class MovePhaseCommand {
 
     Integer id
     Integer phasePos
+=======
+    id( min: 0, nullable: false, validator:{ val, obj ->
+      Phase.exists(val)
+    })
+    position( min: 0, nullable: false, validator:{ val, obj ->
 
-    def getPhase() {
-        Phase.get(id)
-        
-    }
+      return ( val < obj.phase.board.phases.size() )
+>>>>>>> Added logic in the show action to enable limitations of the number of:grails-app/controllers/se/qbranch/qanban/PhaseController.groovy
+
+    })
+  }
+
+  Integer id
+  Integer position
+
+  def getPhase() {
+    Phase.get(id)
+
+  }
 }
