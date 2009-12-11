@@ -1,6 +1,9 @@
 <%--  Card related scripts Loaded through _board.gsp --%>
 
-function showCard(cardId){
+function showCard(cardId, showButtons){
+
+  var showBtn = showButtons == null ? true : showButtons;
+
   var loadEditCardLink = function(tries) {
 
     $editCardDialog.qLoad({
@@ -8,25 +11,29 @@ function showCard(cardId){
         data : { 'id':cardId},
         successCallback : function(){
 
-          $editCardDialog.dialog(
-            'option',
-            'buttons',
-            { '<g:message code="_cardForm.button.edit"/>' : function() {
-                initAssigneeSelect();
-                setEditMode('<g:message code="mainView.jQuery.dialog.editCardForm.title"/>', '#editCardDialog');
-                $editCardDialog.dialog('option', 'buttons',  {
-                  '<g:message code="_cardForm.button.update"/>' : function() {
-                      $editCardDialog.find('input[type="submit"]').click();
-                      toggleSpinner();
-                  }
-                  <g:ifAllGranted role="ROLE_QANBANADMIN">
-                    ,'<g:message code="_cardForm.button.delete"/>' : function() {
-                      deleteCardDialog(cardId);
+          if( showBtn ){
+            $editCardDialog.dialog(
+              'option',
+              'buttons',
+              { '<g:message code="_cardForm.button.edit"/>' : function() {
+                  initAssigneeSelect();
+                  setEditMode('<g:message code="mainView.jQuery.dialog.editCardForm.title"/>', '#editCardDialog');
+                  $editCardDialog.dialog('option', 'buttons',  {
+                    '<g:message code="_cardForm.button.update"/>' : function() {
+                        $editCardDialog.find('input[type="submit"]').click();
+                        toggleSpinner();
                     }
-                  </g:ifAllGranted>
-                });
-            }
-          });
+                    <g:ifAllGranted role="ROLE_QANBANADMIN">
+                      ,'<g:message code="_cardForm.button.delete"/>' : function() {
+                        deleteCardDialog(cardId);
+                      }
+                    </g:ifAllGranted>
+                  });
+              }
+            });
+          }else{
+            $editCardDialog.dialog('option','buttons',{});
+          }
           $editCardDialog.dialog('open');
         },
         tries : tries,
