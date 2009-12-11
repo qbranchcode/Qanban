@@ -283,6 +283,7 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
                         });
                     }
                     loadCardSort();
+                    
                   }
 
               }
@@ -310,13 +311,40 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
              }
           });
 
-          alert('id: ' + id + ' newPhase: ' + newPhase + ' newPos: ' + newPos); 
-          //$.ajax({ url: '${createLink(controller:'card',action:'sort')}',data:{id: id, newPos: newPos, newPhase: newPhase });
+          var archiveCall = function(n){
+            $.qPost({
+              url: '${createLink(controller:'card',action:'sort')}',
+              data: {id: id, newPos: newPos, newPhase: newPhase },
+              successCallback: function(data,textStatus){
 
-          ui.draggable.remove();
+                 var $archPhase = $phase.parent().parent().next().find('.phase');
+
+
+                 if( $archPhase.size() == 1 ){
+                  $archPhase.append($(ui.draggable));
+                  ui.draggable.show();
+                  $archPhase.find('.card:first').slideUp('slow',function(){
+                      $(this).remove();
+                      recalculateHeightAndUpdateCardCount();
+                    });
+
+                 }else{
+                  ui.draggable.remove();
+                 }
+              },
+              errorCallback: function(data, textStatus){
+                 ui.draggable.show();
+              }
+            });
+          };
+          ui.draggable.hide();
+
+          archiveCall();
+
         }
 
       });
+      
      }
      
   }
