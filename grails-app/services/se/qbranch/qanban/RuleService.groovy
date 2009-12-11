@@ -18,18 +18,26 @@ package se.qbranch.qanban
 
 class RuleService {
 
-    boolean transactional = true
-    def securityService
+  boolean transactional = true
+  def securityService
 
-    boolean isMoveLegal(oldPhase, newPhase) {
-        def board = newPhase.board
-        def oldPhaseIndex = board.phases.indexOf(oldPhase)
-        def newPhaseIndex = board.phases.indexOf(newPhase)
+  boolean isMoveLegal(oldPhase, newPhase) {
+    def board = newPhase.board
+    def oldPhaseIndex = board.phases.indexOf(oldPhase)
+    def newPhaseIndex = board.phases.indexOf(newPhase)
 
-        if( oldPhaseIndex+1 == newPhaseIndex || oldPhaseIndex == newPhaseIndex || securityService.isUserAdmin){
-            return true
-        }else{
-            return false
-        }
+    if( isNextPhase(oldPhaseIndex, newPhaseIndex) || isSamePhase(oldPhaseIndex, newPhaseIndex) || securityService.isUserAdmin()){
+      return true
+    }else{
+      return false
     }
+  }
+
+  private boolean isNextPhase(oldPhaseIndex, newPhaseIndex) {
+    return oldPhaseIndex + 1 == newPhaseIndex
+  }
+
+  private boolean isSamePhase(oldPhaseIndex, newPhaseIndex) {
+    return oldPhaseIndex == newPhaseIndex
+  }
 }
