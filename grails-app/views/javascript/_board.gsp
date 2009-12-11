@@ -69,7 +69,7 @@
             successCallback : function(){
                                 $createCardDialog.dialog('open');
                               },
-            completeCallback : initAssigneeSelect,
+            completeCallback : function(){ initAssigneeSelect(); $createCardDialog.find('[name=title]').focus(); },
             tries : tries,
             caller : loadAddCardLink
         });
