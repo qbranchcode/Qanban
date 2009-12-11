@@ -32,15 +32,17 @@ class QanbanTagLib {
 
 
         def output = ""
-        def elementNumber = 0
       
-        attrs.phases.each{
-            elementNumber += 1
-            if( elementNumber < attrs.phases.size() || attrs.showArchive == "true" ) {
-              output += render(template:attrs.template,model:[phase:it])
-            }
+        attrs.phases[0..-2].each{
+            output += render(template:attrs.template,model:[phase:it])
         }
+
+        if( attrs.showArchive == "true" ) {
+            output += render(template:attrs.template,model:[phase:attrs.phases[-1]])
+        }
+      
         out << output
+      
     }
 
     def getArchiveId = { attrs ->
@@ -57,7 +59,7 @@ class QanbanTagLib {
     }
 
     private Integer getLastPhaseId(board){
-        return board.phases.get(board.phases.size()-1).id
+        return board.phases[-1].id
     }
 
     private boolean isSecondLastPhase(phase){
@@ -66,7 +68,8 @@ class QanbanTagLib {
     
     def maxCardCount = { attrs ->
         def maxNumberOfCards = 0
-        attrs.phases?.each{
+
+        attrs.phases[0..-2]?.each{
             it.cards.size() > maxNumberOfCards ? maxNumberOfCards = it.cards.size() : maxNumberOfCards
         }
 
