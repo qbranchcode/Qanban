@@ -36,15 +36,18 @@
 		<div style="clear: both;"></div>
 		<ul id="assignees">
 			<li id="user_">
+              <div class="licontent">
 				<img src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30" class="avatar"/>
 				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
+              </div>
 			</li>
 			<g:each var="user" in="${userList}">
 				<li id="user_${user.id}"
 				    class='<g:if test="${loggedInUser.id == user.id}">selected</g:if>' >
-
-					<avatar:gravatar email="${user.email}" alt="${user.userRealName}" size="30"/>
-					<span class="name">${user.userRealName}</span>
+                    <div class="licontent">
+					  <avatar:gravatar email="${user.email}" alt="${user.userRealName}" size="30"/>
+					  <span class="name">${user.userRealName}</span>
+                    </div>
 				</li>
 			</g:each>
 		</ul>
@@ -132,16 +135,19 @@
 
 		<div style="clear: both;"></div>
 		<ul id="assignees">
-			<li id="user_" <g:if test="${updateEvent.card.assignee?.id}">class="selected"</g:if> >
-				<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30"/>
-				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
+			<li id="user_" <g:if test="${!updateEvent.card.assignee}">class="selected"</g:if> >
+			    <div class="licontent">
+					<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30"/>
+                    <span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
+                </div>
 			</li>
 			<g:each var="user" in="${userList}">
 				<li id="user_${user.id}"
 				    class='<g:if test="${updateEvent.card.assignee?.id == user.id}">selected</g:if>' >
-
-					<avatar:gravatar email="${user.email}" alt="${user.userRealName}" size="30"/>
-					<span class="name">${user.userRealName}</span>
+                    <div class="licontent">
+					  <avatar:gravatar email="${user.email}" alt="${user.userRealName}" size="30"/>
+					  <span class="name">${user.userRealName}</span>
+                    </div>
 				</li>
 			</g:each>
 		</ul>
@@ -235,13 +241,17 @@
 		<ul id="assignees">
 
 			<li id="user_" class="selected">
+              <div class="licontent">
 				<img class="avatar" src="<g:resource dir="images" file="noAssignee.png"/>" alt="No assignee" width="30" height="30"/>
 				<span class="name"><g:message code="_cardForm.assignee.noAssignee"/></span>
+              </div>
 			</li>
 			<g:each var="user" in="${userList}">
 				<li id="user_${user.id}">
+                  <div class="licontent">
 					<avatar:gravatar email="${user.email}" alt="${user.userRealName}" size="30"/>
 					<span class="name">${user.userRealName}</span>
+                  </div>
 				</li>
 			</g:each>
 		</ul>
