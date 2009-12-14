@@ -46,9 +46,18 @@ class PhaseEventDeleteTests extends GrailsUnitTestCase {
 
 
         // Board mock
+        mockDomain(BoardEventCreate)
+        mockDomain(Board)
 
-        board = new Board()
-        mockDomain(Board,[board])
+        def bec = new BoardEventCreate(title: 'Board',user: user1)
+
+        bec.beforeInsert()
+        bec.save()
+        bec.process()
+
+        board = bec.board
+       
+
 
 
         // Phase / PhaseEventCreate mock

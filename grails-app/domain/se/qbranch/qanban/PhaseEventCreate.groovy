@@ -24,15 +24,17 @@ class PhaseEventCreate extends PhaseEvent {
         cardLimit ( nullable: true )
         phasePos ( nullable: false )
         title(nullable: false, blank: false)
+        boardDomainId ( nullable: true )
     }
 
-    static transients = ['phase','items']
+    static transients = ['board','phase','items']
     Phase phase
+    Board board
 
     String title
-    Board board
     Integer cardLimit
     Integer phasePos
+    String boardDomainId
 
     public List getItems() {
         return [getPhase().title]
@@ -48,8 +50,16 @@ class PhaseEventCreate extends PhaseEvent {
         return phase
     }
 
+    public Board getBoard(){
+      if( !board && boardDomainId){
+        board = Board.findByDomainId(boardDomainId)
+      }
+      return board
+    }
+
     transient beforeInsert = {
         generateDomainId(title, board )
+        boardDomainId = board.domainId
     }
 
     transient process = {
@@ -60,7 +70,8 @@ class PhaseEventCreate extends PhaseEvent {
             cardLimit: cardLimit,
             domainId: domainId
         )
-        board.phases.add(phasePos, phase)
+        // Board.get() because GORM doesn't let us persist transient values 
+        Board.get(board.id).phases.add(phasePos, phase)
 
         phase.save()
         

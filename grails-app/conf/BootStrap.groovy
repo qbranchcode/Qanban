@@ -82,7 +82,6 @@ class BootStrap {
 
     private Role addRoleIfNotExist(desc, authority){
         def roleCheck = Role.findByAuthority(authority)
-        def role
         if( !roleCheck )
             return new Role(description: desc, authority: authority).save()
         else
@@ -116,8 +115,9 @@ class BootStrap {
     private void addBoardIfNotExist(){
 
         if( Board.list().size() == 0 ){
-            Board board = new Board().save()
-
+            def bec = new BoardEventCreate(user:adminUser,title:'The Board')
+            eventService.persist(bec)
+            def board = bec.board
             eventService.persist(new PhaseEventCreate(title: "Backlog", phasePos: 0, user: adminUser, board: board))
             eventService.persist(new PhaseEventCreate(title: "WIP", phasePos: 1, cardLimit: 5, user: adminUser, board: board))
             eventService.persist(new PhaseEventCreate(title: "Done", phasePos: 2, user: adminUser, board: board))
@@ -128,8 +128,9 @@ class BootStrap {
 
     private void addTestBoardIfNotExist() {
         if( Board.list().size() == 0 ){
-            Board board = new Board().save()
-
+            def bec = new BoardEventCreate(user:adminUser,title:'The Board')
+            eventService.persist(bec)
+            def board = bec.board
             eventService.persist(new PhaseEventCreate(title: "Backlog", phasePos: 0, cardLimit: 10, user: adminUser, board: board))
             eventService.persist(new PhaseEventCreate(title: "WIP", phasePos: 1, cardLimit: 5, user: adminUser, board: board))
             eventService.persist(new PhaseEventCreate(title: "Done", phasePos: 2, cardLimit: 5, user: adminUser, board: board))

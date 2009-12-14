@@ -16,20 +16,37 @@
 
 package se.qbranch.qanban
 
-import grails.test.*
+class BoardEventCreate extends BoardEvent{
 
-class BoardTests extends GrailsUnitTestCase {
-    protected void setUp() {
-        super.setUp()
-    }
+  static constraints = {
+    title ( nullable: false, blank: false )
+  }
 
-    protected void tearDown() {
-        super.tearDown()
-    }
+  static transients = ['board','items']
 
-    void testHasPhases() {
-        mockDomain(Board)
-        def b = new Board(domainId: 'domainId',title:'board').save()
-        assertEquals 0, b.phases.size()
-    }
+  Board board
+  String title
+
+  public Board getBoard(){
+    if( !board && domainId )
+      board = Board.findByDomainId(domainId)
+    return board
+  }
+
+  public List getItems() {
+    return [dateCreated, user]
+  }
+
+  def beforeInsert = {
+    generateDomainId('board','create')
+  }
+
+  def process(){
+    board = new Board()
+    board.domainId = domainId
+    board.title = title
+    board.save()
+  }
+
+
 }

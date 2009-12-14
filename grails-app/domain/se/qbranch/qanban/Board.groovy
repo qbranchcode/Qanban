@@ -18,13 +18,18 @@ package se.qbranch.qanban
 
 class Board {
 
-    static constraints = {
-    }
+  static constraints = {
+    domainId( unique: true, blank: false )
+    title( unique: true, blank: false )
+  }
 
-    static hasMany = [phases:Phase]
-    List phases = []
+  static hasMany = [phases:Phase]
+  List phases = []
 
-    Date dateCreated
-    Date lastUpdated
+  String domainId
+  String title
+  
+  Date dateCreated
+  Date lastUpdated
 
 }

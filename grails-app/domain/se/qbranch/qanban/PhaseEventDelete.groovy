@@ -18,46 +18,54 @@ package se.qbranch.qanban
 
 class PhaseEventDelete  extends PhaseEvent {
 
-    static constraints = {
-        cardLimit ( nullable: true )
-        title ( nullable: true )
-        board ( nullable: true )
-        phasePos ( nullable: true )
+  static constraints = {
+    cardLimit ( nullable: true )
+    title ( nullable: true )
+    boardDomainId ( nullable: true )
+    phasePos ( nullable: true )
+  }
+
+  static transients = ['phase','items','board']
+
+  Phase phase
+  Board board
+
+  String title
+  Integer cardLimit
+  Integer phasePos
+  String boardDomainId
+
+  public List getItems() {
+    return [getPhase().title]
+  }
+
+  public Phase getPhase(){
+    if( !phase && domainId ){
+      phase = new Phase(title: title, board: board, cardLimit: cardLimit);
     }
+    return phase
+  }
 
-    static transients = ['phase','items']
-
-    Phase phase
-
-    String title
-    Board board
-    Integer cardLimit
-    Integer phasePos
-
-    public List getItems() {
-        return [getPhase().title]
+  public Board getBoard(){
+    if( !board && boardDomainId ){
+      board = Board.findByDomainId(boardDomainId)
     }
+    return board
+  }
 
-    public Phase getPhase(){
-        if( !phase && domainId ){
-            phase = new Phase(title: title, board: board, cardLimit: cardLimit);
-        }
-        return phase
-    }
+  transient beforeInsert = {
+    domainId = phase.domainId
+    title = phase.title
+    boardDomainId = phase.board.domainId
+    cardLimit = phase.cardLimit
+    phasePos = Board.get(board.id).phases.indexOf(phase)
+  }
 
-    transient beforeInsert = {
-        domainId = phase.domainId
-        title = phase.title
-        board = phase.board
-        cardLimit = phase.cardLimit
-        phasePos = board.phases.indexOf(phase)
-    }
+  transient process(){
 
-    transient process(){
-
-        board.phases.remove(phase)
-        phase.delete(flush:true)
+    board.phases.remove(phase)
+    phase.delete(flush:true)
 
 
-    }
+  }
 }
