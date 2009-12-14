@@ -29,12 +29,14 @@ class User {
         passwd(nullable: true)
         pass(nullable:true)
         enabled()
+        domainId( nullable: false, blank: false, unique: true)
     }
     
     static transients = ['pass']
     static hasMany = [authorities: Role]
     static belongsTo = Role
 
+    String domainId
     String username
     String userRealName
     /** MD5 Password */
