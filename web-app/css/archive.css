@@ -84,20 +84,25 @@ html > body thead.fixedHeader th {
 }
 html > body thead.fixedHeader th a {
     -moz-border-radius-topleft:5px;
+    -webkit-border-top-left-radius: 5px;
     color:#FFFFFF;
     font-size:14px;
     font-weight:bold;
     margin-bottom:1px;
     margin-right:1px;
-    padding:0px 4px 2px;
+    padding:0px 0px 2px;
+    padding-right: 1px;
     text-align:left;
 }
 html > body thead.fixedHeader th + th {
-    width:135px;
+    width:136px;
 }
 html > body thead.fixedHeader th + th a {
     padding:3px 4px 2px;
-    -moz-border-radius-topleft:0;
+    -moz-border-radius-topleft:0px;
+    -webkit-border-top-left-radius: 0px;
+    padding-left: 4px;
+    padding-right: 4px;
 }
 html > body thead.fixedHeader th + th + th {
     width:115px;
@@ -106,29 +111,30 @@ html > body thead.fixedHeader th + th + th + th {
     width:205px;
 }
 html > body thead.fixedHeader th + th + th + th + th {
-    width:415px;
+    width:421px;
 }
 html > body thead.fixedHeader th + th + th + th + th a {
     -moz-border-radius-topright:5px;
+    -webkit-border-top-right-radius: 5px;
     margin-right:0;
 }
 html > body tbody.scrollContent td {
-    padding-left:4px;
     padding-top:2px;
     vertical-align:top;
-    width:25px;
+    width:23px;
 }
 html > body tbody.scrollContent td + td {
-    width:135px;
+    padding-left:4px;
+    width:133px;
 }
 html > body tbody.scrollContent td + td + td {
     width:110px;
 }
 html > body tbody.scrollContent td + td + td + td {
-    width:199px;
+    width:202px;
 }
 html > body tbody.scrollContent td + td + td + td + td {
-    width:400px;
+    width:403px;
 }
 tbody.scrollContent tr {
     border-bottom:1px solid #D3D3D3;
