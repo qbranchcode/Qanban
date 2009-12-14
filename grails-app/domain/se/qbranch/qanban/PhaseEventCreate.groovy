@@ -60,6 +60,7 @@ class PhaseEventCreate extends PhaseEvent {
     transient beforeInsert = {
         generateDomainId(title, board )
         boardDomainId = board.domainId
+      setEventCreator(user)
     }
 
     transient process = {

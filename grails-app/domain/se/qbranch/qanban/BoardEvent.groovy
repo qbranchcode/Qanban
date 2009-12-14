@@ -36,4 +36,8 @@ class BoardEvent extends Event{
         return Board.findByDomainId(domainId) != null
     }
 
+    public List getItems() {
+        return [dateCreated, user, getBoard().title]
+    }
+
 }

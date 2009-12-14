@@ -59,6 +59,7 @@ class PhaseEventDelete  extends PhaseEvent {
     boardDomainId = phase.board.domainId
     cardLimit = phase.cardLimit
     phasePos = Board.get(board.id).phases.indexOf(phase)
+    setEventCreator(user)
   }
 
   transient process(){

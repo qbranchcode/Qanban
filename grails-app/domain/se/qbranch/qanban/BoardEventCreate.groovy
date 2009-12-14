@@ -33,12 +33,9 @@ class BoardEventCreate extends BoardEvent{
     return board
   }
 
-  public List getItems() {
-    return [dateCreated, user]
-  }
-
   def beforeInsert = {
     generateDomainId('board','create')
+    setEventCreator(user)
   }
 
   def process(){

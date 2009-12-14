@@ -19,6 +19,8 @@ package se.qbranch.qanban
 class CardEvent extends Event {
 
     static constraints = {
+       // TODO: Check if there is a way to let this override the inherited contraint?
+       // user(nullable: false)
     }
     
     transient public String checkCurrentTitle() {

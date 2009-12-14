@@ -63,6 +63,7 @@ class CardEventUpdate extends CardEvent {
 
     transient beforeInsert = {
         domainId = card.domainId
+      setEventCreator(user)
     }
 
     transient process(){

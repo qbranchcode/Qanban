@@ -22,17 +22,30 @@ class Event implements Comparable {
 
     static constraints = {
         domainId( nullable:true, blank: false )
-        user(nullable: false)
+        userDomainId(nullable: true)
+        user(nullable: true)
     }
 
-    static transients = ['items']
+    static transients = ['items','user','eventCreator']
+    User user
 
     Date dateCreated
     String domainId
-    User user
-
+    String userDomainId
+  
     public List getItems() {
         return []
+    }
+
+    public void setEventCreator(user){
+        userDomainId = user.domainId
+    }
+
+    public User getUser(){
+        if( !user && userDomainId ){
+          return user = User.findByDomainId(userDomainId)
+        }
+        return user
     }
 
     def generateDomainId( Object[] notNullableProperties ){

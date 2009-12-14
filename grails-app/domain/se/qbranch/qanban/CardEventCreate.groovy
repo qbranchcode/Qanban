@@ -74,7 +74,8 @@ class CardEventCreate extends CardEvent {
     }
 
     def beforeInsert = {
-        generateDomainId(title, caseNumber)
+      generateDomainId(title, caseNumber)
+      setEventCreator(user)
     }
 
     def process(){

@@ -20,6 +20,7 @@ class CardEventMove extends CardEvent {
 
     static constraints = {
         phaseDomainId ( nullable: true, blank: false )
+        newCardIndex ( nullable: false, min: 0)
     }
 
     static transients = ['card','newPhase','items']
@@ -57,6 +58,7 @@ class CardEventMove extends CardEvent {
     transient beforeInsert = {
         domainId = card.domainId
         phaseDomainId = newPhase.domainId
+      setEventCreator(user)
     }
 
     transient process = {
