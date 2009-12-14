@@ -135,7 +135,7 @@ class PhaseEventMoveTests extends GrailsUnitTestCase {
 
         assertEquals 0, phase1.board.phases.indexOf(phase1)
 
-        def pem = new PhaseEventMove( phase: phase1, phasePos: 2 )
+        def pem = new PhaseEventMove( phase: phase1, phasePos: 2 ,user: user2)
 
         pem.beforeInsert()
         pem.save()

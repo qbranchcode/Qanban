@@ -137,7 +137,7 @@ class CardEventDeleteTests extends GrailsUnitTestCase {
 
         def domainId = card2onPhase1.domainId
 
-        def deleteEvent = new CardEventDelete(card: card2onPhase1)
+        def deleteEvent = new CardEventDelete(card: card2onPhase1,user: user1)
 
         deleteEvent.validate()
         deleteEvent.beforeInsert()

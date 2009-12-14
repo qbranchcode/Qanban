@@ -158,6 +158,7 @@ class CardEventCreateTests extends GrailsUnitTestCase {
         event.title = "Card #4"
         event.description = "Created By A Event"
         event.phaseDomainId = Phase.get(1).domainId
+        event.user = user1
 
         event.beforeInsert()
         event.save()

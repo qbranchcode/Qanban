@@ -123,7 +123,7 @@ class CardEventMoveTests extends GrailsUnitTestCase {
         assertEquals 1, phase1.cards.indexOf(card2onPhase1)
         assertEquals 0, board.phases.indexOf(card2onPhase1.phase)
 
-        def cardEventMove = new CardEventMove( card: card2onPhase1, newPhase: phase1, newCardIndex: 0)
+        def cardEventMove = new CardEventMove( card: card2onPhase1, newPhase: phase1, newCardIndex: 0,user: user1)
 
         cardEventMove.beforeInsert()
         cardEventMove.save()
@@ -139,7 +139,7 @@ class CardEventMoveTests extends GrailsUnitTestCase {
         assertEquals 1, phase1.cards.indexOf(card2onPhase1)
         assertEquals 0, board.phases.indexOf(card2onPhase1.phase)
 
-        def cardEventMove = new CardEventMove( card: card2onPhase1, newPhase: phase2, newCardIndex: 0)
+        def cardEventMove = new CardEventMove( card: card2onPhase1, newPhase: phase2, newCardIndex: 0,user: user1)
 
         cardEventMove.beforeInsert()
         cardEventMove.save()

@@ -138,6 +138,7 @@ class CardEventSetAssigneeTests extends GrailsUnitTestCase {
         def setAssigneeEvent = new CardEventSetAssignee(
             card: card1onPhase1,
             newAssignee: user1,
+            user: user2
         )
 
         setAssigneeEvent.beforeInsert()
@@ -148,7 +149,7 @@ class CardEventSetAssigneeTests extends GrailsUnitTestCase {
         assertEquals user1, card1onPhase1.assignee
 
         def unsetAssigneeEvent = new CardEventSetAssignee(
-            card: card1onPhase1
+            card: card1onPhase1,user: user2
         )
 
         unsetAssigneeEvent.beforeInsert()
