@@ -25,14 +25,10 @@
 }
 
 #archive {
-    -moz-background-clip:border;
-    -moz-background-inline-policy:continuous;
-    -moz-background-origin:padding;
-    -moz-border-radius-bottomleft:6px;
-    -moz-border-radius-bottomright:6px;
-    -moz-border-radius-topleft:6px;
-    -moz-border-radius-topright:6px;
-    -moz-box-shadow:1px 2px 5px #666666;
+    -moz-box-shadow: 1px 2px 5px #666;
+    -webkit-box-shadow: 1px 2px 5px #666;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
     background:#FFFFFF none repeat scroll 0 0;
     border:1px solid #666666;
     margin:0 auto;
@@ -93,7 +89,7 @@ html > body thead.fixedHeader th a {
     font-weight:bold;
     margin-bottom:1px;
     margin-right:1px;
-    padding:0px 4px 2px;    
+    padding:0px 4px 2px;
     text-align:left;
 }
 html > body thead.fixedHeader th + th {
