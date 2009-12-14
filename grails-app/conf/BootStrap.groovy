@@ -40,7 +40,7 @@ class BootStrap {
 
 
                 adminRole = addRoleIfNotExist("administrator access", "ROLE_ADMIN")
-                adminUser = addUserIfNotExist("testuser", "Mr Test", "test", true, "testing, testing...", "test@test.com", adminRole)
+                adminUser = addUserIfNotExist("testuser", "Mr Test", "test", true, "testing, testing...", "test@test.com", [adminRole])
                 addTestBoardIfNotExist()
 
             break
@@ -49,8 +49,9 @@ class BootStrap {
 
                 adminRole = addRoleIfNotExist("administrator access", "ROLE_QANBANADMIN")
                 userRole = addRoleIfNotExist("regular user access", "ROLE_QANBANUSER")
-                regularUser = addUserIfNotExist("testuser", "Test User", "testuser", true, "This is a regular user", "mattias.mirhagen@gmail.com", userRole)
+                regularUser = addUserIfNotExist("testuser", "Test User", "testuser", true, "This is a regular user", "mattias.mirhagen@gmail.com", [userRole])
                 adminUser = addUserIfNotExist("testadmin", "Admin User", "testadmin", true, "This is an admin user", "patrik.gardeman@gmail.com", [adminRole, userRole])
+
                 addBoardIfNotExist()
 
                 eventService.persist(new CardEventCreate(title: "Deploy QANBAN to Production",
@@ -90,26 +91,33 @@ class BootStrap {
 
     private User addUserIfNotExist(username, userRealName, passwd, enabled, description, email, authorities){
 
-        def userCheck = User.findByUsername(username)
-        def user
-        if( !userCheck ){
-            user = new User(username: username,
+        def user = User.findByUsername(username)
+
+        if( !user ){
+            def createEvent = new UserEventCreate(
+                username: username,
                 userRealName:userRealName,
                 passwd:authenticateService.passwordEncoder(passwd),
                 enabled:enabled,
                 description:description,
-                email:email,
-                authorities:authorities)
+                email:email
+            )
+
+            eventService.persist(createEvent)
+
+            user = createEvent.user
+
+            // Only for development when we don't get the roles from the AD
+            user.authorities = authorities
 
             if(user.save()) {
                 for(role in authorities) {
                     role.addToPeople(user)
                 }
             }
-            return user
         }
-        else
-            return userCheck
+
+        return user
     }
 
     private void addBoardIfNotExist(){
@@ -118,7 +126,7 @@ class BootStrap {
             def bec = new BoardEventCreate(user:adminUser,title:'The Board')
             eventService.persist(bec)
             def board = bec.board
-            eventService.persist(new PhaseEventCreate(title: "Backlog", phasePos: 0, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "Backlog", phasePos: 0, board: board, user: adminUser))
             eventService.persist(new PhaseEventCreate(title: "WIP", phasePos: 1, cardLimit: 5, user: adminUser, board: board))
             eventService.persist(new PhaseEventCreate(title: "Done", phasePos: 2, user: adminUser, board: board))
             eventService.persist(new PhaseEventCreate(title: "Archive", phasePos: 3, user: adminUser, board: board))
@@ -134,8 +142,8 @@ class BootStrap {
             eventService.persist(new PhaseEventCreate(title: "Backlog", phasePos: 0, cardLimit: 10, user: adminUser, board: board))
             eventService.persist(new PhaseEventCreate(title: "WIP", phasePos: 1, cardLimit: 5, user: adminUser, board: board))
             eventService.persist(new PhaseEventCreate(title: "Done", phasePos: 2, cardLimit: 5, user: adminUser, board: board))
-            eventService.persist(new CardEventCreate(title: "Card #1", caseNumber: 1, description:"blalbblalbabla"))
-            eventService.persist(new CardEventCreate(title: "Card #2", caseNumber: 2, description:"blöblöblöblöbl"))
+            eventService.persist(new CardEventCreate(title: "Card #1", caseNumber: 1, description:"blalbblalbabla",phaseDomainId: (Phase.get(1).domainId), user: adminUser))
+            eventService.persist(new CardEventCreate(title: "Card #2", caseNumber: 2, description:"blöblöblöblöbl",phaseDomainId: (Phase.get(1).domainId), user: adminUser))
         }
     }
 }
