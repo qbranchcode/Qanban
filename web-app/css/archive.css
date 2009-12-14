@@ -5,9 +5,9 @@
     background-repeat:no-repeat;
     display:block;
     padding:1px;
-    position:absolute;
     height:19px;
     width:19px;
+    overflow: hidden;
 }
 
 .showCardLink:hover {
@@ -91,7 +91,7 @@ html > body thead.fixedHeader th a {
     margin-bottom:1px;
     margin-right:1px;
     padding:0px 0px 2px;
-    padding-right: 1px;
+    padding-right: 2px;
     text-align:left;
 }
 html > body thead.fixedHeader th + th {
@@ -121,7 +121,7 @@ html > body thead.fixedHeader th + th + th + th + th a {
 html > body tbody.scrollContent td {
     padding-top:2px;
     vertical-align:top;
-    width:23px;
+    width:24px;
 }
 html > body tbody.scrollContent td + td {
     padding-left:4px;
