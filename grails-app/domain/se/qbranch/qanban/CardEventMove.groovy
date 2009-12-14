@@ -64,6 +64,7 @@ class CardEventMove extends CardEvent {
         card.phase.cards.remove(card)
         newPhase.cards.add(newCardIndex, card)
         card.phase = newPhase
+        card.lastUpdated = new Date()
         card.save(flush:true)
         
     }
