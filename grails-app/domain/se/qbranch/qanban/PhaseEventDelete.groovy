@@ -46,6 +46,11 @@ class PhaseEventDelete  extends PhaseEvent {
     return phase
   }
 
+  public void setPhase(phase){
+    this.phase = phase
+    this.board = phase.board
+  }
+
   public Board getBoard(){
     if( !board && boardDomainId ){
       board = Board.findByDomainId(boardDomainId)

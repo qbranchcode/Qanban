@@ -262,6 +262,36 @@ class CardControllerTests extends ControllerUnitTestCase {
 
   }
 
+  void testUpdateWithInvalidAssignee(){
+    mockParams.id = "1"
+    mockParams.title = "New Title"
+
+    def orignialTitle = Card.get(1).title
+    def cmd1 = new SetAssigneeCommand(id: "1", assigneeId: "23")
+    cmd1.validate()
+    def cmd2 = new UpdateCardCommand(id: "1", title: 'New Title', caseNumber: "#new", description: "New Descr.")
+    cmd2.validate()
+    controller.update(cmd1,cmd2)
+
+    assertEquals orignialTitle, Card.get(mockParams.id).title
+    assertEquals 400, renderArgs.status
+    assertEquals "Bad request; The assignee you tried to set is invalid", renderArgs.text
+
+  }
+
+  void testInvalidUpdateWithoutId(){
+
+    def cmd1 = new SetAssigneeCommand(assigneeId: "2")
+    cmd1.validate()
+    def cmd2 = new UpdateCardCommand(title: 'New Title', caseNumber: "#new", description: "New Descr.")
+    cmd2.validate()
+    controller.update(cmd1,cmd2)
+
+    assertEquals 400, renderArgs.status
+    assertEquals "Bad update request", renderArgs.text
+
+  }
+
 
   void testMove(){
     def id = "1"
@@ -293,6 +323,17 @@ class CardControllerTests extends ControllerUnitTestCase {
     assertNotNull "Card with id 1 should exist", Card.get(1)
     controller.delete()
     assertNull "Card with id 1 should not exist", Card.get(1) 
+  }
+
+  void testDeleteWithoutParams(){
+    controller.delete()
+    assertEquals 400, renderArgs.status
+  }
+
+  void testDeleteWithInvalidId(){
+    mockParams.id = "423"
+    controller.delete()
+    assertEquals 404, renderArgs.status
   }
 
 }

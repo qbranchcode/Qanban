@@ -59,7 +59,7 @@ class PhaseController {
         return render ( [ phaseInstance : createEvent.phase] as JSON)
       }
       xml{
-        return render ( [ phaseInstance : createEvent.phase ] as XML)
+        return render ( [ phaseInstanceSave : createEvent.phase ] as XML)
       }
     }
   }
@@ -88,7 +88,7 @@ class PhaseController {
 
   }
 
-  private getCardsLastMovedToPhase(phase, maxNumberOfCards){
+  def getCardsLastMovedToPhase(phase, maxNumberOfCards){
 
     def domainIdList = CardEventMove.withCriteria {
       eq('phaseDomainId', phase.domainId)
@@ -172,22 +172,24 @@ class PhaseController {
 
 // Update
 
-// TODO: Fixa så att eventen endast sparas när man ändrar nåt samt flytta
+// TODO: Add a cmd for the update event and add logic that checks that some value has changed before persisting the event
+
   @Secured(['ROLE_QANBANADMIN'])
-  def update = { MovePhaseCommand cmd ->
+  def update = { MovePhaseCommand mpc , UpdatePhaseCommand upc ->
 
-    def updateEvent = createUpdateEvent(params)
+    if ( !mpc.hasErrors() && !upc.hasErrors() ){
 
-    if ( !cmd.hasErrors() && updateEvent.validate() ){
+      def moveEvent = createPhaseEventMove(mpc)
+      def updateEvent = createUpdateEvent(upc)
 
-      def moveEvent = createPhaseEventMove(cmd)
-      if( moveEvent )
       eventService.persist(moveEvent)
       eventService.persist(updateEvent)
 
-      renderUpdateResult(updateEvent)
+      return renderUpdateResult(updateEvent)
 
     }
+
+    render(status: 503, text: "Servererror #pc192")
 
   }
 
@@ -205,10 +207,11 @@ class PhaseController {
     }
   }
 
-  private PhaseEventUpdate createUpdateEvent(params){
+  private PhaseEventUpdate createUpdateEvent(cmd){
     def event = new PhaseEventUpdate()
-    event.phase = Phase.get(params.id)
-    event.properties = params
+    event.phase = Phase.get(cmd.id)
+    event.title = cmd.title
+    event.cardLimit = cmd.cardLimit
     event.user = securityService.getLoggedInUser()
     return event
   }
@@ -297,3 +300,22 @@ class MovePhaseCommand {
     Phase.get(id)
   }
 }
+
+class UpdatePhaseCommand{
+  static constraints = {
+    id( min: 0, nullable: false, validator:{ val, obj ->
+      Phase.exists(val)
+    })
+    title ( nullable: false, blank: false )
+    cardLimit ( nullable: true )
+  }
+
+  Integer id
+  String title
+  Integer cardLimit
+  
+  def getPhase(){
+    Phase.get(id)
+  }
+}
+

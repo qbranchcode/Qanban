@@ -135,11 +135,12 @@ class CardController {
 
     // Update
     def update = { SetAssigneeCommand sac, UpdateCardCommand ucc ->
-        
-        if( sac.hasErrors() )
-            return render(status: 400, text: "Bad request; The assignee you tried to set is invalid")
+
         if( ucc.hasErrors() )
             return render(status: 400, text: "Bad update request")
+        if( sac.hasErrors() )
+            return render(status: 400, text: "Bad request; The assignee you tried to set is invalid")
+
 
         CardEventSetAssignee assigneeEvent = createCardEventSetAssignee(sac)
         CardEventUpdate updateEvent = createUpdateEvent(ucc)

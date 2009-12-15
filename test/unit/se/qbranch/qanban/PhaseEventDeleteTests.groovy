@@ -144,7 +144,10 @@ class PhaseEventDeleteTests extends GrailsUnitTestCase {
         assertEquals 3, board.phases.size()
 
         def domainId = phase1.domainId
-        def deleteEvent = new PhaseEventDelete(phase: phase1,user: user1)
+        def deleteEvent = new PhaseEventDelete()
+        deleteEvent.phase = phase1
+        deleteEvent.user = user1
+      
         
         deleteEvent.validate()
         deleteEvent.beforeInsert()
