@@ -9,4 +9,4 @@ grails-app/conf/SecurityConfig.groovy
 *.ipr
 *.iws
 .idea
-
+cobertura.ser
