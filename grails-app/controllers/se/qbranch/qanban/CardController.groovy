@@ -134,15 +134,16 @@ class CardController {
 
 
     // Update
-    def update = { SetAssigneeCommand sac ->   // TODO: Create a cmd for the update aswell
+    def update = { SetAssigneeCommand sac, UpdateCardCommand ucc ->
         
-        def updateEvent = createUpdateEvent(params)
-
         if( sac.hasErrors() )
             return render(status: 400, text: "Bad request; The assignee you tried to set is invalid")
+        if( ucc.hasErrors() )
+            return render(status: 400, text: "Bad update request")
 
         CardEventSetAssignee assigneeEvent = createCardEventSetAssignee(sac)
-
+        CardEventUpdate updateEvent = createUpdateEvent(ucc)
+      
         // TODO: Do it like this? eventService.persist(updateEvent,assigneeEvent)
 
         eventService.persist(updateEvent)
@@ -167,10 +168,12 @@ class CardController {
         }
     }
 
-    private CardEventUpdate createUpdateEvent(params){
+    private CardEventUpdate createUpdateEvent(cmd){
         def event = new CardEventUpdate()
-        event.card = Card.get(params.id)
-        event.properties = params
+        event.card = Card.get(cmd.id)
+        event.title =  cmd.title
+        event.caseNumber = cmd.caseNumber
+        event.description = cmd.description
         event.user = securityService.getLoggedInUser()
         return event
     }
@@ -325,4 +328,20 @@ class SetAssigneeCommand {
     def getCard() {
         Card.get(id)
     }
+}
+
+class UpdateCardCommand {
+
+  static constraints = {
+    id( nullable: false )
+    title( nullable: false, blank: false)
+    caseNumber( nullable: false, blank: false )
+    description( nullable: true, blank: true )
+
+  }
+
+  Integer id
+  String title
+  String description
+  String caseNumber
 }

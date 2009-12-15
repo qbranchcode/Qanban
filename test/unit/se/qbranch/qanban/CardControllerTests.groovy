@@ -125,14 +125,14 @@ class CardControllerTests extends ControllerUnitTestCase {
     mockDomain(CardEventSetAssignee)
     mockDomain(CardEventMove)    
     securityServiceMock = mockFor(SecurityService)
-    securityServiceMock.demand.static.getLoggedInUser() { -> return user1 }
+    securityServiceMock.demand.static.getLoggedInUser(1..3) { -> return user1 }
     securityServiceMock.demand.static.isUserAdmin() {
       return false
     }
     controller.securityService = securityServiceMock.createMock()
 
     eventServiceMock = mockFor(EventService)
-    eventServiceMock.demand.static.persist() { event ->
+    eventServiceMock.demand.static.persist(1..2) { event ->
       event.beforeInsert()
       if( event.save() ){
         event.process()
@@ -156,6 +156,7 @@ class CardControllerTests extends ControllerUnitTestCase {
     
     mockForConstraintsTests(SetAssigneeCommand)
     mockForConstraintsTests(MoveCardCommand)
+    mockForConstraintsTests(UpdateCardCommand)
   }
 
   protected void tearDown() {
@@ -246,26 +247,22 @@ class CardControllerTests extends ControllerUnitTestCase {
     
   }
 
-  /*
-    Controller actions that needs both params and command object doesn't seem to be testable in unit test?
   void testValidUpdate(){
 
     mockParams.id = "1"
     mockParams.title = "New Title"
 
-    def cmd = new SetAssigneeCommand(id: "1", assigneeId: "2")
-    cmd.validate()
-    controller.update(cmd)
+    def cmd1 = new SetAssigneeCommand(id: "1", assigneeId: "2")
+    cmd1.validate()
+    def cmd2 = new UpdateCardCommand(id: "1", title: 'New Title', caseNumber: "#new", description: "New Descr.")
+    cmd2.validate()
+    controller.update(cmd1,cmd2)
 
     assertEquals "New Title", renderArgs.model.updateEvent.card.title
 
   }
-  */
 
-  /*
-    Mock failure:
-    No more calls to 'getLoggedInUser' expected at this point. End of demands.
-    
+
   void testMove(){
     def id = "1"
     def cmd1 = new MoveCardCommand(id: id, newPos: '0', newPhase: '2')
@@ -276,7 +273,6 @@ class CardControllerTests extends ControllerUnitTestCase {
     assertEquals Phase.get(2), renderArgs.model.moveEvent.card.phase 
 
   }
-  */
 
   void testSort(){
     def cmd = new MoveCardCommand(id: '1', newPos: '0', newPhase: '2')
