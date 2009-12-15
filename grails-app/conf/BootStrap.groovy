@@ -71,7 +71,7 @@ class BootStrap {
 
                 adminRole = addRoleIfNotExist("administrator access", "ROLE_QANBANADMIN")
                 userRole = addRoleIfNotExist("regular user access", "ROLE_QANBANUSER")
-                regularUser = addUserIfNotExist("testuser", "Test User", "testuser", true, "This is a regular user", "mattias.mirhagen@gmail.com", userRole)
+                regularUser = addUserIfNotExist("testuser", "Test User", "testuser", true, "This is a regular user", "mattias.mirhagen@gmail.com", [userRole])
                 adminUser = addUserIfNotExist("testadmin", "Admin User", "testadmin", true, "This is an admin user", "patrik.gardeman@gmail.com", [adminRole, userRole])
                 addBoardIfNotExist()
 
