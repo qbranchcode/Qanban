@@ -22,6 +22,7 @@ class CardControllerTests extends ControllerUnitTestCase {
 
   def eventServiceMock
   def securityServiceMock
+  def ruleServiceMock
 
   def user1
   def user2
@@ -55,7 +56,7 @@ class CardControllerTests extends ControllerUnitTestCase {
 
 
     // Phase / PhaseEventCreate mock
-    mockDomain(Event)
+
     mockDomain(PhaseEventCreate)
     mockDomain(Phase)
 
@@ -108,12 +109,6 @@ class CardControllerTests extends ControllerUnitTestCase {
 
     // Assertions to validate the mock setup
 
-    board.phases.each {
-      println it
-      it.cards.each {
-        println "   $it"
-      }
-    }
 
     assertEquals 1, board.id
     assertEquals 3, board.phases.size()
@@ -126,22 +121,41 @@ class CardControllerTests extends ControllerUnitTestCase {
     assertEquals 2, card2onPhase1.id
     assertEquals 3, card3onPhase2.id
 
+    mockDomain(Event)
+    mockDomain(CardEventSetAssignee)
+    mockDomain(CardEventMove)    
     securityServiceMock = mockFor(SecurityService)
-    securityServiceMock.demand.getLoggedInUser() { -> return user1 }
+    securityServiceMock.demand.static.getLoggedInUser() { -> return user1 }
+    securityServiceMock.demand.static.isUserAdmin() {
+      return false
+    }
     controller.securityService = securityServiceMock.createMock()
 
     eventServiceMock = mockFor(EventService)
-    eventServiceMock.demand.persist() { event ->
+    eventServiceMock.demand.static.persist() { event ->
       event.beforeInsert()
       if( event.save() ){
         event.process()
       }
     }
-
     controller.eventService = eventServiceMock.createMock()
 
-    mockForConstraintsTests(SetAssigneeCommand)
+    ruleServiceMock = mockFor(RuleService)
+    ruleServiceMock.demand.static.isMoveLegal() { oldPhase, newPhase ->
+      def board = newPhase.board
+      def oldPhaseIndex = board.phases.indexOf(oldPhase)
+      def newPhaseIndex = board.phases.indexOf(newPhase)
 
+      if( oldPhaseIndex + 1 == newPhaseIndex || oldPhaseIndex == newPhaseIndex ){
+        return true
+      }else{
+        return false
+      }
+    }
+    controller.ruleService = ruleServiceMock.createMock()
+    
+    mockForConstraintsTests(SetAssigneeCommand)
+    mockForConstraintsTests(MoveCardCommand)
   }
 
   protected void tearDown() {
@@ -155,7 +169,6 @@ class CardControllerTests extends ControllerUnitTestCase {
     mockParams.description = "My testcard"
 
     def model = controller.create()
-    println "status: $renderArgs.status"
     assertEquals 400, renderArgs.status
 
   }
@@ -200,6 +213,7 @@ class CardControllerTests extends ControllerUnitTestCase {
     mockParams.id = "1"
     controller.form()
     assertEquals Card.get(1).title, renderArgs.model.updateEvent.title
+
   }
 
   void testFormWithoutIdAndWithBoardId(){
@@ -248,14 +262,41 @@ class CardControllerTests extends ControllerUnitTestCase {
   }
   */
 
+  /*
+    Mock failure:
+    No more calls to 'getLoggedInUser' expected at this point. End of demands.
+    
+  void testMove(){
+    def id = "1"
+    def cmd1 = new MoveCardCommand(id: id, newPos: '0', newPhase: '2')
+    cmd1.validate()
+    def cmd2 = new SetAssigneeCommand(id: id, assigneeIs: '2')
+    cmd2.validate()
+    controller.move(cmd1,cmd2)
+    assertEquals Phase.get(2), renderArgs.model.moveEvent.card.phase 
+
+  }
+  */
+
+  void testSort(){
+    def cmd = new MoveCardCommand(id: '1', newPos: '0', newPhase: '2')
+    controller.sort(cmd)
+    assert 200, renderArgs.status
+  }
+
+  void testInvalidSort(){
+
+    def cmd = new MoveCardCommand(id: '3', newPos: '0', newPhase: '1')
+    controller.sort(cmd)
+    assert 400, renderArgs.status
+    // The mock assumes that the user ain't admin, otherwise thit move would be valid
+  }
+
   void testDelete(){
     mockParams.id = "1"
     assertNotNull "Card with id 1 should exist", Card.get(1)
     controller.delete()
     assertNull "Card with id 1 should not exist", Card.get(1) 
   }
-
-
-
 
 }

@@ -132,8 +132,9 @@ class CardController {
         return render(template:'cardForm',model:[ updateEvent: updateEvent , userList: users , events : Event.findAllByDomainId(card.domainId, [sort: 'dateCreated', order:'desc']) ])
     }
 
+
     // Update
-    def update = { SetAssigneeCommand sac ->
+    def update = { SetAssigneeCommand sac ->   // TODO: Create a cmd for the update aswell
         
         def updateEvent = createUpdateEvent(params)
 
