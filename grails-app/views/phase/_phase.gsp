@@ -23,7 +23,7 @@
 
 
         <ul class="phase phaseAutoHeight
-	    <g:if test="${phase.cardLimit && phase.cards.size() > 0 && (phase.cardLimit/phase.cards.size()) != 1 || phase.cardLimit != phase.cards.size()}">
+	    <g:if test="${ phase.cardLimit == 0 || ( phase.cardLimit > phase.cards.size() )}">
 		available
 	    </g:if>
      	    <g:if test="${phase.cardLimit}">
