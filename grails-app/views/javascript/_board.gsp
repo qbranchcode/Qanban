@@ -85,7 +85,17 @@
        $createPhaseDialog.qLoad({
            url : '${createLink(controller:'phase',action:'form')}',
            data : {'board.id':${board.id}},
-           successCallback : function(){$createPhaseDialog.dialog('open');},
+           successCallback : function(){
+            var $archiveBtn = $('#archiveBtn');
+            if ( $archiveBtn.hasClass('open') ){
+              $archiveBtn.removeClass('open');
+              $('.phaseWrapper:last-child').remove();
+              enableSortableOnPhase($('.phaseWrapper:last-child').find('.phase'));
+              fixWidth();
+
+            }
+            $createPhaseDialog.dialog('open');
+           },
            completeCallback : function(){
                                 loadPhasePlacer($createPhaseDialog.attr('id'));
                              },
@@ -102,8 +112,8 @@
     $('#archiveBtn').unbind('click');
     $('#archiveBtn').click(function(event){
 
-      if( $(this).css('background-position') == '3px -94px' ){
-          $(this).css('background-position','-13px -94px');
+      if( !$(this).hasClass('open') ){
+          $(this).addClass('open');
 
           var archId;
           var classList = $(this).attr('class').split(' ');
@@ -134,6 +144,7 @@
                     $(archiveSelector).find('.card:first').slideUp('slow',function(){
                       $(this).remove();
                       recalculateHeightAndUpdateCardCount();
+
                     });
                 },
                 items: "thisPhase'sCardsShouldNotBeSortable"
@@ -168,7 +179,7 @@
           });
 
       }else{
-          $(this).css('background-position','3px -94px');
+          $(this).removeClass('open');
           $('.phaseWrapper:last-child').remove();
           enableSortableOnPhase($('.phaseWrapper:last-child').find('.phase'));
           fixWidth();
@@ -207,6 +218,9 @@
 		     var p = $phases.get($indexInput.val());
 		     $(data).insertBefore($(p));
 		  }else{
+		     if( $newElement.attr('id').split('_')[0] != 'card' ){
+		         $('#archiveBtn').remove();
+		         }
 	      	     $destination.append(data);
 		  }
 
@@ -226,7 +240,16 @@
                       if( oldIndex > newIndex ){
                         $newElement.insertBefore($elementAtDestination);
                       }else{
+                        var $archBtn = $($elementAtDestination).find('#archiveBtn');
+                        var isArchiveVisible = $archBtn.hasClass('open');
+                        if( $archBtn.size() == 1 ){
+                           $archBtn.remove()
+                        }
                         $newElement.insertAfter($elementAtDestination);
+                        if( isArchiveVisible ){
+                          $newElement.find('#archiveBtn').addClass('open');
+                        }
+
                       }
                   }
 

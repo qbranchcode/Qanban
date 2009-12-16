@@ -47,7 +47,15 @@ function deletePhaseDialog(id){
                           data: {'id': id},
                           type: 'POST',
                           success: function() {
-                            $("#phaseWrapper_"+id).remove();
+                            var $phaseWrapper = $("#phaseWrapper_"+id);
+                            var $archiveBtn = $phaseWrapper.find('#archiveBtn');
+                            var $prevPhase = $phaseWrapper.prev().find('.phase');
+                            if( $archiveBtn.size() == 1 ) {
+                                $archiveBtn.insertAfter($phaseWrapper.prev().find('[href=#edit]'));
+                            }
+                            $phaseWrapper.remove();
+                            enableSortableOnPhase($prevPhase);
+                            reconnectPhases();
                             fixWidth();
                             $('#editPhaseDialog').dialog("close");
                           },
@@ -90,13 +98,15 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
 
       var updatePhases = function(data,textStatus,$element,injection){
 
-	  var $newPhase = $('#'+$element.attr('id')).find('ul');
+	      var $newPhase = $('#'+$element.attr('id')).find('ul');
+	      var $newPhase = $('#'+$element.attr('id')).find('ul');
 
 	  
-	  if( injection ){
-		var height = $(".phase:not('[id="+$newPhase.attr('id')+"]')").height();
-		$newPhase.height(height);
-	  }
+          if( injection ){
+            var height = $(".phase:not('[id="+$newPhase.attr('id')+"]')").height();
+            $newPhase.height(height);
+          }
+
           enableSortableOnPhase($newPhase);
           reconnectPhases();
           rescanBoardButtons();
@@ -132,11 +142,8 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
              if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'cardLimit' ){
                  if( classSubstings[1].replace(/^\s*|\s*$/g,'') == numberOfChildren ) {
                     $phase.removeClass("available");
-                    reconnectPhases();
-                 }
-             }
-             if( classSubstings[0].replace(/^\s*|\s*$/g,'') == 'cardLimit' ){
-                 if( classSubstings[1].replace(/^\s*|\s*$/g,'') > numberOfChildren ) {
+                    //reconnectPhases();
+                 }else if( classSubstings[1].replace(/^\s*|\s*$/g,'') > numberOfChildren ) {
                     $phase.addClass("available");
                     reconnectPhases();
                  }
@@ -165,7 +172,6 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
          var $currentPhase = $(this);
 
          $currentPhase.sortable('option','start', function(event,ui){
-
               $('.phase').filter(function(){
 
                    if( $nextPhase.is('.phase') ){
@@ -193,10 +199,13 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
 
          if ( $nextPhase.is('.phase') ){
          
+            if( $currentPhase.find('#archiveBtn').size() == 1 ){
+             $currentPhase.sortable('option','connectWith','#archiveBtn');
+            }
+
             $currentPhase.sortable('option','connectWith','#'+$nextPhase.attr('id')+'.available');
 
          }else if ( $currentPhase.parent().find('#archiveBtn').size() == 1 ){
-
             $currentPhase.sortable('option','connectWith','#archiveBtn');
          }
 
@@ -204,6 +213,7 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
   }
 
   function enableSortableOnPhase($phase){
+
      $phase.sortable({
             placeholder: 'placeholder',
             stop: function(event,ui){
@@ -218,7 +228,6 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
                   var newPos = ui.item.prevAll().length -1 ;
                   var cardId = ui.item.attr('id').split('_')[1];
                   var newPhase = ui.item.parent().attr('id').split('_')[1];
-
                   if( ui.item.parent().attr('id') != icv.initPhase ){
                       $moveCardDialog = $('<div id="moveCardDialog"></div>');
                       $moveCardDialog.dialog({
@@ -285,13 +294,13 @@ function phaseFormRefresh(formData,dialogSelector,successTitle,successMessage){
                     loadCardSort();
                     
                   }
-
               }
      });
 
      var $archiveBtn = $phase.parent().find('#archiveBtn');
      if( $archiveBtn.size() == 1 ){
       var acceptSelector = '#' + $phase.attr('id') + ' > .card';
+
       $archiveBtn.droppable({
         hoverClass: 'cardHover',
         accept: acceptSelector,
