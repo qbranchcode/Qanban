@@ -137,7 +137,6 @@ class PhaseControllerTests extends ControllerUnitTestCase {
     }
     controller.eventService = eventServiceMock.createMock()
 
-    mockForConstraintsTests(UpdatePhaseCommand)
     mockForConstraintsTests(MovePhaseCommand)
     mockForConstraintsTests(DeletePhaseCommand)
   }
