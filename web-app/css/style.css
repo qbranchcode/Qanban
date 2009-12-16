@@ -253,6 +253,10 @@ h4{}
     background-image: url(custom-theme/images/ui-icons_fd0000_256x240.png);
 }
 
+#archiveBtn.open {
+    background-position: -13px -94px;
+}
+
 #archiveBtn.cardHover {
     background-image: url(custom-theme/images/ui-icons_fd0000_256x240.png);
     background-position: -13px -94px;
