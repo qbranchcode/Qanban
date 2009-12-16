@@ -43,12 +43,12 @@ class PhaseController {
   }
 
   private PhaseEventCreate createPhaseEventCreate(params){
-    def event = new PhaseEventCreate()
-    event.board = Board.get(params.'board.id')
-    event.title = params.title
-    event.cardLimit = params.cardLimit == "" ? null : params.cardLimit as Integer
-    event.phasePos = params.phasePos as Integer
-    event.user = securityService.getLoggedInUser()
+    def event = new PhaseEventCreate(
+        board : Board.get(params.'board.id'),
+        title : params.title ,
+        cardLimit : params.cardLimit ,
+        phasePos : params.phasePos ,
+        user : securityService.getLoggedInUser() )
     return event
   }
 
@@ -63,7 +63,7 @@ class PhaseController {
         return render ( [ phaseInstance : createEvent.phase] as JSON)
       }
       xml{
-        return render ( [ phaseInstanceSave : createEvent.phase ] as XML)
+        return render ( [ phaseInstance : createEvent.phase ] as XML)
       }
     }
   }
@@ -71,6 +71,7 @@ class PhaseController {
   // Retrieve
 
   def show = {
+
     if( !params.id )
     return render(status: 400, text: "You need to specify an id")
 
@@ -82,12 +83,12 @@ class PhaseController {
     // Lets the user limit the amount of cards retrieved from a phase's card collection
     // auto = the max number of cards retrieved is set to the max number of cards that is stored on any other phase on the board except the one thats returned
     // 0..N = sets the limit manually
-    if( params.cardLimit ){
+    if( phase == phase.board.phases[-1] && !params.cardLimit ) params.cardLimit = "auto"
+    
+    if( params.cardLimit  ){
       def maxResults = getCardLimit(phase,params.cardLimit)
       phase.cards = getCardsLastMovedToPhase(phase, maxResults)
-      return renderShowResult(phase)
     }
-
     renderShowResult(phase)
 
   }
@@ -181,20 +182,13 @@ class PhaseController {
   @Secured(['ROLE_QANBANADMIN'])
   def update = { MovePhaseCommand mpc , UpdatePhaseCommand upc ->
 
-    if ( !mpc.hasErrors() && !upc.hasErrors() ){
-
       def moveEvent = createPhaseEventMove(mpc)
       def updateEvent = createUpdateEvent(upc)
-
 
       eventService.persist(moveEvent)
       eventService.persist(updateEvent)
 
       return renderUpdateResult(updateEvent)
-
-    }
-
-    render(status: 503, text: "Servererror #pc192")
 
   }
 
@@ -214,10 +208,10 @@ class PhaseController {
 
   private PhaseEventUpdate createUpdateEvent(cmd){
     def event = new PhaseEventUpdate()
-    event.phase = Phase.get(cmd.id)
-    event.title = cmd.title
-    event.cardLimit = cmd.cardLimit
-    event.user = securityService.getLoggedInUser()
+        event.phase = cmd.phase
+        event.title = cmd.title
+        event.cardLimit = cmd.cardLimit
+        event.user = securityService.getLoggedInUser()
     return event
   }
 
@@ -241,16 +235,14 @@ class PhaseController {
 // Delete
 
   @Secured(['ROLE_QANBANADMIN'])
-  def delete = {
+  def delete = { DeletePhaseCommand dpc ->
 
-    if( !params.id )
-    return render(status: 400, text: "You need to specify a phase")
-    if( !Phase.exists(params.id) )
-    return render(status: 404, text: "Phase with id $params.id not found")
+    if( dpc.hasErrors() )
+      return render(status: 400, text: dpc.errors.getAllErrors() )
 
     def deleteEvent = new PhaseEventDelete()
     deleteEvent.user = securityService.getLoggedInUser()
-    deleteEvent.phase = Phase.get( params.id )
+    deleteEvent.phase = dpc.phase
 
     eventService.persist(deleteEvent)
 
@@ -282,6 +274,20 @@ class PhaseController {
 
   }
 
+}
+
+class DeletePhaseCommand {
+  static constraints = {
+    id( min: 0, nullable: false, validator:{ val, obj ->
+      Phase.exists(val) && Card.findAllByPhase(Phase.get(val)).size() == 0
+    })
+  }
+
+  Integer id
+  
+  def getPhase(){
+    Phase.get(id)
+  }
 }
 
 class MovePhaseCommand {

@@ -59,7 +59,7 @@ class PhaseEventUpdate extends PhaseEvent {
     }
 
     transient beforeInsert = {
-        domainId = phase.domainId
+      domainId = phase.domainId
       setEventCreator(user)
     }
 

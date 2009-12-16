@@ -68,9 +68,9 @@ class PhaseEventDelete  extends PhaseEvent {
   }
 
   transient process(){
-
-    board.phases.remove(phase)
-    phase.delete(flush:true)
+    //board.phases.remove(phase)
+    board.removeFromPhases(phase)
+    phase.delete()
 
 
   }

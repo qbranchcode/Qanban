@@ -139,7 +139,7 @@ class PhaseControllerTests extends ControllerUnitTestCase {
 
     mockForConstraintsTests(UpdatePhaseCommand)
     mockForConstraintsTests(MovePhaseCommand)
-
+    mockForConstraintsTests(DeletePhaseCommand)
   }
 
   protected void tearDown() {
@@ -256,20 +256,27 @@ class PhaseControllerTests extends ControllerUnitTestCase {
   }
 
   void testValidDelete(){
-    mockParams.id = '3'
-    controller.delete()
+    def cmd = new DeletePhaseCommand(id:'3')
+    cmd.validate()
+    cmd.errors.getAllErrors().each{
+      println it
+    }
+    controller.delete(cmd)
     assertEquals 200, renderArgs.status
   }
 
   void testDeleteWithoutId(){
-    controller.delete()
+    def cmd = new DeletePhaseCommand()
+    cmd.validate()
+    controller.delete(cmd)
     assertEquals 400, renderArgs.status
   }
 
   void testDeleteWittInvalidId(){
-    mockParams.id  = '213'
-    controller.delete()
-    assertEquals 404, renderArgs.status
+    def cmd = new DeletePhaseCommand(id:'123')
+    cmd.validate()
+    controller.delete(cmd)
+    assertEquals 400, renderArgs.status
   }
   
 
