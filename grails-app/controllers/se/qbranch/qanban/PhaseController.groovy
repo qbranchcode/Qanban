@@ -34,7 +34,7 @@ class PhaseController {
   def create = {
     if( !params.'board.id' )
     return render(status: 400, text: "The parameter 'boardId' must be specified")
-
+    params.cardLimit = params.cardLimit ? params.cardLimit : 0
     def createEvent = createPhaseEventCreate(params);
     eventService.persist(createEvent)
 
@@ -172,6 +172,7 @@ class PhaseController {
   private def renderFormEditMode(params){
     def updateEvent = new PhaseEventUpdate()
     updateEvent.phase = Phase.get(params.id)
+    updateEvent.populateFromPhase()
     return render(template:'phaseForm',model:[ updateEvent: updateEvent ])
   }
 
@@ -180,10 +181,10 @@ class PhaseController {
 // TODO: Add a cmd for the update event and add logic that checks that some value has changed before persisting the event
 
   @Secured(['ROLE_QANBANADMIN'])
-  def update = { MovePhaseCommand mpc , UpdatePhaseCommand upc ->
+  def update = { MovePhaseCommand mpc ->
 
       def moveEvent = createPhaseEventMove(mpc)
-      def updateEvent = createUpdateEvent(upc)
+      def updateEvent = createUpdateEvent(params)
 
       eventService.persist(moveEvent)
       eventService.persist(updateEvent)
@@ -206,12 +207,15 @@ class PhaseController {
     }
   }
 
-  private PhaseEventUpdate createUpdateEvent(cmd){
-    def event = new PhaseEventUpdate()
-        event.phase = cmd.phase
-        event.title = cmd.title
-        event.cardLimit = cmd.cardLimit
-        event.user = securityService.getLoggedInUser()
+  private PhaseEventUpdate createUpdateEvent(params){
+    def cardLimit = params.cardLimit ? params.cardLimit : 0
+    def phase = Phase.get(params.id)
+    def event = new PhaseEventUpdate(
+          user: securityService.getLoggedInUser(),
+          title: params.title,
+          cardLimit : cardLimit,
+    )
+    event.phase = phase
     return event
   }
 
@@ -308,24 +312,6 @@ class MovePhaseCommand {
   Integer phasePos
 
   def getPhase() {
-    Phase.get(id)
-  }
-}
-
-class UpdatePhaseCommand{
-  static constraints = {
-    id( min: 0, nullable: false, validator:{ val, obj ->
-      Phase.exists(val)
-    })
-    title ( nullable: false, blank: false )
-    cardLimit ( nullable: true )
-  }
-
-  Integer id
-  String title
-  Integer cardLimit
-  
-  def getPhase(){
     Phase.get(id)
   }
 }
