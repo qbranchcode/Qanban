@@ -61,7 +61,7 @@ class PhaseControllerTests extends ControllerUnitTestCase {
 
     def phaseEventCreate1 = new PhaseEventCreate(title: "First phase", cardLimit: 5, phasePos: 0, user: user1, board: board)
     def phaseEventCreate2 = new PhaseEventCreate(title: "Second phase", cardLimit: 10, phasePos: 1, user: user1 , board: board)
-    def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", user: user1, phasePos: 2, board: board)
+    def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", cardLimit: 0,user: user1, phasePos: 2, board: board)
 
     phaseEventCreate1.beforeInsert()
     phaseEventCreate1.save()
@@ -158,12 +158,27 @@ class PhaseControllerTests extends ControllerUnitTestCase {
 
     assertEquals 4, Phase.list().size()
     assertEquals "myPhase", model.createEvent.phase.title
+    assertEquals 0, model.createEvent.phase.cardLimit
   }
 
   void testCreateWithoutTitleAndPos() {
     mockParams.'board.id' = board.id
     def model = controller.create()
     assertEquals 2, model.createEvent.errors.getAllErrors().size()
+  }
+
+  void testCreateWithLimitParam(){
+    mockParams.title = "myPhase"
+    mockParams.'board.id' = board.id
+    mockParams.phasePos = "3"
+    mockParams.cardLimit = "5"
+    assertEquals 3, Phase.list().size()
+
+    def model = controller.create()
+
+    assertEquals 4, Phase.list().size()
+    assertEquals "myPhase", model.createEvent.phase.title
+    assertEquals 5, model.createEvent.phase.cardLimit
   }
 
   void testShowWithoutId(){
@@ -240,15 +255,16 @@ class PhaseControllerTests extends ControllerUnitTestCase {
     assertEquals 0, board.phases.indexOf(Phase.get(1))
 
     def id = '1'
+    mockParams.id = id
     def newTitle = "New Phase Title"
+    mockParams.title = newTitle
     def newPos = 2
+    mockParams.cardLimit = "1337"
     def cmd1 = new MovePhaseCommand(id: id, phasePos: newPos )
     cmd1.validate()
-    def cmd2 = new UpdatePhaseCommand(id: id, title: newTitle, cardLimit: "1337")
-    cmd2.validate()
 
-    controller.update(cmd1,cmd2)
-    
+    controller.update(cmd1)
+
     assertEquals newPos, board.phases.indexOf(Phase.get(1))
     assertEquals newTitle, renderArgs.model.updateEvent.phase.title
 

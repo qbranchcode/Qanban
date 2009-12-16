@@ -19,34 +19,45 @@ package se.qbranch.qanban
 import grails.test.*
 
 class PhaseTests extends GrailsUnitTestCase {
-    protected void setUp() {
-        super.setUp()
+  protected void setUp() {
+    super.setUp()
+    mockDomain(Board, [ new Board(domainId: "bdid")])
+    mockDomain(Phase)
+  }
+
+  protected void tearDown() {
+    super.tearDown()
+  }
+
+  void testCreatePhase() {
+
+    def phase = new Phase(title: "testPhase")
+    assertEquals "testPhase", phase.title
+
+    def notAllowedTitlePhase = new Phase(title: "")
+    assertFalse 'validate should have failed', notAllowedTitlePhase.validate()
+
+  }
+
+  void testPhaseWithCard() {
+    mockDomain(Card)
+
+    Card card = new Card(description: "myCard")
+    Phase phase = new Phase(title: "myPhase")
+
+    phase.addToCards(card)
+
+    assertEquals 1, phase.cards.size()
+
+  }
+  void testCreatingAPhaseWithLiteralCardLimit(){
+
+    Phase phase = new Phase(title: "Title", domainId: "did", cardLimit: "qwe", board: Board.get(1))
+    phase.validate()
+    assertTrue "There should be errors", phase.hasErrors()
+    phase.errors.getAllErrors().each{
+      println it
     }
 
-    protected void tearDown() {
-        super.tearDown()
-    }
-
-    void testCreatePhase() {
-        mockDomain(Phase)
-
-        def phase = new Phase(title: "testPhase")
-        assertEquals "testPhase", phase.title
-        
-        def notAllowedTitlePhase = new Phase(title: "")
-        assertFalse 'validate should have failed', notAllowedTitlePhase.validate()
-
-    }
-
-    void testPhaseWithCard() {
-        mockDomain(Card)
-        mockDomain(Phase)
-        Card card = new Card(description: "myCard")
-        Phase phase = new Phase(title: "myPhase")
-
-        phase.addToCards(card)
-
-        assertEquals 1, phase.cards.size()
-
-    }
+  }
 }

@@ -58,7 +58,7 @@ class PhaseEventCreateTests extends GrailsUnitTestCase {
 
         def phaseEventCreate1 = new PhaseEventCreate(title: "First phase", cardLimit: 5, phasePos: 0, user: user1, board: board)
         def phaseEventCreate2 = new PhaseEventCreate(title: "Second phase", cardLimit: 10, phasePos: 1, user: user1 , board: board)
-        def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", user: user1, phasePos: 2, board: board)
+        def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", cardLimit: 0, user: user1, phasePos: 2, board: board)
 
         phaseEventCreate1.beforeInsert()
         phaseEventCreate1.save()
@@ -104,13 +104,6 @@ class PhaseEventCreateTests extends GrailsUnitTestCase {
         card3onPhase2 = cardEventCreate3.card
 
         // Assertions to validate the mock setup
-
-        board.phases.each {
-            println it
-            it.cards.each {
-                println "   $it"
-            }
-        }
 
         assertEquals 1, board.id
         assertEquals 3, board.phases.size()
@@ -175,6 +168,25 @@ class PhaseEventCreateTests extends GrailsUnitTestCase {
         }
 
         assertNull "There should not be a phase", createEvent.phase
+
+    }
+
+    void testCreatingAPhaseWithLiteralsAsLimit(){
+      String cardLimit = "limit with literals"
+      String title =  "Fourth phase"
+      def createEvent = new PhaseEventCreate(
+              title: title,
+              cardLimit: cardLimit,
+              board: board,
+              user: user1 ,
+              phasePos: 1
+      )
+
+      createEvent.validate();
+      println "$cardLimit - $createEvent.cardLimit"
+
+      assertTrue "Shiould have errors", createEvent.hasErrors()
+
 
     }
 }
