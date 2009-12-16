@@ -18,56 +18,59 @@ package se.qbranch.qanban
 
 class PhaseEventUpdate extends PhaseEvent {
 
-    // TODO: Validera så att eventen inte sparas om inget värde har ändrats
-    
-    static constraints = {
-        title ( nullable: false, blank: false )
-        cardLimit ( nullable: true )
+  // TODO: Validera så att eventen inte sparas om inget värde har ändrats
+
+  static constraints = {
+    title ( nullable: false, blank: false )
+    cardLimit ( nullable: false, min : 0 )
+  }
+
+  static transients = ['phase','board','items']
+
+  Phase phase
+
+  String title
+  Integer cardLimit
+
+  public List getItems() {
+    return [getPhase().title]
+  }
+
+  public Phase getPhase(){
+    if( !phase && domainId ){
+      phase = Phase.findByDomainId(domainId)
+      if(!phase) {
+        phase = PhaseEventDelete.findByDomainId(domainId).phase
+      }
     }
+    return phase
+  }
 
-    static transients = ['phase','board','items']
-    Phase phase
+  public void setPhase(phase){
+    this.phase = phase
+  }
 
+  //TODO: Cleanup, check lazy settings.
+  public Board getBoard(){
+    Phase.get(phase.id).board
+  }
 
-    String title
-    Integer cardLimit
+  transient beforeInsert = {
+    domainId = Phase.get(phase.id).domainId
+    setEventCreator(user)
+  }
 
-    public List getItems() {
-        return [getPhase().title]
-    }
-
-    public Phase getPhase(){
-        if( !phase && domainId ){
-            phase = Phase.findByDomainId(domainId)
-            if(!phase) {
-                phase = PhaseEventDelete.findByDomainId(domainId).phase
-            }
-        }
-        return phase
-    }
-
-    public void setPhase(phase){
-        this.phase = phase
-        cardLimit = phase.cardLimit
+  transient void populateFromPhase(){
+    if( phase ){
         title = phase.title
-        domainId = phase.domainId
+        cardLimit = phase.cardLimit
     }
+  }
+  transient process( ) {
 
-        //TODO: Cleanup, check lazy settings.
-    public Board getBoard(){
-        Phase.get(phase.id).board
-    }
+    phase.title = title
+    phase.cardLimit = cardLimit
+    phase.save()
 
-    transient beforeInsert = {
-      domainId = phase.domainId
-      setEventCreator(user)
-    }
-
-    transient process( ) {
-
-        phase.title = title
-        phase.cardLimit = cardLimit
-        phase.save()
-
-    }
+  }
 }

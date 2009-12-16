@@ -21,7 +21,7 @@ import org.codehaus.groovy.grails.plugins.codecs.MD5Codec
 class PhaseEventCreate extends PhaseEvent {
 
     static constraints = {
-        cardLimit ( nullable: true )
+        cardLimit ( nullable: false, min : 0 )
         phasePos ( nullable: false )
         title(nullable: false, blank: false)
         boardDomainId ( nullable: true )
