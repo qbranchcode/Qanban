@@ -49,5 +49,6 @@ class PhaseEventMove extends PhaseEvent {
     transient process(){
         phase.board.phases.remove(phase)
         phase.board.phases.add(phasePos, phase)
+        phase.board.save()
     }
 }

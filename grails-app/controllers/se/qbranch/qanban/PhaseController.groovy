@@ -32,7 +32,6 @@ class PhaseController {
 
   @Secured(['ROLE_QANBANADMIN'])
   def create = {
-
     if( !params.'board.id' )
     return render(status: 400, text: "The parameter 'boardId' must be specified")
 
@@ -44,12 +43,17 @@ class PhaseController {
   }
 
   private PhaseEventCreate createPhaseEventCreate(params){
-    def event = new PhaseEventCreate(params)
+    def event = new PhaseEventCreate()
+    event.board = Board.get(params.'board.id')
+    event.title = params.title
+    event.cardLimit = params.cardLimit == "" ? null : params.cardLimit as Integer
+    event.phasePos = params.phasePos as Integer
     event.user = securityService.getLoggedInUser()
     return event
   }
 
   private renderCreateResult(createEvent){
+
     withFormat{
       html{
         def board = createEvent.board
@@ -181,6 +185,7 @@ class PhaseController {
 
       def moveEvent = createPhaseEventMove(mpc)
       def updateEvent = createUpdateEvent(upc)
+
 
       eventService.persist(moveEvent)
       eventService.persist(updateEvent)

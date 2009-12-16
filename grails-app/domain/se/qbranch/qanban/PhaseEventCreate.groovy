@@ -53,7 +53,9 @@ class PhaseEventCreate extends PhaseEvent {
     public Board getBoard(){
       if( !board && boardDomainId){
         board = Board.findByDomainId(boardDomainId)
-      }
+      }else if( board )(
+        board = Board.get(board.id)
+      )
       return board
     }
 

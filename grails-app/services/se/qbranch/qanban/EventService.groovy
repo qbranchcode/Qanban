@@ -21,7 +21,7 @@ class EventService {
     boolean transactional = true
 
     def persist(event) {
-        if( event.save() ){
+        if( event && event.save() ){
             event.process()
         }
 
