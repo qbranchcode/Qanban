@@ -43,10 +43,12 @@
                  class="property ${hasErrors(bean:updateEvent,field:'cardLimit','errors')}"/>
        </div>
        <div class="leveler"></div>
+
+      <g:if test="${updateEvent.phase != updateEvent.board.phases[-1]}">
        <div class="placementWrapper">
 	  <label for="phase.idx"><g:message code="_phaseForm.placement.label"/></label><br/>
   	  <ul id="phasePlacer">
-	      <g:each var="phase" in="${updateEvent.board.phases}">
+	      <g:each var="phase" in="${updateEvent.board.phases[0..-2]}">
 	      	      <li class="phase <g:if test='${phase.id == updateEvent.phase.id}'>current</g:if><g:else>old</g:else>">
 		      	  <ul class="titleName">
   		      	  <g:each var="ch" in="${phase.title}">
@@ -60,6 +62,7 @@
 	      </g:each>
 	    </ul>
 	</div>
+        </g:if>
 
     </div>
     <input type="hidden" name="phasePos" value="${updateEvent.board.phases.indexOf(updateEvent.phase)}"
@@ -111,7 +114,7 @@
 	  <label for="phase.idx"><g:message code="_phaseForm.placement.label"/></label><br/>
 	  
   	  <ul id="phasePlacer">
-	      <g:each var="phase" status="index" in="${boardInstance.phases}">
+	      <g:each var="phase" status="index" in="${boardInstance.phases[0..-2]}">
 
                       <g:if test="${createEvent?.phasePos==index}">
                           <li class="phase new"></li>
@@ -132,7 +135,7 @@
 	</div>
 
     </div>
-    <input type="hidden" name="phasePos" value="<g:if test='${createEvent?.phasePos != null}'>${createEvent?.phasePos}</g:if><g:else>${boardInstance.phases.size()}</g:else>"/>
+    <input type="hidden" name="phasePos" value="<g:if test='${createEvent?.phasePos != null}'>${createEvent?.phasePos}</g:if><g:else>${boardInstance.phases.size()-1}</g:else>"/>
     <input type="hidden" name="id" value="${createEvent?.phase?.id}"/>
     <input type="hidden" name="board.id" value="${boardInstance.id}" />
     <input style="display: none;" type="submit" />
