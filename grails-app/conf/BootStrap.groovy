@@ -126,10 +126,10 @@ class BootStrap {
             def bec = new BoardEventCreate(user:adminUser,title:'The Board')
             eventService.persist(bec)
             def board = bec.board
-            eventService.persist(new PhaseEventCreate(title: "Backlog", phasePos: 0, board: board, user: adminUser))
+            eventService.persist(new PhaseEventCreate(title: "Backlog", phasePos: 0, cardLimit: 0, board: board, user: adminUser))
             eventService.persist(new PhaseEventCreate(title: "WIP", phasePos: 1, cardLimit: 5, user: adminUser, board: board))
-            eventService.persist(new PhaseEventCreate(title: "Done", phasePos: 2, user: adminUser, board: board))
-            eventService.persist(new PhaseEventCreate(title: "Archive", phasePos: 3, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "Done", phasePos: 2, cardLimit: 0, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "Archive", phasePos: 3, cardLimit: 0, user: adminUser, board: board))
         }
     }
 
