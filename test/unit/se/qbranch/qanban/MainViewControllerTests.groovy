@@ -138,7 +138,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
 
   void testShowArchive() {
     mockParams."board.id" = "1"
-    
+
     MainViewController.metaClass.sortArchiveCards = { phases ->
       def phase = phases[-1]
       def list = Card.findAllByPhase(phase)
@@ -203,6 +203,14 @@ class MainViewControllerTests extends ControllerUnitTestCase {
 
     controller.showLogBody()
     assertEquals 6, renderArgs.model.eventInstanceList.size()
+  }
+
+  void testShowBoard() {
+    mockParams."board.id" = "1"
+
+    controller.showBoard()
+    assertEquals "/board/board", renderArgs.template
+    assertEquals 1, renderArgs.bean.id
   }
 
 }
