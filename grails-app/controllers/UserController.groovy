@@ -16,6 +16,7 @@
 
 import se.qbranch.qanban.User
 import se.qbranch.qanban.Role
+import se.qbranch.qanban.UserEventCreate
 
 /**
  * User controller.
@@ -24,6 +25,8 @@ class UserController {
 
     def authenticateService
     def sessionRegistry
+    def eventService
+
 
     // the delete, save and update actions only accept POST requests
     static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
@@ -138,16 +141,26 @@ class UserController {
      * Person save action.
      */
     def save = {
-        def person = new User()
-        person.properties = params
-        person.passwd = authenticateService.encodePassword(params.passwd)
-        if (person.save()) {
-            flash.message = "${person.username} is now created"
+        def user = new User()
+        user.properties = params
+
+        if( params.passwd ) user.passwd = authenticateService.encodePassword(params.passwd)
+
+        def createEvent = new UserEventCreate(user:user)
+        createEvent.populateFromUser()
+
+        eventService.persist(createEvent)
+
+        if ( !createEvent.hasErrors()) {
+
+            flash.message = "${user.username} is now created"
         }
         else {
             flash.message = null
+            user.errors = createEvent.errors
         }
-        return render(template: '/login/register' , model: [ person : person ])
+
+        return render(template: '/login/register' , model: [ person : createEvent.user ])
     }
 
     def showOnlineUsers = {

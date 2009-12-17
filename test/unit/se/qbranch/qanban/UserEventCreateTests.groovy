@@ -14,19 +14,52 @@ class UserEventCreateTests extends GrailsUnitTestCase {
   }
 
   void testCreatingAUser() {
+    assertEquals 0, User.list().size()
     def username = "opsmrkr01"
     def userRealname = "mr. Krister"
     def email = "mr.krister@mail.com"
 
-    def event = new UserEventCreate(username: username, userRealname: userRealname, email: email)
+    def event = new UserEventCreate(username: username, userRealName: userRealname, email: email, enabled: true)
 
     event.beforeInsert()
-    event.save()
-    event.process()
+    if( event.save() ){
+      event.process()
+    }
 
     def user = event.user
+    assertFalse "There should not be any errors", event.hasErrors()
     assertEquals event.username, user.username
     assertEquals event.domainId, user.domainId
-    
+    assertNotNull "The user should have a id", user.id
+    assertEquals 1, User.list().size()
+  }
+
+  void testCreatingAUserFromAUserObj(){
+    assertEquals 0, User.list().size()
+
+    def user = new User(username: "opsmrkr01",userRealName: "Mister Krister",email:"mr.kr@gmail.com",enabled: true)
+    def event = new UserEventCreate(user: user)
+    event.populateFromUser()
+
+    assertEquals user.username, event.username
+    assertEquals user.userRealName, event.userRealName
+    assertEquals user.email, event.email
+    assertEquals user.enabled, event.enabled
+
+    event.beforeInsert()
+    if( event.save() ) {
+      event.process()
+    }
+
+    event.errors.allErrors.each{
+        println it
+    }
+
+    def userAfter = event.user
+    assertFalse "There should not be any errors", event.hasErrors()
+    assertEquals event.username, userAfter.username
+    assertEquals event.domainId, userAfter.domainId
+    assertNotNull "The user should have a id", userAfter.id
+    assertEquals 1, User.list().size()
   }
 }

@@ -23,7 +23,7 @@ class UserEventCreate extends UserEvent {
     email(nullable: false, blank: false, email:true)
     enabled( nullable: true)
     emailShow( nullable: true)
-    description( nullable: true, blank: true )
+    //description( nullable: true, blank: true )
     passwd( nullable: true, blank: false )
   }
 
@@ -46,15 +46,14 @@ class UserEventCreate extends UserEvent {
     userDomainId = domainId // You create yourself
   }
 
+  def populateFromUser(){
+    this.properties = user.properties['username','userRealName','email','enabled','emailShow','description','passwd']
+  }
+
   def process(){
     user = new User()
-    user.username = username
-    user.userRealName = userRealName
-    user.email = email
-    user.domainId = domainId
-    user.enabled = enabled
-    user.emailShow = emailShow
-    user.passwd = passwd
+    user.properties = this.properties['username','userRealName','email','enabled','emailShow','description','passwd','domainId']
+    
     user.save()
   }
 

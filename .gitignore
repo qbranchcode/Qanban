@@ -11,3 +11,4 @@ grails-app/conf/SecurityConfig.groovy
 .idea
 cobertura.ser
 prodDb.*
+out/
