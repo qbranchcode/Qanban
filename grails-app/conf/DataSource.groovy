@@ -29,14 +29,8 @@ hibernate {
 environments {
     development {
         dataSource {
-            configClass=GrailsAnnotationConfiguration.class
-            pooled = false
-            driverClassName = "com.mysql.jdbc.Driver"
-            username = "qanban"
-            password = "qanban"
-            dialect = "org.hibernate.dialect.MySQL5InnoDBDialect"
-            dbCreate = "create-drop" // one of 'create', 'create-drop','update'
-            url = "jdbc:mysql://localhost/qanban"
+            dbCreate = "create-drop"
+            url = "jdbc:hsqldb:file:qanbanDevDb;shutdown=true"
         }
     }
     test {
@@ -48,7 +42,7 @@ environments {
     production {
         dataSource {
             dbCreate = "update"
-            jndiName = "java:comp/env/jdbc/qanban"
+            url = "jdbc:hsqldb:file:qanbanProdDb;shutdown=true"
         }
     }
 }

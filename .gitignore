@@ -12,3 +12,4 @@ grails-app/conf/SecurityConfig.groovy
 cobertura.ser
 prodDb.*
 out/
+qanban*Db.*
