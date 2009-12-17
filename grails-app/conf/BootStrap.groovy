@@ -29,6 +29,7 @@ class BootStrap {
     Role adminRole
     User adminUser
     User regularUser
+    User setupUser
 
     def init = { servletContext ->
         authenticationManager.sessionController = sessionController
@@ -51,8 +52,13 @@ class BootStrap {
                 userRole = addRoleIfNotExist("regular user access", "ROLE_QANBANUSER")
                 regularUser = addUserIfNotExist("testuser", "Test User", "testuser", true, "This is a regular user", "mattias.mirhagen@gmail.com", [userRole])
                 adminUser = addUserIfNotExist("testadmin", "Admin User", "testadmin", true, "This is an admin user", "patrik.gardeman@gmail.com", [adminRole, userRole])
+                setupUser = addUserIfNotExist("bootstrap", "Setup Deamon", "bs", true, "User creating the default board setup", "bootstrap@qanban.se",[adminRole, userRole])
 
                 addBoardIfNotExist()
+                adminRole.removeFromPeople(setupUser)
+                userRole.removeFromPeople(setupUser)
+                Event.findByDomainId(setupUser.domainId).delete()
+                setupUser.delete()
 
                 eventService.persist(new CardEventCreate(title: "Deploy QANBAN to Production",
                                                          caseNumber: 123,
@@ -71,9 +77,12 @@ class BootStrap {
 
                 adminRole = addRoleIfNotExist("administrator access", "ROLE_QANBANADMIN")
                 userRole = addRoleIfNotExist("regular user access", "ROLE_QANBANUSER")
-                regularUser = addUserIfNotExist("testuser", "Test User", "testuser", true, "This is a regular user", "mattias.mirhagen@gmail.com", [userRole])
-                adminUser = addUserIfNotExist("testadmin", "Admin User", "testadmin", true, "This is an admin user", "patrik.gardeman@gmail.com", [adminRole, userRole])
+                setupUser = addUserIfNotExist("bootstrap", "Setup Deamon", "bs", true, "User creating the default board setup", "bootstrap@qanban.se",[adminRole, userRole])
                 addBoardIfNotExist()
+                adminRole.removeFromPeople(setupUser)
+                userRole.removeFromPeople(setupUser)
+                Event.findByDomainId(setupUser.domainId).delete()
+                setupUser.delete()
 
         }
 
@@ -124,13 +133,13 @@ class BootStrap {
     private void addBoardIfNotExist(){
 
         if( Board.list().size() == 0 ){
-            def bec = new BoardEventCreate(user:adminUser,title:'The Board')
+            def bec = new BoardEventCreate(user:setupUser,title:'The Board')
             eventService.persist(bec)
             def board = bec.board
-            eventService.persist(new PhaseEventCreate(title: "Backlog", phasePos: 0, cardLimit: 0, board: board, user: adminUser))
-            eventService.persist(new PhaseEventCreate(title: "WIP", phasePos: 1, cardLimit: 5, user: adminUser, board: board))
-            eventService.persist(new PhaseEventCreate(title: "Done", phasePos: 2, cardLimit: 0, user: adminUser, board: board))
-            eventService.persist(new PhaseEventCreate(title: "Archive", phasePos: 3, cardLimit: 0, user: adminUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "Backlog", phasePos: 0, cardLimit: 0, board: board, user: setupUser))
+            eventService.persist(new PhaseEventCreate(title: "WIP", phasePos: 1, cardLimit: 5, user: setupUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "Done", phasePos: 2, cardLimit: 0, user: setupUser, board: board))
+            eventService.persist(new PhaseEventCreate(title: "Archive", phasePos: 3, cardLimit: 0, user: setupUser, board: board))
         }
     }
 
