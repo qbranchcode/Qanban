@@ -13,3 +13,5 @@ cobertura.ser
 prodDb.*
 out/
 qanban*Db.*
+devDB.*
+devDb.*

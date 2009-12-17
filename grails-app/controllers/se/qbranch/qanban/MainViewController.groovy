@@ -48,8 +48,13 @@ class MainViewController {
 
     // TODO: Only get the events connected to the current board
     def board = Board.get(params.'board.id')
-
-    render(template: "/event/logBody", model: [ eventInstanceList: Event.list( params ), offset : params.offset as Integer ])
+    def eventList
+    if( params.sort == "user" ) {
+      eventList = Event.executeQuery("SELECT e FROM Event e, User u WHERE e.userDomainId = u.domainId ORDER BY u.userRealName $params.order OFFSET $params.offset LIMIT $params.max")
+    } else {
+      eventList = Event.list( params )
+    }
+    render(template: "/event/logBody", model: [ eventInstanceList: eventList, offset : params.offset as Integer ])
   }
 
   def showArchive = {
