@@ -32,5 +32,11 @@ class UrlMappings {
         "/"(controller:'mainView',action:'index')
 
         "500"(view:'/error')
+
+        "/se/"(controller:'mainView',action:'index')
+
+        "/org/"(controller:'mainView',action:'index')
+
+        "/javax/"(controller:'mainView',action:'index')
     }
 }
