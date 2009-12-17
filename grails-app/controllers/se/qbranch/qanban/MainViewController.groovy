@@ -1,3 +1,19 @@
+/*
+ * Copyright 2009 Qbranch AB
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package se.qbranch.qanban
 
 import org.codehaus.groovy.grails.plugins.springsecurity.Secured
@@ -37,14 +53,11 @@ class MainViewController {
   }
 
   def showArchive = {
-    def phases = Board.get(params.board.id).phases
+    def phases = Board.get(params.'board.id').phases
     params.sort = 'lastUpdated'
     params.max = params.max ? params.max as Integer : 40
     params.order = params.order ? params.order : 'desc'
-    def cardList = Card.withCriteria{
-      eq('phase', phases[-1])
-      order(params.sort, params.order)
-    }
+    def cardList = sortArchiveCards(phases)
     render(template: "/archive/archive", model: [ archiveCardList: cardList, archiveCardTotal: phases[-1].cards.size() , board : Board.get(params.'board.id') ])
   }
 
@@ -52,11 +65,16 @@ class MainViewController {
     def phases = Board.get(params.'board.id').phases
     params.max = params.max ? params.max as Integer : 40
     params.order = params.order ? params.order : 'desc'
-    def cardList = Card.withCriteria{
+    def cardList = sortArchiveCards(phases)
+    render(template: "/archive/archiveBody", model: [ archiveCardList: cardList, offset : params.offset as Integer ])
+  }
+
+  def sortArchiveCards(phases) {
+    def list = Card.withCriteria{
       eq('phase', phases[-1])
       order(params.sort, params.order)
     }
-    render(template: "/archive/archiveBody", model: [ archiveCardList: cardList, offset : params.offset as Integer ])
+    return list
   }
 
 }
