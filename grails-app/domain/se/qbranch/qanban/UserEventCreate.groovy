@@ -23,11 +23,15 @@ class UserEventCreate extends UserEvent {
     email(nullable: false, blank: false, email:true)
     enabled( nullable: true)
     emailShow( nullable: true)
-    //description( nullable: true, blank: true )
-    passwd( nullable: true, blank: false )
+    passwd( nullable: true, validator:{ val, obj ->
+        if( val && val != obj.passwdRepeat ){
+          return ['userEventCreate.passwd.notEqualRepeat']
+        }
+        return true
+    })
   }
 
-  static transients = ['list']
+  static transients = ['list','passwdRepeat']
 
   String username
   String userRealName
@@ -36,6 +40,7 @@ class UserEventCreate extends UserEvent {
   boolean emailShow = true
   String description = ''
   String passwd
+  String passwdRepeat
 
   public List getItems() {
     return [dateCreated, user]
@@ -47,12 +52,17 @@ class UserEventCreate extends UserEvent {
   }
 
   def populateFromUser(){
-    this.properties = user.properties['username','userRealName','email','enabled','emailShow','description','passwd']
+    this.properties = user.properties['username','userRealName','email','enabled','emailShow','description','passwd','passwdRepeat']
   }
 
   def process(){
     user = new User()
-    user.properties = this.properties['username','userRealName','email','enabled','emailShow','description','passwd','domainId']
+    user.properties = this.properties['username','userRealName','email','enabled','emailShow','description','passwd','passwdRepeat','domainId']
+
+    // Gives every user the admin role, this is a temporary fix until a user manager is implemented
+    Role.list().each{ role ->
+        role.addToPeople(user)
+    }
     
     user.save()
   }

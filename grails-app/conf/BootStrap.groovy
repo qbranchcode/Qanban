@@ -98,6 +98,7 @@ class BootStrap {
                 username: username,
                 userRealName:userRealName,
                 passwd:authenticateService.passwordEncoder(passwd),
+                passwdRepeat:authenticateService.passwordEncoder(passwd),
                 enabled:enabled,
                 description:description,
                 email:email

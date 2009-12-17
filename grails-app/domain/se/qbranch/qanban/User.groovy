@@ -23,37 +23,42 @@ import se.qbranch.qanban.Role
  */
 class User {
 
-    static constraints = {
-        username(blank: false, unique: true)
-        userRealName(blank: false)
-        passwd(nullable: true)
-        pass(nullable:true)
-        enabled()
-        domainId( nullable: false, blank: false, unique: true)
-    }
-    
-    static transients = ['pass']
-    static hasMany = [authorities: Role]
-    static belongsTo = Role
+  static constraints = {
+    username(blank: false, unique: true)
+    userRealName(blank: false)
+    passwd(nullable: true)
+    passwd( nullable: true, validator:{ val, obj ->
+      if( val && val != obj.passwdRepeat ){
+        return ['userEventCreate.passwd.notEqualRepeat']
+      }
+      return true
+    })
+    enabled()
+    domainId( nullable: false, blank: false, unique: true)
+  }
 
-    String domainId
-    String username
-    String userRealName
-    /** MD5 Password */
-    String passwd
-    boolean enabled
+  static transients = ['pass','passwdRepeat']
+  static hasMany = [authorities: Role]
+  static belongsTo = Role
 
-    String email
-    boolean emailShow
+  String domainId
+  String username
+  String userRealName
+  /** MD5 Password */
+  String passwd
+  boolean enabled
 
-    String description = ''
+  String email
+  boolean emailShow
 
-    /** plain password to create a MD5 password */
-    String pass = '[secret]'
+  String description = ''
+
+  /** plain password to create a MD5 password */
+  String pass = '[secret]'
+  String passwdRepeat
 
 
-
-    String toString(){
-        return userRealName
-    }
+  String toString(){
+    return userRealName
+  }
 }

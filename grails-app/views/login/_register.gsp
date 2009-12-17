@@ -29,8 +29,19 @@
              id="it.email" value="${person?.email?.encodeAsHTML()}"/>
     </li>
     <li>
+      <label for="passwd"><g:message code="loginPage.addUser.form.label.password1"/></label>
+      <input name="passwd" type="password" class="property ${hasErrors(bean:person, field:'passwd','errors')}"
+             id="it.passwd" value=""/>
+    </li>
+    <li>
+      <label for="passwd"><g:message code="loginPage.addUser.form.label.password2"/></label>
+      <input name="passwdRepeat" type="password" class="property ${hasErrors(bean:person, field:'passwd','errors')}"
+             id="it.passwd2" value=""/>
+    </li>
+    <li>
       <input type="hidden" name="enabled" value="true"/>
       <input type="submit" value="<g:message code="loginPage.addUser.form.button.submit"/>"/>
     </li>
+
   </ul>
 </g:formRemote>

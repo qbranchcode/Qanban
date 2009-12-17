@@ -16,11 +16,12 @@
 
 import grails.test.*
 import se.qbranch.qanban.*
+import org.grails.plugins.springsecurity.service.AuthenticateService
 
 class UserControllerTests extends ControllerUnitTestCase {
 
   def eventServiceMock
-  def securityServiceMock
+  def authenticateServiceMock
 
   def user1
   def user2
@@ -128,8 +129,13 @@ class UserControllerTests extends ControllerUnitTestCase {
     }
     controller.eventService = eventServiceMock.createMock()
 
+    authenticateServiceMock = mockFor(AuthenticateService)
+    authenticateServiceMock.demand.static.encodePassword(1..2) { pass -> pass }
+    controller.authenticateService = authenticateServiceMock.createMock()
+
     mockDomain(UserEventCreate)
-    
+    mockDomain(Role)
+
   }
 
   protected void tearDown() {
@@ -137,7 +143,7 @@ class UserControllerTests extends ControllerUnitTestCase {
   }
 
 
-  void testCreate() {
+  void testCreateWithoutPassword() {
     def numberOfPreviusUsers = User.list().size()
     mockParams.username = "opsmrkr"
     mockParams.userRealName = "Mister Krister"
@@ -151,6 +157,44 @@ class UserControllerTests extends ControllerUnitTestCase {
 
   }
 
+  void testCreateWithPassword(){
+    def numberOfPreviusUsers = User.list().size()
+    mockParams.username = "opsmrkr"
+    mockParams.userRealName = "Mister Krister"
+    mockParams.email = "mister.krister@gmail.com"
+    mockParams.enabled = "true"
+    mockParams.passwd = "p4ssW0rd"
+    mockParams.passwdRepeat = "p4ssW0rd"
+    controller.save()
 
+    assertEquals numberOfPreviusUsers+1, User.list().size()
+    assertNotNull "The user should have gotten an id from the database", renderArgs.model.person.id
+  }
 
+  void testCreateWithInconsistentPassword(){
+    def numberOfPreviusUsers = User.list().size()
+    mockParams.username = "opsmrkr"
+    mockParams.userRealName = "Mister Krister"
+    mockParams.email = "mister.krister@gmail.com"
+    mockParams.enabled = "true"
+    mockParams.passwd = "p4ssW0rd"
+    mockParams.passwdRepeat = "passW0rd"
+    controller.save()
+
+    assertEquals numberOfPreviusUsers, User.list().size()
+    assertNull "The user should have gotten an id from the database", renderArgs.model.person.id
+  }
+
+  void testCreateWithOnlyOnePasswordFieldFilled(){
+    def numberOfPreviusUsers = User.list().size()
+    mockParams.username = "opsmrkr"
+    mockParams.userRealName = "Mister Krister"
+    mockParams.email = "mister.krister@gmail.com"
+    mockParams.enabled = "true"
+    mockParams.passwd = "p4ssW0rd"
+    controller.save()
+
+    assertEquals numberOfPreviusUsers, User.list().size()
+    assertNull "The user should have gotten an id from the database", renderArgs.model.person.id
+  }
 }
