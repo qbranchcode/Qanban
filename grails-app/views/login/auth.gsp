@@ -23,8 +23,10 @@
       });
 
       jQuery.each(jQuery.browser, function(i, val) {
-        if( i=="msie" && val == true ){
-          // TODO: Warn for !msie-compability
+        if( i=="msie" && val == true){
+          var $warn = $("<div id='msiewarning'><span class='red'>Sorry, Qanban ${version} doesn't support Internet Explorer.</span><br/> Qanban is currently being developed with focus on compatibility with Firefox, Safari and Chrome. Log in at your own risk :)</div>");
+          $('#login').prepend($warn);
+
         }
       });
 
