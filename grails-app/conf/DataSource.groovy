@@ -32,16 +32,8 @@ hibernate {
 environments {
     development {
         dataSource {
-          try {
-            InitialContext ctx = new InitialContext()
-            javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup( "java:comp/env/jdbc/qanban" )
-
-            dbCreate = "update"
-            jndiName = "java:comp/env/jdbc/qanban"
-          } catch(NameNotFoundException e) {
-            dbCreate = "create-drop"
-            url = "jdbc:hsqldb:file:qanbanDevDb;shutdown=true"
-          }
+          dbCreate = "create-drop"
+          url = "jdbc:hsqldb:file:qanbanDevDb;shutdown=true"
         }
     }
     test {
@@ -52,19 +44,8 @@ environments {
     }
     production {
         dataSource {
-          //IF (JNDI) USE JNDI
-          //ELSE
-          //jndiName = "java:comp/env/jdbc/qanban
-          try {
-              InitialContext ctx = new InitialContext()
-              javax.sql.DataSource ds = (javax.sql.DataSource) ctx.lookup( "java:comp/env/jdbc/qanban" )
-
-              dbCreate = "update"
-              jndiName = "java:comp/env/jdbc/qanban"
-            } catch(NameNotFoundException e) {
-              dbCreate = "update"
-              url = "jdbc:hsqldb:file:qanbanProdDb;shutdown=true"
-            }
-          }
+          dbCreate = "update"
+          url = "jdbc:hsqldb:file:qanbanProdDb;shutdown=true"
+        }
     }
 }
