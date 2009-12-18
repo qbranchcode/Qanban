@@ -158,11 +158,6 @@ class UserController {
     else {
       flash.message = null
       createEvent.user.errors = createEvent.errors
-      createEvent.properties['passwd','passwdRepeat'].each{ println it }
-      println '----'
-      createEvent.errors.allErrors.each { println it }
-      println '----'
-      createEvent.user.errors.allErrors.each{ println it } 
     }
 
     return render(template: '/login/register' , model: [ person : createEvent.user ])
