@@ -26,12 +26,10 @@ class User {
   static constraints = {
     username(blank: false, unique: true)
     userRealName(blank: false)
-    passwd(nullable: true)
-    passwd( nullable: true, validator:{ val, obj ->
-      if( val && val != obj.passwdRepeat ){
+    passwd( nullable: false, blank: false, validator:{ val, obj ->
+      if( val != obj.passwdRepeat ){
         return ['userEventCreate.passwd.notEqualRepeat']
       }
-      return true
     })
     enabled()
     domainId( nullable: false, blank: false, unique: true)

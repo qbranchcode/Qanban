@@ -106,8 +106,8 @@ class BootStrap {
             def createEvent = new UserEventCreate(
                 username: username,
                 userRealName:userRealName,
-                passwd:authenticateService.passwordEncoder(passwd),
-                passwdRepeat:authenticateService.passwordEncoder(passwd),
+                passwd: passwd,
+                passwdRepeat: passwd,
                 enabled:enabled,
                 description:description,
                 email:email

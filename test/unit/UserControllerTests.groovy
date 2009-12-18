@@ -129,11 +129,14 @@ class UserControllerTests extends ControllerUnitTestCase {
     }
     controller.eventService = eventServiceMock.createMock()
 
-    authenticateServiceMock = mockFor(AuthenticateService)
-    authenticateServiceMock.demand.static.encodePassword(1..2) { pass -> pass }
-    controller.authenticateService = authenticateServiceMock.createMock()
+
 
     mockDomain(UserEventCreate)
+    UserEventCreate.metaClass.beforeInsert = {
+      generateDomainId(username,userRealName,email)
+      userDomainId = domainId // You create yourself
+    }
+
     mockDomain(Role)
 
   }
@@ -152,8 +155,9 @@ class UserControllerTests extends ControllerUnitTestCase {
 
     controller.save()
 
-    assertEquals numberOfPreviusUsers+1, User.list().size()
-    assertNotNull "The user should have gotten an id from the database", renderArgs.model.person.id
+    assertEquals numberOfPreviusUsers, User.list().size()
+    assertEquals 1, renderArgs.model.person.errors.allErrors.size()
+    assertNull "The user shouldnt have gotten an id from the database", renderArgs.model.person.id
 
   }
 

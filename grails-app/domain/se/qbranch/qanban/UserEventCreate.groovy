@@ -17,17 +17,18 @@ package se.qbranch.qanban
 
 class UserEventCreate extends UserEvent {
 
+  def authenticateService
+
   static constraints = {
     username(blank: false, unique: true)
     userRealName(blank: false)
     email(nullable: false, blank: false, email:true)
     enabled( nullable: true)
     emailShow( nullable: true)
-    passwd( nullable: true, validator:{ val, obj ->
-        if( val && val != obj.passwdRepeat ){
+    passwd( nullable: false, blank: false, validator:{ val, obj ->
+        if( val != obj.passwdRepeat ){
           return ['userEventCreate.passwd.notEqualRepeat']
         }
-        return true
     })
   }
 
@@ -48,6 +49,8 @@ class UserEventCreate extends UserEvent {
 
   def beforeInsert = {
     generateDomainId(username,userRealName,email)
+    passwd = authenticateService.encodePassword(passwd)
+    passwdRepeat = authenticateService.encodePassword(passwdRepeat)
     userDomainId = domainId // You create yourself
   }
 
@@ -63,6 +66,7 @@ class UserEventCreate extends UserEvent {
     Role.list().each{ role ->
         role.addToPeople(user)
     }
+
     
     user.save()
   }

@@ -144,11 +144,6 @@ class UserController {
     def user = new User()
     def createEvent
 
-    if( params.passwd || params.passwdRepeat){
-      params.passwd = authenticateService.encodePassword(params.passwd)
-      params.passwdRepeat = authenticateService.encodePassword(params.passwdRepeat)
-    }
-
     user.properties = params
     createEvent = new UserEventCreate(user:user)
     createEvent.populateFromUser()
@@ -162,8 +157,12 @@ class UserController {
     }
     else {
       flash.message = null
-      user.errors = createEvent.errors
+      createEvent.user.errors = createEvent.errors
+      createEvent.properties['passwd','passwdRepeat'].each{ println it }
+      println '----'
       createEvent.errors.allErrors.each { println it }
+      println '----'
+      createEvent.user.errors.allErrors.each{ println it } 
     }
 
     return render(template: '/login/register' , model: [ person : createEvent.user ])

@@ -71,7 +71,7 @@ class Event implements Comparable {
         if(o instanceof Event) {
             Event event = (Event) o
             if(this.id == event.id)
-            return true
+              return true
         }
         return false
     }
