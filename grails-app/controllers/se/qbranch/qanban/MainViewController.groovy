@@ -50,8 +50,18 @@ class MainViewController {
     def board = Board.get(params.'board.id')
     def eventList
     if( params.sort == "user" ) {
+
       def orderMap = [ asc : "asc", desc: "desc" ]
+      def noUserEvents = Event.executeQuery("SELECT e FROM Event e WHERE e.userDomainId NOT IN ( SELECT u.domainId FROM User u )")
+
       eventList = Event.executeQuery("SELECT e FROM Event e, User u WHERE e.userDomainId = u.domainId ORDER BY u.userRealName ${orderMap[params.order]} OFFSET $params.offset LIMIT $params.max")
+
+      if( orderMap[params.order] == "asc" ){
+        eventList = eventList + noUserEvents
+      }else{
+        eventList = noUserEvents + eventList
+      }
+
     } else {
       eventList = Event.list( params )
     }
