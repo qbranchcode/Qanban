@@ -121,9 +121,9 @@
         </h2>
         <p>
           <g:message code="aboutPage.aboutQanban.pt1"/>
-          <a href="http://github.com/qbranchcode/Qanban" target="_blank"><g:message code="aboutPage.aboutQanban.github"/></a>
+          <a href="http://github.com/qbranchcode/Qanban" target="_blank"><g:message code="aboutPage.aboutQanban.github"/></a>.
           <g:message code="aboutPage.aboutQanban.pt2"/>
-          <a href="http://code.qbranch.se/post/listTag?selectedTag=qanban" target="_blank"><g:message code="aboutPage.aboutQanban.code"/></a>
+          <a href="http://code.qbranch.se/post/listTag?selectedTag=qanban" target="_blank"><g:message code="aboutPage.aboutQanban.code"/></a>.
         </p>
         <br/>
         <p>
