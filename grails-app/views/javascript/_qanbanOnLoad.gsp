@@ -188,6 +188,27 @@
 
     });
 
+    $('#logout .avatar').click(function(event){
+
+        var loadUser = function(tries) {
+          $editUserDialog.qLoad({
+              url : '${createLink(controller:'user',action:'show')}',
+              data : {'id': '${loggedInUser.id}' },
+              successCallback : function(){
+                  $editUserDialog.dialog('open');
+              },
+              completeCallback : function(){
+                                 },
+              tries : tries,
+              caller : loadUser
+          });
+        }
+
+        loadUser();
+
+        event.preventDefault();
+    });
+
     $('.phase').each(function(){ enableSortableOnPhase($(this)); });
     reconnectPhases();
     rescanBoardButtons();

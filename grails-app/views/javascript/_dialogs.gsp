@@ -54,3 +54,11 @@ $editCardDialog.qDialog({
 });
 
 
+
+$editUserDialog = $('<div id="editUserDialog"></div>');
+
+$editUserDialog.qDialog({
+    title : "<g:message code="mainView.jQuery.dialog.editUserForm.title"/>"
+});
+
+

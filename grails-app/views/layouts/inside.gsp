@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}" />
     <link rel="stylesheet" href="${resource(dir:'css',file:'cardDialog.css')}" />
     <link rel="stylesheet" href="${resource(dir:'css',file:'phaseDialog.css')}" />
+    <link rel="stylesheet" href="${resource(dir:'css',file:'userDialog.css')}" />
     <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
   <g:layoutHead />
   <g:javascript library="application" />
