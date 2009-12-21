@@ -45,17 +45,19 @@ class MainViewController {
   def showLogBody = {
     params.max = params.max ? params.max as Integer : 40
     params.order = params.order ? params.order : 'desc'
-
+    params.offset = params.offset ? params.offset : 0
+    
     // TODO: Only get the events connected to the current board
     def board = Board.get(params.'board.id')
     def eventList
     if( params.sort == "user" ) {
 
+      // Order is not supported as a parameter in executeQuery(...)
       def orderMap = [ asc : "asc", desc: "desc" ]
       def noUserEvents = Event.executeQuery("SELECT e FROM Event e WHERE e.userDomainId NOT IN ( SELECT u.domainId FROM User u )")
 
-      eventList = Event.executeQuery("SELECT e FROM Event e, User u WHERE e.userDomainId = u.domainId ORDER BY u.userRealName ${orderMap[params.order]} OFFSET $params.offset LIMIT $params.max")
-
+      eventList = Event.executeQuery("SELECT e FROM Event e, User u WHERE e.userDomainId = u.domainId ORDER BY u.userRealName ${orderMap[params.order]}",[max:params.max,offset:params.offset] )
+                   
       if( orderMap[params.order] == "asc" ){
         eventList = eventList + noUserEvents
       }else{
