@@ -32,16 +32,33 @@ class UserController {
   // the delete, save and update actions only accept POST requests
   static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
 
-  def index = {
-    redirect action: list, params: params
+
+  // Create
+
+  def save = {
+    def user = new User()
+    def createEvent
+
+    user.properties = params
+    createEvent = new UserEventCreate(user:user)
+    createEvent.populateFromUser()
+
+
+    eventService.persist(createEvent)
+
+    if ( !createEvent.hasErrors()) {
+
+      flash.message = "${user.username} is now created"
+    }
+    else {
+      flash.message = null
+      createEvent.user.errors = createEvent.errors
+    }
+
+    return render(template: '/login/register' , model: [ person : createEvent.user ])
   }
 
-  def list = {
-    if (!params.max) {
-      params.max = 10
-    }
-    [personList: User.list(params)]
-  }
+  // Retrieve
 
   def show = {
     def person = User.get(params.id)
@@ -57,8 +74,29 @@ class UserController {
     roleNames.sort { n1, n2 ->
       n1 <=> n2
     }
-    [person: person, roleNames: roleNames]
+    render(template:'userForm', model: [person: person, roleNames: roleNames])
   }
+
+  def list = {
+    if (!params.max) {
+      params.max = 10
+    }
+    [personList: User.list(params)]
+  }
+
+  def showOnlineUsers = {
+    def users = sessionRegistry.getAllPrincipals()
+    def onlineUsers = []
+
+    for(user in users) {
+      def userObject = User.findByUsername(user)
+      onlineUsers.add(userObject)
+    }
+
+    render(template:'onlineUsers',model:[onlineUsers:onlineUsers])
+  }
+
+
 
   /**
    * Person delete action. Before removing an existing person,
@@ -136,44 +174,6 @@ class UserController {
 
   def create = {
     [person: new User(params), authorityList: Role.list()]
-  }
-
-  /**
-   * Person save action.
-   */
-  def save = {
-    def user = new User()
-    def createEvent
-
-    user.properties = params
-    createEvent = new UserEventCreate(user:user)
-    createEvent.populateFromUser()
-
-
-    eventService.persist(createEvent)
-
-    if ( !createEvent.hasErrors()) {
-
-      flash.message = "${user.username} is now created"
-    }
-    else {
-      flash.message = null
-      createEvent.user.errors = createEvent.errors
-    }
-
-    return render(template: '/login/register' , model: [ person : createEvent.user ])
-  }
-
-  def showOnlineUsers = {
-    def users = sessionRegistry.getAllPrincipals()
-    def onlineUsers = []
-
-    for(user in users) {
-      def userObject = User.findByUsername(user)
-      onlineUsers.add(userObject)
-    }
-
-    render(template:'onlineUsers',model:[onlineUsers:onlineUsers])
   }
 
   private void addRoles(person) {
