@@ -163,14 +163,15 @@
               $('.tab').removeClass('active');
               $tab.addClass('active');
               $wrapper.fadeIn('fast',function(){
+                if( pollingInterval > -1 ){
+                        clearInterval(pollingInterval);
+                }
                 if( data.indexOf('<div id="log">') != -1 ) {
                   enableLogView(url);
-                } if ( data.indexOf('<div id="archive">') != -1 ) {
+                } else if ( data.indexOf('<div id="archive">') != -1 ) {
                   enableArchiveView(url);                  
                 } else {
-                  if( pollingInterval > -1 ){
-                          window.clearInterval(pollingInterval);
-                  }
+                  reloader();
                   $('.phase').each(function(){ enableSortableOnPhase($(this)); });
                   rescanBoardButtons();
                   reconnectPhases();
@@ -194,7 +195,7 @@
 
     // The time out value is set to be 18,000,000 milli-seconds (or 5 minutes)
     function reloader(){
-      setTimeout(function(){updateBoard();reloader();},18000000);
+      pollingInterval = setInterval(function(){updateBoard();},18000000);
     }
 
     reloader();

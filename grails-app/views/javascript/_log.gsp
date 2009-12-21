@@ -1,10 +1,9 @@
 <%-- Loaded through _qanbanFunctions.gsp --%>
 
 var originUrl = '${createLink(controller:'mainView',action:'showLogBody',params:['sort':'dateCreated'])}';
-var originOrder = 'asc';
+var originOrder = 'desc';
 
 var maxElements;
-var pollingInterval;
 
 function isScrollAtBottom(){
 
@@ -27,7 +26,6 @@ function getOffset() {
 }
 
 function fetchMoreLogEvents() {
-
   if(isScrollAtBottom() && isThereMoreEvents()) {
     var loadFetcher = function(n) {
       $('tbody').qLoad({
@@ -44,7 +42,7 @@ function fetchMoreLogEvents() {
 
 
 function startTablePolling(){
-  pollingInterval = window.setInterval("fetchMoreLogEvents()", 2000);
+  pollingInterval = setInterval("fetchMoreLogEvents()", 2000);
 }
 
 var enableLogView = function (){

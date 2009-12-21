@@ -78,7 +78,9 @@ class MainViewController {
   }
 
   def showArchiveBody = {
-    def phases = Board.get(params.'board.id').phases
+    def board = Board.get(params.'board.id')
+    if (!board) board = Board.get(params.'boardId')
+    def phases = board.phases
     params.max = params.max ? params.max as Integer : 40
     params.order = params.order ? params.order : 'desc'
     def cardList = sortArchiveCards(phases)
@@ -86,9 +88,12 @@ class MainViewController {
   }
 
   def sortArchiveCards(phases) {
+    def offset = params.offset ? params.offset?.toInteger() : 0
     def list = Card.withCriteria{
       eq('phase', phases[-1])
+      firstResult(offset)
       order(params.sort, params.order)
+      maxResults(params.max)
     }
     return list
   }

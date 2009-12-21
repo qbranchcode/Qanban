@@ -1,12 +1,12 @@
 <%-- Loaded through _qanbanFunctions.gsp --%>
 
-var originUrl = '${createLink(controller:'mainView',action:'showArchiveBody',params:['sort':'lastUpdated'])}';
-var originOrder = 'asc';
+var originUrlArchive = '${createLink(controller:'mainView',action:'showArchiveBody',params:['sort':'lastUpdated'])}';
+var originOrderArchive = 'desc';
 
-var maxElements;
-var pollingInterval;
+var boardId;
+var maxArchiveElements;
 
-function isScrollAtBottom(){
+function isArchiveScrollAtBottom(){
 
    var $scrollContent = $('.scrollContent');
    var $children = $('.scrollContent').children();
@@ -17,23 +17,22 @@ function isScrollAtBottom(){
    return false;
 }
 
-function isThereMoreCards(){
-    if($('.scrollContent').children().size() < maxElements) {return true;}
+function isThereMoreArchiveCards(){
+    if($('.scrollContent').children().size() < maxArchiveElements) {return true;}
     return false;
 }
 
-function getOffset() {
+function getArchiveOffset() {
   return parseInt($('.archive:last-child').attr('id').split('_')[1])+1;
 }
 
 function fetchMoreArchiveCards() {
-
-  if(isScrollAtBottom() && isThereMoreCards()) {
+  if(isArchiveScrollAtBottom() && isThereMoreArchiveCards()) {
     var loadFetcher = function(n) {
       $('tbody').qLoad({
          append: true,
-         url: originUrl,
-         data: {order: originOrder , offset : getOffset()},
+         url: originUrlArchive,
+         data: {order: originOrderArchive , offset : getArchiveOffset() , 'boardId' : boardId},
          tries: n,
          caller: loadFetcher
         });
@@ -43,11 +42,11 @@ function fetchMoreArchiveCards() {
 }
 
 
-function startTablePolling(){
+function startArchiveTablePolling(){
   pollingInterval = window.setInterval("fetchMoreArchiveCards()", 2000);
 }
 
-function enableShowCardClick() {
+function enableShowArchiveCardClick() {
   $('.showCardLink').click(function(event){
     showCard( $(this).attr('id').split('_')[1] , false );
   });
@@ -55,9 +54,9 @@ function enableShowCardClick() {
 
 var enableArchiveView = function (){
 
-  enableShowCardClick();
+  enableShowArchiveCardClick();
   
-  startTablePolling();
+  startArchiveTablePolling();
 
   $('.ajaxSortableColumn').click(function(event){
 
@@ -83,12 +82,12 @@ var enableArchiveView = function (){
         caller: loadSortableColumn,
         data: {order : order},
         successCallback: function() {
-                      originUrl = url;
-                      originOrder = order;
+                      originUrlArchive = url;
+                      originOrderArchive = order;
                       $currentColumn.removeClass(orderClass);
                       $currentColumn.addClass( order == 'asc' ? 'order_desc' : 'order_asc' );
         },
-        completeCallback: function() { enableShowCardClick(); }
+        completeCallback: function() { enableShowArchiveCardClick(); }
       });
     };
     loadSortableColumn();

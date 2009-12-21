@@ -5,9 +5,10 @@
   
   function updateBoard(){
 
+    //TODO: Remove hardcoded board.id when refactoring the JS
     var loadUpdateBoard = function(tries) {
       $('#boardWrapper').qLoad({
-                url : '${createLink(controller:'mainView',action:'showBoard')}',
+                url : '${createLink(controller:'mainView',action:'showBoard',params:['board.id':'1'])}',
                 successCallback : function(){
                                     rescanBoardButtons();
                                   },

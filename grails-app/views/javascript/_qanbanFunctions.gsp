@@ -11,6 +11,8 @@
    <g:render template="/javascript/board"/>
 
 
+   var pollingInterval;
+
    function toggleSpinner() {
       if( $('#spinner').size() == 0 ) {
         $('<div id="spinner"><img src="<g:resource dir='images' file='spinner.gif'/>"/></div>').appendTo($('body'));

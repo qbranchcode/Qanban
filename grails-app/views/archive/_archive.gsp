@@ -18,5 +18,6 @@
     </div>
 
 <script type="text/javascript">
-  maxElements = ${archiveCardTotal};
+  boardId = ${board.id};
+  maxArchiveElements = ${archiveCardTotal};
 </script>
