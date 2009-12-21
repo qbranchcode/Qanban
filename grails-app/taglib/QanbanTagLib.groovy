@@ -130,6 +130,7 @@ class QanbanTagLib {
         def event = attrs.event
         def type = event.class.simpleName
         def items = event.items
+        if( event instanceof CardEventSetAssignee && items[2] == null) items[2] = g.message(code:"eventSummary.noAssignee")
         out << g.message(code:"eventSummary.$type", args:items)
     }
 
