@@ -14,8 +14,9 @@
  * limitations under the License.
  */
 
+package se.qbranch.qanban
+
 import grails.test.*
-import se.qbranch.qanban.*
 import org.grails.plugins.springsecurity.service.AuthenticateService
 
 class UserControllerTests extends ControllerUnitTestCase {

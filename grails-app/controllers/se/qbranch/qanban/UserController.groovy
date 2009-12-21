@@ -1,3 +1,4 @@
+package se.qbranch.qanban
 /*
  * Copyright 2009 Qbranch AB
  *
