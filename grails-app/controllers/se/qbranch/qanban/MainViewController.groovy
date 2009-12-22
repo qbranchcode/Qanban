@@ -44,7 +44,7 @@ class MainViewController {
 
   def showLogBody = {
     params.max = params.max ? params.max as Integer : 40
-    params.order = params.order ? params.order : 'desc'
+    params.order = params.order ? params.order.toLowerCase() : 'desc'
     params.offset = params.offset ? params.offset : 0
     
     // TODO: Only get the events connected to the current board
