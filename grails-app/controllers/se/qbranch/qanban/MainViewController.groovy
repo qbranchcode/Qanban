@@ -60,10 +60,8 @@ class MainViewController {
 
       
       if( orderMap[params.order] == "asc" && userSortIsAtLastLoad(params, eventList) ) {
-        println 'last asc'
         eventList = eventList + noUserEvents
       }else if( orderMap[params.order] == "desc" && params.offset == 0){
-        println 'desc'
         eventList = noUserEvents + eventList
       }
 
