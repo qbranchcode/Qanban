@@ -56,11 +56,14 @@ class MainViewController {
       def orderMap = [ asc : "asc", desc: "desc" ]
       def noUserEvents = Event.executeQuery("SELECT e FROM Event e WHERE e.userDomainId NOT IN ( SELECT u.domainId FROM User u )")
 
-      eventList = Event.executeQuery("SELECT e FROM Event e, User u WHERE e.userDomainId = u.domainId ORDER BY u.userRealName ${orderMap[params.order]}",[max:params.max,offset:params.offset] )
-                   
-      if( orderMap[params.order] == "asc" ){
+      eventList = Event.executeQuery("SELECT e FROM Event e, User u WHERE e.userDomainId = u.domainId ORDER BY u.userRealName ${orderMap[params.order]}",[max:params.max as Integer,offset:params.offset as Integer] )
+
+      
+      if( orderMap[params.order] == "asc" && userSortIsAtLastLoad(params, eventList) ) {
+        println 'last asc'
         eventList = eventList + noUserEvents
-      }else{
+      }else if( orderMap[params.order] == "desc" && params.offset == 0){
+        println 'desc'
         eventList = noUserEvents + eventList
       }
 
@@ -68,6 +71,12 @@ class MainViewController {
       eventList = Event.list( params )
     }
     render(template: "/event/logBody", model: [ eventInstanceList: eventList, offset : params.offset as Integer ])
+  }
+
+  private boolean userSortIsAtLastLoad(params, eventList){
+      def loadedEvents = params.offset + eventList.size()
+      def maxLoad = params.offset + params.max
+      return loadedEvents < maxLoad && loadedEvents > ( maxLoad - params.max )
   }
 
   def showArchive = {
