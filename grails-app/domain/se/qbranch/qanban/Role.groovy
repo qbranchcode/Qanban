@@ -23,16 +23,19 @@ import se.qbranch.qanban.User
  */
 class Role {
 
-    	static constraints = {
-		authority(blank: false, unique: true)
-		description()
-	}
-        
-	static hasMany = [people: User]
+  static constraints = {
+    authority(blank: false, unique: true)
+    description()
+  }
 
-	String description
-	/** ROLE String */
-	String authority
+  static hasMany = [people: User]
 
+  String description
+  /** ROLE String */
+  String authority
+
+  public boolean equals(obj){
+    return ( obj instanceof Role && obj.id == this.id )
+  }
 
 }
