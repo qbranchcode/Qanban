@@ -1,3 +1,12 @@
+
+#userForm  .header {
+ height: 44px;
+ margin: 0 2px 4px 2px;
+ padding: 2px;
+ border-bottom: 1px solid #ddd;
+ position: relative;
+}
+
 #userForm .header .avatar {
  float: left;
  padding:2px;
@@ -7,4 +16,42 @@
  z-index: 3000;
  min-height: 38px;
  min-width: 38px;
+ position: relative;
 }
+
+#userForm .header input{
+ position: relative;
+ font-size: 20px;
+ font-weight: bold;
+ width: 321px;
+ margin-left: 3px;
+ text-indent: 4px;
+}
+
+#userForm .header label{
+    padding-left: 4px;
+}
+
+#userForm label[for=email]{
+    display: inline-block;
+    width: 44px;
+    padding-left: 4px;
+}
+#userForm input[name=email]{
+    width: 321px;
+}
+
+#userForm label[for=description]{
+    display: inline-block;
+    margin-top: 4px;
+    padding-left: 4px;   
+}
+
+#userForm textarea[name=description]{
+    width: 368px;
+    margin-left: 4px;
+    display: block;
+    max-width: 368px;
+    height: 152px;
+}
+
