@@ -43,10 +43,16 @@
     #logout img{
       float: right;
       margin-left: 7px;
-      -moz-box-shadow: 0px 0px 6px #B0D0FF !important;
-      -webkit-box-shadow: 0px 0px 6px #B0D0FF !important;
-      border: 1px solid #B0D0FF !important;
+      -moz-box-shadow: 0px 0px 6px #B0D0FF;
+      -webkit-box-shadow: 0px 0px 6px #B0D0FF;
+      border: 1px solid #B0D0FF ;
       cursor: pointer;      
+    }
+
+    #logout img:hover{
+      -moz-box-shadow: 0px 0px 8px #fd0000 !important;
+      -webkit-box-shadow: 0px 0px 8px #fd0000 !important;
+      border: 1px solid #fd0000 ;
     }
 
     #logout .name{

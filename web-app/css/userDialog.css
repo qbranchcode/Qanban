@@ -1,7 +1,7 @@
 
 #userForm  .header {
- height: 44px;
- margin: 0 2px 4px 2px;
+ height: 46px;
+ margin: 0 2px 4px;
  padding: 2px;
  border-bottom: 1px solid #ddd;
  position: relative;
@@ -12,46 +12,96 @@
  padding:2px;
  background-color: #fdfdfd;
  border: 1px solid #000;
- position: absolute;
- z-index: 3000;
  min-height: 38px;
  min-width: 38px;
  position: relative;
+ margin: 2px 0 0 31px;
 }
 
 #userForm .header input{
  position: relative;
  font-size: 20px;
  font-weight: bold;
- width: 321px;
- margin-left: 3px;
+ margin: 0 0 0 2px !important;
  text-indent: 4px;
+ width: 291px;
 }
 
 #userForm .header label{
-    padding-left: 4px;
+    margin-bottom: 1px;
+    padding-left: 3px;
+    width: auto !important;
 }
 
-#userForm label[for=email]{
-    display: inline-block;
-    width: 44px;
+#userForm label, #userForm .label{
     padding-left: 4px;
+    display: inline-block;
+    width: 74px;
+    text-align: right;
+    margin-top: 2px;
 }
-#userForm input[name=email]{
-    width: 321px;
+
+#userForm .label{
+    vertical-align: top;
+}
+
+#userForm .roles{
+    border-top: 1px solid #e3e3e3;
+    margin-top: 2px;
+    padding-top: 2px;
+
+}
+#userForm .roles ul{
+    margin: 0 25px;
+    padding-top: 2px;
+    list-style-type: katakana;
+    display: inline-block;
+}
+
+#userForm input{
+     margin-top: 2px;
+     width: 291px;
+}
+
+#userForm .pass{
+    text-align: right;
+    border-top: 1px solid #e3e3e3;
+    padding: 2px 4px 0 0;
+    margin-top: 2px;
+
+}
+
+#userForm .pass h4{
+    text-align: left;
+    font-weight:normal;
+}
+
+#userForm .pass input{
+    width: 150px;
+}
+
+#userForm .pass label{
+    width: 150px;
 }
 
 #userForm label[for=description]{
-    display: inline-block;
-    margin-top: 4px;
-    padding-left: 4px;   
+    vertical-align: top;
+
 }
 
 #userForm textarea[name=description]{
-    width: 368px;
-    margin-left: 4px;
-    display: block;
-    max-width: 368px;
+    display: inline-block;
+    width: 301px;
+    max-width: 301px;
     height: 152px;
+    padding: 2px;
+    margin-top: 2px;
+
 }
+
+/* Safari and Chrome hack  */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+ #tafix  { width: 291px !important; max-width: 291px !important  }
+}
+
 
