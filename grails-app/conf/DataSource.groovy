@@ -67,4 +67,10 @@ environments {
             }
           }
     }
+    dbdiff {
+		dataSource {
+			dbCreate = "create-drop"
+			url = "jdbc:hsqldb:mem:diffDb"
+		}
+	}
 }
