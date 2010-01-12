@@ -34,6 +34,12 @@ class UserEventCreate extends UserEvent {
 
   static transients = ['list','passwdRepeat']
 
+  static mapping = {
+    columns {
+        description type:'text'
+    }
+  }
+
   String username
   String userRealName
   String email
