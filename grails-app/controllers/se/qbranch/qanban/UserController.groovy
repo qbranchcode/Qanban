@@ -18,6 +18,7 @@ package se.qbranch.qanban
 import se.qbranch.qanban.User
 import se.qbranch.qanban.Role
 import se.qbranch.qanban.UserEventCreate
+import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 
 /**
  * User controller.
@@ -34,7 +35,6 @@ class UserController {
 
 
   // Create
-
   def save = {
     def user = new User()
     def createEvent
@@ -59,7 +59,7 @@ class UserController {
   }
 
   // Retrieve
-
+  @Secured(['IS_AUTHENTICATED_FULLY'])
   def show = {
     def person = User.get(params.id)
     if (!person) {
@@ -77,6 +77,7 @@ class UserController {
     render(template:'userForm', model: [person: person, roleNames: roleNames])
   }
 
+  @Secured(['IS_AUTHENTICATED_FULLY'])
   def list = {
     if (!params.max) {
       params.max = 10
@@ -84,6 +85,7 @@ class UserController {
     [personList: User.list(params)]
   }
 
+  @Secured(['IS_AUTHENTICATED_FULLY'])
   def showOnlineUsers = {
     def users = sessionRegistry.getAllPrincipals()
     def onlineUsers = []
@@ -102,6 +104,7 @@ class UserController {
    * Person delete action. Before removing an existing person,
    * he should be removed from those authorities which he is involved.
    */
+  @Secured(['IS_AUTHENTICATED_FULLY'])
   def delete = {
 
     def person = User.get(params.id)
@@ -125,6 +128,7 @@ class UserController {
     redirect action: list
   }
 
+  @Secured(['IS_AUTHENTICATED_FULLY'])
   def edit = {
 
     def person = User.get(params.id)
@@ -140,6 +144,7 @@ class UserController {
   /**
    * Person update action.
    */
+  @Secured(['IS_AUTHENTICATED_FULLY'])
   def update = {
 
     def person = User.get(params.id)
