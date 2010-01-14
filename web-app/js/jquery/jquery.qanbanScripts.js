@@ -75,8 +75,8 @@
 
         var settings = $.extend(defaults, options);
 
-        var boardId = 1; //TODO: FIXA INNAN PUSH!!!
-        var userId = settings.resources.loggedInUserId; //TODO: FIX IT BEFORE PUSH!!!
+        var boardId = settings.resources.boardId;
+        var userId = settings.resources.loggedInUserId;
 
         $('.addCardLink').live('click',function(event){
             addCard(boardId, settings);
@@ -144,7 +144,7 @@
             mode: showCardMode.view,
             dialog: $editCardDialog,
             resources: resources,
-            admin: resources.admin // TODO: AJAX Call to check with the server??
+            admin: resources.admin
         };
 
         var settings = $.extend(defaults,options);
@@ -688,9 +688,6 @@
 
     function enableBoardView($container, settings){
         reInitBoardElements($container);
-        
-        // The time out value is set to be 18,000,000 milli-seconds (or 5 minutes)
-        pollingIntervals.main = setInterval(function(){refreshBoardData(settings);}, 18000000);
     }
 
     function reInitBoardElements($container){
@@ -779,7 +776,7 @@
 
     function initBoard($board){
         fixBoardWidth();
-        //TODO: Enable auto refresh
+        pollingIntervals.main = setInterval(function(){refreshBoardData(settings);}, 18000000);
     }
 
     function fixBoardWidth(){
@@ -1177,7 +1174,6 @@
     }
 
     function insertCard($card, $destination){
-        debug('Insert card ' +  $card.attr('id'));
         $destination.append($card);
         updateCardCount($destination, 1);
         updatePhaseHeight();
@@ -1224,7 +1220,6 @@
     }
 
     function replaceCard($card){
-        debug('Replace card ' +  $card.attr('id'));
         replaceObject($card);
     }
 
@@ -1252,7 +1247,6 @@
                 $('#archiveBtn').remove();
             }else{
                 $phase.data("archive",true);
-                window.console.log($phase.attr('id') + '-' + $phase.data('archive') );
             }
             settings.destination.append($phase);
         }
@@ -1500,12 +1494,10 @@
     }
 
     function toggleSpinner(){
-        // TODO: Set a delay for showing the spinner..
+        // TODO: Set a delay for showing the spinner?
         if( !$('#spinner').length ){
-            window.console.log('spinner - on');
             $('<div id="spinner"><img src="'+resources.spinnerImg+'"/></div>').appendTo($('body'));
         } else {
-            window.console.log('spinner - off');
             $('#spinner').remove();   
         }
     }

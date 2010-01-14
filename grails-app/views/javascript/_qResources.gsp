@@ -1,13 +1,12 @@
 <script type="text/javascript">
 var resources = {};
 
-//TODO: THIS NEEDS TO BE FIXED BEFORE PUSH!!!!
 resources.admin = false;
 <g:ifAllGranted role="ROLE_QANBANADMIN">
 resources.admin = true;
 </g:ifAllGranted>
 resources.loggedInUserId = ${loggedInUser.id};
-
+resources.boardId = ${board.id};
 
 
 /************/
