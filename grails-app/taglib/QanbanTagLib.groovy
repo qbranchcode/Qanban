@@ -27,9 +27,6 @@ class QanbanTagLib {
           return out << "You need to specify a template"
         if( !attrs.phases )
           return out << "You need to specify a collection of phases"
-        if( attrs.showArchive &&  attrs.showArchive != "true" && attrs.showArchive != "false"  )
-          return out << "The attribute 'showArchive' can only be true/false"
-
 
         def output = ""
       
@@ -37,7 +34,7 @@ class QanbanTagLib {
             output += render(template:attrs.template,model:[phase:it])
         }
 
-        if( attrs.showArchive == "true" ) {
+        if( attrs.showArchive ) {
             output += render(template:attrs.template,model:[phase:attrs.phases[-1]])
         }
       
@@ -54,7 +51,10 @@ class QanbanTagLib {
     def enableArchiveButton = { attrs->
         if( isSecondLastPhase(attrs.phase) ){
           def lastId = getLastPhaseId(attrs.phase.board)
-          out << "<div id='archiveBtn' class='archId_$lastId'> </div>"
+          
+          session.showArchive ?
+            out << "<div id='archiveBtn' class='archId_$lastId open'> </div>" :
+            out << "<div id='archiveBtn' class='archId_$lastId'> </div>"
         }
     }
 

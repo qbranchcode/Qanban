@@ -2,7 +2,13 @@
 
 <g:if test="${it.phases.size() > 0}">
     <style type="text/css">
-	.phaseAutoWidth{ width: ${ ( 800/(it.phases.size() - 1 ) )  - 8 }px; margin: 0 4px; }
+    <g:if test="${session.showArchive}">
+      .phaseAutoWidth{ width: ${ ( 800/it.phases.size() )  - 8 }px; margin: 0 4px; }
+    </g:if>
+    <g:else>
+      .phaseAutoWidth{ width: ${ ( 800/(it.phases.size() - 1 ) )  - 8 }px; margin: 0 4px; }
+    </g:else>
+
 	.phaseAutoHeight{ height: <qb:maxCardCount phases="${it.phases}" cardHeight="7" unit="em"/>; } /*7 em*/
     </style>
 </g:if>
@@ -25,7 +31,7 @@
 
   <ul id="phaseList">
 
-    <qb:renderPhases phases="${it.phases}" showArchive="false" template="/phase/phase"/>
+    <qb:renderPhases phases="${it.phases}" showArchive="${session.showArchive}" template="/phase/phase"/>
 
   </ul>
 

@@ -98,6 +98,11 @@ class MainViewController {
     render(template: "/archive/archiveBody", model: [ archiveCardList: cardList, offset : params.offset as Integer ])
   }
 
+  def hideArchive = {
+    session.showArchive = false
+    render(status: 200)
+  }
+
   def sortArchiveCards(phases) {
     def offset = params.offset ? params.offset?.toInteger() : 0
     def list = Card.withCriteria{

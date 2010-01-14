@@ -136,6 +136,10 @@ class PhaseController {
   private renderShowResult(phase){
     withFormat {
       html{
+        
+        if( phase == Board.get(phase.board.id).phases[-1] ){
+          session.showArchive = true
+        }
         return render (template: 'phase', model:[phase:phase])
       }
       js{
@@ -164,7 +168,7 @@ class PhaseController {
 
   private def renderFormCreateMode(params){
     if ( !params.'board.id' )
-    return render(status: 400, text: "The parameter 'boardId' must be specified")
+      return render(status: 400, text: "The parameter 'boardId' must be specified")
     def board = Board.get(params.'board.id')
     return render(template:'phaseForm',model:[createEvent: new PhaseEventCreate(), boardInstance: board ])
   }

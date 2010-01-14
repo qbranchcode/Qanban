@@ -75,7 +75,7 @@ resources.boardShowURL = '${createLink(controller:"mainView",action:"showBoard")
 resources.phaseShowURL = '${createLink(controller:"phase",action:"show")}';
 resources.phaseFormURL = '${createLink(controller:'phase',action:'form')}';
 resources.phaseDeleteURL = '${createLink(controller:"phase",action:"delete")}';
-
+resources.hideArchiveURL = '${createLink(controller:"mainView",action:"hideArchive")}';
 
 //Card
 resources.cardShowURL = '${createLink(controller:"card",action:"show")}';

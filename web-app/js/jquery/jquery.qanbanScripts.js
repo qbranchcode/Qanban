@@ -474,6 +474,15 @@
             archiveLoader();
 
         }else{
+            
+            var hideCaller = function(n){
+                $.qPost({
+                    url: settings.resources.hideArchiveURL
+                });
+            };
+
+            hideCaller(null);
+
             $archiveBtn.removeClass('open');
             $('.phaseWrapper:last-child').remove();
             fixBoardWidth();
