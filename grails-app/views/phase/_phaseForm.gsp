@@ -26,8 +26,8 @@
   </g:hasErrors>
 
   <g:formRemote url="[controller:'phase',action:'update',params: [format: 'html']]" update="editPhaseDialog" name="phaseForm"
-                onSuccess="phaseFormRefresh(data, '#editPhaseDialog', 'Success', 'Phase successfully updated')" onClose="toggleSpinner()">
-  
+                onSuccess="jQuery('#editPhaseDialog').qRefreshDialog({formData:data,url:resources.phaseShowURL,indexSelector:'[name=phasePos]',successTitle:'Success',successMessage:'Phase successfully updated'})">
+
     <div class="content">
 
        <div id="nameWrapper">
@@ -93,7 +93,7 @@
   </g:hasErrors>
   
   <g:formRemote url="[controller:'phase',action:'create',params: [format: 'html']]" update="createPhaseDialog" name="phaseForm"
-                onSuccess="phaseFormRefresh(data,'#createPhaseDialog')" onClose="toggleSpinner()">
+                onSuccess="jQuery('#createPhaseDialog').qRefreshDialog({formData:data,url:resources.phaseShowURL,indexSelector:'[name=phasePos]'})">
 
     <div class="content">
 

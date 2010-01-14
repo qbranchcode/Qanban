@@ -24,7 +24,7 @@
 
   <g:formRemote url="[controller:'card',action:'move']"
                 update="moveCardDialog" name="cardForm"
-                onSuccess="cardFormRefresh(data,'#moveCardDialog')" >
+                onSuccess="jQuery('#moveCardDialog').qRefreshDialog({formData:data,url:resources.cardShowURL})" >
 
     <div class="header">
 
@@ -116,7 +116,7 @@
 
   <g:formRemote url="[controller:'card',action:'update', params: [format: 'html']]"
                 update="editCardDialog" name="cardForm"
-                onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated');setEditMode();">
+                onSuccess="jQuery('#editCardDialog').qRefreshDialog({formData:data,successTitle:'Success',successMessage:'Card successfully updated',url:resources.cardShowURL})">
 
     <div class="header">
 
@@ -219,7 +219,7 @@
 
   <g:formRemote url="${[controller:'card',action:'create', params: [format: 'html']]}"
                 update="createCardDialog" name="cardForm"
-                onSuccess="cardFormRefresh(data,'#createCardDialog')"
+                onSuccess="jQuery('#createCardDialog').qRefreshDialog({formData:data,url:resources.cardShowURL, errorCallback: jQuery.qInitAssigneeSelector })"
                 before="if(\$('[name=title]').val() == 'Title...          ') \$('[name=title]').val('');">
 
     <div class="header">

@@ -11,7 +11,7 @@
   <g:formRemote url="[controller:'user',action: 'update', params: [format: 'html']]"
           update="editUserDialog" name="userForm"
           onSuccess="userFormRefresh(data,'#editUserDialog','Success','Successfully updated the your user');"
-          onClose="toggleSpinner()">
+          >
 
     <div class="header">
 
