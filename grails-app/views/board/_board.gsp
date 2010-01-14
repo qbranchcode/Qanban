@@ -2,7 +2,7 @@
 
 <g:if test="${it.phases.size() > 0}">
     <style type="text/css">
-	.phaseAutoWidth{ width: ${100/it.phases.size()-1}%; margin: 0 4px; }
+	.phaseAutoWidth{ width: ${ ( 800/(it.phases.size() - 1 ) )  - 8 }px; margin: 0 4px; }
 	.phaseAutoHeight{ height: <qb:maxCardCount phases="${it.phases}" cardHeight="7" unit="em"/>; } /*7 em*/
     </style>
 </g:if>
@@ -11,16 +11,16 @@
 <g:ifAllGranted role="ROLE_QANBANADMIN">
   <div id="adminmenu">
     <ul>
-      <li><a href="${createLink(controller:'card',action:'create')}" class="addCardLink"><g:message code="layout.inside.menu.addCard"/></a></li>
-      <li><a href="${createLink(controller:'phase',action:'create')}" class="addPhaseLink"><g:message code="layout.inside.menu.addPhase"/></a></li>
+      <li><a href="#" class="addCardLink"><g:message code="layout.inside.menu.addCard"/></a></li>
+      <li><a href="#" class="addPhaseLink"><g:message code="layout.inside.menu.addPhase"/></a></li>
     </ul>
   </div>
-  <style>#board { margin-top: 30px !important; }</style>
+  <style>.board { margin-top: 30px !important; }</style>
 </g:ifAllGranted>
 
 
 
-<div id="board">
+<div id="board_${it.id}" class="board">
 
 
   <ul id="phaseList">
