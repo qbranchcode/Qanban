@@ -1264,6 +1264,11 @@
 
     function replacePhase($phase, index){
         var $archiveBtn = $('#' + $phase.attr('id')).find('#archiveBtn')
+
+        if( $archiveBtn ){
+            $('.tab[href*=showArchive]').html($('h3',$phase).html());    
+        }
+
         replaceObject($phase);
         var oldIndex = parseInt($phase.prevAll().size());
         var $elementAtDestination = $('.phaseWrapper').eq(index);
