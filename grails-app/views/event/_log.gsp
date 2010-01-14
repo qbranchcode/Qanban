@@ -1,4 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+<g:setProvider library="jquery"/>
+
 <link rel="stylesheet" href="${resource(dir:'css',file:'log.css')}" />
     <div id="log">
       <table id="logTable" border="0" cellspacing="0" class="tableContainer">
@@ -11,12 +13,12 @@
             <th><a href="${createLink(controller:'mainView',action:'showLogBody',params:['sort':'domainId','board.id':board.id])}" class="ajaxSortableColumn order_desc"><g:message code="log.item"/></a></th>
           </tr>
         </thead>
-        <tbody class="scrollContent">
+        <tbody id="logContent" class="scrollContent">
           <g:render template="/event/logBody" model="[ 'eventInstanceList' : eventInstanceList ]"/>
         </tbody>
       </table>
     </div>
 
 <script type="text/javascript">
-  maxElements = ${eventInstanceTotal};
+  jQuery('#logContent').data('max',${eventInstanceTotal});
 </script>
