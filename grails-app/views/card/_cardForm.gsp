@@ -116,8 +116,7 @@
 
   <g:formRemote url="[controller:'card',action:'update', params: [format: 'html']]"
                 update="editCardDialog" name="cardForm"
-                onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated');setEditMode();"
-                onClose="toggleSpinner()">
+                onSuccess="cardFormRefresh(data,'#editCardDialog','Success', 'Card successfully updated');setEditMode();">
 
     <div class="header">
 
@@ -221,7 +220,6 @@
   <g:formRemote url="${[controller:'card',action:'create', params: [format: 'html']]}"
                 update="createCardDialog" name="cardForm"
                 onSuccess="cardFormRefresh(data,'#createCardDialog')"
-                onClose="toggleSpinner()"
                 before="if(\$('[name=title]').val() == 'Title...          ') \$('[name=title]').val('');">
 
     <div class="header">

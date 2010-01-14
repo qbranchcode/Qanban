@@ -46,6 +46,7 @@ class MainViewController {
     params.max = params.max ? params.max as Integer : 40
     params.order = params.order ? params.order.toLowerCase() : 'desc'
     params.offset = params.offset ? params.offset : 0
+    params.sort = params.sort ? params.sort : 'dateCreated'
     
     // TODO: Only get the events connected to the current board
     def board = Board.get(params.'board.id')
@@ -92,6 +93,7 @@ class MainViewController {
     def phases = board.phases
     params.max = params.max ? params.max as Integer : 40
     params.order = params.order ? params.order : 'desc'
+    params.sort = params.sort ? params.sort : 'lastUpdated' 
     def cardList = sortArchiveCards(phases)
     render(template: "/archive/archiveBody", model: [ archiveCardList: cardList, offset : params.offset as Integer ])
   }
