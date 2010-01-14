@@ -641,7 +641,11 @@
 
     function enableArchiveCardSelection(){
         $('.archive').click(function(event){
-            showCard( $(event.target).attr('id').split('_')[1], { mode: showCardMode.readOnly });
+            var $trigger = $(event.target);
+
+            if( $trigger.hasClass('showCardLink') ){
+                showCard( $(event.target).attr('id').split('_')[1], { mode: showCardMode.readOnly });
+            }
         });
     }
 
