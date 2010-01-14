@@ -1,4 +1,4 @@
-<%-- Loaded through _qanbanOnLoad.gsp --%>
+
 
 /***********/
 /* DIALOGS */
@@ -12,7 +12,7 @@ $createCardDialog.qDialog({
   buttons: {
             <g:message code="_cardForm.button.submit"/> : function(){
               $createCardDialog.find('input[type="submit"]').click();
-              toggleSpinner();
+
     }
   }
 });
@@ -26,7 +26,7 @@ $createPhaseDialog.qDialog({
   buttons: {
               <g:message code="_phaseForm.button.save"/> : function(){
               $createPhaseDialog.find('input[type="submit"]').click();
-              toggleSpinner();
+;
      }
   }
 });
