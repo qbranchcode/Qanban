@@ -555,6 +555,7 @@
         archiveData.sort = settings.resources.archiveDefaultSort;
 
         enableTableSorting(archiveData);
+        enableArchiveCardSelection();
         pollingIntervals.main = setInterval(function(){pollTable(archiveData)}, 1000);
         
     }
@@ -640,7 +641,7 @@
 
     function enableArchiveCardSelection(){
         $('.archive').click(function(event){
-            showCard( event.target.attr('id').split('_')[1], { mode: showCardMode.readOnly });
+            showCard( $(event.target).attr('id').split('_')[1], { mode: showCardMode.readOnly });
         });
     }
 
@@ -1625,10 +1626,11 @@
  *  Using this instead of the usual jQuery way of changing css values will set the value directly to the
  *  css class instead of adding them to the object that has the specific class.
  *
- *  This makes the changes more permanent if you so will, and affect elements with that class thats injected to the
- *  DOM tree in the future aswell.
+ *  This makes the changes more permanent, and affect elements with that class that's injected to the
+ *  DOM tree in the future as well.
  * 
  */
+
 (function($){
 
     $.setCssRule = function(selector, property, value){
