@@ -30,7 +30,7 @@
  *
  *      Usage:
  *
- *          $.qInit();
+ *          $.qInit(options);
  *
  *
  *
@@ -51,7 +51,7 @@
  *
  *      Usage:
  *
- *          $('#phase_1337').qInit();
+ *          $('#phase_1337').qInit(options);
  *
  *
  *  $.qInitAssigneeSelector
@@ -1124,9 +1124,15 @@
 
 })(jQuery);
 
-/*************/
-/* Injection */
-/*************/
+/*
+ * Injection
+ *
+ *  $.fn.qInject(options);
+ *
+ *  This function is used to inject new elements to the dom at the right place.
+ *  Elements that are compatible is .card and .phaseWrapper. PhaseWrappers also needs the index option to be set.
+ *
+ */
 
 (function($){
 
@@ -1304,7 +1310,7 @@
  *
  *      var ajaxCaller = function(tries){
  *
- *          $.qXxx({ tries: tries, caller: ajaxCaller });
+ *          $.qXxx({ tries: tries, caller: ajaxCaller, ... });
  *
  *      };
  *
@@ -1503,9 +1509,14 @@
 
 })(jQuery);
 
-/**********/
-/* Dialog */
-/**********/
+/*
+ * Dialog
+ *
+ *  $.fn.qDialog(options);
+ *
+ *  A simple wrapper for the jQuery UI dialog plugin that sets our common settings by default.
+ *
+ */
 
 (function($){
 
