@@ -20,3 +20,9 @@ qanban/devDb.*
 *.iml
 .idea
 qanban-domain-plugin/stacktrace.log
+qanban-domain-plugin/*.iml
+qanban-domain-plugin/*.ipr
+qanban-domain-plugin/*.iws
+qanban-domain-plugin/.idea
+
+
