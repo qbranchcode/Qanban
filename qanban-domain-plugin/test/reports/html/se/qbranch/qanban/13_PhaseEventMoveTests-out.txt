@@ -1,8 +1,0 @@
---Output from testLegalMoveOfFirstPhaseToNextIndex--
-First phase
-   Card #1
-   Card #2
-Second phase
-   Card #3
-Third phase
-

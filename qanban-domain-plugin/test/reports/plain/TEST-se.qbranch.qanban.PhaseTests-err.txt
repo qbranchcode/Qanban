@@ -1,3 +1,0 @@
---Output from testCreatePhase--
---Output from testPhaseWithCard--
---Output from testCreatingAPhaseWithLiteralCardLimit--

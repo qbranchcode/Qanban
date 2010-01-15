@@ -1,7 +1,0 @@
---Output from testSetAndUnsetAssignee--
-First phase
-   Card #1
-   Card #2
-Second phase
-   Card #3
-Third phase

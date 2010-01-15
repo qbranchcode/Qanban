@@ -1,3 +1,0 @@
---Output from testCreatingABoard--
-fa54523ba686f6142a51ca4c9d2ea392
-

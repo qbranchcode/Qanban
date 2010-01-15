@@ -1,6 +1,0 @@
---Output from testCreatingAUser--
---Output from testCreatingAUserFromAUserObj--
---Output from testCreatingAUserWithPass--
---Output from testCreateWithInconsistentPasswords--
---Output from testCreateWithoutPasswords--
-

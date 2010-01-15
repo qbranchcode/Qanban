@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<testsuite errors="0" failures="0" hostname="qb-trollgrottan" name="se.qbranch.qanban.PhaseEventTests" tests="1" time="0.0050" timestamp="2010-01-15T10:00:07">
-  <properties />
-  <testcase classname="se.qbranch.qanban.PhaseEventTests" name="testSomething" time="0.0040" />
-  <system-out><![CDATA[--Output from testSomething--
-]]></system-out>
-  <system-err><![CDATA[--Output from testSomething--
-]]></system-err>
-</testsuite>

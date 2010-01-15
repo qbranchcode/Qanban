@@ -1,3 +1,0 @@
---Output from testEquals--
-1
-2

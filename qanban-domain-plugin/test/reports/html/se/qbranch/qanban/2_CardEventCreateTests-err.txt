@@ -1,3 +1,0 @@
---Output from testCreateingValidEvent--
---Output from testCreateingInvalidEventWithoutCaseNo--
-
