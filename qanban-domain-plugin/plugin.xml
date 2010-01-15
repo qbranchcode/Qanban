@@ -32,5 +32,8 @@ This plugin hold the domain model for the Qanban application
     <resource>UrlMappings</resource>
     <resource>DataSource</resource>
   </resources>
-  <dependencies />
+  <dependencies>
+    <plugin name='acegi' version='* &gt; 0.5.2' />
+    <plugin name='hibernate' version='1.1.1' />
+  </dependencies>
 </plugin>
