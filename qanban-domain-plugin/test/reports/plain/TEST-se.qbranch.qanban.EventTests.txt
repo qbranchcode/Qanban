@@ -1,0 +1,12 @@
+Testsuite: se.qbranch.qanban.EventTests
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.024 sec
+------------- Standard Output ---------------
+--Output from testEquals--
+1
+2
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from testEquals--
+------------- ---------------- ---------------
+
+Testcase: testEquals took 0.024 sec

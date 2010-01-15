@@ -1,0 +1,4 @@
+--Output from testValidMoveCardEventWithinAPhase--
+--Output from testValidMoveCardEventBetweenPhases--
+--Output from testInvalidMoveCardEvent--
+--Output from testCompareOfCardEventMove--

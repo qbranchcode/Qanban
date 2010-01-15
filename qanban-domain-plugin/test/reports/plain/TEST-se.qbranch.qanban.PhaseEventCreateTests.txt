@@ -1,0 +1,17 @@
+Testsuite: se.qbranch.qanban.PhaseEventCreateTests
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 1.094 sec
+------------- Standard Output ---------------
+--Output from testCreatingAValidPhase--
+--Output from testCreatingPhaseWithoudPosition--
+--Output from testCreatingAPhaseWithLiteralsAsLimit--
+limit with literals - null
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from testCreatingAValidPhase--
+--Output from testCreatingPhaseWithoudPosition--
+--Output from testCreatingAPhaseWithLiteralsAsLimit--
+------------- ---------------- ---------------
+
+Testcase: testCreatingAValidPhase took 0.279 sec
+Testcase: testCreatingPhaseWithoudPosition took 0.491 sec
+Testcase: testCreatingAPhaseWithLiteralsAsLimit took 0.324 sec

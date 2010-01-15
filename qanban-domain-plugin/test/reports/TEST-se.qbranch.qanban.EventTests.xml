@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="qb-trollgrottan" name="se.qbranch.qanban.EventTests" tests="1" time="0.024" timestamp="2010-01-15T10:00:07">
+  <properties />
+  <testcase classname="se.qbranch.qanban.EventTests" name="testEquals" time="0.024" />
+  <system-out><![CDATA[--Output from testEquals--
+1
+2
+]]></system-out>
+  <system-err><![CDATA[--Output from testEquals--
+]]></system-err>
+</testsuite>

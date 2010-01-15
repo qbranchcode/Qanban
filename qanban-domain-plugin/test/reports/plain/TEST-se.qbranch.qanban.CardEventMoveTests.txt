@@ -1,0 +1,45 @@
+Testsuite: se.qbranch.qanban.CardEventMoveTests
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 0.852 sec
+------------- Standard Output ---------------
+--Output from testValidMoveCardEventWithinAPhase--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+--Output from testValidMoveCardEventBetweenPhases--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+--Output from testInvalidMoveCardEvent--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+org.codehaus.groovy.grails.plugins.testing.GrailsMockErrors: 1 errors
+Field error in object 'se.qbranch.qanban.CardEventMove' on field 'newCardIndex': rejected value [-1]; codes [se.qbranch.qanban.CardEventMove.newCardIndex.min.error.se.qbranch.qanban.CardEventMove.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.error.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.error.java.lang.Integer,se.qbranch.qanban.CardEventMove.newCardIndex.min.error,cardEventMove.newCardIndex.min.error.se.qbranch.qanban.CardEventMove.newCardIndex,cardEventMove.newCardIndex.min.error.newCardIndex,cardEventMove.newCardIndex.min.error.java.lang.Integer,cardEventMove.newCardIndex.min.error,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet.se.qbranch.qanban.CardEventMove.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet.java.lang.Integer,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet,cardEventMove.newCardIndex.min.notmet.se.qbranch.qanban.CardEventMove.newCardIndex,cardEventMove.newCardIndex.min.notmet.newCardIndex,cardEventMove.newCardIndex.min.notmet.java.lang.Integer,cardEventMove.newCardIndex.min.notmet,min.notmet.se.qbranch.qanban.CardEventMove.newCardIndex,min.notmet.newCardIndex,min.notmet.java.lang.Integer,min.notmet]; arguments [newCardIndex,class se.qbranch.qanban.CardEventMove,-1,0]; default message [Property [{0}] of class [{1}] with value [{2}] is less than minimum value [{3}]]
+--Output from testCompareOfCardEventMove--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from testValidMoveCardEventWithinAPhase--
+--Output from testValidMoveCardEventBetweenPhases--
+--Output from testInvalidMoveCardEvent--
+--Output from testCompareOfCardEventMove--
+------------- ---------------- ---------------
+
+Testcase: testValidMoveCardEventWithinAPhase took 0.255 sec
+Testcase: testValidMoveCardEventBetweenPhases took 0.222 sec
+Testcase: testInvalidMoveCardEvent took 0.188 sec
+Testcase: testCompareOfCardEventMove took 0.186 sec

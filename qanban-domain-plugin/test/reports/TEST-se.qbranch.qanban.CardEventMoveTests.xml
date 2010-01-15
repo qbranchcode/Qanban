@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="qb-trollgrottan" name="se.qbranch.qanban.CardEventMoveTests" tests="4" time="0.852" timestamp="2010-01-15T10:00:07">
+  <properties />
+  <testcase classname="se.qbranch.qanban.CardEventMoveTests" name="testValidMoveCardEventWithinAPhase" time="0.255" />
+  <testcase classname="se.qbranch.qanban.CardEventMoveTests" name="testValidMoveCardEventBetweenPhases" time="0.222" />
+  <testcase classname="se.qbranch.qanban.CardEventMoveTests" name="testInvalidMoveCardEvent" time="0.188" />
+  <testcase classname="se.qbranch.qanban.CardEventMoveTests" name="testCompareOfCardEventMove" time="0.186" />
+  <system-out><![CDATA[--Output from testValidMoveCardEventWithinAPhase--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+--Output from testValidMoveCardEventBetweenPhases--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+--Output from testInvalidMoveCardEvent--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+org.codehaus.groovy.grails.plugins.testing.GrailsMockErrors: 1 errors
+Field error in object 'se.qbranch.qanban.CardEventMove' on field 'newCardIndex': rejected value [-1]; codes [se.qbranch.qanban.CardEventMove.newCardIndex.min.error.se.qbranch.qanban.CardEventMove.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.error.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.error.java.lang.Integer,se.qbranch.qanban.CardEventMove.newCardIndex.min.error,cardEventMove.newCardIndex.min.error.se.qbranch.qanban.CardEventMove.newCardIndex,cardEventMove.newCardIndex.min.error.newCardIndex,cardEventMove.newCardIndex.min.error.java.lang.Integer,cardEventMove.newCardIndex.min.error,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet.se.qbranch.qanban.CardEventMove.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet.java.lang.Integer,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet,cardEventMove.newCardIndex.min.notmet.se.qbranch.qanban.CardEventMove.newCardIndex,cardEventMove.newCardIndex.min.notmet.newCardIndex,cardEventMove.newCardIndex.min.notmet.java.lang.Integer,cardEventMove.newCardIndex.min.notmet,min.notmet.se.qbranch.qanban.CardEventMove.newCardIndex,min.notmet.newCardIndex,min.notmet.java.lang.Integer,min.notmet]; arguments [newCardIndex,class se.qbranch.qanban.CardEventMove,-1,0]; default message [Property [{0}] of class [{1}] with value [{2}] is less than minimum value [{3}]]
+--Output from testCompareOfCardEventMove--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+]]></system-out>
+  <system-err><![CDATA[--Output from testValidMoveCardEventWithinAPhase--
+--Output from testValidMoveCardEventBetweenPhases--
+--Output from testInvalidMoveCardEvent--
+--Output from testCompareOfCardEventMove--
+]]></system-err>
+</testsuite>

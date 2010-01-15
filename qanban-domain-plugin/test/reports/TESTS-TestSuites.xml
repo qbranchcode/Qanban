@@ -1,0 +1,360 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="0" name="BoardEventCreateTests" package="se.qbranch.qanban" tests="1" time="0.121" timestamp="2010-01-15T10:00:07">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.BoardEventCreateTests" name="testCreatingABoard" time="0.121" />
+
+      <system-out><![CDATA[--Output from testCreatingABoard--
+fa54523ba686f6142a51ca4c9d2ea392
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testCreatingABoard--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="1" name="BoardTests" package="se.qbranch.qanban" tests="1" time="0.014" timestamp="2010-01-15T10:00:07">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.BoardTests" name="testHasPhases" time="0.014" />
+
+      <system-out><![CDATA[--Output from testHasPhases--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testHasPhases--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="2" name="CardEventCreateTests" package="se.qbranch.qanban" tests="2" time="0.431" timestamp="2010-01-15T10:00:06">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.CardEventCreateTests" name="testCreateingValidEvent" time="0.222" />
+
+      <testcase classname="se.qbranch.qanban.CardEventCreateTests" name="testCreateingInvalidEventWithoutCaseNo" time="0.209" />
+
+      <system-out><![CDATA[--Output from testCreateingValidEvent--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+c90fd479c1f29370da16848db2eb7cbf
+--Output from testCreateingInvalidEventWithoutCaseNo--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+Field error in object 'se.qbranch.qanban.CardEventCreate' on field 'caseNumber': rejected value [null]; codes [se.qbranch.qanban.CardEventCreate.caseNumber.nullable.error.se.qbranch.qanban.CardEventCreate.caseNumber,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.error.caseNumber,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.error.java.lang.String,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.error,cardEventCreate.caseNumber.nullable.error.se.qbranch.qanban.CardEventCreate.caseNumber,cardEventCreate.caseNumber.nullable.error.caseNumber,cardEventCreate.caseNumber.nullable.error.java.lang.String,cardEventCreate.caseNumber.nullable.error,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.se.qbranch.qanban.CardEventCreate.caseNumber,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.caseNumber,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.java.lang.String,se.qbranch.qanban.CardEventCreate.caseNumber.nullable,cardEventCreate.caseNumber.nullable.se.qbranch.qanban.CardEventCreate.caseNumber,cardEventCreate.caseNumber.nullable.caseNumber,cardEventCreate.caseNumber.nullable.java.lang.String,cardEventCreate.caseNumber.nullable,nullable.se.qbranch.qanban.CardEventCreate.caseNumber,nullable.caseNumber,nullable.java.lang.String,nullable]; arguments [caseNumber,class se.qbranch.qanban.CardEventCreate]; default message [Property [{0}] of class [{1}] cannot be null]
+4e0ab1fd11f8b0bf50dcd9e276fb970d
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testCreateingValidEvent--
+--Output from testCreateingInvalidEventWithoutCaseNo--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="3" name="CardEventDeleteTests" package="se.qbranch.qanban" tests="1" time="0.251" timestamp="2010-01-15T10:00:07">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.CardEventDeleteTests" name="testDeletCard" time="0.251" />
+
+      <system-out><![CDATA[--Output from testDeletCard--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testDeletCard--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="4" name="CardEventMoveTests" package="se.qbranch.qanban" tests="4" time="0.852" timestamp="2010-01-15T10:00:07">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.CardEventMoveTests" name="testValidMoveCardEventWithinAPhase" time="0.255" />
+
+      <testcase classname="se.qbranch.qanban.CardEventMoveTests" name="testValidMoveCardEventBetweenPhases" time="0.222" />
+
+      <testcase classname="se.qbranch.qanban.CardEventMoveTests" name="testInvalidMoveCardEvent" time="0.188" />
+
+      <testcase classname="se.qbranch.qanban.CardEventMoveTests" name="testCompareOfCardEventMove" time="0.186" />
+
+      <system-out><![CDATA[--Output from testValidMoveCardEventWithinAPhase--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+--Output from testValidMoveCardEventBetweenPhases--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+--Output from testInvalidMoveCardEvent--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+org.codehaus.groovy.grails.plugins.testing.GrailsMockErrors: 1 errors
+Field error in object 'se.qbranch.qanban.CardEventMove' on field 'newCardIndex': rejected value [-1]; codes [se.qbranch.qanban.CardEventMove.newCardIndex.min.error.se.qbranch.qanban.CardEventMove.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.error.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.error.java.lang.Integer,se.qbranch.qanban.CardEventMove.newCardIndex.min.error,cardEventMove.newCardIndex.min.error.se.qbranch.qanban.CardEventMove.newCardIndex,cardEventMove.newCardIndex.min.error.newCardIndex,cardEventMove.newCardIndex.min.error.java.lang.Integer,cardEventMove.newCardIndex.min.error,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet.se.qbranch.qanban.CardEventMove.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet.newCardIndex,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet.java.lang.Integer,se.qbranch.qanban.CardEventMove.newCardIndex.min.notmet,cardEventMove.newCardIndex.min.notmet.se.qbranch.qanban.CardEventMove.newCardIndex,cardEventMove.newCardIndex.min.notmet.newCardIndex,cardEventMove.newCardIndex.min.notmet.java.lang.Integer,cardEventMove.newCardIndex.min.notmet,min.notmet.se.qbranch.qanban.CardEventMove.newCardIndex,min.notmet.newCardIndex,min.notmet.java.lang.Integer,min.notmet]; arguments [newCardIndex,class se.qbranch.qanban.CardEventMove,-1,0]; default message [Property [{0}] of class [{1}] with value [{2}] is less than minimum value [{3}]]
+--Output from testCompareOfCardEventMove--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testValidMoveCardEventWithinAPhase--
+--Output from testValidMoveCardEventBetweenPhases--
+--Output from testInvalidMoveCardEvent--
+--Output from testCompareOfCardEventMove--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="5" name="CardEventSetAssigneeTests" package="se.qbranch.qanban" tests="1" time="0.23" timestamp="2010-01-15T10:00:07">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.CardEventSetAssigneeTests" name="testSetAndUnsetAssignee" time="0.23" />
+
+      <system-out><![CDATA[--Output from testSetAndUnsetAssignee--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testSetAndUnsetAssignee--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="6" name="CardEventTests" package="se.qbranch.qanban" tests="1" time="0.0040" timestamp="2010-01-15T10:00:07">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.CardEventTests" name="testSomething" time="0.0040" />
+
+      <system-out><![CDATA[--Output from testSomething--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testSomething--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="7" name="CardEventUpdateTests" package="se.qbranch.qanban" tests="2" time="0.578" timestamp="2010-01-15T10:00:09">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.CardEventUpdateTests" name="testSuccessfulUpdating" time="0.261" />
+
+      <testcase classname="se.qbranch.qanban.CardEventUpdateTests" name="testUnsuccessfulUpdateWidhoutCaseNumber" time="0.316" />
+
+      <system-out><![CDATA[--Output from testSuccessfulUpdating--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+--Output from testUnsuccessfulUpdateWidhoutCaseNumber--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+Field error in object 'se.qbranch.qanban.CardEventUpdate' on field 'caseNumber': rejected value [null]; codes [se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.error.se.qbranch.qanban.CardEventUpdate.caseNumber,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.error.caseNumber,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.error.java.lang.String,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.error,cardEventUpdate.caseNumber.nullable.error.se.qbranch.qanban.CardEventUpdate.caseNumber,cardEventUpdate.caseNumber.nullable.error.caseNumber,cardEventUpdate.caseNumber.nullable.error.java.lang.String,cardEventUpdate.caseNumber.nullable.error,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.se.qbranch.qanban.CardEventUpdate.caseNumber,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.caseNumber,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.java.lang.String,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable,cardEventUpdate.caseNumber.nullable.se.qbranch.qanban.CardEventUpdate.caseNumber,cardEventUpdate.caseNumber.nullable.caseNumber,cardEventUpdate.caseNumber.nullable.java.lang.String,cardEventUpdate.caseNumber.nullable,nullable.se.qbranch.qanban.CardEventUpdate.caseNumber,nullable.caseNumber,nullable.java.lang.String,nullable]; arguments [caseNumber,class se.qbranch.qanban.CardEventUpdate]; default message [Property [{0}] of class [{1}] cannot be null]
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testSuccessfulUpdating--
+--Output from testUnsuccessfulUpdateWidhoutCaseNumber--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="8" name="CardTests" package="se.qbranch.qanban" tests="1" time="0.0050" timestamp="2010-01-15T10:00:07">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.CardTests" name="testCreateCard" time="0.0050" />
+
+      <system-out><![CDATA[--Output from testCreateCard--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testCreateCard--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="9" name="EventServiceTests" package="se.qbranch.qanban" tests="1" time="0.0050" timestamp="2010-01-15T10:00:08">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.EventServiceTests" name="testSomething" time="0.0050" />
+
+      <system-out><![CDATA[--Output from testSomething--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testSomething--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="10" name="EventTests" package="se.qbranch.qanban" tests="1" time="0.024" timestamp="2010-01-15T10:00:07">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.EventTests" name="testEquals" time="0.024" />
+
+      <system-out><![CDATA[--Output from testEquals--
+1
+2
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testEquals--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="11" name="PhaseEventCreateTests" package="se.qbranch.qanban" tests="3" time="1.094" timestamp="2010-01-15T10:00:05">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.PhaseEventCreateTests" name="testCreatingAValidPhase" time="0.279" />
+
+      <testcase classname="se.qbranch.qanban.PhaseEventCreateTests" name="testCreatingPhaseWithoudPosition" time="0.491" />
+
+      <testcase classname="se.qbranch.qanban.PhaseEventCreateTests" name="testCreatingAPhaseWithLiteralsAsLimit" time="0.324" />
+
+      <system-out><![CDATA[--Output from testCreatingAValidPhase--
+--Output from testCreatingPhaseWithoudPosition--
+--Output from testCreatingAPhaseWithLiteralsAsLimit--
+limit with literals - null
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testCreatingAValidPhase--
+--Output from testCreatingPhaseWithoudPosition--
+--Output from testCreatingAPhaseWithLiteralsAsLimit--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="12" name="PhaseEventDeleteTests" package="se.qbranch.qanban" tests="1" time="0.339" timestamp="2010-01-15T10:00:08">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.PhaseEventDeleteTests" name="testDeletePhase" time="0.339" />
+
+      <system-out><![CDATA[--Output from testDeletePhase--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testDeletePhase--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="13" name="PhaseEventMoveTests" package="se.qbranch.qanban" tests="1" time="2.401" timestamp="2010-01-15T10:00:03">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.PhaseEventMoveTests" name="testLegalMoveOfFirstPhaseToNextIndex" time="2.4" />
+
+      <system-out><![CDATA[--Output from testLegalMoveOfFirstPhaseToNextIndex--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testLegalMoveOfFirstPhaseToNextIndex--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="14" name="PhaseEventTests" package="se.qbranch.qanban" tests="1" time="0.0050" timestamp="2010-01-15T10:00:07">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.PhaseEventTests" name="testSomething" time="0.0040" />
+
+      <system-out><![CDATA[--Output from testSomething--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testSomething--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="15" name="PhaseEventUpdateTests" package="se.qbranch.qanban" tests="1" time="0.199" timestamp="2010-01-15T10:00:07">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.PhaseEventUpdateTests" name="testSomething" time="0.199" />
+
+      <system-out><![CDATA[--Output from testSomething--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testSomething--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="16" name="PhaseTests" package="se.qbranch.qanban" tests="3" time="0.162" timestamp="2010-01-15T10:00:09">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.PhaseTests" name="testCreatePhase" time="0.036" />
+
+      <testcase classname="se.qbranch.qanban.PhaseTests" name="testPhaseWithCard" time="0.094" />
+
+      <testcase classname="se.qbranch.qanban.PhaseTests" name="testCreatingAPhaseWithLiteralCardLimit" time="0.032" />
+
+      <system-out><![CDATA[--Output from testCreatePhase--
+--Output from testPhaseWithCard--
+--Output from testCreatingAPhaseWithLiteralCardLimit--
+Field error in object 'se.qbranch.qanban.Phase' on field 'cardLimit': rejected value [null]; codes [se.qbranch.qanban.Phase.cardLimit.nullable.error.se.qbranch.qanban.Phase.cardLimit,se.qbranch.qanban.Phase.cardLimit.nullable.error.cardLimit,se.qbranch.qanban.Phase.cardLimit.nullable.error.java.lang.Integer,se.qbranch.qanban.Phase.cardLimit.nullable.error,phase.cardLimit.nullable.error.se.qbranch.qanban.Phase.cardLimit,phase.cardLimit.nullable.error.cardLimit,phase.cardLimit.nullable.error.java.lang.Integer,phase.cardLimit.nullable.error,se.qbranch.qanban.Phase.cardLimit.nullable.se.qbranch.qanban.Phase.cardLimit,se.qbranch.qanban.Phase.cardLimit.nullable.cardLimit,se.qbranch.qanban.Phase.cardLimit.nullable.java.lang.Integer,se.qbranch.qanban.Phase.cardLimit.nullable,phase.cardLimit.nullable.se.qbranch.qanban.Phase.cardLimit,phase.cardLimit.nullable.cardLimit,phase.cardLimit.nullable.java.lang.Integer,phase.cardLimit.nullable,nullable.se.qbranch.qanban.Phase.cardLimit,nullable.cardLimit,nullable.java.lang.Integer,nullable]; arguments [cardLimit,class se.qbranch.qanban.Phase]; default message [Property [{0}] of class [{1}] cannot be null]
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testCreatePhase--
+--Output from testPhaseWithCard--
+--Output from testCreatingAPhaseWithLiteralCardLimit--
+]]></system-err>
+
+  </testsuite>
+  <testsuite errors="0" failures="0" hostname="qb-trollgrottan" id="17" name="UserEventCreateTests" package="se.qbranch.qanban" tests="5" time="0.496" timestamp="2010-01-15T10:00:09">
+      <properties />
+
+      <testcase classname="se.qbranch.qanban.UserEventCreateTests" name="testCreatingAUser" time="0.235" />
+
+      <testcase classname="se.qbranch.qanban.UserEventCreateTests" name="testCreatingAUserFromAUserObj" time="0.092" />
+
+      <testcase classname="se.qbranch.qanban.UserEventCreateTests" name="testCreatingAUserWithPass" time="0.053" />
+
+      <testcase classname="se.qbranch.qanban.UserEventCreateTests" name="testCreateWithInconsistentPasswords" time="0.057" />
+
+      <testcase classname="se.qbranch.qanban.UserEventCreateTests" name="testCreateWithoutPasswords" time="0.057" />
+
+      <system-out><![CDATA[--Output from testCreatingAUser--
+--Output from testCreatingAUserFromAUserObj--
+--Output from testCreatingAUserWithPass--
+--Output from testCreateWithInconsistentPasswords--
+--Output from testCreateWithoutPasswords--
+]]></system-out>
+
+      <system-err><![CDATA[--Output from testCreatingAUser--
+--Output from testCreatingAUserFromAUserObj--
+--Output from testCreatingAUserWithPass--
+--Output from testCreateWithInconsistentPasswords--
+--Output from testCreateWithoutPasswords--
+]]></system-err>
+
+  </testsuite>
+</testsuites>

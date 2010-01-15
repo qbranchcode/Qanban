@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="qb-trollgrottan" name="se.qbranch.qanban.UserEventCreateTests" tests="5" time="0.496" timestamp="2010-01-15T10:00:09">
+  <properties />
+  <testcase classname="se.qbranch.qanban.UserEventCreateTests" name="testCreatingAUser" time="0.235" />
+  <testcase classname="se.qbranch.qanban.UserEventCreateTests" name="testCreatingAUserFromAUserObj" time="0.092" />
+  <testcase classname="se.qbranch.qanban.UserEventCreateTests" name="testCreatingAUserWithPass" time="0.053" />
+  <testcase classname="se.qbranch.qanban.UserEventCreateTests" name="testCreateWithInconsistentPasswords" time="0.057" />
+  <testcase classname="se.qbranch.qanban.UserEventCreateTests" name="testCreateWithoutPasswords" time="0.057" />
+  <system-out><![CDATA[--Output from testCreatingAUser--
+--Output from testCreatingAUserFromAUserObj--
+--Output from testCreatingAUserWithPass--
+--Output from testCreateWithInconsistentPasswords--
+--Output from testCreateWithoutPasswords--
+]]></system-out>
+  <system-err><![CDATA[--Output from testCreatingAUser--
+--Output from testCreatingAUserFromAUserObj--
+--Output from testCreatingAUserWithPass--
+--Output from testCreateWithInconsistentPasswords--
+--Output from testCreateWithoutPasswords--
+]]></system-err>
+</testsuite>

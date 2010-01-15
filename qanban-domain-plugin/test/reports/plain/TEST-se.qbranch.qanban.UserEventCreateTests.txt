@@ -1,0 +1,22 @@
+Testsuite: se.qbranch.qanban.UserEventCreateTests
+Tests run: 5, Failures: 0, Errors: 0, Time elapsed: 0.496 sec
+------------- Standard Output ---------------
+--Output from testCreatingAUser--
+--Output from testCreatingAUserFromAUserObj--
+--Output from testCreatingAUserWithPass--
+--Output from testCreateWithInconsistentPasswords--
+--Output from testCreateWithoutPasswords--
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from testCreatingAUser--
+--Output from testCreatingAUserFromAUserObj--
+--Output from testCreatingAUserWithPass--
+--Output from testCreateWithInconsistentPasswords--
+--Output from testCreateWithoutPasswords--
+------------- ---------------- ---------------
+
+Testcase: testCreatingAUser took 0.235 sec
+Testcase: testCreatingAUserFromAUserObj took 0.092 sec
+Testcase: testCreatingAUserWithPass took 0.053 sec
+Testcase: testCreateWithInconsistentPasswords took 0.057 sec
+Testcase: testCreateWithoutPasswords took 0.057 sec

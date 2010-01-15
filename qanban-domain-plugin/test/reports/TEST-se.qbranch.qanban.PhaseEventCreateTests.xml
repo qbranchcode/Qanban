@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="qb-trollgrottan" name="se.qbranch.qanban.PhaseEventCreateTests" tests="3" time="1.094" timestamp="2010-01-15T10:00:05">
+  <properties />
+  <testcase classname="se.qbranch.qanban.PhaseEventCreateTests" name="testCreatingAValidPhase" time="0.279" />
+  <testcase classname="se.qbranch.qanban.PhaseEventCreateTests" name="testCreatingPhaseWithoudPosition" time="0.491" />
+  <testcase classname="se.qbranch.qanban.PhaseEventCreateTests" name="testCreatingAPhaseWithLiteralsAsLimit" time="0.324" />
+  <system-out><![CDATA[--Output from testCreatingAValidPhase--
+--Output from testCreatingPhaseWithoudPosition--
+--Output from testCreatingAPhaseWithLiteralsAsLimit--
+limit with literals - null
+]]></system-out>
+  <system-err><![CDATA[--Output from testCreatingAValidPhase--
+--Output from testCreatingPhaseWithoudPosition--
+--Output from testCreatingAPhaseWithLiteralsAsLimit--
+]]></system-err>
+</testsuite>

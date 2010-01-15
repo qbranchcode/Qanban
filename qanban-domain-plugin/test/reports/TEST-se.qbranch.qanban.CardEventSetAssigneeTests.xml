@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="qb-trollgrottan" name="se.qbranch.qanban.CardEventSetAssigneeTests" tests="1" time="0.23" timestamp="2010-01-15T10:00:07">
+  <properties />
+  <testcase classname="se.qbranch.qanban.CardEventSetAssigneeTests" name="testSetAndUnsetAssignee" time="0.23" />
+  <system-out><![CDATA[--Output from testSetAndUnsetAssignee--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+]]></system-out>
+  <system-err><![CDATA[--Output from testSetAndUnsetAssignee--
+]]></system-err>
+</testsuite>

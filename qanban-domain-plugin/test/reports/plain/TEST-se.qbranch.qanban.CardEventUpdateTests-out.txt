@@ -1,0 +1,15 @@
+--Output from testSuccessfulUpdating--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+--Output from testUnsuccessfulUpdateWidhoutCaseNumber--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+Field error in object 'se.qbranch.qanban.CardEventUpdate' on field 'caseNumber': rejected value [null]; codes [se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.error.se.qbranch.qanban.CardEventUpdate.caseNumber,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.error.caseNumber,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.error.java.lang.String,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.error,cardEventUpdate.caseNumber.nullable.error.se.qbranch.qanban.CardEventUpdate.caseNumber,cardEventUpdate.caseNumber.nullable.error.caseNumber,cardEventUpdate.caseNumber.nullable.error.java.lang.String,cardEventUpdate.caseNumber.nullable.error,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.se.qbranch.qanban.CardEventUpdate.caseNumber,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.caseNumber,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable.java.lang.String,se.qbranch.qanban.CardEventUpdate.caseNumber.nullable,cardEventUpdate.caseNumber.nullable.se.qbranch.qanban.CardEventUpdate.caseNumber,cardEventUpdate.caseNumber.nullable.caseNumber,cardEventUpdate.caseNumber.nullable.java.lang.String,cardEventUpdate.caseNumber.nullable,nullable.se.qbranch.qanban.CardEventUpdate.caseNumber,nullable.caseNumber,nullable.java.lang.String,nullable]; arguments [caseNumber,class se.qbranch.qanban.CardEventUpdate]; default message [Property [{0}] of class [{1}] cannot be null]

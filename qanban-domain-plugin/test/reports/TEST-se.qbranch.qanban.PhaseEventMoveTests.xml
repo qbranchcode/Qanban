@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="qb-trollgrottan" name="se.qbranch.qanban.PhaseEventMoveTests" tests="1" time="2.401" timestamp="2010-01-15T10:00:03">
+  <properties />
+  <testcase classname="se.qbranch.qanban.PhaseEventMoveTests" name="testLegalMoveOfFirstPhaseToNextIndex" time="2.4" />
+  <system-out><![CDATA[--Output from testLegalMoveOfFirstPhaseToNextIndex--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+]]></system-out>
+  <system-err><![CDATA[--Output from testLegalMoveOfFirstPhaseToNextIndex--
+]]></system-err>
+</testsuite>

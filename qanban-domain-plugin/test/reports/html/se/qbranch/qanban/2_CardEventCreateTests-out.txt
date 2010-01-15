@@ -1,0 +1,18 @@
+--Output from testCreateingValidEvent--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+c90fd479c1f29370da16848db2eb7cbf
+--Output from testCreateingInvalidEventWithoutCaseNo--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+Field error in object 'se.qbranch.qanban.CardEventCreate' on field 'caseNumber': rejected value [null]; codes [se.qbranch.qanban.CardEventCreate.caseNumber.nullable.error.se.qbranch.qanban.CardEventCreate.caseNumber,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.error.caseNumber,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.error.java.lang.String,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.error,cardEventCreate.caseNumber.nullable.error.se.qbranch.qanban.CardEventCreate.caseNumber,cardEventCreate.caseNumber.nullable.error.caseNumber,cardEventCreate.caseNumber.nullable.error.java.lang.String,cardEventCreate.caseNumber.nullable.error,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.se.qbranch.qanban.CardEventCreate.caseNumber,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.caseNumber,se.qbranch.qanban.CardEventCreate.caseNumber.nullable.java.lang.String,se.qbranch.qanban.CardEventCreate.caseNumber.nullable,cardEventCreate.caseNumber.nullable.se.qbranch.qanban.CardEventCreate.caseNumber,cardEventCreate.caseNumber.nullable.caseNumber,cardEventCreate.caseNumber.nullable.java.lang.String,cardEventCreate.caseNumber.nullable,nullable.se.qbranch.qanban.CardEventCreate.caseNumber,nullable.caseNumber,nullable.java.lang.String,nullable]; arguments [caseNumber,class se.qbranch.qanban.CardEventCreate]; default message [Property [{0}] of class [{1}] cannot be null]
+4e0ab1fd11f8b0bf50dcd9e276fb970d
+

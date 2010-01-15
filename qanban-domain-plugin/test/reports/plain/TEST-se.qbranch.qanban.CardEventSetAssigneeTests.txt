@@ -1,0 +1,16 @@
+Testsuite: se.qbranch.qanban.CardEventSetAssigneeTests
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.23 sec
+------------- Standard Output ---------------
+--Output from testSetAndUnsetAssignee--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from testSetAndUnsetAssignee--
+------------- ---------------- ---------------
+
+Testcase: testSetAndUnsetAssignee took 0.23 sec

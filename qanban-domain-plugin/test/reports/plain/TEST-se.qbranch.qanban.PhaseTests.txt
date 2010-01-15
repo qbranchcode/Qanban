@@ -1,0 +1,17 @@
+Testsuite: se.qbranch.qanban.PhaseTests
+Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 0.162 sec
+------------- Standard Output ---------------
+--Output from testCreatePhase--
+--Output from testPhaseWithCard--
+--Output from testCreatingAPhaseWithLiteralCardLimit--
+Field error in object 'se.qbranch.qanban.Phase' on field 'cardLimit': rejected value [null]; codes [se.qbranch.qanban.Phase.cardLimit.nullable.error.se.qbranch.qanban.Phase.cardLimit,se.qbranch.qanban.Phase.cardLimit.nullable.error.cardLimit,se.qbranch.qanban.Phase.cardLimit.nullable.error.java.lang.Integer,se.qbranch.qanban.Phase.cardLimit.nullable.error,phase.cardLimit.nullable.error.se.qbranch.qanban.Phase.cardLimit,phase.cardLimit.nullable.error.cardLimit,phase.cardLimit.nullable.error.java.lang.Integer,phase.cardLimit.nullable.error,se.qbranch.qanban.Phase.cardLimit.nullable.se.qbranch.qanban.Phase.cardLimit,se.qbranch.qanban.Phase.cardLimit.nullable.cardLimit,se.qbranch.qanban.Phase.cardLimit.nullable.java.lang.Integer,se.qbranch.qanban.Phase.cardLimit.nullable,phase.cardLimit.nullable.se.qbranch.qanban.Phase.cardLimit,phase.cardLimit.nullable.cardLimit,phase.cardLimit.nullable.java.lang.Integer,phase.cardLimit.nullable,nullable.se.qbranch.qanban.Phase.cardLimit,nullable.cardLimit,nullable.java.lang.Integer,nullable]; arguments [cardLimit,class se.qbranch.qanban.Phase]; default message [Property [{0}] of class [{1}] cannot be null]
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from testCreatePhase--
+--Output from testPhaseWithCard--
+--Output from testCreatingAPhaseWithLiteralCardLimit--
+------------- ---------------- ---------------
+
+Testcase: testCreatePhase took 0.036 sec
+Testcase: testPhaseWithCard took 0.094 sec
+Testcase: testCreatingAPhaseWithLiteralCardLimit took 0.032 sec

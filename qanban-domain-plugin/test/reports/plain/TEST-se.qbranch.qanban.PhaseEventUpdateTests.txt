@@ -1,0 +1,16 @@
+Testsuite: se.qbranch.qanban.PhaseEventUpdateTests
+Tests run: 1, Failures: 0, Errors: 0, Time elapsed: 0.199 sec
+------------- Standard Output ---------------
+--Output from testSomething--
+First phase
+   Card #1
+   Card #2
+Second phase
+   Card #3
+Third phase
+------------- ---------------- ---------------
+------------- Standard Error -----------------
+--Output from testSomething--
+------------- ---------------- ---------------
+
+Testcase: testSomething took 0.199 sec
