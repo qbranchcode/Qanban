@@ -1,4 +1,244 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<databaseChangeLog
-    xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd"/>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog/1.9" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog/1.9 http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-1.9.xsd">
+    <changeSet author="mattias (generated)" id="1263567198746-1">
+        <createTable schemaName="PUBLIC" tableName="BOARD">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_IDX_212"/>
+            </column>
+            <column name="VERSION" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATE_CREATED" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DOMAIN_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_UPDATED" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-2">
+        <createTable schemaName="PUBLIC" tableName="CARD">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_IDX_217"/>
+            </column>
+            <column name="VERSION" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ASSIGNEE_ID" type="BIGINT"/>
+            <column name="CASE_NUMBER" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATE_CREATED" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="LONGVARCHAR"/>
+            <column name="DOMAIN_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_UPDATED" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PHASE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CARDS_IDX" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-3">
+        <createTable schemaName="PUBLIC" tableName="EVENT">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_IDX_221"/>
+            </column>
+            <column name="VERSION" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATE_CREATED" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DOMAIN_ID" type="VARCHAR(255)"/>
+            <column name="USER_DOMAIN_ID" type="VARCHAR(255)"/>
+            <column name="CLASS" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BOARD_DOMAIN_ID" type="VARCHAR(255)"/>
+            <column name="CARD_LIMIT" type="INTEGER"/>
+            <column name="PHASE_POS" type="INTEGER"/>
+            <column name="TITLE" type="VARCHAR(255)"/>
+            <column name="ASSIGNEE_ID" type="BIGINT"/>
+            <column name="CASE_NUMBER" type="VARCHAR(255)"/>
+            <column name="DESCRIPTION" type="LONGVARCHAR"/>
+            <column name="PHASE_DOMAIN_ID" type="VARCHAR(255)"/>
+            <column name="NEW_ASSIGNEE_ID" type="BIGINT"/>
+            <column name="NEW_CARD_INDEX" type="INTEGER"/>
+            <column name="EMAIL" type="VARCHAR(255)"/>
+            <column name="EMAIL_SHOW" type="BOOLEAN"/>
+            <column name="ENABLED" type="BOOLEAN"/>
+            <column name="PASSWD" type="VARCHAR(255)"/>
+            <column name="USER_REAL_NAME" type="VARCHAR(255)"/>
+            <column name="USERNAME" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-4">
+        <createTable schemaName="PUBLIC" tableName="PHASE">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_IDX_225"/>
+            </column>
+            <column name="VERSION" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="BOARD_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="CARD_LIMIT" type="INTEGER">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DATE_CREATED" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DOMAIN_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="LAST_UPDATED" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="TITLE" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PHASES_IDX" type="INTEGER"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-5">
+        <createTable schemaName="PUBLIC" tableName="ROLE">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_IDX_230"/>
+            </column>
+            <column name="VERSION" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="AUTHORITY" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-6">
+        <createTable schemaName="PUBLIC" tableName="ROLE_PEOPLE">
+            <column name="ROLE_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_ID" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-7">
+        <createTable schemaName="PUBLIC" tableName="USER">
+            <column autoIncrement="true" name="ID" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="SYS_IDX_237"/>
+            </column>
+            <column name="VERSION" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DESCRIPTION" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="DOMAIN_ID" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="EMAIL_SHOW" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ENABLED" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+            <column name="PASSWD" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USER_REAL_NAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="USERNAME" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-8">
+        <addPrimaryKey columnNames="ROLE_ID, USER_ID" constraintName="SYS_IDX_233" schemaName="PUBLIC" tableName="ROLE_PEOPLE"/>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-9">
+        <createIndex indexName="SYS_IDX_SYS_CT_210_214" schemaName="PUBLIC" tableName="BOARD" unique="true">
+            <column name="TITLE"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-10">
+        <createIndex indexName="SYS_IDX_SYS_CT_211_215" schemaName="PUBLIC" tableName="BOARD" unique="true">
+            <column name="DOMAIN_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-11">
+        <createIndex indexName="SYS_IDX_SYS_CT_216_219" schemaName="PUBLIC" tableName="CARD" unique="true">
+            <column name="DOMAIN_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-12">
+        <createIndex indexName="SYS_IDX_SYS_CT_220_223" schemaName="PUBLIC" tableName="EVENT" unique="true">
+            <column name="USERNAME"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-13">
+        <createIndex indexName="SYS_IDX_SYS_CT_224_227" schemaName="PUBLIC" tableName="PHASE" unique="true">
+            <column name="DOMAIN_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-14">
+        <createIndex indexName="SYS_IDX_SYS_CT_228_232" schemaName="PUBLIC" tableName="ROLE" unique="true">
+            <column name="AUTHORITY"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-15">
+        <createIndex indexName="SYS_IDX_SYS_CT_234_239" schemaName="PUBLIC" tableName="USER" unique="true">
+            <column name="USERNAME"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-16">
+        <createIndex indexName="SYS_IDX_SYS_CT_235_240" schemaName="PUBLIC" tableName="USER" unique="true">
+            <column name="DOMAIN_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-17">
+        <addForeignKeyConstraint baseColumnNames="ASSIGNEE_ID" baseTableName="CARD" baseTableSchemaName="PUBLIC" constraintName="FK2E7B10A182F89C" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="USER" referencedTableSchemaName="PUBLIC"/>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-18">
+        <addForeignKeyConstraint baseColumnNames="PHASE_ID" baseTableName="CARD" baseTableSchemaName="PUBLIC" constraintName="FK2E7B1097EEF554" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="PHASE" referencedTableSchemaName="PUBLIC"/>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-19">
+        <addForeignKeyConstraint baseColumnNames="ASSIGNEE_ID" baseTableName="EVENT" baseTableSchemaName="PUBLIC" constraintName="FK5C6729AA182F89C" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="USER" referencedTableSchemaName="PUBLIC"/>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-20">
+        <addForeignKeyConstraint baseColumnNames="NEW_ASSIGNEE_ID" baseTableName="EVENT" baseTableSchemaName="PUBLIC" constraintName="FK5C6729A141F907D" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="USER" referencedTableSchemaName="PUBLIC"/>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-21">
+        <addForeignKeyConstraint baseColumnNames="BOARD_ID" baseTableName="PHASE" baseTableSchemaName="PUBLIC" constraintName="FK65B097B5B197974" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="BOARD" referencedTableSchemaName="PUBLIC"/>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-22">
+        <addForeignKeyConstraint baseColumnNames="ROLE_ID" baseTableName="ROLE_PEOPLE" baseTableSchemaName="PUBLIC" constraintName="FK28B75E788BBEC540" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="ROLE" referencedTableSchemaName="PUBLIC"/>
+    </changeSet>
+    <changeSet author="mattias (generated)" id="1263567198746-23">
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="ROLE_PEOPLE" baseTableSchemaName="PUBLIC" constraintName="FK28B75E7830E98920" deferrable="false" initiallyDeferred="false" referencedColumnNames="ID" referencedTableName="USER" referencedTableSchemaName="PUBLIC"/>
+    </changeSet>
+</databaseChangeLog>
+
