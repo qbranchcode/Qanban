@@ -26,7 +26,8 @@
   </g:hasErrors>
 
   <g:formRemote url="[controller:'phase',action:'update',params: [format: 'html']]" update="editPhaseDialog" name="phaseForm"
-                onSuccess="jQuery('#editPhaseDialog').qRefreshDialog({formData:data,url:resources.phaseShowURL,indexSelector:'[name=phasePos]',successTitle:'Success',successMessage:'Phase successfully updated'})">
+                onSuccess="jQuery('#editPhaseDialog').qRefreshDialog({formData:data,url:resources.phaseShowURL,indexSelector:'[name=phasePos]',successTitle:'Success',successMessage:'Phase successfully updated'})"
+                onLoading="jQuery.toggleSpinner()" onComplete="jQuery.toggleSpinner()">
 
     <div class="content">
 
@@ -93,7 +94,8 @@
   </g:hasErrors>
   
   <g:formRemote url="[controller:'phase',action:'create',params: [format: 'html']]" update="createPhaseDialog" name="phaseForm"
-                onSuccess="jQuery('#createPhaseDialog').qRefreshDialog({formData:data,url:resources.phaseShowURL,indexSelector:'[name=phasePos]'})">
+                onSuccess="jQuery('#createPhaseDialog').qRefreshDialog({formData:data,url:resources.phaseShowURL,indexSelector:'[name=phasePos]'})"
+                onLoading="jQuery.toggleSpinner()" onComplete="jQuery.toggleSpinner()">
 
     <div class="content">
 
@@ -143,7 +145,3 @@
   </g:formRemote>
 
 </g:elseif>
-
-
-
-

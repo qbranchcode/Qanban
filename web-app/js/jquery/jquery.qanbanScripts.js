@@ -179,6 +179,7 @@
                 enableCardForm(settings.dialog,settings.resources.cardEditDialogTitle);
                 dialogBtns[settings.resources.cardFormUpdateBtn] = function(){
                     settings.dialog.find('input[type="submit"]').click();
+                    jQuery.toggleSpinner();
                 };
 
                 if( settings.admin ){
@@ -1364,15 +1365,15 @@
                     defaults.append ? $element.append(data) : $element.html(data);
                 }
             },
-            complete: function(){toggleSpinner(); }
+            complete: function(){$.toggleSpinner(); }
         };
 
         var settings = $.extend(defaults, options);
 
         if( options.completeCallback ){
-            settings.complete = function() { options.completeCallback(); toggleSpinner(); };
+            settings.complete = function() { options.completeCallback(); $.toggleSpinner(); };
         }
-        toggleSpinner();
+        $.toggleSpinner();
         $.ajax(settings);
 
     };
@@ -1386,7 +1387,7 @@
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 if( XMLHttpRequest.status == 0 ){
                     if( defaults.tries > 3 ){
-                        toggleSpinner();
+                        $.toggleSpinner();
                         showServerDownMesg( defaults.tries );
                     } else {
                         defaults.tries = defaults.tries + 1;
@@ -1394,12 +1395,12 @@
                     }
                 }
                 if( defaults.errorCallback ){
-                    toggleSpinner();
+                    $.toggleSpinner();
                     defaults.errorCallback(XMLHttpRequest, textStatus, errorThrown);
                 }
             },
             success: function(data, textStatus){
-                toggleSpinner();
+                $.toggleSpinner();
                 var fail = data.indexOf('<html>') != -1;
                 if( fail ) {
                     showSessionTimeoutMesg();
@@ -1412,7 +1413,7 @@
         };
 
         var settings = $.extend(defaults,options);
-        toggleSpinner();
+        $.toggleSpinner();
         $.ajax(settings);
 
     };
@@ -1425,7 +1426,7 @@
             error: function(XMLHttpRequest, textStatus, errorThrown){
                 if( XMLHttpRequest.status == 0 ){
                     if( defaults.tries > 3 ){
-                        toggleSpinner();
+                        $.toggleSpinner();
                         showServerDownMesg( defaults.tries );
                     } else {
                         defaults.tries = defaults.tries + 1;
@@ -1437,7 +1438,7 @@
                 }
             },
             success: function(data, textStatus){
-                toggleSpinner();
+                $.toggleSpinner();
                 var fail = data.indexOf('<html>') != -1;
                 if( fail ) {
                     showSessionTimeoutMesg();
@@ -1450,7 +1451,7 @@
         };
 
         var settings = $.extend(defaults,options);
-        toggleSpinner();
+        $.toggleSpinner();
         $.ajax(settings);
 
     };
@@ -1507,7 +1508,7 @@
         }
     }
 
-    function toggleSpinner(){
+    $.toggleSpinner = function(){
         // TODO: Set a delay for showing the spinner?
         if( !$('#spinner').length ){
             $('<div id="spinner"><img src="'+resources.spinnerImg+'"/></div>').appendTo($('body'));

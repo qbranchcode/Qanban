@@ -24,7 +24,8 @@
 
   <g:formRemote url="[controller:'card',action:'move']"
                 update="moveCardDialog" name="cardForm"
-                onSuccess="jQuery('#moveCardDialog').qRefreshDialog({formData:data,url:resources.cardShowURL})" >
+                onSuccess="jQuery('#moveCardDialog').qRefreshDialog({formData:data,url:resources.cardShowURL})"
+                onLoading="jQuery.toggleSpinner()" onComplete="jQuery.toggleSpinner()">
 
     <div class="header">
 
@@ -116,7 +117,8 @@
 
   <g:formRemote url="[controller:'card',action:'update', params: [format: 'html']]"
                 update="editCardDialog" name="cardForm"
-                onSuccess="jQuery('#editCardDialog').qRefreshDialog({formData:data,successTitle:'Success',successMessage:'Card successfully updated',url:resources.cardShowURL})">
+                onSuccess="jQuery('#editCardDialog').qRefreshDialog({formData:data,successTitle:'Success',successMessage:'Card successfully updated',url:resources.cardShowURL})"
+                onLoading="jQuery.toggleSpinner()" onComplete="jQuery.toggleSpinner()">
 
     <div class="header">
 
@@ -220,7 +222,8 @@
   <g:formRemote url="${[controller:'card',action:'create', params: [format: 'html']]}"
                 update="createCardDialog" name="cardForm"
                 onSuccess="jQuery('#createCardDialog').qRefreshDialog({formData:data,url:resources.cardShowURL, errorCallback: jQuery.qInitAssigneeSelector })"
-                before="if(\$('[name=title]').val() == 'Title...          ') \$('[name=title]').val('');">
+                before="if(\$('[name=title]').val() == 'Title...          ') \$('[name=title]').val('');"
+                onLoading="jQuery.toggleSpinner()" onComplete="jQuery.toggleSpinner()">
 
     <div class="header">
 	<div class="dropdownContainer assignee">
