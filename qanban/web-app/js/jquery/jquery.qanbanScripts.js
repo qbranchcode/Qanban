@@ -1308,13 +1308,15 @@
     }
 
     function replacePhase($phase, index){
-        var $archiveBtn = $phase.prev().find('#archiveBtn');
-                          window.console.log($phase.attr('id'));
-        if( $archiveBtn.length ){
-            $('.tab[href*=showArchive]').html($('h3',$phase).html());    
-        }
 
         replaceObject($phase);
+
+        var $archiveBtn = $phase.prev().find('#archiveBtn');
+                          
+        if( $archiveBtn.length ){
+            $('.tab[href*=showArchive]').html($('h3',$phase).html());
+        }
+
         var oldIndex = parseInt($phase.prevAll().size());
         var $elementAtDestination = $('.phaseWrapper').eq(index);
 
