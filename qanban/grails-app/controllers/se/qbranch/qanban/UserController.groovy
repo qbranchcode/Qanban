@@ -98,7 +98,10 @@ class UserController {
     render(template:'onlineUsers',model:[onlineUsers:onlineUsers])
   }
 
-
+  @Secured(['IS_AUTHENTICATED_FULLY'])
+  def passForm = {
+    render(template:'passwordForm', model: [id:params.id])
+  }
 
   /**
    * Person delete action. Before removing an existing person,

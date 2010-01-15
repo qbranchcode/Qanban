@@ -55,6 +55,10 @@ resources.cardDeleteErrorMsg = '<g:message code="mainView.jQuery.dialog.errorDel
 //User
 resources.userEditDialogTitle = '<g:message code="mainView.jQuery.dialog.editUserForm.title"/>';
 
+resources.userFormUpdateBtn = 'i18n: update';
+resources.userFormPasswordBtn = 'i18n: passwd';
+
+
 /********/
 /* URLs */
 /********/
@@ -65,7 +69,7 @@ resources.indexURL = '${createLink(controller:"mainView")}';
 
 //User
 resources.userDialogURL = '${createLink(controller:"user",action:"show")}';
-
+resources.passwordDialogURL = '${createLink(controller:"user",action:"passForm")}';
 
 //Board
 resources.boardShowURL = '${createLink(controller:"mainView",action:"showBoard")}';
@@ -93,6 +97,7 @@ resources.logDefaultSort = 'dateCreated';
 resources.archiveContentURL = '${createLink(controller:'mainView',action:'showArchiveBody',params:['sort':'lastUpdated'])}';
 resources.archiveDefaultOrder = 'desc';
 resources.archiveDefaultSort = 'dateCreated';
+
 
 /**********/
 /* Images */

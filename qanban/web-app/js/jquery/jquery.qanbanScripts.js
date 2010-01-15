@@ -727,10 +727,22 @@
         var defaults = {
             dialog: $editUserDialog,
             resources: resources
-        }
+        };
 
         var settings = $.extend(defaults, options);
 
+        var buttons = {};
+
+        buttons[settings.resources.userFormUpdateBtn] = function(){
+            settings.dialog.find('input[type="submit"]').click();
+        };
+
+        buttons[settings.resources.userFormPasswordBtn] = function(){
+            showPasswordDialog(userId, settings);
+        };
+
+        settings.dialog.dialog('option','buttons', buttons);
+        
         var dialogLoader = function(n){
             settings.dialog.qLoad({
                 tries: n,
@@ -743,8 +755,31 @@
             });
         }
 
-        dialogLoader();
+        dialogLoader(null);
 
+    }
+
+    function showPasswordDialog(userId, options){
+        var defaults = {
+            pwdialog: $changePasswordDialog,
+            resources: resources
+        };
+
+        var settings = $.extend(defaults, options );
+
+        var dialogLoader = function(n){
+            settings.pwdialog.qLoad({
+                tries: n,
+                caller: dialogLoader,
+                url: settings.resources.passwordDialogURL,
+                data: {'id':userId},
+                successCallback: function(){
+                    settings.pwdialog.dialog('open');
+                }
+            });
+        }
+
+        dialogLoader(null);
     }
 
         
@@ -899,7 +934,7 @@
 
                             ui.draggable.hide();
 
-                            archiveCall();
+                            archiveCall(null);
                             
                             ui.draggable.data('caught',true);
 
@@ -927,7 +962,7 @@
                 });
                 break;
             default:
-                throw "Invalid mode: " + settings.rule + ". Available modes is: 'rulesMode.hard' (default) and 'rulesMode.soft'"
+                throw "Invalid mode: " + settings.rule + ". Available modes is: 'rulesMode.hard' (default) and 'rulesMode.soft'";
         }
 
     }
@@ -1080,9 +1115,9 @@
                     $.qInitAssigneeSelector($dialog);
                 }
             });
-        }
+        };
 
-        dialogLoader();
+        dialogLoader(null);
 
     }
 
@@ -1100,7 +1135,7 @@
                 caller: sortCaller
             });
         };
-        sortCaller();
+        sortCaller(null);
 
     }
 
@@ -1131,7 +1166,7 @@
             id: $card.attr('id'),
             phase: $card.parent().attr('id'),
             position: $card.prevAll().length - 1 // Compensate for the cardSpacer elem.
-        }
+        };
     }
 
 })(jQuery);
@@ -1157,7 +1192,7 @@
             var $obj = $(obj);
 
             if( $obj.parent().parent().length != 0 )
-                throw "Can't inject a element thats already in the DOM tree"
+                throw "Can't inject a element thats already in the DOM tree";
 
             var objectType = $obj.attr('id').split('_')[0];
 
@@ -1273,9 +1308,9 @@
     }
 
     function replacePhase($phase, index){
-        var $archiveBtn = $('#' + $phase.attr('id')).find('#archiveBtn')
-
-        if( $archiveBtn ){
+        var $archiveBtn = $phase.prev().find('#archiveBtn');
+                          window.console.log($phase.attr('id'));
+        if( $archiveBtn.length ){
             $('.tab[href*=showArchive]').html($('h3',$phase).html());    
         }
 
@@ -1538,7 +1573,7 @@
             autoOpen: false,
             modal: true,
             close: function(){ $(this).empty(); }
-        }
+        };
 
         if( options.close ){
             var closeFunction = options.close;
@@ -1578,7 +1613,7 @@
                         closeDialog($dialog,settings);
                     }
 
-                }
+                };
                 $.qGet(options);
             }
             objectFetcher();
@@ -1595,12 +1630,12 @@
         if( $indexField.size() == 1 ){
             return $indexField.val();
         }else{
-            throw 'Could not find the specified value!'
+            throw 'Could not find the specified value!';
         }
     }
 
     function hasErrors($dialog){
-        return $dialog.find('.errors').size() > 0
+        return $dialog.find('.errors').size() > 0;
     }
 
     //successTitle,successMessage
@@ -1626,7 +1661,7 @@
                     setTimeout(function(){$('#popup').dialog('close').remove()},1250);
                 },
                 buttons: buttons
-            })
+            });
         }
     }
 
