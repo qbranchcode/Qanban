@@ -4,7 +4,7 @@ class QanbanDomainGrailsPlugin {
     // the version or versions of Grails the plugin is designed for
     def grailsVersion = "1.1.1 > *"
     // the other plugins this plugin depends on
-    def dependsOn = [acegi:"* > 0.5.2", hibernate:"1.1.1",'code-coverage':"* > 1.1.7"]
+    def dependsOn = [acegi:"* > 0.5.2", hibernate:"1.1.1"]
     // resources that are excluded from plugin packaging
     def pluginExcludes = [
             "grails-app/views/error.gsp"
