@@ -17,8 +17,6 @@ qanban/devDB.*
 qanban/devDb.*
 *.ipr
 *.iws
-*.iml
-.idea
 qanban-domain-plugin/stacktrace.log
 qanban-domain-plugin/*.iml
 qanban-domain-plugin/*.ipr
@@ -26,3 +24,4 @@ qanban-domain-plugin/*.iws
 qanban-domain-plugin/.idea
 qanban-domain-plugin/cobertura.ser
 qanban-domain-plugin/test/reports/
+
