@@ -131,10 +131,8 @@ class UserEventUpdateTests extends GrailsUnitTestCase {
 
     updateEvent.populateFromUser()
 
-    assertNull "the password should not have been transfered from the user object", updateEvent.passwd
-    
     updateEvent.email = 'apa@apa.se'
-    updateEvent.passwd = 'asdd'
+    updateEvent.passwdRepeat = 'asdd'
 
     assertEquals user1.username, updateEvent.username
     assertEquals user1.userRealName, updateEvent.userRealName
@@ -152,14 +150,12 @@ class UserEventUpdateTests extends GrailsUnitTestCase {
 
     updateEvent.populateFromUser()
 
-    assertNull "the password should not have been transfered from the user object", updateEvent.passwd
-
     updateEvent.email = 'apa@apa.se'
 
     assertEquals user1.username, updateEvent.username
     assertEquals user1.userRealName, updateEvent.userRealName
     assertFalse "The validation should fail", updateEvent.validate();
-    assertEquals "nullable", updateEvent.errors['passwd']
+    assertEquals "userEventUpdate.authentication.password.missmatch", updateEvent.errors['passwd']
 
 
   }
@@ -173,7 +169,7 @@ class UserEventUpdateTests extends GrailsUnitTestCase {
 
     updateEvent.populateFromUser()
     updateEvent.email = 'apa@apa.se'
-    updateEvent.passwd = 'asd'
+    updateEvent.passwdRepeat = 'asd'
     updateEvent.newPasswd = '123'
     updateEvent.newPasswdRepeat = '321'
 
@@ -192,7 +188,7 @@ class UserEventUpdateTests extends GrailsUnitTestCase {
 
     updateEvent.populateFromUser()
     updateEvent.email = 'apa@apa.se'
-    updateEvent.passwd = 'asd'
+    updateEvent.passwdRepeat = 'asd'
     updateEvent.newPasswd = '123'
     updateEvent.newPasswdRepeat = '123'
 
