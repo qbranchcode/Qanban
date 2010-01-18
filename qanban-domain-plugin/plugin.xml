@@ -7,30 +7,31 @@ This plugin hold the domain model for the Qanban application
 </description>
   <documentation>http://grails.org/QanbanDomain+Plugin</documentation>
   <resources>
-    <resource>se.qbranch.qanban.PhaseEventCreate</resource>
-    <resource>se.qbranch.qanban.Card</resource>
-    <resource>se.qbranch.qanban.PhaseEvent</resource>
-    <resource>se.qbranch.qanban.CardEventUpdate</resource>
-    <resource>se.qbranch.qanban.CardEventDelete</resource>
-    <resource>se.qbranch.qanban.CardEventMove</resource>
-    <resource>se.qbranch.qanban.Event</resource>
-    <resource>se.qbranch.qanban.Phase</resource>
-    <resource>se.qbranch.qanban.PhaseEventUpdate</resource>
-    <resource>se.qbranch.qanban.Board</resource>
-    <resource>se.qbranch.qanban.UserEvent</resource>
-    <resource>se.qbranch.qanban.BoardEvent</resource>
-    <resource>se.qbranch.qanban.BoardEventCreate</resource>
-    <resource>se.qbranch.qanban.Role</resource>
-    <resource>se.qbranch.qanban.CardEventCreate</resource>
-    <resource>se.qbranch.qanban.CardEvent</resource>
-    <resource>se.qbranch.qanban.UserEventCreate</resource>
-    <resource>se.qbranch.qanban.PhaseEventMove</resource>
-    <resource>se.qbranch.qanban.PhaseEventDelete</resource>
-    <resource>se.qbranch.qanban.User</resource>
-    <resource>se.qbranch.qanban.CardEventSetAssignee</resource>
-    <resource>se.qbranch.qanban.EventService</resource>
-    <resource>UrlMappings</resource>
     <resource>DataSource</resource>
+    <resource>UrlMappings</resource>
+    <resource>se.qbranch.qanban.EventService</resource>
+    <resource>se.qbranch.qanban.Card</resource>
+    <resource>se.qbranch.qanban.PhaseEventUpdate</resource>
+    <resource>se.qbranch.qanban.UserEventUpdate</resource>
+    <resource>se.qbranch.qanban.CardEventUpdate</resource>
+    <resource>se.qbranch.qanban.BoardEvent</resource>
+    <resource>se.qbranch.qanban.Phase</resource>
+    <resource>se.qbranch.qanban.CardEvent</resource>
+    <resource>se.qbranch.qanban.CardEventMove</resource>
+    <resource>se.qbranch.qanban.PhaseEventCreate</resource>
+    <resource>se.qbranch.qanban.User</resource>
+    <resource>se.qbranch.qanban.Role</resource>
+    <resource>se.qbranch.qanban.Event</resource>
+    <resource>se.qbranch.qanban.Board</resource>
+    <resource>se.qbranch.qanban.BoardEventCreate</resource>
+    <resource>se.qbranch.qanban.PhaseEventDelete</resource>
+    <resource>se.qbranch.qanban.CardEventSetAssignee</resource>
+    <resource>se.qbranch.qanban.CardEventCreate</resource>
+    <resource>se.qbranch.qanban.UserEvent</resource>
+    <resource>se.qbranch.qanban.PhaseEvent</resource>
+    <resource>se.qbranch.qanban.UserEventCreate</resource>
+    <resource>se.qbranch.qanban.CardEventDelete</resource>
+    <resource>se.qbranch.qanban.PhaseEventMove</resource>
   </resources>
   <dependencies>
     <plugin name='acegi' version='* &gt; 0.5.2' />

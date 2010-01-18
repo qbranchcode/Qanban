@@ -27,7 +27,7 @@ class UserEventUpdate extends UserEvent{
     enabled( nullable: true )
     emailShow( nullable: true )
     passwd( nullable: false, blank: false, validator: { val, obj ->
-      if( obj.authenticateService.encodePassword(val) != obj.user.passwd ){
+      if( obj.authenticateService.encodePassword(obj.passwdRepeat) != val ){
         return['userEventUpdate.authentication.password.missmatch']
       }else if( obj.newPasswd || obj.newPasswdRepeat ){
           if( obj.newPasswd != obj.newPasswdRepeat ){
@@ -37,7 +37,7 @@ class UserEventUpdate extends UserEvent{
     })
   }
 
-  static transients = ['items','newPasswd','newPasswdRepeat']
+  static transients = ['items','newPasswd','newPasswdRepeat','passwdRepeat']
 
   static mapping = {
     columns {
@@ -50,8 +50,9 @@ class UserEventUpdate extends UserEvent{
   String email
   boolean enabled = true
   boolean emailShow = true
-  String description = ''
+  String description 
   String passwd
+  String passwdRepeat
   String newPasswd
   String newPasswdRepeat
 
@@ -62,31 +63,27 @@ class UserEventUpdate extends UserEvent{
   transient beforeInsert = {
 
     setEventCreator(user)
-
     domainId = user.domainId
 
     if( newPasswd && newPasswdRepeat ){
       if( newPasswd == newPasswdRepeat ){
         passwd = authenticateService.encodePassword(newPasswd)
-      }else{
-        //TODO: How to add a validation error on newPasswdRepeat and let this stop the processing of the event
+        passwdRepeat = authenticateService.encodePassword(newPasswdRepeat)
       }
+    }else{
+      passwdRepeat = authenticateService.encodePassword(passwdRepeat)
     }
     
-    passwd = authenticateService.encodePassword(passwd)
   }
 
-  // TODO: Ignore passwd... anything else?
   transient void populateFromUser(){
     if( user ){
-      this.properties['username','userRealName','email','enabled','emailShow','description'] = user.properties
+      this.properties['passwd','username','userRealName','email','enabled','emailShow','description'] = user.properties
     }
   }
 
-  transient process(){
-
-    user.properties = this.properties['username','userRealName','email','enabled','emailShow','description','passwd']
+  def process(){
+    user.properties = this.properties['userRealName','email','enabled','emailShow','description','passwd','passwdRepeat']
     user.save()
-
   }
 }
