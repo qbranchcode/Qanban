@@ -1,4 +1,3 @@
-package se.qbranch.qanban
 /*
  * Copyright 2009 Qbranch AB
  *
@@ -15,14 +14,13 @@ package se.qbranch.qanban
  * limitations under the License.
  */
 
-import se.qbranch.qanban.User
-import se.qbranch.qanban.Role
-import se.qbranch.qanban.UserEventCreate
+package se.qbranch.qanban
+
+
+import grails.converters.*
 import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 
-/**
- * User controller.
- */
+
 class UserController {
 
   def authenticateService
@@ -103,6 +101,9 @@ class UserController {
     render(template:'passwordForm', model: [id:params.id])
   }
 
+
+
+
   /**
    * Person delete action. Before removing an existing person,
    * he should be removed from those authorities which he is involved.
@@ -131,53 +132,94 @@ class UserController {
     redirect action: list
   }
 
+
+
+
+
+
+
+
+
   @Secured(['IS_AUTHENTICATED_FULLY'])
-  def edit = {
+  def form = {
+    if( !params.id )
+        return renderFormCreateMode(params)
 
     def person = User.get(params.id)
-    if (!person) {
-      flash.message = "User not found with id $params.id"
-      redirect action: list
-      return
-    }
 
-    return buildPersonModel(person)
+    if( !person )
+        return render(status: 404, text: "User with id $params.id not found")
+
+    return renderFormEditMode(person)
+    
   }
 
+  private def renderFormCreateMode(params){
+    return render( status:500, text: "Rendering form for creation not yet implemented")
+  }
+
+  private def renderFormEditMode(person){
+      def updateEvent = new UserEventUpdate(user: person)
+      updateEvent.populateFromUser()
+
+      def roleNames = getUserRoles(person)
+
+      return render(template:'userForm',model:[ event: updateEvent, roleNames: roleNames ])
+  }
+
+  private getUserRoles(user){
+      def roleNames = user.authorities*.authority
+
+      roleNames.sort { r1, r2 ->
+        r1 <=> r2
+      }
+    
+      return roleNames
+  }
   /**
    * Person update action.
    */
   @Secured(['IS_AUTHENTICATED_FULLY'])
   def update = {
-
     def person = User.get(params.id)
-    if (!person) {
-      flash.message = "User not found with id $params.id"
-      redirect action: edit, id: params.id
-      return
+
+    if( !person )
+      return render(status: 404, text: "User with id $params.id not found")
+
+    def updateEvent = createUserEventUpdate(person, params)
+    eventService.persist(updateEvent)
+    updateEvent.errors.allErrors.each{
+      println it
     }
 
-    long version = params.version.toLong()
-    if (person.version > version) {
-      person.errors.rejectValue 'version', "person.optimistic.locking.failure",
-              "Another user has updated this User while you were editing."
-      render view: 'edit', model: buildPersonModel(person)
-      return
-    }
+    println updateEvent.userRealName
+    println updateEvent.user.userRealName
 
-    def oldPassword = person.passwd
-    person.properties = params
-    if (!params.passwd.equals(oldPassword)) {
-      person.passwd = authenticateService.encodePassword(params.passwd)
+    return renderUpdateResults(updateEvent)
+  }
+
+  private renderUpdateResults(updateEvent){
+    withFormat{
+      html{
+          def roleNames = getUserRoles(updateEvent.user)
+          return render( template: 'userForm', model: [ event: updateEvent, roleNames: roleNames ])
+      }
+      js{
+          return render ( [ userInstance: updateEvent.user ] as JSON )
+      }
+      xml{
+          return render ( [ userInstence: updateEvent.user ] as XML )
+      }
     }
-    if (person.save()) {
-      Role.findAll().each { it.removeFromPeople(person) }
-      addRoles(person)
-      redirect action: show, id: person.id
-    }
-    else {
-      render view: 'edit', model: buildPersonModel(person)
-    }
+  }
+
+  private createUserEventUpdate(user, params){
+    def updateEvent = new UserEventUpdate(user: user)
+    updateEvent.populateFromUser()
+    updateEvent.properties = params['passwdRepeat','email','userRealName','description']
+    println updateEvent.passwd
+    println updateEvent.passwdRepeat
+    return updateEvent
   }
 
   def create = {
