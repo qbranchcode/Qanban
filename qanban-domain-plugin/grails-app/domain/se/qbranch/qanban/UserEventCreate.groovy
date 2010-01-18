@@ -20,7 +20,7 @@ class UserEventCreate extends UserEvent {
   def authenticateService
 
   static constraints = {
-    username(blank: false, unique: true)
+    username(blank: false, unique: false)
     userRealName(blank: false)
     email(nullable: false, blank: false, email:true)
     enabled( nullable: true)
