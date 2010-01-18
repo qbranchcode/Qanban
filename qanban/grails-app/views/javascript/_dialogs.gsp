@@ -66,10 +66,13 @@ $editUserDialog.qDialog({
 $changePasswordDialog = $('<div id="changePasswordDialog"></div>');
 
 $changePasswordDialog.qDialog({
-      title : "i18n plz",
+      title : "<g:message code="_userPassForm.title"/>",
       buttons: {
-          "i18n plz": function(){
+          "<g:message code="_userPassForm.button.update"/>": function(){
               $changePasswordDialog.find('input[type="submit"]').click();
+          },
+          "<g:message code="_userPassForm.button.cancel"/>": function(){
+              $changePasswordDialog.dialog('close')
           }
       }
 });

@@ -63,30 +63,24 @@
      width: 291px;
 }
 
-#userForm .pass{
-    text-align: right;
-    border-top: 1px solid #e3e3e3;
-    padding: 2px 4px 0 0;
-    margin-top: 2px;
-
-}
-
-#userForm .pass h4{
-    text-align: left;
-    font-weight:normal;
-}
-
-#userForm .pass input{
-    width: 150px;
-}
-
-#userForm .pass label{
-    width: 150px;
-}
-
 #userForm label[for=description]{
     vertical-align: top;
 
+}
+
+#userForm .confirmPass {
+    padding-top: 20px;
+    text-align: center;
+}
+
+#userForm .confirmPass label{
+    width: 150px;
+    display: inline;
+    font-weight: bold;
+}
+
+#userForm .confirmPass input{
+    width: 133px
 }
 
 #userForm textarea[name=description]{
@@ -105,3 +99,17 @@
 }
 
 
+#passwordForm h4{
+    text-align: left;
+    font-weight:normal;
+}
+
+#passwordForm input{
+    width: 137px;
+}
+
+#passwordForm label{
+    width: 135px;
+    display: inline-block;
+    text-align: right;
+}

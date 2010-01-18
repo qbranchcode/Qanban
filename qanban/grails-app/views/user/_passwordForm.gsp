@@ -12,13 +12,13 @@
           update="changePasswordDialog"
           onSuccess="alert('update plz');">
 
-    <label for="oldPasswd"><g:message code="_userForm.label.oldPassword"/></label>
+    <label for="oldPasswd"><g:message code="_userPassForm.label.oldPassword"/></label>
     <input type="password" name="oldPasswd"/>
 
-    <label for="newPasswd"><g:message code="_userForm.label.newPassword"/></label>
+    <label for="newPasswd"><g:message code="_userPassForm.label.newPassword"/></label>
     <input type="password" name="newPasswd"/>
 
-    <label for="newPasswdRepeat"><g:message code="_userForm.label.newPasswordRepeat"/></label>
+    <label for="newPasswdRepeat"><g:message code="_userPassForm.label.newPasswordRepeat"/></label>
     <input type="password" name="newPasswdRepeat"/>
 
     <input type="hidden" name="id" value="${id}"/>
