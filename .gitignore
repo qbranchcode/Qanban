@@ -25,4 +25,5 @@ qanban-domain-plugin/.idea
 qanban-domain-plugin/cobertura.ser
 qanban-domain-plugin/test/reports/
 qanban-domain-plugin/*~
-
+*~
+qanban/projectFilesBackup/
