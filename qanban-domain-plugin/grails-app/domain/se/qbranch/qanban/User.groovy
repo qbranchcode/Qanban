@@ -16,7 +16,6 @@
 
 package se.qbranch.qanban
 
-import se.qbranch.qanban.Role
 
 /**
  * User domain class.
