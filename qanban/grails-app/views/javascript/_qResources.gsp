@@ -55,8 +55,8 @@ resources.cardDeleteErrorMsg = '<g:message code="mainView.jQuery.dialog.errorDel
 //User
 resources.userEditDialogTitle = '<g:message code="mainView.jQuery.dialog.editUserForm.title"/>';
 
-resources.userFormUpdateBtn = 'i18n: update';
-resources.userFormPasswordBtn = 'i18n: passwd';
+resources.userFormUpdateBtn = '<g:message code="_userForm.button.update"/>';
+resources.userFormPasswordBtn = '<g:message code="_userForm.button.passwd"/>';
 
 
 /********/
@@ -68,7 +68,7 @@ resources.indexURL = '${createLink(controller:"mainView")}';
 
 
 //User
-resources.userDialogURL = '${createLink(controller:"user",action:"show")}';
+resources.userDialogURL = '${createLink(controller:"user",action:"form")}';
 resources.passwordDialogURL = '${createLink(controller:"user",action:"passForm")}';
 
 //Board
