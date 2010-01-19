@@ -16,8 +16,9 @@
 <div class="content">
   <g:formRemote url="[controller:'user',action: 'update', params: [format: 'html']]"
           update="editUserDialog" name="userForm"
-          onSuccess="alert('update plz');"
-          >
+          onSuccess="jQuery('#editUserDialog').qRefreshDialog({formData:data,successTitle:'${g.message(code:'_userForm.update.successTitle')}',successMessage:'${g.message(code:'_userForm.update.successMsg')}'});"
+          onLoading="jQuery.toggleSpinner()"
+          onComplete="jQuery.toggleSpinner()">
 
     <div class="header">
 

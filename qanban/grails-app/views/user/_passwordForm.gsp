@@ -8,12 +8,14 @@
 <div class="content">
 
   <g:formRemote name="passwordForm"
-          url="[controller:'user',action:'update',params:[format:'html']]"
+          url="[controller:'user',action:'update',params:[format:'html',template:'passwordForm']]"
           update="changePasswordDialog"
-          onSuccess="alert('update plz');">
+          onSuccess="jQuery('#changePasswordDialog').qRefreshDialog({formData:data,successTitle:'${g.message(code:'_userForm.passwordForm.successTitle')}',successMessage:'${g.message(code:'_userForm.passwordForm.successMsg')}'});"
+          onLoading="jQuery.toggleSpinner()"
+          onComplete="jQuery.toggleSpinner()">
 
     <label for="oldPasswd"><g:message code="_userPassForm.label.oldPassword"/></label>
-    <input type="password" name="oldPasswd"/>
+    <input type="password" name="passwdRepeat"/>
 
     <label for="newPasswd"><g:message code="_userPassForm.label.newPassword"/></label>
     <input type="password" name="newPasswd"/>
@@ -21,7 +23,7 @@
     <label for="newPasswdRepeat"><g:message code="_userPassForm.label.newPasswordRepeat"/></label>
     <input type="password" name="newPasswdRepeat"/>
 
-    <input type="hidden" name="id" value="${id}"/>
+    <input type="hidden" name="id" value="${event.user.id}"/>
     <input style="display: none;" type="submit"/>
 
   </g:formRemote>
