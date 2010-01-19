@@ -10,7 +10,7 @@
   <g:formRemote name="passwordForm"
           url="[controller:'user',action:'update',params:[format:'html',template:'passwordForm']]"
           update="changePasswordDialog"
-          onSuccess="jQuery('#changePasswordDialog').qRefreshDialog({formData:data,successTitle:'${g.message(code:'_userForm.passwordForm.successTitle')}',successMessage:'${g.message(code:'_userForm.passwordForm.successMsg')}'});"
+          onSuccess="jQuery('#changePasswordDialog').qRefreshDialog({formData:data,successTitle:'${g.message(code:'_userPassForm.successTitle')}',successMessage:'${g.message(code:'_userPassForm.successMsg')}'});"
           onLoading="jQuery.toggleSpinner()"
           onComplete="jQuery.toggleSpinner()">
 
