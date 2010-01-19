@@ -1598,27 +1598,32 @@
         if( !hasErrors($dialog) ){
             var $formContent = $(settings.formData);
             var id = getEntityIdentifier($formContent);
-            var objectFetcher = function(n){
-                var options = {
-                    caller: objectFetcher,
-                    tries: n,
-                    url: settings.url+'/'+id,
-                    data: {format:'html'},
-                    successCallback: function(data,textStatus){
-                        var $newObject= $(data);
-                        if( settings.indexSelector ){
-                            var index = getIndexValue(settings.indexSelector, $dialog);
-                            $newObject.qInject({index:index}).qInit();
-                        }else{
-                            $newObject.qInject().qInit();
+            if( settings.url ){
+                var objectFetcher = function(n){
+                    var options = {
+                        caller: objectFetcher,
+                        tries: n,
+                        url: settings.url+'/'+id,
+                        data: {format:'html'},
+                        successCallback: function(data,textStatus){
+                            var $newObject= $(data);
+                            if( settings.indexSelector ){
+                                var index = getIndexValue(settings.indexSelector, $dialog);
+                                $newObject.qInject({index:index}).qInit();
+                            }else{
+                                $newObject.qInject().qInit();
+                            }
+                            closeDialog($dialog,settings);
                         }
-                        closeDialog($dialog,settings);
-                    }
 
-                };
-                $.qGet(options);
+                    };
+                    $.qGet(options);
+                }
+                objectFetcher();
+            }else{
+                closeDialog($dialog,settings);
             }
-            objectFetcher();
+            
         }else if( settings.errorCallback ){
             settings.errorCallback($dialog);
         }
