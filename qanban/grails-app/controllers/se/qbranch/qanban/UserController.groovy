@@ -188,12 +188,6 @@ class UserController {
 
     def updateEvent = createUserEventUpdate(person, params)
     eventService.persist(updateEvent)
-    updateEvent.errors.allErrors.each{
-      println it
-    }
-
-    println updateEvent.userRealName
-    println updateEvent.user.userRealName
 
     return renderUpdateResults(updateEvent)
   }
@@ -217,8 +211,6 @@ class UserController {
     def updateEvent = new UserEventUpdate(user: user)
     updateEvent.populateFromUser()
     updateEvent.properties = params['passwdRepeat','email','userRealName','description']
-    println updateEvent.passwd
-    println updateEvent.passwdRepeat
     return updateEvent
   }
 
