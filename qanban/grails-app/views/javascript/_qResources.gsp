@@ -98,6 +98,9 @@ resources.archiveContentURL = '${createLink(controller:'mainView',action:'showAr
 resources.archiveDefaultOrder = 'desc';
 resources.archiveDefaultSort = 'dateCreated';
 
+//Settings
+resources.settingsShowUserURL = '${createLink(controller:'mainView',action:'showUser')}';
+resources.settingsShowRoleURL = '${createLink(controller:'mainView',action:'showRole')}';
 
 /**********/
 /* Images */

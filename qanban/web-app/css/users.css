@@ -1,0 +1,151 @@
+
+.showUsersLink {
+    display:block;
+    padding:1px;
+    height:19px;
+    width:19px;
+    overflow: hidden;
+}
+
+.showUsersHeader {
+    background-image:url(custom-theme/images/ui-icons_e3e3e3_256x240.png);
+    background-position:-45px -76px;
+    background-repeat:no-repeat;
+    height:19px;
+    width:19px;
+    top: 0px;
+    padding: 0px;
+}
+
+#users {
+    -moz-box-shadow: 1px 2px 5px #666;
+    -webkit-box-shadow: 1px 2px 5px #666;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    background:#FFFFFF none repeat scroll 0 0;
+    border:1px solid #666666;
+    margin:0 auto;
+    padding:3px;
+    position:relative;
+    top:50px;
+    width:710px;
+}
+#usersTable {
+    background-color:#FFFFFF;
+    margin:auto;
+    width:710px;
+}
+div.tableContainer {
+    border:1px solid;
+    clear:both;
+    height:285px;
+    overflow:auto;
+    width:781px;
+}
+html > body div.tableContainer {
+    overflow:hidden;
+    width:781px;
+}
+div.tableContainer table {
+    float:left;
+    width:765px;
+}
+html > body div.tableContainer table {
+    width:781px;
+}
+thead.fixedHeader tr {
+    position:relative;
+}
+html > body thead.fixedHeader tr {
+    display:block;
+}
+thead.fixedHeader a {
+    background-image:url(../images/head_fade.png);
+    background-position:0 0;
+    background-repeat:repeat-x;
+    border:1px solid #FFFFFF;
+    display:block;
+}
+html > body tbody.scrollContent {
+    display:block;
+    height:390px;
+    overflow:auto;
+    width:100%;
+}
+html > body thead.fixedHeader th {
+    width:21px;
+}
+html > body thead.fixedHeader th a {
+    -moz-border-radius-topleft:5px;
+    -webkit-border-top-left-radius: 5px;
+    color:#FFFFFF;
+    font-size:14px;
+    font-weight:bold;
+    margin-bottom:1px;
+    margin-right:1px;
+    padding:0px 0px 2px;
+    padding-right: 2px;
+    text-align:left;
+}
+html > body thead.fixedHeader th + th {
+    width:136px;
+}
+html > body thead.fixedHeader th + th a {
+    padding:3px 4px 2px;
+    -moz-border-radius-topleft:0px;
+    -webkit-border-top-left-radius: 0px;
+    padding-left: 4px;
+    padding-right: 4px;
+}
+html > body thead.fixedHeader th + th + th {
+    width:250px;
+}
+html > body thead.fixedHeader th + th + th + th {
+    width:300px;
+}
+html > body thead.fixedHeader th + th + th + th a {
+    -moz-border-radius-topright:5px;
+    -webkit-border-top-right-radius: 5px;
+    margin-right:0;
+}
+html > body tbody.scrollContent td {
+    padding-top:2px;
+    vertical-align:top;
+    width:24px;
+}
+html > body tbody.scrollContent td + td {
+    padding-left:4px;
+    width:133px;
+}
+html > body tbody.scrollContent td + td + td {
+    width:243px;
+}
+html > body tbody.scrollContent td + td + td + td {
+    width:290px;
+}
+tbody.scrollContent tr {
+    border-bottom:1px solid #D3D3D3;
+    display:inline-block;
+}
+tr.odd {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    background:#E6E6E6 none repeat scroll 0 0;
+}
+tr.odd:hover, tr.even:hover {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    background:#D3D3D3 none repeat scroll 0 0;
+    color:#000000;
+}
+tr.even {
+    -moz-background-clip:border;
+    -moz-background-inline-policy:continuous;
+    -moz-background-origin:padding;
+    background:#F2F2F2 none repeat scroll 0 0;
+}
+tr.dead {
+    color:#888888;
+}

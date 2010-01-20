@@ -98,6 +98,16 @@
             event.preventDefault();
         });
 
+        $('.user').live('click',function(event){
+            adminEditUser( $(this).attr('id').split('_')[1], settings);
+            event.preventDefault();
+        });
+
+        $('.role').live('click',function(event){
+            adminEditRole( $(this).attr('id').split('_')[1], settings);
+            event.preventDefault();
+        });
+
         $('#archiveBtn').live('click',function(event){
             toggleArchive($(this), settings);
             event.preventDefault();
@@ -533,6 +543,8 @@
                             enableLogView(this,settings);
                         }else if( data.indexOf('<div id="archive">') != -1){
                             enableArchiveView(this,settings);
+                        } else if( data.indexOf('<div id="users">') != -1 ){
+                            enableUsersView(this,settings);
                         }else if( data.indexOf('<div id="board') != -1){
                             enableBoardView(this,settings);
                         }
@@ -568,6 +580,13 @@
         enableArchiveCardSelection();
         pollingIntervals.main = setInterval(function(){pollTable(archiveData)}, 1000);
 
+    }
+
+    function enableUsersView($container,settings){
+        var usersData = {};
+        usersData.url = settings.resources.usersContentURL;
+        usersData.order = settings.resources.usersDefaultOrder;
+        usersData.sort = settings.resources.usersDefaultSort;
     }
 
     function enableTableSorting(tableData){
@@ -782,6 +801,45 @@
         dialogLoader(null);
     }
 
+    function adminEditUser(userId, options){
+        var defaults = {
+            resources: resources,
+            target: "#editBox"
+        }
+
+        var settings = $.extend(defaults, options);
+
+        var editUserFieldLoader = function(n){
+            $(settings.target).qLoad({
+                tries: n,
+                caller: editUserFieldLoader,
+                url: settings.resources.settingsShowUserURL,
+                data: {'user.id': userId}
+            });
+        }
+
+        editUserFieldLoader();
+    }
+
+    function adminEditRole(roleId, options){
+        var defaults = {
+            resources: resources,
+            target: "#editBox"
+        }
+
+        var settings = $.extend(defaults, options);
+
+        var editRoleFieldLoader = function(n){
+            $(settings.target).qLoad({
+                tries: n,
+                caller: editRoleFieldLoader,
+                url: settings.resources.settingsShowRoleURL,
+                data: {'role.id': roleId}
+            });
+        }
+
+        editRoleFieldLoader();
+    }
 
     // Element specific initializations
 
@@ -855,7 +913,7 @@
                     placeholder: settings.placeholder,
                     start: function(event, ui){
                         $phase.sortable('option','icv',getCardValues(ui.item));
-                        //ui.placeholder.parent() == $phase 
+                        //ui.placeholder.parent() == $phase
                         fadeOutUnavailablePhases($phase,settings.unavailablePhaseOpacity);
                         setCardOpacity(ui.item, settings.activeCardOpacity);
                     },
@@ -1349,7 +1407,7 @@
 })(jQuery);
 
 /*
- * AJAX 
+ * AJAX
  *
  * Wrapper functions commonly used by the Qanban application.
  *
@@ -1680,7 +1738,7 @@
  *
  *  This makes the changes more permanent, and affect elements with that class that's injected to the
  *  DOM tree in the future as well.
- * 
+ *
  */
 
 (function($){

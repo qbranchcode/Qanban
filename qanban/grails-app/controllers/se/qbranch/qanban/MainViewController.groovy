@@ -113,7 +113,89 @@ class MainViewController {
     }
     return list
   }
+  
+  def showSettings = {
+    def users = User.list()
+    def roles = Role.list()
+    def editUsers
+    def editRoles
 
+    render(template: "/settings/showSettings", model : [ users : users , roles : roles ])
+  }
+
+  def showUser = {
+    def roles = Role.list()
+    def editUser = User.get(params.'user.id')
+    render(template: "/user/editUser", model : [ editUser : editUser , roles : roles ])
+  }
+
+  def showRole = {
+    def editRole = Role.get(params.'role.id')
+    render(template: "/role/editRole", bean : editRole)
+  }
+
+  def filterUserByRole = {
+    def roleIds = params.'role.id'.collect{it as Long}
+
+    def uc = User.createCriteria()
+    def users = uc.listDistinct {
+      authorities{
+        'in'('id',roleIds)
+      }
+    }
+
+    render(template: "/user/filterdUsers", bean: users)
+  }
+
+//  def updateUser = { UpdateUserCommand uuc ->
+//
+//    if(uuc.hasErrors())
+//      return render(status: 400, text: "Bad update request")
+//
+//    UserEventUpdate updateEvent = createUpdateEvent(uuc)
+//
+//    eventService.persist(updateEvent)
+//
+//    renderUpdateResult(updateEvent)
+//  }
+//
+//  private renderUpdateResult(updateEvent) {
+//    withFormat {
+//      html {
+//
+//      }
+//      xml {
+//
+//      }
+//      js {
+//
+//      }
+//    }
+//  }
+//
+//  private UserEventUpdate createUpdateEvent(uuc) {
+//    def event = new UserEventUpdate()
+//    event.updatedUser = User.get(uuc.id)
+//    event.username = uuc.username
+//    event.userRealName = uuc.userRealName
+//    event.email = uuc.email
+//    event.description = uuc.description
+//    event.user = securityService.getLoggedInUser()
+//  }
 }
 
-
+//class UpdateUserCommand {
+//  static constraints = {
+//    id(nullable: false)
+//    username(nullable: false, blank: false)
+//    userRealName(nullable: false, blank: false)
+//    email(nullable: true, blank: false)
+//    description(nullable: true)
+//  }
+//
+//  Integer id
+//  String username
+//  String userRealName
+//  String email
+//  String description
+//}

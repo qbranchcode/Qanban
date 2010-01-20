@@ -1,0 +1,108 @@
+#settings {
+    width: 900px;
+    position: relative;
+    margin: 5px auto;
+    margin-top: 20px;
+}
+
+.column {
+    margin: 1px;
+    -moz-box-shadow: 1px 2px 5px #666;
+    -webkit-box-shadow: 1px 2px 5px #666;
+    -moz-border-radius: 6px;
+    -webkit-border-radius: 6px;
+    background:#FFFFFF none repeat scroll 0 0;
+    border:1px solid #666666;
+    height:90%;
+    width: 32%;
+    margin: 5px;
+}
+
+.columnHeader {
+    text-align:center;
+}
+
+#users {
+    float: left;
+}
+
+#userFilter {
+    margin: 1px;
+    background:#FFFFFF none repeat scroll 0 0;
+    border:1px solid #666666;
+}
+
+ul.userList {
+    list-style: none;
+}
+
+ul.roleList {
+    list-style: none;
+}
+
+.user {
+    border-bottom:2px solid #E3E3E3;
+    padding: 4px;
+    position: relative;
+}
+
+.editUser {
+    border-bottom:2px solid #E3E3E3;
+    padding: 4px;
+    position: relative;
+}
+
+.userData {
+    margin-top: -38px;
+    margin-left: 45px;
+}
+
+.editUserData {
+    margin-top: 3px;
+    margin-left: 2px;
+    height: 230px;
+}
+
+.role {
+    border-bottom:2px solid #E3E3E3;
+    padding: 4px;
+    position: relative;
+}
+
+.editRole {
+    border-bottom:2px solid #E3E3E3;
+    padding: 4px;
+    position: relative;
+}
+
+.roleData {
+    margin-left: 2px;
+}
+
+.editRoleData {
+    margin-left: 2px;
+    height: 98px;
+}
+
+#roles {
+    float: left;
+}
+
+#editField {
+    float: left;
+}
+
+.property {
+    width: 99%;
+}
+
+.editInput:hover {
+    border: 1px solid #cc0000;
+    font-weight: normal;
+    color: #fd0000;
+    outline: none;
+}
+
+.editInput {
+    margin-top: 5px;
+}
