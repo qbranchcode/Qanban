@@ -3,13 +3,13 @@
 
 <link rel="stylesheet" href="${resource(dir:'css',file:'settings.css')}" />
 <div id="settings">
-  <div id="users" class="column"><br/><h3 class="columnHeader">Users</h3><br/>
+  <div id="users" class="column"><br/><h3 class="columnHeader"><g:message code="settings.usersHeader"/></h3><br/>
     <ul class="userList">
       <g:each var="user" in="${users}">
         <g:render template="/user/user" bean="${user}"/>
       </g:each>
     </ul>
-    <div class="userFilter">Filter by role:<br/>
+    <div class="userFilter"><g:message code="settings.filter"/><br/>
       <g:formRemote name="filterUserByRole" url="[controller:'mainView',action: 'filterUserByRole']">
         <g:each var="role" in="${roles}">
           <input type="checkbox" name="role.id" value="${role.id}" /><label>${role.authority}</label>
@@ -19,14 +19,14 @@
       </g:formRemote>
     </div>
   </div>
-  <div id="roles" class="column"><br/><h3 class="columnHeader">Roles</h3><br/>
+  <div id="roles" class="column"><br/><h3 class="columnHeader"><g:message code="settings.rolesHeader"/></h3><br/>
     <ul class="roleList">
       <g:each var="role" in="${roles}">
         <g:render template="/role/role" bean="${role}"/>
       </g:each>
     </ul>
   </div>
-  <div id="editField" class="column"><br/><h3 class="columnHeader">EditField</h3><br/>
+  <div id="editField" class="column"><br/><h3 class="columnHeader"><g:message code="settings.editFieldHeader"/></h3><br/>
     <div id="editBox">
       <g:if test="${editUser}">
         <g:render template="/user/editUser" model="[ 'editUser' : editUser , 'roles' : roles ]"/>

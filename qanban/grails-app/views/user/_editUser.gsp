@@ -26,7 +26,7 @@
           <g:checkBox name="${role.authority}"/> <label for="role">${role.authority}</label>
         </g:each>
         <input type="hidden" name="user.id" value="${editUser.id}"/>
-        <input type="submit" class="ui-state-default ui-corner-all editInput" value="Update"/>
+        <input type="submit" class="ui-state-default ui-corner-all editInput" value="<g:message code="settings.update"/>"/>
       </div>
     </div>
   </div>

@@ -5,9 +5,9 @@
       <avatar:gravatar email="${user.email}" size="38"/>
     </div>
     <div class="userData">
-      <span class="username">Username: ${user.username}</span><br/>
-      <span class="userRealName">Real Name: ${user.userRealName}</span><br/>
-      <span class="email">Email: ${user.email}</span>
+      <span class="username"><g:message code="users.username"/>": ${user.username}</span><br/>
+      <span class="userRealName"><g:message code="users.userRealName"/>: ${user.userRealName}</span><br/>
+      <span class="email"><g:message code="users.email"/>: ${user.email}</span>
     </div>
   </li>
 </g:each>

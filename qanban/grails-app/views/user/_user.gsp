@@ -4,8 +4,8 @@
     <avatar:gravatar email="${it.email}" size="38"/>
   </div>
   <div class="userData">
-    <span class="username">Username: ${it.username}</span><br/>
-    <span class="userRealName">Real Name: ${it.userRealName}</span><br/>
-    <span class="email">Email: ${it.email}</span>
+    <span class="username"><g:message code="users.username"/>: ${it.username}</span><br/>
+    <span class="userRealName"><g:message code="users.userRealName"/>: ${it.userRealName}</span><br/>
+    <span class="email"><g:message code="users.email"/>: ${it.email}</span>
   </div>
 </li>

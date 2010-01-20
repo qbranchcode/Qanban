@@ -10,6 +10,6 @@
       <input type="text" class="property" name="description" value="${it.description?.encodeAsHTML()}"/>
     </span>
     <input type="hidden" name="role.id" value="${it.id}"/>
-    <input type="submit" class="ui-state-default ui-corner-all editInput" value="Update"/>
+    <input type="submit" class="ui-state-default ui-corner-all editInput" value="<g:message code="settings.update"/>"/>
   </div>
 </div>
