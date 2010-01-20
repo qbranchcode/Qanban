@@ -1,0 +1,15 @@
+Changes in the domain that have impact on the database model:
+
+1. se.qbranch.qanban.UserEvent*
+
+   The constraints on 'username' was UNIQUE in UserEventCreate wich
+was the only existing user event until recently. This makes creation
+of multiple user events impossible because all events use one table
+per hierarky. 
+   This has now been set to !unique in the class UserEventCreate
+aswell as in the new events classes; UserEventDelete and
+UserEventUpdate.
+   
+   For further information about this issue and it's complications
+look at issue #31 @ Github (
+http://github.com/qbranchcode/Qanban/issues#issue/31 )
