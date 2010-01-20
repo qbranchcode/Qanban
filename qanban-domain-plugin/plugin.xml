@@ -15,6 +15,7 @@ This plugin hold the domain model for the Qanban application
     <resource>se.qbranch.qanban.UserEventUpdate</resource>
     <resource>se.qbranch.qanban.CardEventUpdate</resource>
     <resource>se.qbranch.qanban.BoardEvent</resource>
+    <resource>se.qbranch.qanban.UserEventDelete</resource>
     <resource>se.qbranch.qanban.Phase</resource>
     <resource>se.qbranch.qanban.CardEvent</resource>
     <resource>se.qbranch.qanban.CardEventMove</resource>

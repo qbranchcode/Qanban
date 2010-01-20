@@ -24,20 +24,20 @@
 
       <avatar:gravatar email="${event.email}" size="38"/>
       <label for="userRealName"><g:message code="_userForm.label.userRealName"/></label>
-      <input type="text" class="property" name="userRealName" value="${event.userRealName?.encodeAsHTML()}"/>
+      <input type="text" class="property ${hasErrors(bean:event,field:'userRealName','errors')}" name="userRealName" value="${event.userRealName?.encodeAsHTML()}"/>
 
     </div>
 
     <div class="properties">
 
       <label for="email" class="email"><g:message code="_userForm.label.email"/></label>
-      <input type="text" class="property" name="email" value="${event.email?.encodeAsHTML()}"/>
+      <input type="text" class="property ${hasErrors(bean:event,field:'email','errors')}" name="email" value="${event.email?.encodeAsHTML()}"/>
 
       <label for="username"><g:message code="_userForm.label.username"/></label>
-      <input type="text" class="property" value="${event.username?.encodeAsHTML()}"/>
+      <input type="text" class="property ${hasErrors(bean:event,field:'username','errors')}" name="username" value="${event.username?.encodeAsHTML()}"/>
 
       <label for="description"><g:message code="_userForm.label.description"/></label>
-      <textarea id="tafix" type="text" class="property" name="description" value="${event.description?.encodeAsHTML()}"></textarea>
+      <textarea id="tafix" type="text" class="property ${hasErrors(bean:event,field:'description','errors')}" name="description" value="${event.description?.encodeAsHTML()}"></textarea>
 
       <div class="roles">
 
@@ -52,7 +52,7 @@
 
       <div class="confirmPass">
           <label for="passwdRepeat"><g:message code="_userForm.label.passwd"/></label>
-          <input type="password" name="passwdRepeat">
+          <input type="password" name="passwdRepeat" class="${hasErrors(bean:event,field:'passwd','errors')}">
       </div>
       
     </div>
