@@ -3,6 +3,13 @@
 
 <link rel="stylesheet" href="${resource(dir:'css',file:'settings.css')}" />
 <div id="settings">
+  <div id="addUserMenu">
+    <ul>
+      <li><a href="#" class="addUserLink"><g:message code="settings.menu.addUser"/></a></li>
+    </ul>
+  </div>
+  <style>.board { margin-top: 30px !important; }</style>
+
   <div id="users" class="column"><br/><h3 class="columnHeader"><g:message code="settings.usersHeader"/></h3><br/>
     <ul class="userList">
       <g:each var="user" in="${users}">

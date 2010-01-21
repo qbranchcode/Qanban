@@ -103,7 +103,12 @@
             event.preventDefault();
         });
 
-        $('.role').live('click',function(event){
+        $('.addUserLink').live('click',function(event){
+            addUser(boardId, settings);
+            event.preventDefault();
+        });
+
+        $('.role').live('dblclick',function(event){
             adminEditRole( $(this).attr('id').split('_')[1], settings);
             event.preventDefault();
         });
@@ -740,6 +745,30 @@
 
         };
         boardLoader();
+    }
+
+    function addUser(boardId, options){
+        var defaults = {
+            dialog: $createUserDialog,
+            resources: resources
+        }
+
+        var settings = $.extend(defaults, options);
+
+        var dialogLoader = function(n){
+            settings.dialog.qLoad({
+                tries: n,
+                caller: dialogLoader,
+                url: settings.resources.addUserDialogURL,
+                data: {'user.id': boardId },
+                successCallback: function(){
+                    settings.dialog.dialog('open');
+                }
+            });
+        }
+
+        dialogLoader();
+
     }
 
     function editUser(userId, options){
