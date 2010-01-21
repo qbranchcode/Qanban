@@ -71,7 +71,7 @@ resources.indexURL = '${createLink(controller:"mainView")}';
 resources.userDialogURL = '${createLink(controller:"user",action:"form")}';
 resources.passwordDialogURL = '${createLink(controller:"user",action:"passForm")}';
 resources.addUserDialogURL = '${createLink(controller:"user",action:"create")}';
-resources.userDialogURL = '${createLink(controller:"user",action:"show")}';
+resources.showUserDialogURL = '${createLink(controller:"user",action:"show")}';
 
 //Board
 resources.boardShowURL = '${createLink(controller:"mainView",action:"showBoard")}';
