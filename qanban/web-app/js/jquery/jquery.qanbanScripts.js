@@ -548,8 +548,8 @@
                             enableLogView(this,settings);
                         }else if( data.indexOf('<div id="archive">') != -1){
                             enableArchiveView(this,settings);
-                        } else if( data.indexOf('<div id="users">') != -1 ){
-                            enableUsersView(this,settings);
+                        } else if( data.indexOf('<div id="settings">') != -1 ){
+                            enableSettingsView(this,settings);
                         }else if( data.indexOf('<div id="board') != -1){
                             enableBoardView(this,settings);
                         }
@@ -587,7 +587,7 @@
 
     }
 
-    function enableUsersView($container,settings){
+    function enableSettingsView($container,settings){
         var usersData = {};
         usersData.url = settings.resources.usersContentURL;
         usersData.order = settings.resources.usersDefaultOrder;

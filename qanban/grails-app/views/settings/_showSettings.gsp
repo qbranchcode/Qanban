@@ -10,7 +10,7 @@
   </div>
   <style>.board { margin-top: 30px !important; }</style>
 
-  <div id="users" class="column"><br/><h3 class="columnHeader"><g:message code="settings.usersHeader"/></h3><br/>
+  <div id="users" class="userColumn"><br/><h3 class="columnHeader"><g:message code="settings.usersHeader"/></h3><br/>
     <ul class="userList">
       <g:each var="user" in="${users}">
         <g:render template="/user/user" bean="${user}"/>
@@ -26,21 +26,22 @@
       </g:formRemote>
     </div>
   </div>
-  <div id="roles" class="column"><br/><h3 class="columnHeader"><g:message code="settings.rolesHeader"/></h3><br/>
-    <ul class="roleList">
-      <g:each var="role" in="${roles}">
-        <g:render template="/role/role" bean="${role}"/>
-      </g:each>
-    </ul>
-  </div>
-  <div id="editField" class="column"><br/><h3 class="columnHeader"><g:message code="settings.editFieldHeader"/></h3><br/>
+  <div id="editField" class="editColumn"><br/><h3 class="columnHeader"><g:message code="settings.editFieldHeader"/></h3><br/>
     <div id="editBox">
       <g:if test="${editUser}">
         <g:render template="/user/editUser" model="[ 'editUser' : editUser , 'roles' : roles ]"/>
       </g:if>
-      <g:if test="${editRole}">
-        <g:render template="/role/editRole" bean="${editRole}"/>
-      </g:if>
+      <g:else>
+        <g:render template="/settings/emptyEdit" model="[ 'roles' : roles]"/>
+      </g:else>
+    </div>
+    <div id="passwordBox">
+      <g:render template="/settings/generatePassword"/>
+    </div>
+  </div>
+  <div id="settingsInfo" class="infoColumn"><br/><h3 class="columnHeader"><g:message code="settings.infoHeader"/></h3><br/>
+    <div id="infoBox">
+      <g:message code="settings.infoText"/>
     </div>
   </div>
 </div>

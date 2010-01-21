@@ -16,6 +16,8 @@
 
 package se.qbranch.qanban
 
+import org.codehaus.groovy.grails.plugins.springsecurity.AuthorizeTools
+
 class UserEventUpdate extends UserEvent{
 
   def authenticateService
@@ -27,7 +29,8 @@ class UserEventUpdate extends UserEvent{
     enabled( nullable: true )
     emailShow( nullable: true )
     passwd( nullable: false, blank: false, validator: { val, obj ->
-      if( obj.authenticateService.encodePassword(obj.passwdRepeat) != val ){
+      if( !AuthorizeTools.ifAllGranted("ROLE_QANBANADMIN") && 
+              obj.authenticateService.encodePassword(obj.passwdRepeat) != val ){
         return['userEventUpdate.authentication.password.missmatch']
       }else if( obj.newPasswd || obj.newPasswdRepeat ){
           if( obj.newPasswd != obj.newPasswdRepeat ){
@@ -71,7 +74,11 @@ class UserEventUpdate extends UserEvent{
         passwdRepeat = authenticateService.encodePassword(newPasswdRepeat)
       }
     }else{
-      passwdRepeat = authenticateService.encodePassword(passwdRepeat)
+      if(!AuthorizeTools.ifAllGranted("ROLE_QANBANADMIN")) {
+        passwdRepeat = authenticateService.encodePassword(passwdRepeat)
+      } else {
+        passwdRepeat = passwd
+      }
     }
     
   }

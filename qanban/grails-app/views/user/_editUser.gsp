@@ -1,7 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
-<g:formRemote url="[controller:'user',action: 'update', params: [format: 'html']]"
-              update="editUser" name="user"
-              onSuccess="alert('uppdaterad user');">
+
+<g:setProvider library="jquery"/>
+
+<g:formRemote url="[controller:'user',action: 'update', params: [ format : 'html' , template : 'editUser' ]]"
+        update="editBox" name="editUserForm">
   <div class="editUser" id="user_${editUser.id}">
     <div class="editUserData">
       <span class="username">
@@ -25,7 +27,7 @@
         <g:each var="role" in="${roles}">
           <g:checkBox name="${role.authority}"/> <label for="role">${role.authority}</label>
         </g:each>
-        <input type="hidden" name="user.id" value="${editUser.id}"/>
+        <input type="hidden" name="id" value="${editUser.id}"/>
         <input type="submit" class="ui-state-default ui-corner-all editInput" value="<g:message code="settings.update"/>"/>
       </div>
     </div>

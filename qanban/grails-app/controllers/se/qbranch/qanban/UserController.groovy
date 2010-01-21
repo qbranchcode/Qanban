@@ -24,6 +24,7 @@ import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 class UserController {
 
   def authenticateService
+  def securityService
   def sessionRegistry
   def eventService
 
@@ -61,29 +62,29 @@ class UserController {
   def passForm = {
 
     if ( !params.id )
-      return render(status: 400, text: "id have to be specified")
-    
+    return render(status: 400, text: "id have to be specified")
+
     def user = User.get(params.id)
 
     if( !user )
-      return render(status: 404, text: "User with id $params.id not found")
+    return render(status: 404, text: "User with id $params.id not found")
 
     def updateEvent = createUserEventUpdate(user,null)
 
     render(template:'passwordForm', model: [ event: updateEvent ])
-    
+
   }
 
 
   @Secured(['IS_AUTHENTICATED_FULLY'])
   def form = {
     if( !params.id )
-      return renderFormCreateMode(params)
+    return renderFormCreateMode(params)
 
     def person = User.get(params.id)
 
     if( !person )
-      return render(status: 404, text: "User with id $params.id not found")
+    return render(status: 404, text: "User with id $params.id not found")
 
     return renderFormEditMode(person)
 
@@ -130,7 +131,7 @@ class UserController {
       html{
         def roleNames = getUserRoles(updateEvent.eventCreator)
         def template = params.template ? params.template : 'userForm'
-        return render( template: template, model: [ event: updateEvent, roleNames: roleNames ])
+        return render( template: template, model: [ event: updateEvent, roleNames: roleNames, editUser: updateEvent, roles: Role.list() ])
       }
       js{
         return render ( [ userInstance: updateEvent.eventCreator ] as JSON )
@@ -144,13 +145,10 @@ class UserController {
   private createUserEventUpdate(user, params){
     def updateEvent = new UserEventUpdate(eventCreator: user)
     updateEvent.populateFromUser()
-    
-    if( params )
-      updateEvent.properties = params['passwdRepeat','email','userRealName','description']
+
+    if( params )    
+    updateEvent.properties = params['passwdRepeat','email','userRealName','description']
 
     return updateEvent
   }
-
- 
-
 }
