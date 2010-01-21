@@ -108,7 +108,7 @@
             event.preventDefault();
         });
 
-        $('.role').live('dblclick',function(event){
+        $('.role').live('click',function(event){
             adminEditRole( $(this).attr('id').split('_')[1], settings);
             event.preventDefault();
         });
