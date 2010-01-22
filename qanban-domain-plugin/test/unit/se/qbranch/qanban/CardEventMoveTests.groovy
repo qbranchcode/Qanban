@@ -41,9 +41,9 @@ class CardEventMoveTests extends GrailsUnitTestCase {
         mockDomain(PhaseEventCreate)
         mockDomain(Phase)
 
-        def phaseEventCreate1 = new PhaseEventCreate(title: "First phase", cardLimit: 5, phasePos: 0, user: user1, board: board)
-        def phaseEventCreate2 = new PhaseEventCreate(title: "Second phase", cardLimit: 10, phasePos: 1, user: user1 , board: board)
-        def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", cardLimit: 0, user: user1, phasePos: 2, board: board)
+        def phaseEventCreate1 = new PhaseEventCreate(title: "First phase", cardLimit: 5, phasePos: 0, eventCreator: user1, board: board)
+        def phaseEventCreate2 = new PhaseEventCreate(title: "Second phase", cardLimit: 10, phasePos: 1, eventCreator: user1 , board: board)
+        def phaseEventCreate3 = new PhaseEventCreate(title: "Third phase", cardLimit: 0, eventCreator: user1, phasePos: 2, board: board)
 
         phaseEventCreate1.beforeInsert()
         phaseEventCreate1.save()
@@ -68,9 +68,9 @@ class CardEventMoveTests extends GrailsUnitTestCase {
         mockDomain(CardEventCreate)
         mockDomain(Card)
 
-        def cardEventCreate1 = new CardEventCreate(title:"Card #1",caseNumber:1,description:"The first card originally from First phase on the first position",phaseDomainId:phase1.domainId,user:user1)
-        def cardEventCreate2 = new CardEventCreate(title:"Card #2",caseNumber:2,description:"The second card originally from First phase on the second position",phaseDomainId:phase1.domainId,user:user1)
-        def cardEventCreate3 = new CardEventCreate(title:"Card #3",caseNumber:3,description:"The third card originally from Second phase on the first position",phaseDomainId:phase2.domainId,user:user1)
+        def cardEventCreate1 = new CardEventCreate(title:"Card #1",caseNumber:1,description:"The first card originally from First phase on the first position",phaseDomainId:phase1.domainId,eventCreator:user1)
+        def cardEventCreate2 = new CardEventCreate(title:"Card #2",caseNumber:2,description:"The second card originally from First phase on the second position",phaseDomainId:phase1.domainId,eventCreator:user1)
+        def cardEventCreate3 = new CardEventCreate(title:"Card #3",caseNumber:3,description:"The third card originally from Second phase on the first position",phaseDomainId:phase2.domainId,eventCreator:user1)
 
         cardEventCreate1.beforeInsert()
         cardEventCreate1.save()
@@ -123,7 +123,7 @@ class CardEventMoveTests extends GrailsUnitTestCase {
         assertEquals 1, phase1.cards.indexOf(card2onPhase1)
         assertEquals 0, board.phases.indexOf(card2onPhase1.phase)
 
-        def cardEventMove = new CardEventMove( card: card2onPhase1, newPhase: phase1, newCardIndex: 0,user: user1)
+        def cardEventMove = new CardEventMove( card: card2onPhase1, newPhase: phase1, newCardIndex: 0,eventCreator: user1)
 
         cardEventMove.beforeInsert()
         cardEventMove.save()
@@ -139,7 +139,7 @@ class CardEventMoveTests extends GrailsUnitTestCase {
         assertEquals 1, phase1.cards.indexOf(card2onPhase1)
         assertEquals 0, board.phases.indexOf(card2onPhase1.phase)
 
-        def cardEventMove = new CardEventMove( card: card2onPhase1, newPhase: phase2, newCardIndex: 0,user: user1)
+        def cardEventMove = new CardEventMove( card: card2onPhase1, newPhase: phase2, newCardIndex: 0,eventCreator: user1)
 
         cardEventMove.beforeInsert()
         cardEventMove.save()
@@ -183,12 +183,12 @@ class CardEventMoveTests extends GrailsUnitTestCase {
   void testCompareOfCardEventMove() {
     def cardOld = new CardEventMove(newCardIndex: 0,
             card: Card.get(0),
-            user: null,
+            eventCreator: null,
             newPhase: null,
             dateCreated: new Date().previous())
     def cardNewer = new CardEventMove(newCardIndex: 0,
             card: Card.get(0),
-            user: null,
+            eventCreator: null,
             newPhase: null,
             dateCreated: new Date())
     assert cardOld.compareTo(cardNewer) > 0

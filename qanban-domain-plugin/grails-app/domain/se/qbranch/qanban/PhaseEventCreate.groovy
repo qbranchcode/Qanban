@@ -16,8 +16,6 @@
 
 package se.qbranch.qanban
 
-import org.codehaus.groovy.grails.plugins.codecs.MD5Codec
-
 class PhaseEventCreate extends PhaseEvent {
 
     static constraints = {
@@ -62,7 +60,7 @@ class PhaseEventCreate extends PhaseEvent {
     transient beforeInsert = {
         generateDomainId(title, board )
         boardDomainId = board.domainId
-      setEventCreator(user)
+      userDomainId = eventCreator.domainId
     }
 
     transient process = {

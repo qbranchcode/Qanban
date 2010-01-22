@@ -48,7 +48,7 @@ class PhaseController {
         title : params.title ,
         cardLimit : params.cardLimit ,
         phasePos : params.phasePos ,
-        user : securityService.getLoggedInUser() )
+        eventCreator : securityService.getLoggedInUser() )
     return event
   }
 
@@ -215,7 +215,7 @@ class PhaseController {
     def cardLimit = params.cardLimit ? params.cardLimit : 0
     def phase = Phase.get(params.id)
     def event = new PhaseEventUpdate(
-          user: securityService.getLoggedInUser(),
+          eventCreator: securityService.getLoggedInUser(),
           title: params.title,
           cardLimit : cardLimit,
     )
@@ -228,7 +228,7 @@ class PhaseController {
       def moveEvent = new PhaseEventMove(
               phase: cmd.phase,
               phasePos: cmd.phasePos,
-              user: securityService.getLoggedInUser()
+              eventCreator: securityService.getLoggedInUser()
       )
       return moveEvent
     }
@@ -249,7 +249,7 @@ class PhaseController {
       return render(status: 400, text: dpc.errors.getAllErrors() )
 
     def deleteEvent = new PhaseEventDelete()
-    deleteEvent.user = securityService.getLoggedInUser()
+    deleteEvent.eventCreator = securityService.getLoggedInUser()
     deleteEvent.phase = dpc.phase
 
     eventService.persist(deleteEvent)

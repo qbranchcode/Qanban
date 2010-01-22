@@ -28,3 +28,4 @@ qanban-domain-plugin/*~
 *~
 qanban/projectFilesBackup/
 qanban/lib/mysql-connector-java-5.1.10-bin.jar
+qanbanDevDb.*

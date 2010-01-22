@@ -38,7 +38,7 @@ class UserController {
     def createEvent
 
     user.properties = params
-    createEvent = new UserEventCreate(user:user)
+    createEvent = new UserEventCreate(eventCreator:user)
     createEvent.populateFromUser()
 
     eventService.persist(createEvent)
@@ -49,10 +49,10 @@ class UserController {
     }
     else {
       flash.message = null
-      createEvent.user.errors = createEvent.errors
+      createEvent.eventCreator.errors = createEvent.errors
     }
 
-    return render(template: '/login/register' , model: [ person : createEvent.user ])
+    return render(template: '/login/register' , model: [ person : createEvent.eventCreator ])
   }
 
 
@@ -94,7 +94,7 @@ class UserController {
   }
 
   private renderFormEditMode(person){
-    def updateEvent = new UserEventUpdate(user: person)
+    def updateEvent = new UserEventUpdate(eventCreator: person)
     updateEvent.populateFromUser()
     def roleNames = getUserRoles(person)
     return render(template:'userForm',model:[ event: updateEvent, roleNames: roleNames ])
@@ -128,21 +128,21 @@ class UserController {
   private renderUpdateResults(updateEvent, params){
     withFormat{
       html{
-        def roleNames = getUserRoles(updateEvent.user)
+        def roleNames = getUserRoles(updateEvent.eventCreator)
         def template = params.template ? params.template : 'userForm'
         return render( template: template, model: [ event: updateEvent, roleNames: roleNames ])
       }
       js{
-        return render ( [ userInstance: updateEvent.user ] as JSON )
+        return render ( [ userInstance: updateEvent.eventCreator ] as JSON )
       }
       xml{
-        return render ( [ userInstence: updateEvent.user ] as XML )
+        return render ( [ userInstence: updateEvent.eventCreator ] as XML )
       }
     }
   }
 
   private createUserEventUpdate(user, params){
-    def updateEvent = new UserEventUpdate(user: user)
+    def updateEvent = new UserEventUpdate(eventCreator: user)
     updateEvent.populateFromUser()
     
     if( params )

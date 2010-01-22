@@ -35,7 +35,7 @@ class BoardEventCreate extends BoardEvent{
 
   def beforeInsert = {
     generateDomainId('board','create')
-    setEventCreator(user)
+    userDomainId = eventCreator.domainId
   }
 
   def process(){

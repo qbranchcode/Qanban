@@ -28,7 +28,7 @@ class CardEventSetAssignee extends CardEvent {
     User newAssignee
 
     public List getItems() {
-        return [dateCreated, user, newAssignee]
+        return [dateCreated, eventCreator, newAssignee]
     }
 
     public Card getCard(){
@@ -43,7 +43,7 @@ class CardEventSetAssignee extends CardEvent {
 
     transient beforeInsert = {
         domainId = card.domainId
-      setEventCreator(user)
+        userDomainId = eventCreator.domainId
     }
 
     transient process(){
@@ -52,6 +52,6 @@ class CardEventSetAssignee extends CardEvent {
     }
 
     String toString(){
-        return "$dateCreated: $user set the assignee to $newAssignee"
+        return "$dateCreated: $eventCreator set the assignee to $newAssignee"
     }
 }

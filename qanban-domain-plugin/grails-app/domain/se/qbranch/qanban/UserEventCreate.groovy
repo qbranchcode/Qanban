@@ -50,7 +50,7 @@ class UserEventCreate extends UserEvent {
   String passwdRepeat
 
   public List getItems() {
-    return [dateCreated, user]
+    return [dateCreated, eventCreator]
   }
 
   def beforeInsert = {
@@ -61,20 +61,20 @@ class UserEventCreate extends UserEvent {
   }
 
   def populateFromUser(){
-    this.properties = user.properties['username','userRealName','email','enabled','emailShow','description','passwd','passwdRepeat']
+    this.properties = eventCreator.properties['username','userRealName','email','enabled','emailShow','description','passwd','passwdRepeat']
   }
 
   def process(){
-    user = new User()
-    user.properties = this.properties['username','userRealName','email','enabled','emailShow','description','passwd','passwdRepeat','domainId']
+    eventCreator = new User()
+    eventCreator.properties = this.properties['username','userRealName','email','enabled','emailShow','description','passwd','passwdRepeat','domainId']
 
-    // Gives every user the admin role, this is a temporary fix until a user manager is implemented
+    // Gives every eventCreator the admin role, this is a temporary fix until a user manager is implemented
     Role.list().each{ role ->
-        role.addToPeople(user)
+        role.addToPeople(eventCreator)
     }
 
     
-    user.save()
+    eventCreator.save()
   }
 
 }

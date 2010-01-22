@@ -41,7 +41,7 @@ class CardEventUpdate extends CardEvent {
     String caseNumber
 
     public List getItems() {
-        return [dateCreated, user, getCard().title]
+        return [dateCreated, eventCreator, getCard().title]
     }
 
     public Card getCard(){
@@ -63,7 +63,7 @@ class CardEventUpdate extends CardEvent {
 
     transient beforeInsert = {
         domainId = card.domainId
-      setEventCreator(user)
+      userDomainId = eventCreator.domainId
     }
 
     transient process(){
@@ -75,6 +75,6 @@ class CardEventUpdate extends CardEvent {
     }
     
     String toString(){
-        return "$dateCreated: $user updated the card info"
+        return "$dateCreated: $eventCreator updated the card info"
     }
 }

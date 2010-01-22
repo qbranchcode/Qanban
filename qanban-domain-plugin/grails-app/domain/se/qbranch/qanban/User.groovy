@@ -27,7 +27,7 @@ class User {
     userRealName(blank: false)
     passwd( nullable: false, blank: false, validator:{ val, obj ->
       if( val != obj.passwdRepeat ){
-        return ['user.passwd.notEqualRepeat']
+        return ['eventCreator.passwd.notEqualRepeat']
       }
     })
     enabled()

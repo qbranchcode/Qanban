@@ -51,7 +51,7 @@ class MainViewController {
     // TODO: Only get the events connected to the current board
     def board = Board.get(params.'board.id')
     def eventList
-    if( params.sort == "user" ) {
+    if( params.sort == "eventCreator" ) {
 
       // Order is not supported as a parameter in executeQuery(...)
       def orderMap = [ asc : "asc", desc: "desc" ]

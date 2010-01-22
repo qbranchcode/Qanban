@@ -4,7 +4,7 @@
 
           <td><g:formatDate format="yyyy-MM-dd HH:mm" date="${eventInstance.dateCreated}"/></td>
 
-          <td>${fieldValue(bean:eventInstance, field:'user')}</td>
+          <td>${fieldValue(bean:eventInstance, field:'eventCreator')}</td>
 
           <td><qb:getEventSummary event="${eventInstance}"/></td>
 

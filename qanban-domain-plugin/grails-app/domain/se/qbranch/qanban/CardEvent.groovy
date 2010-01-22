@@ -20,7 +20,7 @@ class CardEvent extends Event {
 
     static constraints = {
        // TODO: Check if there is a way to let this override the inherited contraint?
-       // user(nullable: false)
+       // eventCreator(nullable: false)
     }
     
     transient public String checkCurrentTitle() {

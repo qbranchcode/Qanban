@@ -42,7 +42,7 @@ class CardController {
 
     private CardEventCreate createCardEventCreate(params){
         def event = new CardEventCreate(params)
-        event.user = securityService.getLoggedInUser()
+        event.eventCreator = securityService.getLoggedInUser()
         event.phaseDomainId = Board.get(params.boardId).phases[0].domainId
         event.assignee = User.get(params.assigneeId)
         return event
@@ -175,7 +175,7 @@ class CardController {
         event.title =  cmd.title
         event.caseNumber = cmd.caseNumber
         event.description = cmd.description
-        event.user = securityService.getLoggedInUser()
+        event.eventCreator = securityService.getLoggedInUser()
         return event
     }
 
@@ -183,7 +183,7 @@ class CardController {
 
         def event = new CardEventSetAssignee(
             card: cmd.card,
-            user: securityService.getLoggedInUser(),
+            eventCreator: securityService.getLoggedInUser(),
             newAssignee: cmd.assignee)
 
         return event
@@ -200,7 +200,7 @@ class CardController {
             return render(status: 404, text: "Card with id $params.id not found")
 
          def deleteEvent = new CardEventDelete()
-         deleteEvent.user = securityService.getLoggedInUser()
+         deleteEvent.eventCreator = securityService.getLoggedInUser()
          deleteEvent.card = Card.get(params.id)
          
          eventService.persist(deleteEvent)
@@ -258,7 +258,7 @@ class CardController {
             newPhase: cmd.newPhaseEntity,
             newCardIndex: cmd.newPos,
             card: cmd.card,
-            user: securityService.getLoggedInUser())
+            eventCreator: securityService.getLoggedInUser())
         return cardEventMove
     }
 

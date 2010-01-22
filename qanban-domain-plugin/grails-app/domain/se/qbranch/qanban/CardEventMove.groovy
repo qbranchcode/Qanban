@@ -31,7 +31,7 @@ class CardEventMove extends CardEvent {
     Integer newCardIndex
 
     public List getItems() {
-        return [dateCreated, user, getCard().title, getNewPhase().title]
+        return [dateCreated, eventCreator, getCard().title, getNewPhase().title]
     }
 
     public Card getCard(){
@@ -58,7 +58,7 @@ class CardEventMove extends CardEvent {
     transient beforeInsert = {
         domainId = card.domainId
         phaseDomainId = newPhase.domainId
-      setEventCreator(user)
+      userDomainId = eventCreator.domainId
     }
 
     transient process = {
@@ -74,8 +74,8 @@ class CardEventMove extends CardEvent {
     String toString(){
         def phase = Phase.findByDomainId(phaseDomainId)
         if (phase)
-            return "$dateCreated: $user moved the card to $phase.title"
+            return "$dateCreated: $eventCreator moved the card to $phase.title"
         else
-            return "$dateCreated: $user moved the card to a deleted phase"
+            return "$dateCreated: $eventCreator moved the card to a deleted phase"
     }
 }

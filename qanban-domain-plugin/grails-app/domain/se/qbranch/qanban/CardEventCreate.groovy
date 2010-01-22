@@ -46,7 +46,7 @@ class CardEventCreate extends CardEvent {
     User assignee
 
     public List getItems() {
-        return [dateCreated, user, getCard().title]
+        return [dateCreated, eventCreator, getCard().title]
     }
 
     public Phase getPhase() {
@@ -75,7 +75,7 @@ class CardEventCreate extends CardEvent {
 
     def beforeInsert = {
       generateDomainId(title, caseNumber)
-      setEventCreator(user)
+      userDomainId = eventCreator.domainId
     }
 
     def process(){
@@ -93,6 +93,6 @@ class CardEventCreate extends CardEvent {
 
 
     String toString() {
-        return "$dateCreated: $user created the card"
+        return "$dateCreated: $eventCreator created the card"
     }
 }

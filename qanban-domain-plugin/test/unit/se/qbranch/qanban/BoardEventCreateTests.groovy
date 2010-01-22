@@ -41,7 +41,7 @@ class BoardEventCreateTests extends GrailsUnitTestCase {
 
 
     event.title = "The Board"
-    event.user = user
+    event.eventCreator = user
 
     event.beforeInsert()
     event.save()

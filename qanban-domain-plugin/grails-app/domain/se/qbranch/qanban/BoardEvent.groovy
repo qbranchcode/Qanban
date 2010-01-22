@@ -37,7 +37,7 @@ class BoardEvent extends Event{
     }
 
     public List getItems() {
-        return [dateCreated, user, getBoard().title]
+        return [dateCreated, eventCreator, getBoard().title]
     }
 
 }

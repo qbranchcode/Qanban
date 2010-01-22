@@ -62,7 +62,7 @@
 
     const showCardMode = { view: 0, edit: 1, readOnly: 2 };
     const rulesMode = { hard: 0, soft: 1 };
-    
+
     var pollingIntervals = {};
 
 
@@ -108,11 +108,11 @@
             event.preventDefault();
         });
 
-        $('#logout .avatar').live('click',function(event){            
+        $('#logout .avatar').live('click',function(event){
             editUser(userId, settings);
             event.preventDefault();
         });
-        
+
     };
 
     function addCard(boardId, options){
@@ -389,7 +389,7 @@
                         };
 
                         $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>'+
-                            settings.resources.phaseDeleteErrorMsg + '</p></div>').dialog({
+                          settings.resources.phaseDeleteErrorMsg + '</p></div>').dialog({
                             modal: true,
                             buttons: okBtn
                         });
@@ -416,7 +416,7 @@
         };
 
         $('<div><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>'+
-            settings.resources.phaseDeleteConfirmMsg + '</p></div>').dialog({
+          settings.resources.phaseDeleteConfirmMsg + '</p></div>').dialog({
             resizable: false,
             height: 140,
             modal: true,
@@ -475,7 +475,7 @@
             archiveLoader();
 
         }else{
-            
+
             var hideCaller = function(n){
                 $.qPost({
                     url: settings.resources.hideArchiveURL
@@ -567,13 +567,13 @@
         enableTableSorting(archiveData);
         enableArchiveCardSelection();
         pollingIntervals.main = setInterval(function(){pollTable(archiveData)}, 1000);
-        
+
     }
 
     function enableTableSorting(tableData){
 
         $('.ajaxSortableColumn').click(function(event){
-            
+
             var $column = $(this);
             var settings = getSortSettings($column);
 
@@ -613,7 +613,7 @@
                 settings.order = classSubstrings[1];
             }
         });
-        
+
         return settings;
     }
 
@@ -638,7 +638,7 @@
                     url: tableData.url,
                     data: { order: tableData.order, offset: getOffset($tableBody)}
                 });
-                
+
             };
 
             contentFetcher();
@@ -677,12 +677,12 @@
             }else{
                 return false;
             }
-            
+
         }
     }
 
     function allContentIsLoaded(maxElements, options){
-        
+
         var defaults = {
             scrollContent: '.scrollContent'
         };
@@ -718,7 +718,7 @@
                     reInitBoardElements(this);
                 }
             });
-            
+
         };
         boardLoader();
     }
@@ -742,7 +742,7 @@
         };
 
         settings.dialog.dialog('option','buttons', buttons);
-        
+
         var dialogLoader = function(n){
             settings.dialog.qLoad({
                 tries: n,
@@ -782,7 +782,7 @@
         dialogLoader(null);
     }
 
-        
+
     // Element specific initializations
 
     $.fn.qInit = function(){
@@ -844,7 +844,7 @@
         var settings = $.extend(defaults, options);
         var $phases = $('.phase');
         var $phase = $('.phase', $phaseWrapper);
-        
+
         switch(settings.rules){
             case rulesMode.hard:
 
@@ -935,7 +935,7 @@
                             ui.draggable.hide();
 
                             archiveCall(null);
-                            
+
                             ui.draggable.data('caught',true);
 
                         }
@@ -970,7 +970,7 @@
     function connectPhases($phase,$nextPhase){
 
         var selector = '#' + $nextPhase.attr('id') + '.available';
-        
+
         $phase.sortable('option','connectWith',selector);
     }
 
@@ -993,7 +993,7 @@
                 });
             }
         }else if(icv.position != ccv.position){
-            
+
             sortCard(cardId,newPhaseId,newPosition,settings.resources.cardSortURL);
         }
 
@@ -1041,7 +1041,7 @@
 
         if( $phases.height()+'px' != height ){
             $phases.animate({height: height},300,'swing',function(){
-                $.setCssRule('.phaseAutoHeight','height',height); 
+                $.setCssRule('.phaseAutoHeight','height',height);
             });
         }
     }
@@ -1051,7 +1051,7 @@
         var $dialog = $('<div id="moveCardDialog"></div>');
 
         var buttons = {};
-        
+
         buttons[settings.resources.okMsg] = function(){
             $(this).find('input[type="submit"]').click();
             $(this).dialog('option','confirmed',true);
@@ -1073,7 +1073,7 @@
             rollbackSelector: rollbackSelector,
             buttons: buttons,
             close: function(event,ui){
-                
+
                 var $dialog = $(this);
 
                 if( !$dialog.dialog('option','confirmed') ){
@@ -1085,7 +1085,7 @@
 
                     updateCardCount(card.parent(), -1);
                     updateCardCount('#'+icv.phase, 1);
-                    
+
                     if( rollbackPhaseSize == 0 || rollbackPhaseSize <= icv.position ){
                         $('#'+icv.phase).append(card);
 
@@ -1160,7 +1160,7 @@
     function fadeInPhases(){
         $('.phase').parent().animate({opacity: 1},300);
     }
-    
+
     function getCardValues($card){
         return {
             id: $card.attr('id'),
@@ -1308,15 +1308,14 @@
     }
 
     function replacePhase($phase, index){
+        var $archiveBtn = $('#' + $phase.attr('id')).find('#archiveBtn')
 
         replaceObject($phase);
 
-        var $archiveBtn = $phase.prev().find('#archiveBtn');
-                          
-        if( $archiveBtn.length ){
+        if( $phase.prev().find('#archiveBtn').length ){
             $('.tab[href*=showArchive]').html($('h3',$phase).html());
         }
-
+        
         var oldIndex = parseInt($phase.prevAll().size());
         var $elementAtDestination = $('.phaseWrapper').eq(index);
 
@@ -1324,7 +1323,7 @@
             if( oldIndex > index ){
                 $phase.insertBefore($elementAtDestination);
                 if( $archiveBtn.length ){
-                    $archiveBtn.insertAfter($('[href=#edit]', $('.phaseWrapper').eq(oldIndex)));    
+                    $archiveBtn.insertAfter($('[href=#edit]', $('.phaseWrapper').eq(oldIndex)));
                 }
             }else if( oldIndex < index ){
                 $('#archiveBtn', $elementAtDestination).remove();
@@ -1495,29 +1494,29 @@
 
     /*
 
-    This won't work because there will be a leak between the different ajax methods event though the map is created as a 'const'.
-    I can't figure out why atm and this code will be a part of the defaults in each ajax wrapper fo the time being. !DRY :/
-    Check how the jQuery $.extend() methods works to try making a better solution.
+     This won't work because there will be a leak between the different ajax methods event though the map is created as a 'const'.
+     I can't figure out why atm and this code will be a part of the defaults in each ajax wrapper fo the time being. !DRY :/
+     Check how the jQuery $.extend() methods works to try making a better solution.
 
-    const qAjaxDefaults = {
-        tries: 1,
-        cache: false,
-        error: function(XMLHttpRequest, textStatus, errorThrown){
-            if( XMLHttpRequest.status == 0 ){
-                if( qAjaxDefaults.tries > 3 ){
-                    showServerDownMesg( qAjaxDefaults.tries );
-                } else {
-                    qAjaxDefaults.tries = qAjaxDefaults.tries + 1;
-                    qAjaxDefaults.caller( qAjaxDefaults.tries );
-                }
-            }
-            if( qAjaxDefaults.errorCallback ){
-                qAjaxDefaults.errorCallback(XMLHttpRequest, textStatus, errorThrown);
-            }
-        }
-    };
-    
-    */
+     const qAjaxDefaults = {
+     tries: 1,
+     cache: false,
+     error: function(XMLHttpRequest, textStatus, errorThrown){
+     if( XMLHttpRequest.status == 0 ){
+     if( qAjaxDefaults.tries > 3 ){
+     showServerDownMesg( qAjaxDefaults.tries );
+     } else {
+     qAjaxDefaults.tries = qAjaxDefaults.tries + 1;
+     qAjaxDefaults.caller( qAjaxDefaults.tries );
+     }
+     }
+     if( qAjaxDefaults.errorCallback ){
+     qAjaxDefaults.errorCallback(XMLHttpRequest, textStatus, errorThrown);
+     }
+     }
+     };
+
+     */
 
     function showServerDownMesg(n) {
         if( $('#offline').size() == 0 ){
@@ -1550,7 +1549,7 @@
         if( !$('#spinner').length ){
             $('<div id="spinner"><img src="'+resources.spinnerImg+'"/></div>').appendTo($('body'));
         } else {
-            $('#spinner').remove();   
+            $('#spinner').remove();
         }
     }
 
@@ -1623,7 +1622,7 @@
             }else{
                 closeDialog($dialog,settings);
             }
-            
+
         }else if( settings.errorCallback ){
             settings.errorCallback($dialog);
         }

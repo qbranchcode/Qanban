@@ -63,7 +63,7 @@ class CardEventDelete  extends CardEvent {
         phaseDomainId = card.phase.domainId
         phasePos = card.phase.board.phases.indexOf(card)
         assignee = card.assignee
-      setEventCreator(user)
+      userDomainId = eventCreator.domainId
     }
 
     transient process(){

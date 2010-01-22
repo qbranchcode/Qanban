@@ -37,7 +37,7 @@
       <input type="text" class="property ${hasErrors(bean:event,field:'username','errors')}" name="username" value="${event.username?.encodeAsHTML()}"/>
 
       <label for="description"><g:message code="_userForm.label.description"/></label>
-      <textarea id="tafix" type="text" class="property ${hasErrors(bean:event,field:'description','errors')}" name="description" value="${event.description?.encodeAsHTML()}"></textarea>
+      <textarea id="tafix" type="text" class="property ${hasErrors(bean:event,field:'description','errors')}" name="description">${event.description?.encodeAsHTML()}</textarea>
 
       <div class="roles">
 
@@ -57,7 +57,7 @@
       
     </div>
 
-    <input type="hidden" name="id" value="${event.user.id}"/>
+    <input type="hidden" name="id" value="${event.eventCreator.id}"/>
     <input style="display: none;" type="submit"/>
 
   </g:formRemote>

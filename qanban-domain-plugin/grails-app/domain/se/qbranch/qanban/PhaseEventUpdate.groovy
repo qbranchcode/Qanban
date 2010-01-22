@@ -57,7 +57,7 @@ class PhaseEventUpdate extends PhaseEvent {
 
   transient beforeInsert = {
     domainId = Phase.get(phase.id).domainId
-    setEventCreator(user)
+    userDomainId = eventCreator.domainId
   }
 
   transient void populateFromPhase(){

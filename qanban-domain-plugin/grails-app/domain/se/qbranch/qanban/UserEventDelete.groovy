@@ -29,7 +29,7 @@ class UserEventDelete extends UserEvent {
   String passwd
 
   public List getItems() {
-    return [dateCreated, user, deletedUser]
+    return [dateCreated, eventCreator, deletedUser]
   }
 
 
@@ -42,7 +42,7 @@ class UserEventDelete extends UserEvent {
     emailShow = deletedUser.emailShow
     description = deletedUser.description
     passwd = deletedUser.passwd
-    setEventCreator(user)
+    userDomainId = eventCreator.domainId
   }
 
   transient process(){

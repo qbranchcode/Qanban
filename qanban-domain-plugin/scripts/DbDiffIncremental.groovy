@@ -1,11 +1,6 @@
-import liquibase.diff.Diff
-import liquibase.diff.DiffResult
 import java.sql.Driver
-import liquibase.database.DatabaseFactory
+
 import java.sql.Connection
-import liquibase.database.Database
-import liquibase.Liquibase
-import liquibase.database.DatabaseFactory
 
 includeTargets << new File("${liquibasePluginDir}/scripts/LiquibaseSetup.groovy")
 includeTargets << new File("${liquibasePluginDir}/scripts/Migrate.groovy")
@@ -73,7 +68,7 @@ private Liquibase getDiffDbLiquibase(def config) {
 
 private Connection getConnection(url, Driver driver, password, username, driverClassName) {
     Properties info = new Properties()
-    info.put("user", username)
+    info.put("eventCreator", username)
     if (password != null) {
         info.put("password", password);
     }

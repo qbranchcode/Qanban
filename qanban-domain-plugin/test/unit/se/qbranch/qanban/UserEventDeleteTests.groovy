@@ -1,7 +1,6 @@
 package se.qbranch.qanban
 
 import grails.test.*
-import org.grails.plugins.springsecurity.service.AuthenticateService
 
 class UserEventDeleteTests extends GrailsUnitTestCase {
 
@@ -32,7 +31,7 @@ class UserEventDeleteTests extends GrailsUnitTestCase {
   void testDeleteUser() {
     assertEquals 2, User.list().size()
 
-    def deleteEvent = new UserEventDelete(deletedUser: user1, user: user2)
+    def deleteEvent = new UserEventDelete(deletedUser: user1, eventCreator: user2)
 
     deleteEvent.validate()
     deleteEvent.beforeInsert()
@@ -41,7 +40,7 @@ class UserEventDeleteTests extends GrailsUnitTestCase {
 
     assertFalse "There should not be any errors", deleteEvent.hasErrors()
     assertEquals 1, User.list().size()
-    assertEquals "Shean Banan", deleteEvent.user.userRealName
+    assertEquals "Shean Banan", deleteEvent.eventCreator.userRealName
     assertEquals "Mr. Krister", deleteEvent.deletedUser.userRealName
   }
 

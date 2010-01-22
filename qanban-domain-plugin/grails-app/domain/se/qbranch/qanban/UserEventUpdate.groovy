@@ -57,13 +57,13 @@ class UserEventUpdate extends UserEvent{
   String newPasswdRepeat
 
   public List getItems(){
-    return [dateCreated, user]
+    return [dateCreated, eventCreator]
   }
 
   transient beforeInsert = {
 
-    setEventCreator(user)
-    domainId = user.domainId
+    userDomainId = eventCreator.domainId
+    domainId = eventCreator.domainId
 
     if( newPasswd && newPasswdRepeat ){
       if( newPasswd == newPasswdRepeat ){
@@ -77,13 +77,13 @@ class UserEventUpdate extends UserEvent{
   }
 
   transient void populateFromUser(){
-    if( user ){
-      this.properties['passwd','username','userRealName','email','enabled','emailShow','description'] = user.properties
+    if( eventCreator ){
+      this.properties['passwd','username','userRealName','email','enabled','emailShow','description'] = eventCreator.properties
     }
   }
 
   def process(){
-    user.properties = this.properties['userRealName','email','enabled','emailShow','description','passwd','passwdRepeat']
-    user.save()
+    eventCreator.properties = this.properties['userRealName','email','enabled','emailShow','description','passwd','passwdRepeat']
+    eventCreator.save()
   }
 }
