@@ -1,4 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
+
+<g:setProvider library="jquery"/>
+
 <li class="user" id="user_${it.id}">
   <div class="userAvatar">
     <avatar:gravatar email="${it.email}" size="38"/>

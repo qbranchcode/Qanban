@@ -57,6 +57,9 @@ resources.userEditDialogTitle = '<g:message code="mainView.jQuery.dialog.editUse
 
 resources.userFormUpdateBtn = '<g:message code="_userForm.button.update"/>';
 resources.userFormPasswordBtn = '<g:message code="_userForm.button.passwd"/>';
+resources.userDeleteConfirmMsg = '<g:message code="_userForm.delete.confirm"/>';
+resources.userDeleteBtn = '<g:message code="_userForm.button.delete"/>';
+resources.userDeleteErrorMsg = '<g:message code="_user.delete.errorMsg"/>';
 
 
 /********/
@@ -68,9 +71,13 @@ resources.indexURL = '${createLink(controller:"mainView")}';
 
 
 //User
+resources.userShowURL = '${createLink(controller:"user",action:"show")}'
 resources.userDialogURL = '${createLink(controller:"user",action:"form")}';
 resources.passwordDialogURL = '${createLink(controller:"user",action:"passForm")}';
 resources.addUserDialogURL = '${createLink(controller:"user",action:"create")}';
+resources.userDeleteURL = '${createLink(controller:"user",action:"delete")}';
+resources.userDeleteDialogURL = '${createLink(controller:"user",action:"form",params:[template: "deleteUser"])}';
+//TODO: Investigate if this is used
 resources.showUserDialogURL = '${createLink(controller:"user",action:"show")}';
 
 //Board

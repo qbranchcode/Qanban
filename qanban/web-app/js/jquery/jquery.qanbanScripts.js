@@ -108,8 +108,8 @@
             event.preventDefault();
         });
 
-        $('.role').live('click',function(event){
-            adminEditRole( $(this).attr('id').split('_')[1], settings);
+        $('.deleteUserLink').live('click',function(event){
+            deleteUser( $(this).attr('id').split('_')[1],settings);
             event.preventDefault();
         });
 
@@ -194,7 +194,6 @@
                 enableCardForm(settings.dialog,settings.resources.cardEditDialogTitle);
                 dialogBtns[settings.resources.cardFormUpdateBtn] = function(){
                     settings.dialog.find('input[type="submit"]').click();
-                    jQuery.toggleSpinner();
                 };
 
                 if( settings.admin ){
@@ -850,24 +849,69 @@
         editUserFieldLoader();
     }
 
-    function adminEditRole(roleId, options){
+    function deleteUser(id, options){
         var defaults = {
-            resources: resources,
-            target: "#editBox"
-        }
+            resources: resources
+        };
 
         var settings = $.extend(defaults, options);
 
-        var editRoleFieldLoader = function(n){
-            $(settings.target).qLoad({
-                tries: n,
-                caller: editRoleFieldLoader,
-                url: settings.resources.settingsShowRoleURL,
-                data: {'role.id': roleId}
-            });
-        }
+        var buttons = {};
 
-        editRoleFieldLoader();
+        buttons[settings.resources.yesMsg] = function(){
+            var ajaxLoader = function(n){
+
+                var closeBtn = {};
+                closeBtn[settings.resources.yesMsg] = function(){
+                    $(this).dialog('close');
+                };
+
+                $.qPost({
+                    tries: n,
+                    caller: ajaxLoader,
+                    url: settings.resources.userDeleteURL,
+                    data: {'id':id},
+                    successCallback: function(){
+                        $(".userList").find('#user_'+id).remove();
+                        $(".property").val("");
+                        $(".property").text("");
+                    },
+                    errorCallback: function(XMLHttpRequest, textStatus, errorThrown){
+                        $('<div><p><span class="ui-icon ui-icon-circle-check" style="float:left; margin:0 7px 50px 0;"></span>'+
+                          settings.resources.userDeleteErrorMsg+'</p></div>').dialog({
+                            modal: true,
+                            buttons: closeBtn
+                        });
+                    }
+                });
+
+            };
+
+            ajaxLoader(null);
+
+            var $dialog = $(this);
+
+            $dialog.dialog('close');
+            $dialog.empty();
+            $dialog.dialog('destroy');
+
+        };
+
+        buttons[settings.resources.noMsg] = function(){
+            var $dialog = $(this);
+
+            $dialog.dialog('close');
+            $dialog.empty();
+            $dialog.dialog('destroy');
+        };
+
+        $('<div><p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span>'+
+          settings.resources.userDeleteConfirmMsg+'</p></div>').dialog({
+            resizable: false,
+            height: 140,
+            modal: true,
+            buttons: buttons
+        });
     }
 
     // Element specific initializations
@@ -1290,8 +1334,11 @@
                 case 'phaseWrapper':
                     injectPhase($obj,options);
                     break;
+                case 'user':
+                    injectUser($obj,options);
+                    break;
                 default:
-                    throw '$.qInject() only takes card and phase elements';
+                    throw '$.qInject() only takes card, phase and user elements';
             }
 
         });
@@ -1402,7 +1449,7 @@
         if( $phase.prev().find('#archiveBtn').length ){
             $('.tab[href*=showArchive]').html($('h3',$phase).html());
         }
-        
+
         var oldIndex = parseInt($phase.prevAll().size());
         var $elementAtDestination = $('.phaseWrapper').eq(index);
 
@@ -1418,6 +1465,21 @@
             }
             $('.phaseWrapper').qInit();
         }
+    }
+
+    function injectUser($user,options){
+        var defaults = { destination: $('.userList') };
+        var settings = $.extend(defaults, options);
+
+        doesExist($user) ? replaceUser($user) : insertUser($user, settings.destination);
+    }
+
+    function insertUser($user, $destination){
+        $destination.append($user);
+    }
+
+    function replaceUser($user){
+        replaceObject($user);
     }
 
     function doesExist($obj){
