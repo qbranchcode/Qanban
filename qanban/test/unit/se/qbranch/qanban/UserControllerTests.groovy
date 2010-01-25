@@ -21,6 +21,7 @@ import grails.test.*
 class UserControllerTests extends ControllerUnitTestCase {
 
   def eventServiceMock
+  def securityServiceMock
   def authenticateServiceMock
 
   def user1
@@ -42,8 +43,8 @@ class UserControllerTests extends ControllerUnitTestCase {
 
     // User mock
 
-    user1 = new User(username: "opsmrkr01", userRealName: "Mr. Krister")
-    user2 = new User(username: "opsshba01", userRealName: "Shean Banan")
+    user1 = new User(username: "opsmrkr01", userRealName: "Mr. Krister", email: "mr@krister.se", passwd: "Password")
+    user2 = new User(username: "opsshba01", userRealName: "Shean Banan", email: "shean@banan.se", passwd: "Password")
 
     mockDomain(User,[user1,user2])
 
@@ -130,6 +131,12 @@ class UserControllerTests extends ControllerUnitTestCase {
     controller.eventService = eventServiceMock.createMock()
 
 
+    securityServiceMock = mockFor(SecurityService)
+    securityServiceMock.demand.getLoggedInUser(1..2) { -> return user1 }
+    controller.securityService = securityServiceMock.createMock()
+
+    mockDomain(UserEventDelete)
+
 
     mockDomain(UserEventCreate)
     UserEventCreate.metaClass.beforeInsert = {
@@ -200,5 +207,13 @@ class UserControllerTests extends ControllerUnitTestCase {
 
     assertEquals numberOfPreviusUsers, User.list().size()
     assertNull "The user should have gotten an id from the database", renderArgs.model.person.id
+  }
+
+  void testDeleteUser() {
+    def numberOfPreviousUsers = User.list().size()
+    mockParams.id = 1
+    controller.delete()
+
+    assertEquals numberOfPreviousUsers-1, User.list().size()
   }
 }

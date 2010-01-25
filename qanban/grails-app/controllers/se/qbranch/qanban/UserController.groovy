@@ -33,6 +33,37 @@ class UserController {
   static Map allowedMethods = [delete: 'POST', save: 'POST', update: 'POST']
 
 
+  // Show
+  def show = {
+    def user = User.get(params.id)
+
+    render(template: 'user', bean: user)
+  }
+
+  // Delete
+  @Secured(['IS_AUTHENTICATED_FULLY'])
+  def delete = {
+
+    if( !params.id )
+            return render(status: 400, text: "You need to specify a user")
+    if( !User.exists(params.id) )
+            return render(status: 404, text: "User with id $params.id not found")
+
+    def user = User.get(params.id as Integer)
+
+    def deleteEvent = new UserEventDelete(user: user, eventCreator:securityService.getLoggedInUser())
+    deleteEvent.populateFromUser()
+    eventService.persist(deleteEvent)
+
+    if( !deleteEvent.hasErrors()) {
+      flash.message = "${user.username} is now deleted"
+      return render(status: 200, text: "User with id $params.id deleted")
+    } 
+
+    return render(status: 503, text: "Server error: user delete error #188")
+
+  }
+
   // Create
   def save = {
     def user = new User()
@@ -115,6 +146,7 @@ class UserController {
    */
   @Secured(['IS_AUTHENTICATED_FULLY'])
   def update = {
+
     def person = User.get(params.id)
 
     if( !person )
@@ -123,15 +155,19 @@ class UserController {
     def updateEvent = createUserEventUpdate(person, params)
     eventService.persist(updateEvent)
 
-    return renderUpdateResults(updateEvent,params)
+    if ( !updateEvent.hasErrors()) {
+      flash.message = "${updateEvent.username} is now updated"
+    }
+
+    return renderUpdateResults(updateEvent,params,person)
   }
 
-  private renderUpdateResults(updateEvent, params){
+  private renderUpdateResults(updateEvent, params, person){
     withFormat{
       html{
         def roleNames = getUserRoles(updateEvent.eventCreator)
         def template = params.template ? params.template : 'userForm'
-        return render( template: template, model: [ event: updateEvent, roleNames: roleNames, editUser: updateEvent, roles: Role.list() ])
+        return render( template: template, model: [ event: updateEvent, roleNames: roleNames, editUser: person, roles: Role.list(), loggedInUser: securityService.getLoggedInUser() ] , bean: person)
       }
       js{
         return render ( [ userInstance: updateEvent.eventCreator ] as JSON )
