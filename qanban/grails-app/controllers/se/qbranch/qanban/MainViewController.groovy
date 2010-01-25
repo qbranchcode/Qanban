@@ -1,5 +1,5 @@
 /*
- * Copyright 2009 Qbranch AB
+* Copyright 2009 Qbranch AB
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,21 +117,17 @@ class MainViewController {
   def showSettings = {
     def users = User.list()
     def roles = Role.list()
-    def editUsers
-    def editRoles
 
     render(template: "/settings/showSettings", model : [ users : users , roles : roles ])
   }
 
   def showUser = {
     def roles = Role.list()
-    def editUser = User.get(params.'user.id')
-    render(template: "/user/editUser", model : [ editUser : editUser , roles : roles ])
-  }
-
-  def showRole = {
-    def editRole = Role.get(params.'role.id')
-    render(template: "/role/editRole", bean : editRole)
+    def person = User.get(params.'user.id')
+    def updateEvent = new UserEventUpdate(eventCreator: person)
+    def loggedInUser = securityService.getLoggedInUser()
+    updateEvent.populateFromUser()
+    render(template: "/user/editUser", model : [ event : updateEvent , editUser : person , roles : roles , loggedInUser : loggedInUser])
   }
 
   def filterUserByRole = {

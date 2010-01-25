@@ -44,6 +44,7 @@ class MainViewControllerTests extends ControllerUnitTestCase {
     user1 = new User(username: "opsmrkr01", userRealName: "Mr. Krister")
     user2 = new User(username: "opsshba01", userRealName: "Shean Banan")
 
+    mockDomain(UserEventCreate)
     mockDomain(User,[user1,user2])
 
 
@@ -51,6 +52,8 @@ class MainViewControllerTests extends ControllerUnitTestCase {
 
     board = new Board()
     mockDomain(Board,[board])
+
+    mockDomain(Role)
 
 
     // Phase / PhaseEventCreate mock
@@ -213,4 +216,9 @@ class MainViewControllerTests extends ControllerUnitTestCase {
     assertEquals 1, renderArgs.bean.id
   }
 
+  void testShowSettings() {
+    controller.showSettings()
+    assertEquals "/settings/showSettings", renderArgs.template
+    assertEquals 2, renderArgs.model.users.size()
+  }
 }
