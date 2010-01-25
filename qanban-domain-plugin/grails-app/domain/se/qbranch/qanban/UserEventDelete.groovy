@@ -3,11 +3,12 @@ package se.qbranch.qanban
 class UserEventDelete extends UserEvent {
 
   static constraints = {
-    email(nullable: true)
-    enabled(nullable: true)
-    emailShow(nullable: true)
-    description(nullable: true)
-    passwd(nullable: true)
+    username(blank: false, unique: false)
+    userRealName(blank: false)
+    email(nullable: false, blank: false, email:true)
+    enabled( nullable: true)
+    emailShow( nullable: true)
+    passwd( nullable: false, blank: false)
   }
 
   static mapping = {
@@ -16,9 +17,9 @@ class UserEventDelete extends UserEvent {
     }
   }
 
-  static transients = ['items','deletedUser']
+  static transients = ['items','user', 'passwdRepeat']
 
-  User deletedUser
+  User user
 
   String username
   String userRealName
@@ -27,25 +28,31 @@ class UserEventDelete extends UserEvent {
   boolean emailShow
   String description
   String passwd
+  String passwdRepeat
 
   public List getItems() {
-    return [dateCreated, eventCreator, deletedUser]
+    return [dateCreated, eventCreator, user]
   }
 
-
   transient beforeInsert = {
-    domainId = deletedUser.domainId
-    username = deletedUser.username
-    userRealName = deletedUser.userRealName
-    email = deletedUser.email
-    enabled = deletedUser.enabled
-    emailShow = deletedUser.emailShow
-    description = deletedUser.description
-    passwd = deletedUser.passwd
+    domainId = user.domainId
+    username = user.username
+    userRealName = user.userRealName
+    email = user.email
+    enabled = user.enabled
+    emailShow = user.emailShow
+    description = user.description
+    passwd = user.passwd
     userDomainId = eventCreator.domainId
   }
 
+
+  def populateFromUser(){
+    this.properties = eventCreator.properties['username','userRealName','email','enabled','emailShow','description','passwd','passwdRepeat']
+  }
+
   transient process(){
-    deletedUser.delete(flush:true)
+    Role.findAll().each { it.removeFromPeople(user) }
+    user.delete(flush:true)
   }
 }
