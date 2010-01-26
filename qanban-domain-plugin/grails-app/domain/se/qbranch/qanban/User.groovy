@@ -22,12 +22,19 @@ package se.qbranch.qanban
  */
 class User {
 
+  def securityService
+  def authenticateService
+
   static constraints = {
     username(blank: false, unique: true)
     userRealName(blank: false)
-    passwd( nullable: false, blank: false, validator:{ val, obj ->
-      if( val != obj.passwdRepeat ){
-        return ['eventCreator.passwd.notEqualRepeat']
+    passwd( nullable: false, blank: false, validator: { val, obj ->
+      if( obj == obj.securityService.getLoggedInUser() &&
+          obj.authenticateService.encodePassword(obj.passwdRepeat) != val ) {
+        return ['user.authentication.password.missmatch']
+      } else if ( obj == obj.securityService.getLoggedInUser() &&
+                  !obj.securityService.isUserAdmin() ) {
+        return ['user.authentication.notAuthorized']
       }
     })
     enabled()

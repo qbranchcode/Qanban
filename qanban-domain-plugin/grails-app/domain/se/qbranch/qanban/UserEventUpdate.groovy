@@ -21,6 +21,7 @@ import org.codehaus.groovy.grails.plugins.springsecurity.AuthorizeTools
 class UserEventUpdate extends UserEvent{
 
   def authenticateService
+  def securityService
 
   static constraints = {
     username( blank: false, unique: false ) // Unique true in create event
@@ -29,13 +30,12 @@ class UserEventUpdate extends UserEvent{
     enabled( nullable: true )
     emailShow( nullable: true )
     passwd( nullable: false, blank: false, validator: { val, obj ->
-      if( !AuthorizeTools.ifAllGranted("ROLE_QANBANADMIN") && 
-              obj.authenticateService.encodePassword(obj.passwdRepeat) != val ){
-        return['userEventUpdate.authentication.password.missmatch']
-      }else if( obj.newPasswd || obj.newPasswdRepeat ){
-          if( obj.newPasswd != obj.newPasswdRepeat ){
-            return['userEventUpdate.newPassword.missmatch']
-          }
+      if( obj.eventCreator == obj.securityService.getLoggedInUser() &&
+          obj.authenticateService.encodePassword(obj.passwdRepeat) != val ) {
+        return ['userEventUpdate.authentication.password.missmatch']
+      } else if ( obj.eventCreator == obj.securityService.getLoggedInUser() &&
+                  !obj.securityService.isUserAdmin() ) {
+        return ['userEventUpdate.authentication.notAuthorized']
       }
     })
   }

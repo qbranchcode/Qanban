@@ -30,6 +30,7 @@ This plugin hold the domain model for the Qanban application
     <resource>se.qbranch.qanban.PhaseEventDelete</resource>
     <resource>se.qbranch.qanban.User</resource>
     <resource>se.qbranch.qanban.CardEventSetAssignee</resource>
+    <resource>se.qbranch.qanban.SecurityService</resource>
     <resource>se.qbranch.qanban.EventService</resource>
     <resource>UrlMappings</resource>
     <resource>DataSource</resource>
