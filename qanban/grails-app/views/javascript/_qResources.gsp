@@ -15,7 +15,7 @@ resources.boardId = ${board.id};
 
 // Common
 resources.yesMsg = '<g:message code="yes"/>';
-resources.okMsg = '<g:message code="ok"/>';
+resources.okMsg = '<g:message code="Ok"/>';
 resources.noMsg = '<g:message code="no"/>';
 resources.cancelMsg = '<g:message code="cancel"/>';
 

@@ -55,6 +55,10 @@ class UserController {
     deleteEvent.populateFromUser()
     eventService.persist(deleteEvent)
 
+    if(user == deleteEvent.eventCreator) {
+      return redirect(controller: "logout")
+    }
+
     if( !deleteEvent.hasErrors()) {
       flash.message = "${user.username} is now deleted"
       return render(status: 200, text: "User with id $params.id deleted")
@@ -100,9 +104,7 @@ class UserController {
     if( !user )
     return render(status: 404, text: "User with id $params.id not found")
 
-    def updateEvent = createUserEventUpdate(user,null)
-
-    render(template:'passwordForm', model: [ event: updateEvent ])
+    render(template:'passwordForm', model: [ person: person ])
 
   }
 
@@ -126,10 +128,8 @@ class UserController {
   }
 
   private renderFormEditMode(person){
-    def updateEvent = new UserEventUpdate(eventCreator: person)
-    updateEvent.populateFromUser()
     def roleNames = getUserRoles(person)
-    return render(template:'userForm',model:[ event: updateEvent, roleNames: roleNames ])
+    return render(template:'userForm',model:[ person: person, roleNames: roleNames ])
   }
 
   private getUserRoles(user){
@@ -150,41 +150,40 @@ class UserController {
     def person = User.get(params.id)
 
     if( !person )
-    return render(status: 404, text: "User with id $params.id not found")
+      return render(status: 404, text: "User with id $params.id not found")
 
-    def updateEvent = createUserEventUpdate(person, params)
-    eventService.persist(updateEvent)
 
-    if ( !updateEvent.hasErrors()) {
-      flash.message = "${updateEvent.username} is now updated"
+    person.properties = params
+    if( person.save() ) {
+      Role.findAll().each { it.removeFromPeople(person) }
+      addRoles(person)
+      flash.message = "${person.username} is now updated"
     }
 
-    return renderUpdateResults(updateEvent,params,person)
+    return renderUpdateResults(params,person)
   }
 
-  private renderUpdateResults(updateEvent, params, person){
+  private renderUpdateResults(params, person){
     withFormat{
       html{
-        def roleNames = getUserRoles(updateEvent.eventCreator)
+        def roleNames = getUserRoles(person)
         def template = params.template ? params.template : 'userForm'
-        return render( template: template, model: [ event: updateEvent, roleNames: roleNames, editUser: person, roles: Role.list(), loggedInUser: securityService.getLoggedInUser() ] , bean: person)
+        return render( template: template, model: [ person: person, roleNames: roleNames, editUser: person, roles: Role.list(), loggedInUser: securityService.getLoggedInUser() ] , bean: person)
       }
       js{
-        return render ( [ userInstance: updateEvent.eventCreator ] as JSON )
+        return render ( [ userInstance: person ] as JSON )
       }
       xml{
-        return render ( [ userInstence: updateEvent.eventCreator ] as XML )
+        return render ( [ userInstence: person ] as XML )
       }
     }
   }
 
-  private createUserEventUpdate(user, params){
-    def updateEvent = new UserEventUpdate(eventCreator: user)
-    updateEvent.populateFromUser()
-
-    if( params )    
-    updateEvent.properties = params['passwdRepeat','email','userRealName','description']
-
-    return updateEvent
+  private void addRoles(person) {
+    for (String key in params.keySet()) {
+      if (key.contains('ROLE') && 'on' == params.get(key)) {
+        Role.findByAuthority(key).addToPeople(person)
+      }
+    }
   }
 }

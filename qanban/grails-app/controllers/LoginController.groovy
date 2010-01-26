@@ -109,15 +109,17 @@ class LoginController {
 
 	// Login page (function|json) for Ajax access.
 	def authAjax = {
-		nocache(response)
-		//this is example:
-		render """
-		<script type='text/javascript'>
-		(function() {
-			loginForm();
-		})();
-		</script>
-		"""
+
+      redirect(action:"auth")
+//		nocache(response)
+//		//this is example:
+//		render """
+//		<script type='text/javascript'>
+//		(function() {
+//			loginForm();
+//		})();
+//		</script>
+//		"""
 	}
 
 	/**

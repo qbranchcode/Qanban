@@ -47,7 +47,7 @@ class MainViewController {
     params.order = params.order ? params.order.toLowerCase() : 'desc'
     params.offset = params.offset ? params.offset : 0
     params.sort = params.sort ? params.sort : 'dateCreated'
-    
+
     // TODO: Only get the events connected to the current board
     def board = Board.get(params.'board.id')
     def eventList
@@ -59,7 +59,7 @@ class MainViewController {
 
       eventList = Event.executeQuery("SELECT e FROM Event e, User u WHERE e.userDomainId = u.domainId ORDER BY u.userRealName ${orderMap[params.order]}",[max:params.max as Integer,offset:params.offset as Integer] )
 
-      
+
       if( orderMap[params.order] == "asc" && userSortIsAtLastLoad(params, eventList) ) {
         eventList = eventList + noUserEvents
       }else if( orderMap[params.order] == "desc" && params.offset == 0){
@@ -73,9 +73,9 @@ class MainViewController {
   }
 
   private boolean userSortIsAtLastLoad(params, eventList){
-      def loadedEvents = params.offset + eventList.size()
-      def maxLoad = params.offset + params.max
-      return loadedEvents < maxLoad && loadedEvents > ( maxLoad - params.max )
+    def loadedEvents = params.offset + eventList.size()
+    def maxLoad = params.offset + params.max
+    return loadedEvents < maxLoad && loadedEvents > ( maxLoad - params.max )
   }
 
   def showArchive = {
@@ -93,7 +93,7 @@ class MainViewController {
     def phases = board.phases
     params.max = params.max ? params.max as Integer : 40
     params.order = params.order ? params.order : 'desc'
-    params.sort = params.sort ? params.sort : 'lastUpdated' 
+    params.sort = params.sort ? params.sort : 'lastUpdated'
     def cardList = sortArchiveCards(phases)
     render(template: "/archive/archiveBody", model: [ archiveCardList: cardList, offset : params.offset as Integer ])
   }
@@ -113,7 +113,7 @@ class MainViewController {
     }
     return list
   }
-  
+
   def showSettings = {
     def users = User.list()
     def roles = Role.list()
@@ -122,12 +122,21 @@ class MainViewController {
   }
 
   def showUser = {
-    def roles = Role.list()
     def person = User.get(params.'user.id')
-    def updateEvent = new UserEventUpdate(eventCreator: person)
+    List roles = Role.list()
+    roles.sort { r1, r2 ->
+      r1.authority <=> r2.authority
+    }
+    Set userRoleNames = []
+    for (role in person.authorities) {
+      userRoleNames << role.authority
+    }
+    LinkedHashMap<Role, Boolean> roleMap = [:]
+    for (role in roles) {
+      roleMap[(role)] = userRoleNames.contains(role.authority)
+    }
     def loggedInUser = securityService.getLoggedInUser()
-    updateEvent.populateFromUser()
-    render(template: "/user/editUser", model : [ event : updateEvent , editUser : person , roles : roles , loggedInUser : loggedInUser])
+    render(template: "/user/editUser", model : [ person : person , editUser : person , roleMap : roleMap , loggedInUser : loggedInUser])
   }
 
   def filterUserByRole = {

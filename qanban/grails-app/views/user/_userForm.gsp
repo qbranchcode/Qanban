@@ -7,9 +7,9 @@
   <div class="message">${flash.message}</div>
 </g:if>
 
-  <g:hasErrors bean="${event}">
+  <g:hasErrors bean="${person}">
     <div>
-      <g:renderErrors bean="${event}" as="list" />
+      <g:renderErrors bean="${person}" as="list" />
     </div>
   </g:hasErrors>
 
@@ -22,22 +22,22 @@
 
     <div class="header">
 
-      <avatar:gravatar email="${event.email}" size="38"/>
+      <avatar:gravatar email="${person.email}" size="38"/>
       <label for="userRealName"><g:message code="_userForm.label.userRealName"/></label>
-      <input type="text" class="property ${hasErrors(bean:event,field:'userRealName','errors')}" name="userRealName" value="${event.userRealName?.encodeAsHTML()}"/>
+      <input type="text" class="property ${hasErrors(bean:person,field:'userRealName','errors')}" name="userRealName" value="${person.userRealName?.encodeAsHTML()}"/>
 
     </div>
 
     <div class="properties">
 
       <label for="email" class="email"><g:message code="_userForm.label.email"/></label>
-      <input type="text" class="property ${hasErrors(bean:event,field:'email','errors')}" name="email" value="${event.email?.encodeAsHTML()}"/>
+      <input type="text" class="property ${hasErrors(bean:person,field:'email','errors')}" name="email" value="${person.email?.encodeAsHTML()}"/>
 
       <label for="username"><g:message code="_userForm.label.username"/></label>
-      <input type="text" class="property ${hasErrors(bean:event,field:'username','errors')}" name="username" value="${event.username?.encodeAsHTML()}"/>
+      <input type="text" class="property ${hasErrors(bean:person,field:'username','errors')}" name="username" value="${person.username?.encodeAsHTML()}"/>
 
       <label for="description"><g:message code="_userForm.label.description"/></label>
-      <textarea id="tafix" type="text" class="property ${hasErrors(bean:event,field:'description','errors')}" name="description">${event.description?.encodeAsHTML()}</textarea>
+      <textarea id="tafix" type="text" class="property ${hasErrors(bean:person,field:'description','errors')}" name="description">${person.description?.encodeAsHTML()}</textarea>
 
       <div class="roles">
 
@@ -52,12 +52,12 @@
 
       <div class="confirmPass">
           <label for="passwdRepeat"><g:message code="_userForm.label.passwd"/></label>
-          <input type="password" name="passwdRepeat" class="${hasErrors(bean:event,field:'passwd','errors')}">
+          <input type="password" name="passwdRepeat" class="${hasErrors(bean:person,field:'passwd','errors')}">
       </div>
       
     </div>
 
-    <input type="hidden" name="id" value="${event.eventCreator.id}"/>
+    <input type="hidden" name="id" value="${person.id}"/>
     <input style="display: none;" type="submit"/>
 
   </g:formRemote>

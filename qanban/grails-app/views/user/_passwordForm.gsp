@@ -23,7 +23,7 @@
     <label for="newPasswdRepeat"><g:message code="_userPassForm.label.newPasswordRepeat"/></label>
     <input type="password" name="newPasswdRepeat"/>
 
-    <input type="hidden" name="id" value="${event.eventCreator.id}"/>
+    <input type="hidden" name="id" value="${person.id}"/>
     <input style="display: none;" type="submit"/>
 
   </g:formRemote>
