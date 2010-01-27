@@ -18,63 +18,117 @@ package se.qbranch.qanban
 
 import org.joda.time.Period
 import org.joda.time.Interval
-
+import org.joda.time.DateTime
 
 class StatisticsService {
 
   boolean transactional = true
 
+  //  Throughput Calculation
+
+  def Map<Interval,Card[]> calculateThroughputPerInterval(board,period){
+    projectIterator(board, period){ interval ->
+      getArchivedCardsFromInterval(board, interval)
+    }
+  }
 
   //  Lead Time Calculation
 
-  def calculateLeadTime(board) {
-    def cards = getArchivedCards(board,)
+  def Period calculateLeadTime(board) {
+    def cards = getArchivedCards(board)
     getAverageLeadTime(cards)
   }
 
-  def calculateLeadTime(board,interval){
+  def Period calculateLeadTime(board,interval){
     def cards = getArchivedCardsFromInterval(board,interval)
     getAverageLeadTime(cards)
   }
 
-  private getAverageLeadTime(cards){
+  def Map<Card,Interval> calculateLeadTimePerCard(board) {
+    def cards = getArchivedCards(board)
+    def leadTimeByCard = [:]
+    cards.each{ card ->
+      leadTimeByCard[card] = getLeadTimeInterval(card)
+    }
+    leadTimeByCard
+  }
+  
+  def Map<Interval,Period> calculateLeadTimePerInterval(board, period){
+    projectIterator(board, period){ interval ->
+      calculateLeadTime(board, interval)
+    }
+  }
+
+  def Map<Interval,Period> calculateMeanLeadTimePerInterval(board, period){
+    projectIterator(board,period){ interval ->
+      calculateMeanLeadTime(board,interval.end)
+    }
+  }
+
+  private Period calculateMeanLeadTime(board, date){
+    def cards = getArchivedCardsBefore(board, date)
+    getAverageLeadTime(cards)
+  }
+
+  private Period getAverageLeadTime(cards){
     def leadTimes = cards.collect{ card ->
       getLeadTimeInterval(card).toDurationMillis()
     }
     new Period((leadTimes == [] ? 0 : leadTimes.sum() / leadTimes.size()).longValue())
   }
 
-  private getLeadTimeInterval(card){
+  private Interval getLeadTimeInterval(card){
     def startTimeStamp = card.dateCreated.time
-    def archivedTimeStamp = CardEventMove.findByDomainIdAndPhaseDomainId(card.domainId,card.phase.board.phases[-1].domainId).dateCreated.time
+    def archivedTimeStamp = CardEventMove.findByDomainIdAndPhaseDomainId(card.domainId,card.phase.board.phases[-1].domainId).dateCreated.time //-2
     new Interval(startTimeStamp, archivedTimeStamp)
   }
 
 
   // Cycle Time Calculation
 
-  def calculateCycleTime(board) {
+  def Map<Interval,Period> calculateCycleTimePerInterval(board, period){
+    projectIterator(board, period){ interval ->
+      calculateMeanCycleTime(board, interval)
+    }
+  }
+
+  def Period calculateMeanCycleTime(board) {
     def cards = getArchivedCards(board)
     getCycleTime(board,cards)
   }
 
-  def calculateCycleTime(board,interval){
+  def Period calculateMeanCycleTime(board,interval){
     def cards = getArchivedCardsFromInterval(board,interval)
     getCycleTime(board,cards,interval)
   }
 
-  private getCycleTime(board,cards){
-    def events = getArchivingEvents(board,cards)
-    new Period( (( events[-1].dateCreated.time - events[1].dateCreated.time ) / events.size()).longValue() )
+  def Map<Interval,Period> calculateMeanCycleTimePerInterval(board,period){
+    projectIterator(board,period){ interval ->
+      getMeanCycleTime(board,interval.end)
+    }
   }
 
-  private getCycleTime(board,cards,interval){
-    def events = getArchivingEvents(board,cards)
-    new Period( (( interval.endMillis - interval.startMillis ) / events.size()).longValue() )
+
+  private Period getCycleTime(board,cards){
+    getCycleTime(board,cards, new Interval(new DateTime(board.dateCreated), new DateTime()))
   }
 
-  private getArchivingEvents(board,cards){
-    def archive = board.phases[-1]
+  private Period getCycleTime(board,cards,interval){
+    if( cards.size() > 0 ){
+      def events = getArchivingEvents(board,cards)
+      def period = new Period( (( interval.endMillis - interval.startMillis ) / cards.size()).longValue() )
+      return period
+    }
+    return Period.ZERO
+  }
+
+  private Period getMeanCycleTime(board, date){
+    def cards = getArchivedCardsBefore(board, date)
+    getCycleTime(board, cards, new Interval(new DateTime(board.dateCreated), date))
+  }
+
+  private Collection<Event> getArchivingEvents(board,cards){
+    def archive = board.phases[-1] //-2
     Event.withCriteria {
       eq('class','se.qbranch.qanban.CardEventMove')
       eq('phaseDomainId',archive.domainId)
@@ -86,19 +140,55 @@ class StatisticsService {
 
   // Shared help methods
 
+  def projectIterator(board,period,closure){
+    def project = getProjectLength(board)
+    def intervalClosureMap = [:]
+    for( def interval = new Interval(project.start, period); project.contains(interval.start); interval = new Interval(interval.end, period)){
+      intervalClosureMap[interval] = closure( interval )
+    }
+    return intervalClosureMap
+  }
+
+  private Interval getProjectLength(board){
+    return new Interval(new DateTime(board.dateCreated), new DateTime())
+  }
+
   private getArchivedCards(board){
-    board.phases[-1].cards
+    Card.withCriteria{
+      eq('phase',board.phases[-1])
+      order('lastUpdated','asc')
+    }
+  }
+
+  private getArchivedCardsBefore(board, date){
+    def events = CardEventMove.findAllByPhaseDomainIdAndDateCreatedLessThan(board.phases[-1].domainId,date.toDate())
+    events.size() > 0 ? Card.findAllByDomainIdInList(events*.domainId) : []
   }
 
   private getArchivedCardsFromInterval(board,interval){
-    def phase = board.phases[-1]
+    def phase = board.phases[-1] //-2
     def events = Event.withCriteria {
       eq('class','se.qbranch.qanban.CardEventMove')
       eq('phaseDomainId',phase.domainId)
       between('dateCreated',interval.start.toDate(),interval.end.toDate())
     }
-    def domainIds = events.collect{ event -> event.domainId }
-    Card.findAllByDomainIdInList(domainIds)
+
+    def cards = []
+
+    if( events.size() > 0 ){
+      cards = Card.findAllByDomainIdInList( events.collect{ event -> event.domainId } )
+    }
+
+    def cardsMovedToArchiveEarlier = getArchivedCardsBefore(board, interval.start)
+
+    cardsMovedToArchiveEarlier.each{ card ->
+      if( cards.contains(card) ){
+        cards.remove(card) 
+      }
+    }
+    
+    return cards
+
   }
-  
+
 }
