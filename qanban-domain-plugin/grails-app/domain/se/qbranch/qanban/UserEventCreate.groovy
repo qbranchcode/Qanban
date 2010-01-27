@@ -71,9 +71,7 @@ class UserEventCreate extends UserEvent {
     // Gives every eventCreator the admin role, this is a temporary fix until a user manager is implemented
     Role.list().each{ role ->
         role.addToPeople(eventCreator)
-    }
-
-    
+    }    
     eventCreator.save()
   }
 

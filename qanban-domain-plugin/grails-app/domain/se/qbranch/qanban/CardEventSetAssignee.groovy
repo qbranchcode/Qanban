@@ -18,40 +18,47 @@ package se.qbranch.qanban
 
 class CardEventSetAssignee extends CardEvent {
 
-    static constraints = {
-        newAssignee ( nullable: true )
-    }
+  static constraints = {
+    assigneeDomainId ( nullable: true )
+  }
 
-    static transients = ['card','items']
-    Card card
-    
-    User newAssignee
+  static transients = ['card','items','assignee']
+  Card card
+  String assigneeDomainId
 
-    public List getItems() {
-        return [dateCreated, eventCreator, newAssignee]
-    }
+  public List getItems() {
+    return [dateCreated, eventCreator, getAssignee()]
+  }
 
-    public Card getCard(){
-        if( !card && domainId ){
-            card = Card.findByDomainId(domainId)
-            if(!card) {
-                card = CardEventDelete.findByDomainId(domainId).card
-            }
-        }
-        return card
+  public Card getCard(){
+    if( !card && domainId ){
+      card = Card.findByDomainId(domainId)
+      if(!card) {
+        card = CardEventDelete.findByDomainId(domainId).card
+      }
     }
+    return card
+  }
 
-    transient beforeInsert = {
-        domainId = card.domainId
-        userDomainId = eventCreator.domainId
-    }
+  public User getAssignee(){
+    def assignee
+    if ( assigneeDomainId )
+    assignee = User.findByDomainId(assigneeDomainId)
+    return assignee
+  }
 
-    transient process(){
-	card.assignee = newAssignee
-        card.save()
-    }
+  transient beforeInsert = {
+    domainId = card.domainId
+    userDomainId = eventCreator.domainId
+  }
 
-    String toString(){
-        return "$dateCreated: $eventCreator set the assignee to $newAssignee"
-    }
+  transient process(){
+    def assignee = getAssignee()
+    card.assignee = assignee
+    card.save()
+  }
+
+  String toString(){
+    return "$dateCreated: $eventCreator set the assignee to ${getAssignee()}"
+  }
 }

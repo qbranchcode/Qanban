@@ -76,11 +76,9 @@ class UserController {
     user.properties = params
     createEvent = new UserEventCreate(eventCreator:user)
     createEvent.populateFromUser()
-
     eventService.persist(createEvent)
 
     if ( !createEvent.hasErrors()) {
-
       flash.message = "${user.username} is now created"
     }
     else {
@@ -152,9 +150,8 @@ class UserController {
     if( !person )
       return render(status: 404, text: "User with id $params.id not found")
 
-
     person.properties = params
-    if( person.save() ) {
+    if( person.save() && checkForRoles()) {
       Role.findAll().each { it.removeFromPeople(person) }
       addRoles(person)
       flash.message = "${person.username} is now updated"
@@ -163,12 +160,32 @@ class UserController {
     return renderUpdateResults(params,person)
   }
 
+  private boolean checkForRoles() {
+    for (String key in params.keySet()) {
+      if (key.contains('ROLE')) {
+        return true
+      }
+    }
+    return false
+  }
+
   private renderUpdateResults(params, person){
     withFormat{
       html{
-        def roleNames = getUserRoles(person)
+        List roles = Role.list()
+        roles.sort { r1, r2 ->
+          r1.authority <=> r2.authority
+        }
+        Set userRoleNames = []
+        for (role in person.authorities) {
+          userRoleNames << role.authority
+        }
+        LinkedHashMap<Role, Boolean> roleMap = [:]
+        for (role in roles) {
+          roleMap[(role)] = userRoleNames.contains(role.authority)
+        }
         def template = params.template ? params.template : 'userForm'
-        return render( template: template, model: [ person: person, roleNames: roleNames, editUser: person, roles: Role.list(), loggedInUser: securityService.getLoggedInUser() ] , bean: person)
+        return render( template: template, model: [ person: person, roleMap: roleMap, editUser: person, roles: Role.list(), loggedInUser: securityService.getLoggedInUser() ] , bean: person)
       }
       js{
         return render ( [ userInstance: person ] as JSON )

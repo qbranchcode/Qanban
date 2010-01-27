@@ -13,3 +13,5 @@ UserEventUpdate.
    For further information about this issue and it's complications
 look at issue #31 @ Github (
 http://github.com/qbranchcode/Qanban/issues#issue/31 )
+
+2. CardEventDelete och CardEventCreate has prop: assignee, CardEventSetAssignee has prop: newAssignee. This was changed to use domainId instead. 
