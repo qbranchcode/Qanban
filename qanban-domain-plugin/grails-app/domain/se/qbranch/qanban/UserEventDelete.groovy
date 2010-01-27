@@ -53,6 +53,11 @@ class UserEventDelete extends UserEvent {
 
   transient process(){
     Role.findAll().each { it.removeFromPeople(user) }
+    def cardsAssignedToUser = Card.findByAssignee(user)
+    cardsAssignedToUser.each {
+      it.assignee = null
+      it.save()
+    }
     user.delete(flush:true)
   }
 }
