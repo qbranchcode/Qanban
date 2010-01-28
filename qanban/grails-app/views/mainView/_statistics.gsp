@@ -8,10 +8,7 @@
     var wrapperHeight = $('#wrapPlacer').height();
     
     $('.statsBox').width( (windowWidth-100) + 'px').height( (wrapperHeight/2) - 60 + 'px');
-
     $('.chart').width( ( windowWidth-100 ) + 'px').height(  (wrapperHeight/2) - 140 + 'px' );
-    
-    window.console.log(windowWidth + 'x' + wrapperHeight);
 
     var leadLine = [<g:each in="${intervalLeadMap}" status="i" var="set">['${dateFormatter.print(set.key.start)}',<g:if test="${set.value.hours == 0}">-50</g:if><g:else>${set.value.hours}</g:else>]<g:if test="${i < intervalLeadMap.size()}">,</g:if></g:each>];
     var meanLeadLine = [<g:each in="${intervalMeanLeadMap}" status="i" var="set">['${dateFormatter.print(set.key.start)}',${set.value.hours}]<g:if test="${i < intervalMeanLeadMap.size()}">,</g:if></g:each>];
