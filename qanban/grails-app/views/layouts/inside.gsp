@@ -3,6 +3,7 @@
     <title><g:layoutTitle default="Qanban" /></title>
     <link rel="stylesheet" href="${resource(dir:'css/custom-theme',file:'jquery-ui-1.7.2.custom.css')}"
     <link rel="stylesheet" href="${resource(dir:'css',file:'style.css')}" />
+    <link rel="stylesheet" href="${resource(dir:'css',file:'statistics.css')}" />
     <link rel="stylesheet" href="${resource(dir:'css',file:'cardDialog.css')}" />
     <link rel="stylesheet" href="${resource(dir:'css',file:'phaseDialog.css')}" />
     <link rel="stylesheet" href="${resource(dir:'css',file:'userDialog.css')}" />

@@ -1,0 +1,38 @@
+
+#statistics{
+    position: relative;
+    padding: 10px;
+}
+
+.statsBox{
+    width: 70px;
+    border: 1px solid #e3e3e3;
+    position: relative;
+    margin: 20px auto;
+    background-image: url(../images/bg_fade.png);
+    background-repeat: repeat-x;
+    background-position: 0 -10px;
+    padding: 0 30px;
+
+}
+
+.chart{
+
+}
+
+#statistics .header{
+    border: 1px solid #e3e3e3;
+    background-color: #fff;
+    margin-top: 10px;
+    padding: 5px;
+}
+
+#statistics .currentValues{
+    position: relative;
+    display: inline-block;
+    float: right;
+    height: 34px;
+    text-align: right;
+    margin: 4px;
+
+}

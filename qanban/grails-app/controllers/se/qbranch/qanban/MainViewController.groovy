@@ -18,10 +18,16 @@ package se.qbranch.qanban
 
 import org.codehaus.groovy.grails.plugins.springsecurity.Secured
 
+import org.joda.time.Days
+import org.joda.time.format.DateTimeFormat
+import org.joda.time.format.PeriodFormatterBuilder
+
 @Secured(['IS_AUTHENTICATED_FULLY'])
 class MainViewController {
 
   def securityService
+  def statisticsService
+
   def index = { redirect(action:view,params:params)  }
 
   def view = {
@@ -30,6 +36,56 @@ class MainViewController {
 
   def showBoard = {
     render(template: "/board/board", bean: Board.get(params.'board.id'))
+  }
+
+  def showStatistics = {
+
+    def board = Board.get(params.'board.id')
+
+    def leadTime = statisticsService.calculateLeadTime(board)
+    def cycleTime = statisticsService.calculateMeanCycleTime(board)
+
+    def intervalCycleMap = statisticsService.calculateCycleTimePerInterval(board, Days.ONE)
+    def intervalMeanCycleMap = statisticsService.calculateMeanCycleTimePerInterval(board, Days.ONE)
+    def maxCycleValue = getMaxValueInHours(intervalCycleMap,intervalMeanCycleMap)
+    def cycleTicks = getElapsedTimeTicks(( maxCycleValue / 24 as Integer ) + 1)
+
+    def intervalLeadMap = statisticsService.calculateLeadTimePerInterval(board, Days.ONE)
+    def intervalMeanLeadMap = statisticsService.calculateMeanLeadTimePerInterval(board, Days.ONE)
+    def maxLeadValue = getMaxValueInHours(intervalLeadMap, intervalMeanLeadMap)
+    def leadTicks = getElapsedTimeTicks(( maxLeadValue / 24 as Integer ) + 1 )
+
+    def dateFormatter = DateTimeFormat.forPattern("yyyy-MM-dd")
+
+    def leadTimeStr = "${leadTime.toStandardDays().days}.${(leadTime.hours % 24)/ 0.24 as Integer}"
+    def cycleTimeStr =  "${cycleTime.toStandardDays().days}.${(cycleTime.hours % 24)/0.24 as Integer}"
+    
+    render(template: "statistics",
+           model: [ dateFormatter : dateFormatter,
+                    leadTime: leadTimeStr,
+                    leadTicks: leadTicks,
+                    intervalLeadMap: intervalLeadMap,
+                    intervalMeanLeadMap: intervalMeanLeadMap,
+                    cycleTime: cycleTimeStr,
+                    cycleTicks : cycleTicks,
+                    intervalCycleMap : intervalCycleMap,
+                    intervalMeanCycleMap: intervalMeanCycleMap ])
+  }
+
+  private getElapsedTimeTicks(numberOfDays){
+    def cycleTicks = "[[0,'&#8734;']"
+    def counter = 1
+    numberOfDays.times{ element ->
+      cycleTicks += ",[${counter*24},'${counter} ${g.message(code:'days')}']"
+      counter++
+    }
+    cycleTicks += "]";
+  }
+
+  private getMaxValueInHours(cycleMap, meanCyckeMap){
+    def mCMax = meanCyckeMap*.value.hours.max()
+    def cMax = cycleMap*.value.hours.max()
+    mCMax > cMax ? mCMax : cMax
   }
 
   def showLog = {
