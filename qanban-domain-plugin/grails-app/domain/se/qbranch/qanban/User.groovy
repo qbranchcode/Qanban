@@ -23,21 +23,12 @@ import org.codehaus.groovy.grails.plugins.springsecurity.AuthorizeTools
  */
 class User {
 
-  def securityService
   def authenticateService
 
   static constraints = {
     username(blank: false, unique: true)
     userRealName(blank: false)
-    passwd( nullable: false, blank: false, validator: { val, obj ->
-      if( obj == obj.securityService.getLoggedInUser() &&
-          obj.authenticateService.encodePassword(obj.passwdRepeat) != val) {
-                return['user.authentication.password.missmatch']
-      } else if( obj == obj.securityService.getLoggedInUser() &&
-                 !obj.securityService.isUserAdmin() ) {
-                return['user.authentication.notAuthorized']
-      }
-    })
+    passwd(nullable: false, blank: false)
     enabled()
     domainId( nullable: false, blank: false, unique: true)
   }

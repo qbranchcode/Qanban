@@ -43,8 +43,6 @@ class CardEventCreate extends CardEvent {
   String phaseDomainId
   String assigneeDomainId
 
-  //TODO: Change to checksum connections?
-
   public List getItems() {
     return [dateCreated, eventCreator, getCard().title]
   }

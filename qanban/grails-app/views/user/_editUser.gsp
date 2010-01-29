@@ -12,7 +12,7 @@
   </div>
 </g:hasErrors>
 
-<div class="editUser" id="user_${editUser.id}">
+<div class="editUser" id="user_${person.id}">
   <div class="editUserData">
     <g:formRemote url="[controller:'user',action: 'update', params: [ format : 'html' , template : 'editUser' ]]"
             update="editBox" name="editUserForm"
@@ -27,23 +27,23 @@
       </span><br/>
       <span class="email">
         <label for="email"><g:message code="_userForm.label.email"/></label>
-        <input type="email" class="property ${hasErrors(bean:person,field:'email','errors')}" name="email" value="${person.email?.encodeAsHTML()}"/>
-      </span>
+        <input type="text" class="property ${hasErrors(bean:person,field:'email','errors')}" name="email" value="${person.email?.encodeAsHTML()}"/>
+      </span><br/>
       <span class="description">
         <label for="description"><g:message code="_userForm.label.description"/></label>
         <textarea type="text" class="property description ${hasErrors(bean:person,field:'description','errors')}" name="description">${person.description?.encodeAsHTML()}</textarea>
-      </span>
+      </span><br/>
       <div class="roles">
         <label for="roles"><g:message code="_userForm.label.roles"/></label><br/>
         <g:each var="entry" in="${roleMap}">
           ${entry.key.authority.encodeAsHTML()}
           <g:checkBox name="${entry.key.authority}" value="${entry.value}"/>
         </g:each>
-        <input type="hidden" name="id" value="${editUser.id}"/>
+        <input type="hidden" name="id" value="${person.id}"/>
         <input type="submit" class="ui-state-default ui-corner-all editInput" value="<g:message code="settings.update"/>"/>
       </div>
     </g:formRemote>
-    <a href="#" class="deleteUserLink" id="user_${editUser.id}"><button class="ui-state-default ui-corner-all editInput" id="deleteUserDialog"><g:message code="settings.delete"/></button></a>
+    <a href="#" class="deleteUserLink" id="user_${person.id}"><button class="ui-state-default ui-corner-all editInput" id="deleteUserDialog"><g:message code="settings.delete"/></button></a>
   </div>
 </div>
 

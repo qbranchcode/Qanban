@@ -21,6 +21,7 @@ class UserEventDeleteTests extends GrailsUnitTestCase {
 
     mockDomain(User,[user1,user2])
     mockDomain(UserEventDelete)
+    mockDomain(Card)
 
   }
 

@@ -17,7 +17,8 @@
       </g:each>
     </ul>
     <div class="userFilter"><g:message code="settings.filter"/><br/>
-      <g:formRemote name="filterUserByRole" url="[controller:'mainView',action: 'filterUserByRole']">
+      <g:formRemote name="filterUserByRole" url="[controller:'mainView',action: 'filterUserByRole']"
+      update="userList" onSuccess="jQuery('.userList').qRefreshDialog({formData: data, url: resources.filterdUsersURL});">
         <g:each var="role" in="${roles}">
           <input type="checkbox" name="role.id" value="${role.id}" /><label>${role.authority}</label>
         </g:each>

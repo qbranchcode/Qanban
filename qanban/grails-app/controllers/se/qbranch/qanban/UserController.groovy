@@ -69,14 +69,22 @@ class UserController {
   }
 
   // Create
-  def save = {
+  def save = { UserCommand uc ->
+
     def user = new User()
     def createEvent
+
 
     user.properties = params
     createEvent = new UserEventCreate(eventCreator:user)
     createEvent.populateFromUser()
-    eventService.persist(createEvent)
+
+    if(uc?.hasErrors()) {
+      createEvent.validate()
+      createEvent.errors = uc.errors
+    } else {
+      eventService.persist(createEvent)
+    }
 
     if ( !createEvent.hasErrors()) {
       flash.message = "${user.username} is now created"
@@ -143,15 +151,21 @@ class UserController {
    * Person update action.
    */
   @Secured(['IS_AUTHENTICATED_FULLY'])
-  def update = {
+  def update = { UserCommand uc ->
 
     def person = User.get(params.id)
 
     if( !person )
       return render(status: 404, text: "User with id $params.id not found")
 
-    person.properties = params
-    if( person.save() && checkForRoles()) {
+
+    if(!uc.hasErrors())
+      person.properties = params
+
+    if(uc.hasErrors()) {
+      person.validate()
+      person.errors = uc.errors
+    } else if( person.save() && checkForRoles()) {
       Role.findAll().each { it.removeFromPeople(person) }
       addRoles(person)
       flash.message = "${person.username} is now updated"
@@ -184,8 +198,10 @@ class UserController {
         for (role in roles) {
           roleMap[(role)] = userRoleNames.contains(role.authority)
         }
+
+//        person.properties = params['username','userRealName','email','description']
         def template = params.template ? params.template : 'userForm'
-        return render( template: template, model: [ person: person, roleMap: roleMap, editUser: person, roles: Role.list(), loggedInUser: securityService.getLoggedInUser() ] , bean: person)
+        return render( template: template, model: [ person: person, roleMap: roleMap, roles: Role.list(), loggedInUser: securityService.getLoggedInUser() ] , bean: person)
       }
       js{
         return render ( [ userInstance: person ] as JSON )
@@ -203,4 +219,47 @@ class UserController {
       }
     }
   }
+}
+
+class UserCommand {
+  def securityService
+  def authenticateService
+
+  static constraints = {
+    username(blank: false)
+    userRealName(blank: false)
+    email(nullable: false, blank: false)
+    passwd( nullable: false, blank: false, validator: { val, obj ->
+      println obj.properties
+      if( obj.user == obj.loggedInUser &&
+          obj.authenticateService.encodePassword(obj.passwdRepeat) != val) {
+                return['user.authentication.password.missmatch']
+      } else if( obj == obj.securityService.getLoggedInUser() &&
+                 !obj.securityService.isUserAdmin() ) {
+                return['user.authentication.notAuthorized']
+      }
+    })
+
+  }
+
+  static transients = ['passwdRepeat']
+
+  def getUser(){
+    User.get(id)
+  }
+
+  def getLoggedInUser(){
+    securityService.getLoggedInUser()
+  }
+
+  def getPasswd(){
+    User.get(id)?.passwd
+  }
+
+  Integer id
+  String username
+  String userRealName
+  String email
+  String passwd
+  String passwdRepeat
 }

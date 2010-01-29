@@ -44,7 +44,7 @@ class CardController {
         def event = new CardEventCreate(params)
         event.eventCreator = securityService.getLoggedInUser()
         event.phaseDomainId = Board.get(params.boardId).phases[0].domainId
-        event.assigneeDomainId = User.get(params.assigneeId).domainId
+        event.assigneeDomainId = User.get(params.assigneeId)?.domainId
         return event
     }
 
@@ -184,7 +184,7 @@ class CardController {
         def event = new CardEventSetAssignee(
             card: cmd.card,
             eventCreator: securityService.getLoggedInUser(),
-            assigneeDomainId: cmd.assignee.domainId)
+            assigneeDomainId: cmd.assignee?.domainId)
 
         return event
     }

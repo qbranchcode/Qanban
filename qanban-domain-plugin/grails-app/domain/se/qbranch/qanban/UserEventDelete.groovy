@@ -17,7 +17,7 @@ class UserEventDelete extends UserEvent {
     }
   }
 
-  static transients = ['items','user', 'passwdRepeat']
+  static transients = ['items','user','passwdRepeat']
 
   User user
 

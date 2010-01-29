@@ -136,7 +136,7 @@ class MainViewController {
       roleMap[(role)] = userRoleNames.contains(role.authority)
     }
     def loggedInUser = securityService.getLoggedInUser()
-    render(template: "/user/editUser", model : [ person : person , editUser : person , roleMap : roleMap , loggedInUser : loggedInUser])
+    render(template: "/user/editUser", model : [ person : person , roleMap : roleMap , loggedInUser : loggedInUser])
   }
 
   def filterUserByRole = {
@@ -148,6 +148,8 @@ class MainViewController {
         'in'('id',roleIds)
       }
     }
+
+    println users
 
     render(template: "/user/filterdUsers", bean: users)
   }

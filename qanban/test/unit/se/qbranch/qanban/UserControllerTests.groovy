@@ -17,12 +17,13 @@
 package se.qbranch.qanban
 
 import grails.test.*
+import org.grails.plugins.springsecurity.service.AuthenticateService
 
 class UserControllerTests extends ControllerUnitTestCase {
 
   def eventServiceMock
   def securityServiceMock
-  def authenticateServiceMock
+  def authMock
 
   def user1
   def user2
@@ -135,6 +136,9 @@ class UserControllerTests extends ControllerUnitTestCase {
     securityServiceMock.demand.getLoggedInUser(1..2) { -> return user1 }
     controller.securityService = securityServiceMock.createMock()
 
+    authMock = mockFor(AuthenticateService)
+    authMock.demand.static.encodePassword(1..2) { pass -> pass }
+
     mockDomain(UserEventDelete)
 
 
@@ -146,6 +150,7 @@ class UserControllerTests extends ControllerUnitTestCase {
 
     mockDomain(Role)
 
+    mockForConstraintsTests(UserCommand)
   }
 
   protected void tearDown() {
@@ -160,7 +165,13 @@ class UserControllerTests extends ControllerUnitTestCase {
     mockParams.email = "mister.krister@gmail.com"
     mockParams.enabled = "true"
 
-    controller.save()
+    def cmd = new UserCommand(id: 1, username: "opsmrkr", userRealName: "Mister Krister")
+    cmd.securityService = securityServiceMock.createMock()
+    cmd.authenticateService = authMock.createMock()
+    cmd.validate()
+
+
+    controller.save(cmd)
 
     assertEquals numberOfPreviusUsers, User.list().size()
     assertEquals 1, renderArgs.model.person.errors.allErrors.size()
@@ -176,6 +187,7 @@ class UserControllerTests extends ControllerUnitTestCase {
     mockParams.enabled = "true"
     mockParams.passwd = "p4ssW0rd"
     mockParams.passwdRepeat = "p4ssW0rd"
+
     controller.save()
 
     assertEquals numberOfPreviusUsers+1, User.list().size()
@@ -190,7 +202,13 @@ class UserControllerTests extends ControllerUnitTestCase {
     mockParams.enabled = "true"
     mockParams.passwd = "p4ssW0rd"
     mockParams.passwdRepeat = "passW0rd"
-    controller.save()
+
+    def cmd = new UserCommand(id: 1, username: "opsmrkr", userRealName: "Mister Krister", passwd: "p4ssW0rd", passwdRepeat: "passW0rd")
+    cmd.securityService = securityServiceMock.createMock()
+    cmd.authenticateService = authMock.createMock()
+    cmd.validate()
+
+    controller.save(cmd)
 
     assertEquals numberOfPreviusUsers, User.list().size()
     assertNull "The user should have gotten an id from the database", renderArgs.model.person.id
@@ -203,7 +221,13 @@ class UserControllerTests extends ControllerUnitTestCase {
     mockParams.email = "mister.krister@gmail.com"
     mockParams.enabled = "true"
     mockParams.passwd = "p4ssW0rd"
-    controller.save()
+
+    def cmd = new UserCommand(id: 1, username: "opsmrkr", userRealName: "Mister Krister", passwd: "p4ssW0rd")
+    cmd.securityService = securityServiceMock.createMock()
+    cmd.authenticateService = authMock.createMock()
+    cmd.validate()
+
+    controller.save(cmd)
 
     assertEquals numberOfPreviusUsers, User.list().size()
     assertNull "The user should have gotten an id from the database", renderArgs.model.person.id

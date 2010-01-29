@@ -32,7 +32,7 @@
 
       <label for="email" class="email"><g:message code="_userForm.label.email"/></label>
       <input type="text" class="property ${hasErrors(bean:person,field:'email','errors')}" name="email" value="${person.email?.encodeAsHTML()}"/>
-
+      
       <label for="username"><g:message code="_userForm.label.username"/></label>
       <input type="text" class="property ${hasErrors(bean:person,field:'username','errors')}" name="username" value="${person.username?.encodeAsHTML()}"/>
 
