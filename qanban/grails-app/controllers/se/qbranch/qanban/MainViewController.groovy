@@ -140,7 +140,7 @@ class MainViewController {
   }
 
   def filterUserByRole = {
-    def roleIds = params.'role.id'.collect{it as Long}
+    def roleIds = params.id.collect{it as Long}
 
     def uc = User.createCriteria()
     def users = uc.listDistinct {
@@ -148,8 +148,6 @@ class MainViewController {
         'in'('id',roleIds)
       }
     }
-
-    println users
 
     render(template: "/user/filterdUsers", bean: users)
   }

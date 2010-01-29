@@ -17,14 +17,10 @@
       </g:each>
     </ul>
     <div class="userFilter"><g:message code="settings.filter"/><br/>
-      <g:formRemote name="filterUserByRole" url="[controller:'mainView',action: 'filterUserByRole']"
-      update="userList" onSuccess="jQuery('.userList').qRefreshDialog({formData: data, url: resources.filterdUsersURL});">
-        <g:each var="role" in="${roles}">
-          <input type="checkbox" name="role.id" value="${role.id}" /><label>${role.authority}</label>
-        </g:each>
-        <br/>
-        <input type="submit" class="ui-state-default ui-corner-all editInput" value="Filter"/>
-      </g:formRemote>
+      <g:each var="role" in="${roles}">
+        <input type="radio" name="role.id" value="${role.id}" id="filterButton"/><label>${role.authority}</label>
+      </g:each>
+      <br/>
     </div>
   </div>
   <div id="editField" class="editColumn"><br/><h3 class="columnHeader"><g:message code="settings.editFieldHeader"/></h3><br/>

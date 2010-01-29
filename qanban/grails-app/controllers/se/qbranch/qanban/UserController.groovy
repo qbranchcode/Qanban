@@ -88,7 +88,9 @@ class UserController {
       createEvent.eventCreator.errors = createEvent.errors
     }
 
-    return render(template: '/login/register' , model: [ person : createEvent.eventCreator ])
+    def template = params.template ? params.template : '/login/register'
+
+    return render(template: template , model: [ person : createEvent.eventCreator ])
   }
 
 
@@ -104,7 +106,7 @@ class UserController {
     if( !user )
     return render(status: 404, text: "User with id $params.id not found")
 
-    render(template:'passwordForm', model: [ person: person ])
+    render(template:'passwordForm', model: [ person: user ])
 
   }
 
@@ -112,19 +114,20 @@ class UserController {
   @Secured(['IS_AUTHENTICATED_FULLY'])
   def form = {
     if( !params.id )
-    return renderFormCreateMode(params)
+      return renderFormCreateMode(params)
 
     def person = User.get(params.id)
 
     if( !person )
-    return render(status: 404, text: "User with id $params.id not found")
+      return render(status: 404, text: "User with id $params.id not found")
 
     return renderFormEditMode(person)
 
   }
 
-  private renderFormCreateMode(params){
-    return render( status:500, text: "Rendering form for creation not yet implemented")
+  private renderFormCreateMode(person){
+    def roleNames = Role.list()
+    return render( template:'userForm', model: [person: person, roleNames: roleNames])
   }
 
   private renderFormEditMode(person){
@@ -147,21 +150,23 @@ class UserController {
   @Secured(['IS_AUTHENTICATED_FULLY'])
   def update = { UserUpdateCommand uc ->
 
-    def person = User.get(params.id)
+    def person = User.read(params.id)
 
     if( !person )
       return render(status: 404, text: "User with id $params.id not found")
 
-
-    if(!uc.hasErrors())
-      person.properties = params
-
     if(uc.hasErrors()) {
       person.validate()
       person.errors = uc.errors
-    } else if( person.save() && checkForRoles()) {
-      Role.findAll().each { it.removeFromPeople(person) }
-      addRoles(person)
+    } else {
+      person = User.get(person.id)
+      if( checkForRoles() ){
+        Role.findAll().each { it.removeFromPeople(person) }
+        addRoles(person)
+      }
+      person.properties = params
+      person.save()
+
       flash.message = "${person.username} is now updated"
     }
 
@@ -192,8 +197,6 @@ class UserController {
         for (role in roles) {
           roleMap[(role)] = userRoleNames.contains(role.authority)
         }
-
-//        person.properties = params['username','userRealName','email','description']
         def template = params.template ? params.template : 'userForm'
         return render( template: template, model: [ person: person, roleMap: roleMap, roles: Role.list(), loggedInUser: securityService.getLoggedInUser() ] , bean: person)
       }
@@ -238,7 +241,7 @@ class UserUpdateCommand {
   static transients = ['passwdRepeat']
 
   def getUser(){
-    User.get(id)
+    User.read(id)
   }
 
   def getLoggedInUser(){
@@ -246,7 +249,7 @@ class UserUpdateCommand {
   }
 
   def getPasswd(){
-    User.get(id)?.passwd
+    User.read(id)?.passwd
   }
 
   Integer id

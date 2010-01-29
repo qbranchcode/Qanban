@@ -103,8 +103,12 @@
             event.preventDefault();
         });
 
+        $('#filterButton').live('click', function(event){
+            filterUsers( $(this).attr('value'), settings );
+        });
+
         $('.addUserLink').live('click',function(event){
-            addUser(boardId, settings);
+            addUser(settings);
             event.preventDefault();
         });
 
@@ -746,11 +750,11 @@
         boardLoader();
     }
 
-    function addUser(boardId, options){
+    function addUser(options){
         var defaults = {
             dialog: $createUserDialog,
             resources: resources
-        }
+        };
 
         var settings = $.extend(defaults, options);
 
@@ -758,15 +762,15 @@
             settings.dialog.qLoad({
                 tries: n,
                 caller: dialogLoader,
-                url: settings.resources.addUserDialogURL,
-                data: {'user.id': boardId },
+                url: settings.resources.userDialogURL,
                 successCallback: function(){
                     settings.dialog.dialog('open');
                 }
             });
         }
 
-        dialogLoader();
+        dialogLoader(null);
+
 
     }
 
@@ -847,6 +851,26 @@
         }
 
         editUserFieldLoader();
+    }
+
+    function filterUsers(roleIds, options){
+        var defaults = {
+            resources: resources,
+            target: ".userList"
+        }
+
+        var settings = $.extend(defaults, options);
+
+        var filterUsersLoader = function(n){
+            $(settings.target).qLoad({
+                tries: n,
+                caller: filterUsersLoader,
+                url: settings.resources.settingsFilterUsersURL,
+                data: {'id' : roleIds}
+            });
+        }
+
+        filterUsersLoader();
     }
 
     function deleteUser(id, options){

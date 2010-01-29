@@ -7,6 +7,10 @@
  position: relative;
 }
 
+#userForm .create {
+    margin-left: 12px;
+}
+
 #userForm .header .avatar {
  float: left;
  padding:2px;
@@ -40,6 +44,8 @@
     text-align: right;
     margin-top: 2px;
 }
+
+
 
 #userForm .label{
     vertical-align: top;
@@ -81,6 +87,15 @@
 
 #userForm .confirmPass input{
     width: 133px
+}
+
+#userForm .password label{
+    width: 150px;
+    font-weight:bold;
+}
+
+#userForm .password input{
+    width: 133px;
 }
 
 #userForm textarea[name=description]{

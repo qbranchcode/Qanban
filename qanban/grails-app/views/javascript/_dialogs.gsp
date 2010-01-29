@@ -56,8 +56,13 @@ $editCardDialog.qDialog({
 $createUserDialog = $('<div id="createUserDialog"></div>');
 
 $createUserDialog.qDialog({
-  title : "<g:message code="mainView.jQuery.dialog.addUserForm.title"/> ",
-  width : 400
+    title : "<g:message code="mainView.jQuery.dialog.addUserForm.title"/>",
+    width: 400,
+    buttons: {
+              "<g:message code="_userForm.button.create"/>": function(){
+              $createUserDialog.find('input[type="submit"]').click();
+              }
+          }
 });
 
 $editUserDialog = $('<div id="editUserDialog"></div>');

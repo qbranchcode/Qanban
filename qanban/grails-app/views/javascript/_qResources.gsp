@@ -46,6 +46,7 @@ resources.cardMoveDialogTitlePrefix = '<g:message code="mainView.jQuery.moveCard
 resources.cardFormSubmitBtn = '<g:message code="_cardForm.button.submit"/>';
 resources.cardFormEditBtn = '<g:message code="_cardForm.button.edit"/>';
 resources.cardFormUpdateBtn = '<g:message code="_cardForm.button.update"/>';
+resources.cardFormUpdateBtn = '<g:message code="_cardForm.button.update"/>';
 resources.cardFormDeleteBtn = '<g:message code="_cardForm.button.delete"/>';
 
 resources.cardDeleteConfirmMsg = '<g:message code="_cardForm.delete.confirm"/>';
@@ -56,6 +57,7 @@ resources.cardDeleteErrorMsg = '<g:message code="mainView.jQuery.dialog.errorDel
 resources.userEditDialogTitle = '<g:message code="mainView.jQuery.dialog.editUserForm.title"/>';
 
 resources.userFormUpdateBtn = '<g:message code="_userForm.button.update"/>';
+resources.userFormCreateBtn = '<g:message code="_userForm.button.create"/>';
 resources.userFormPasswordBtn = '<g:message code="_userForm.button.passwd"/>';
 resources.userDeleteConfirmMsg = '<g:message code="_userForm.delete.confirm"/>';
 resources.userDeleteBtn = '<g:message code="_userForm.button.delete"/>';
@@ -108,6 +110,7 @@ resources.archiveDefaultOrder = 'desc';
 resources.archiveDefaultSort = 'dateCreated';
 
 //Settings
+resources.settingsFilterUsersURL = '${createLink(controller:'mainView',action:'filterUserByRole')}';
 resources.settingsShowUserURL = '${createLink(controller:'mainView',action:'showUser')}';
 resources.settingsShowRoleURL = '${createLink(controller:'mainView',action:'showRole')}';
 
