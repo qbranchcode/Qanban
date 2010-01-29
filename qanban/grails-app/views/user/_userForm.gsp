@@ -21,7 +21,7 @@
             onLoading="jQuery.toggleSpinner()"
             onComplete="jQuery.toggleSpinner()">
 
-      <g:render template="userFormContent" bean="${person}"/>
+      <g:render template="userFormContent" model="[person:person,roleNames:roleNames]"/>
 
     </g:formRemote>
   </g:if>
@@ -33,7 +33,7 @@
             onLoading="jQuery.toggleSpinner()"
             onComplete="jQuery.toggleSpinner()">
 
-      <g:render template="userFormContent" bean="${person}"/>
+        <g:render template="userFormContent" model="[person:person,roleNames:roleNames]"/>
 
     </g:formRemote>
   </g:else>

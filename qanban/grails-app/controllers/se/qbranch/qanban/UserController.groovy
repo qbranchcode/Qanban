@@ -45,9 +45,9 @@ class UserController {
   def delete = {
 
     if( !params.id )
-            return render(status: 400, text: "You need to specify a user")
+    return render(status: 400, text: "You need to specify a user")
     if( !User.exists(params.id) )
-            return render(status: 404, text: "User with id $params.id not found")
+    return render(status: 404, text: "User with id $params.id not found")
 
     def user = User.get(params.id as Integer)
 
@@ -62,7 +62,7 @@ class UserController {
     if( !deleteEvent.hasErrors()) {
       flash.message = "${user.username} is now deleted"
       return render(status: 200, text: "User with id $params.id deleted")
-    } 
+    }
 
     return render(status: 503, text: "Server error: user delete error #188")
 
@@ -114,12 +114,12 @@ class UserController {
   @Secured(['IS_AUTHENTICATED_FULLY'])
   def form = {
     if( !params.id )
-      return renderFormCreateMode(params)
+    return renderFormCreateMode(params)
 
     def person = User.get(params.id)
 
     if( !person )
-      return render(status: 404, text: "User with id $params.id not found")
+    return render(status: 404, text: "User with id $params.id not found")
 
     return renderFormEditMode(person)
 
@@ -127,7 +127,7 @@ class UserController {
 
   private renderFormCreateMode(person){
     def roleNames = Role.list()
-    return render( template:'userForm', model: [person: person, roleNames: roleNames])
+    return render( template:'userForm', model: [person: person, roleNames: getRoles(person)])
   }
 
   private renderFormEditMode(person){
@@ -153,7 +153,7 @@ class UserController {
     def person = User.read(params.id)
 
     if( !person )
-      return render(status: 404, text: "User with id $params.id not found")
+    return render(status: 404, text: "User with id $params.id not found")
 
     if(uc.hasErrors()) {
       person.validate()
@@ -185,20 +185,20 @@ class UserController {
   private renderUpdateResults(params, person){
     withFormat{
       html{
-        List roles = Role.list()
-        roles.sort { r1, r2 ->
-          r1.authority <=> r2.authority
-        }
-        Set userRoleNames = []
-        for (role in person.authorities) {
-          userRoleNames << role.authority
-        }
-        LinkedHashMap<Role, Boolean> roleMap = [:]
-        for (role in roles) {
-          roleMap[(role)] = userRoleNames.contains(role.authority)
-        }
+//        List roles = Role.list()
+//        roles.sort { r1, r2 ->
+//          r1.authority <=> r2.authority
+//        }
+//        Set userRoleNames = []
+//        for (role in person.authorities) {
+//          userRoleNames << role.authority
+//        }
+//        LinkedHashMap<Role, Boolean> roleMap = [:]
+//        for (role in roles) {
+//          roleMap[(role)] = userRoleNames.contains(role.authority)
+//        }
         def template = params.template ? params.template : 'userForm'
-        return render( template: template, model: [ person: person, roleMap: roleMap, roles: Role.list(), loggedInUser: securityService.getLoggedInUser() ] , bean: person)
+        return render( template: template, model: [ person: person, roleMap: getRoles(person), roles: Role.list(), loggedInUser: securityService.getLoggedInUser() ] , bean: person)
       }
       js{
         return render ( [ userInstance: person ] as JSON )
@@ -216,6 +216,22 @@ class UserController {
       }
     }
   }
+
+  private LinkedHashMap getRoles(person){
+    List roles = Role.list()
+    roles.sort { r1, r2 ->
+      r1.authority <=> r2.authority
+    }
+    Set userRoleNames = []
+    for (role in person.authorities) {
+      userRoleNames << role.authority
+    }
+    LinkedHashMap<Role, Boolean> roleMap = [:]
+    for (role in roles) {
+      roleMap[(role)] = userRoleNames.contains(role.authority)
+    }
+    return roleMap
+  }
 }
 
 class UserUpdateCommand {
@@ -228,11 +244,11 @@ class UserUpdateCommand {
     email(nullable: false, blank: false)
     passwd( nullable: false, blank: false, validator: { val, obj ->
       if( obj.user == obj.loggedInUser &&
-          obj.authenticateService.encodePassword(obj.passwdRepeat) != val) {
-                return['user.authentication.password.missmatch']
+              obj.authenticateService.encodePassword(obj.passwdRepeat) != val) {
+        return['user.authentication.password.missmatch']
       } else if( obj == obj.securityService.getLoggedInUser() &&
-                 !obj.securityService.isUserAdmin() ) {
-                return['user.authentication.notAuthorized']
+              !obj.securityService.isUserAdmin() ) {
+        return['user.authentication.notAuthorized']
       }
     })
 
