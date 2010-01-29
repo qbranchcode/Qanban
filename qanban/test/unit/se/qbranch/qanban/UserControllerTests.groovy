@@ -150,7 +150,7 @@ class UserControllerTests extends ControllerUnitTestCase {
 
     mockDomain(Role)
 
-    mockForConstraintsTests(UserCommand)
+    mockForConstraintsTests(UserUpdateCommand)
   }
 
   protected void tearDown() {
@@ -165,13 +165,7 @@ class UserControllerTests extends ControllerUnitTestCase {
     mockParams.email = "mister.krister@gmail.com"
     mockParams.enabled = "true"
 
-    def cmd = new UserCommand(id: 1, username: "opsmrkr", userRealName: "Mister Krister")
-    cmd.securityService = securityServiceMock.createMock()
-    cmd.authenticateService = authMock.createMock()
-    cmd.validate()
-
-
-    controller.save(cmd)
+    controller.save()
 
     assertEquals numberOfPreviusUsers, User.list().size()
     assertEquals 1, renderArgs.model.person.errors.allErrors.size()
@@ -203,12 +197,7 @@ class UserControllerTests extends ControllerUnitTestCase {
     mockParams.passwd = "p4ssW0rd"
     mockParams.passwdRepeat = "passW0rd"
 
-    def cmd = new UserCommand(id: 1, username: "opsmrkr", userRealName: "Mister Krister", passwd: "p4ssW0rd", passwdRepeat: "passW0rd")
-    cmd.securityService = securityServiceMock.createMock()
-    cmd.authenticateService = authMock.createMock()
-    cmd.validate()
-
-    controller.save(cmd)
+    controller.save()
 
     assertEquals numberOfPreviusUsers, User.list().size()
     assertNull "The user should have gotten an id from the database", renderArgs.model.person.id
@@ -222,12 +211,7 @@ class UserControllerTests extends ControllerUnitTestCase {
     mockParams.enabled = "true"
     mockParams.passwd = "p4ssW0rd"
 
-    def cmd = new UserCommand(id: 1, username: "opsmrkr", userRealName: "Mister Krister", passwd: "p4ssW0rd")
-    cmd.securityService = securityServiceMock.createMock()
-    cmd.authenticateService = authMock.createMock()
-    cmd.validate()
-
-    controller.save(cmd)
+    controller.save()
 
     assertEquals numberOfPreviusUsers, User.list().size()
     assertNull "The user should have gotten an id from the database", renderArgs.model.person.id

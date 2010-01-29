@@ -69,7 +69,7 @@ class UserController {
   }
 
   // Create
-  def save = { UserCommand uc ->
+  def save = {
 
     def user = new User()
     def createEvent
@@ -78,13 +78,7 @@ class UserController {
     user.properties = params
     createEvent = new UserEventCreate(eventCreator:user)
     createEvent.populateFromUser()
-
-    if(uc?.hasErrors()) {
-      createEvent.validate()
-      createEvent.errors = uc.errors
-    } else {
-      eventService.persist(createEvent)
-    }
+    eventService.persist(createEvent)
 
     if ( !createEvent.hasErrors()) {
       flash.message = "${user.username} is now created"
@@ -151,7 +145,7 @@ class UserController {
    * Person update action.
    */
   @Secured(['IS_AUTHENTICATED_FULLY'])
-  def update = { UserCommand uc ->
+  def update = { UserUpdateCommand uc ->
 
     def person = User.get(params.id)
 
@@ -221,7 +215,7 @@ class UserController {
   }
 }
 
-class UserCommand {
+class UserUpdateCommand {
   def securityService
   def authenticateService
 
@@ -230,7 +224,6 @@ class UserCommand {
     userRealName(blank: false)
     email(nullable: false, blank: false)
     passwd( nullable: false, blank: false, validator: { val, obj ->
-      println obj.properties
       if( obj.user == obj.loggedInUser &&
           obj.authenticateService.encodePassword(obj.passwdRepeat) != val) {
                 return['user.authentication.password.missmatch']
