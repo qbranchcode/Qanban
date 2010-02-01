@@ -64,6 +64,10 @@
     display: inline-block;
 }
 
+#userForm .role {
+    text-align: center;
+}
+
 #userForm input{
      margin-top: 2px;
      width: 291px;

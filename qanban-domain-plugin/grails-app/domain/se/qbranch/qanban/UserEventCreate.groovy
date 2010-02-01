@@ -67,11 +67,7 @@ class UserEventCreate extends UserEvent {
   def process(){
     eventCreator = new User()
     eventCreator.properties = this.properties['username','userRealName','email','enabled','emailShow','description','passwd','passwdRepeat','domainId']
-
-    // Gives every eventCreator the admin role, this is a temporary fix until a user manager is implemented
-    Role.list().each{ role ->
-        role.addToPeople(eventCreator)
-    }    
+    Role.findByAuthority("ROLE_QANBANUSER")?.addToPeople(eventCreator)
     eventCreator.save()
   }
 

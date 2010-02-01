@@ -34,6 +34,8 @@ class UserControllerTests extends ControllerUnitTestCase {
   def phase2
   def phase3
 
+  def userRole
+
   def card1onPhase1
   def card2onPhase1
   def card3onPhase2
@@ -49,6 +51,12 @@ class UserControllerTests extends ControllerUnitTestCase {
 
     mockDomain(User,[user1,user2])
 
+
+    // Role mock
+
+    userRole = new Role(description: "Qanban User Role", authority: "ROLE_QANBANUSER")
+
+    mockDomain(Role,[userRole])
 
     // Board mock
 
@@ -147,8 +155,6 @@ class UserControllerTests extends ControllerUnitTestCase {
       generateDomainId(username,userRealName,email)
       userDomainId = domainId // You create yourself
     }
-
-    mockDomain(Role)
 
     mockForConstraintsTests(UserUpdateCommand)
   }

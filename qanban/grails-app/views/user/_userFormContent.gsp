@@ -47,11 +47,16 @@
   <g:else>
     <div class="createRoles">
 
-      <span class="label"></span>
-      <g:each var="entry" in="${roleNames}">
-        ${entry.key.authority.encodeAsHTML()}
-        <g:checkBox name="${entry.key.authority}" value="${entry.value}"/>
-      </g:each>
+      <span class="label"><g:message code="_userForm.label.roles"/></span>
+      <div class="role">
+        <g:each var="entry" in="${roleNames}">
+
+          ${entry.key.authority.encodeAsHTML()}
+          <g:checkBox name="${entry.key.authority}" value="${entry.value}"/><br/>
+
+        </g:each>
+      </div>
+      <br/>
     </div>
 
     <div class="password">

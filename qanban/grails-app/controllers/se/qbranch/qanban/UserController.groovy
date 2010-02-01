@@ -74,11 +74,12 @@ class UserController {
     def user = new User()
     def createEvent
 
-
     user.properties = params
+
     createEvent = new UserEventCreate(eventCreator:user)
     createEvent.populateFromUser()
     eventService.persist(createEvent)
+    addRoles(createEvent.eventCreator)
 
     if ( !createEvent.hasErrors()) {
       flash.message = "${user.username} is now created"
@@ -185,18 +186,6 @@ class UserController {
   private renderUpdateResults(params, person){
     withFormat{
       html{
-//        List roles = Role.list()
-//        roles.sort { r1, r2 ->
-//          r1.authority <=> r2.authority
-//        }
-//        Set userRoleNames = []
-//        for (role in person.authorities) {
-//          userRoleNames << role.authority
-//        }
-//        LinkedHashMap<Role, Boolean> roleMap = [:]
-//        for (role in roles) {
-//          roleMap[(role)] = userRoleNames.contains(role.authority)
-//        }
         def template = params.template ? params.template : 'userForm'
         return render( template: template, model: [ person: person, roleMap: getRoles(person), roles: Role.list(), loggedInUser: securityService.getLoggedInUser() ] , bean: person)
       }
@@ -231,6 +220,57 @@ class UserController {
       roleMap[(role)] = userRoleNames.contains(role.authority)
     }
     return roleMap
+  }
+
+  // Update password
+
+  def updatePassword = { UserUpdatePasswordCommand upc ->
+
+    def person = User.get(params.id)
+
+    if( !person )
+    return render(status: 404, text: "User with id $params.id not found")
+
+    if(upc.hasErrors()) {
+      person.validate()
+      person.errors = upc.errors
+    } else {
+      if( checkForRoles() ){
+        Role.findAll().each { it.removeFromPeople(person) }
+        addRoles(person)
+      }
+      person.passwd = authenticateService.encodePassword(upc.newPasswd)
+      person.save()
+    }
+    return renderUpdateResults(params,person)
+  }
+}
+
+class UserUpdatePasswordCommand {
+
+  def authenticateService
+
+  static constraints = {
+    passwdRepeat(nullable: false, blank: false, validator: { val, obj ->
+      if( obj.authenticateService.encodePassword(val) != obj.user.passwd ) {
+        return['user.authentication.password.missmatch']
+      }
+    })
+    newPasswd(nullable: false, blank: false, validator: { val, obj ->
+      if( val != obj.newPasswdRepeat ) {
+        return['user.authentication.password.missmatch']
+      }
+    })
+    newPasswdRepeat(nullable: false, blank: false)
+  }
+
+  Integer id
+  String passwdRepeat
+  String newPasswd
+  String newPasswdRepeat
+
+  def getUser() {
+    User.get(id)
   }
 }
 

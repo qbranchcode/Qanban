@@ -7,11 +7,11 @@
   <div class="message">${flash.message}</div>
 </g:if>
 
-  <g:hasErrors bean="${person}">
-    <div>
-      <g:renderErrors bean="${person}" as="list" />
-    </div>
-  </g:hasErrors>
+<g:hasErrors bean="${person}">
+  <div>
+    <g:renderErrors bean="${person}" as="list" />
+  </div>
+</g:hasErrors>
 
 <div class="content">
   <g:if test="${person.id}">
@@ -33,7 +33,7 @@
             onLoading="jQuery.toggleSpinner()"
             onComplete="jQuery.toggleSpinner()">
 
-        <g:render template="userFormContent" model="[person:person,roleNames:roleNames]"/>
+      <g:render template="userFormContent" model="[person:person,roleNames:roleNames]"/>
 
     </g:formRemote>
   </g:else>
