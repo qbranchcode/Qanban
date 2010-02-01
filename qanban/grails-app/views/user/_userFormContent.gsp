@@ -65,6 +65,8 @@
       <label for="passwdRepeat" class="repeatPass"><g:message code="_userForm.label.passwdRepeat"/></label>
       <input type="password" name="passwdRepeat" class="${hasErrors(bean:person,field:'passwdRepeat','errors')} repeatPassInput">
     </div>
+
+    <input type="hidden" name="enabled" value="true"/>
   </g:else>
 
 </div>
