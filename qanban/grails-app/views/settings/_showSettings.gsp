@@ -32,9 +32,9 @@
         <g:render template="/settings/emptyEdit" model="[ 'roles' : roles]"/>
       </g:else>
     </div>
-    <div id="passwordBox">
-      <g:render template="/settings/generatePassword"/>
-    </div>
+    %{--<div id="passwordBox">--}%
+      %{--<g:render template="/settings/generatePassword"/>--}%
+    %{--</div>--}%
   </div>
   <div id="settingsInfo" class="infoColumn"><br/><h3 class="columnHeader"><g:message code="settings.infoHeader"/></h3><br/>
     <div id="infoBox">

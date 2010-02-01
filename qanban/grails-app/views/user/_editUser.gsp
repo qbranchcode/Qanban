@@ -14,6 +14,7 @@
 
 <div class="editUser" id="user_${person.id}">
   <div class="editUserData">
+    <g:if test="${person.id == loggedInUser.id}"><g:message code="_userForm.updateYourself"/></g:if>
     <g:formRemote url="[controller:'user',action: 'update', params: [ format : 'html' , template : 'editUser' ]]"
             update="editBox" name="editUserForm"
             onSuccess="jQuery('#editBox').qRefreshDialog({formData: data, url: resources.userShowURL});">
@@ -40,7 +41,7 @@
           <g:checkBox name="${entry.key.authority}" value="${entry.value}"/>
         </g:each>
         <input type="hidden" name="id" value="${person.id}"/>
-        <input type="submit" class="ui-state-default ui-corner-all editInput" value="<g:message code="settings.update"/>"/>
+        <input type="submit" class="ui-state-default ui-corner-all editInput" <g:if test="${person.id == loggedInUser.id}">disabled="disabled"</g:if> value="<g:message code="settings.update"/>"/>
       </div>
     </g:formRemote>
     <a href="#" class="deleteUserLink" id="user_${person.id}"><button class="ui-state-default ui-corner-all editInput" id="deleteUserDialog"><g:message code="settings.delete"/></button></a>
