@@ -61,9 +61,10 @@
 
 
   </div>
-
+  <div id="wrapPlacer">
   <div id="wrapper">
         <g:render template="/board/board" bean="${board}" />
+  </div>
   </div>
 </body>
 
