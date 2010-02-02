@@ -7,6 +7,7 @@
       padding: 3px 8px 0;
       border-bottom: 1px solid #fa0000;
       position: relative;
+      z-index: 10;
     }
 
     #logout{
@@ -63,6 +64,7 @@
       -webkit-border-bottom-left-radius: 6px;
       -moz-border-radius-bottomleft:6px;
       text-align: center;
+      z-index: 200;
     }
 
     #adminmenu ul{
@@ -289,11 +291,16 @@ h4{}
     top: 50%;
 }
 
-#wrapper {
-    position: relative;
+#wrapPlacer{
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    margin-top: -36px;
 
 }
-
+#wrapper {
+    margin-top: 36px;
+}
 
 .board {
     width: 80em;

@@ -1,53 +1,116 @@
 #settings {
-    width: 900px;
+    width: 100%;
+    position: absolute;
+    top: 36px;
+    bottom: 0px;
+}
+
+#settings ul{
+        list-style: none;
+    list-style-type: none;
+}
+
+
+
+#settings .bottomGfx{
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+
+}
+#settingsMenu {
+    position: absolute;
+    top: 0px;
+    bottom: 0px;
+    width: 300px;
+    padding-top: 20px;
+}
+
+#settingsMenu ul {
+    margin-left: 100px;
+    width: 200px;
+}
+#settingsMenu li {
+    line-height: 30px;
+    text-align: right;
+    margin-left: 10px;
+    padding: 0 12px;
+    z-index: 200;
     position: relative;
-    margin: 5px auto;
-    margin-top: 0px;
+    font-weight: bold;
+    font-size: 1.2em;
+}
+
+#settingsMenu li.active{
+    -webkit-border-bottom-left-radius: 6px;
+    -moz-border-radius-bottomleft:6px;
+    -webkit-border-top-left-radius: 6px;
+    -moz-border-radius-topleft:6px;
+    background-color: #fff;
+    border: 1px solid #e3e3e3;
+    border-right: 0px solid transparent;
+    -moz-box-shadow: -2px -1px 3px #e3e3e3;
+    -webkit-box-shadow: -2px -1px 5px #e3e3e3;
+}
+
+#settingsMenu li.active a {
+    color: #fd0000 !important;
+}
+
+#settingsContainer {
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 299px;
+    right: 10px;
+    border: 1px solid #e3e3e3;
+    -moz-box-shadow: -2px -1px 3px #e3e3e3;
+    -webkit-box-shadow: -2px -1px 5px #e3e3e3;
+    background-color: #fff;
+}
+
+
+#settingSummary {
+    position: absolute;
+    bottom: 10px;
+    left: 10px;
+    width: 272px;
+    min-height: 250px;
+    border: 1px solid #e3e3e3;
+    background: #fff;
+    padding: 4px;
+}
+
+#settingSummary p{
+    margin-top: 4px;
 }
 
 .userColumn {
-    -moz-box-shadow: 1px 2px 5px #666;
-    -webkit-box-shadow: 1px 2px 5px #666;
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    background:#FFFFFF none repeat scroll 0 0;
-    border:1px solid #666666;
-    height:90%;
-    width: 32%;
-    margin: 5px;
+    position: absolute;
+    top: 10px;
+    bottom: 10px;
+    left: 10px;
+    width: 350px;
+    border:1px solid #e3e3e3;
 }
 
-.editColumn {
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    background:#FFFFFF none repeat scroll 0 0;
-    border:1px solid #E3E3E3;
-    height:90%;
-    width: 32%;
-    margin: 5px;
-}
-
-.infoColumn {
-    -moz-border-radius: 6px;
-    -webkit-border-radius: 6px;
-    background:#FFFFFF none repeat scroll 0 0;
-    border:1px solid #E3E3E3;
-    height:90%;
-    margin: 5px;
-}
-
-.columnHeader {
-    text-align:center;
-}
-
-#users {
+.userColumn .ui-icon{
     float: left;
+    margin: 7px 2px 0 4px
 }
 
-#userFilter {
-    margin: 1px;
-    background:#FFFFFF none repeat scroll 0 0;
-    border:1px solid #666666;
+.userColumn .ui-icon.right {
+    float: right;
+    margin: 7px 4px 0 2px;
+}
+
+.userColumn a.ui-icon:hover{
+   background-image: url(custom-theme/images/ui-icons_fd0000_256x240.png); 
+}
+
+#settings .columnHeader{
+    border-bottom: 1px solid #e3e3e3;
+    line-height: 30px;    
 }
 
 ul.userList {
@@ -55,34 +118,114 @@ ul.userList {
 }
 
 .user {
-    border-bottom:2px solid #E3E3E3;
+    background-image: url(../images/bg_fade.png);
+    background-repeat: repeat-x;
+    background-position: 0 -245px;
+    border-bottom:1px solid #E3E3E3;
     padding: 4px;
     position: relative;
+    cursor: pointer;
 }
+
+.user .avatar {
+    float: left;
+    margin-right: 5px;
+}
+
+
+.userFilter{
+    position: absolute;
+    bottom: 0px;
+    border-top: 1px solid #e3e3e3;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    padding: 6px !important;
+}
+
+#editUserCol{
+    position: absolute;
+    top: 10px;
+    left: 380px;
+    z-index: 200;
+    max-width: 400px;
+    margin-right: 10px;
+}
+
+#editUserCol  .ui-icon{
+    float: left;
+    margin: 8px 2px 0 4px
+}
+
+#editUserCol label{
+    display: inline-block;
+    text-align: right;
+    vertical-align: top;
+    width: 29%;
+    padding-left: 0px !important;
+    font-size: 1.2em;
+}
+#editUserCol .columnHeader {
+    margin-top: 1px;
+}
+
+#editUserCol input[type=text],#editUserCol textarea, #editUserCol .roles{
+    width: 70%;
+    padding: 0;
+
+}
+
+/* Safari and Chrome hack  */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+ #editUserCol textarea{  max-width: 70%;  }
+}
+
+
+#editUserCol .roles {
+    display: inline-block;
+    
+}
+
+#editUserCol input[type=submit], #editUserCol button{
+    float: right;
+    margin: 10px 0 10px 5px;
+}
+
+.roleLabel {
+    line-height: 20px;
+}
+
+#editUserCol .editUser{
+    margin-top: 10px;
+}
+
+
+div.message {
+    padding: 5px;
+    clear: both;
+    line-height: 1.4em;
+}
+
+div.message .ui-icon {
+    float: left;
+    margin: 0px !important;   
+}
+
+
+
+/*
 
 .editUser {
     border-bottom:2px solid #E3E3E3;
     position: relative;
 }
 
-.userData {
-    margin-top: -38px;
-    margin-left: 45px;
-}
+
 
 .editUserData {
     margin-top: 3px;
     margin-left: 2px;
     height: 260px;
-}
-
-#editField {
-    float: left;
-}
-
-.property {
-    width: 99%;
-    max-width:99%;
 }
 
 .editInput:hover {
@@ -95,48 +238,4 @@ ul.userList {
 .editInput {
     margin-top: 5px;
 }
-
-#addUserMenu{
-    width: 140px;
-    margin: 0 auto;
-    height: 20px;
-    position: relative;
-    border: 1px solid #fd0000;
-    border-top: 1px solid #666;
-    top: -1px;
-    background-image: url(../images/head_fade.png);
-    background-repeat: repeat-x;
-    background-position: 0 0px;
-    -webkit-border-bottom-right-radius: 6px;
-    -moz-border-radius-bottomright:6px;
-    -webkit-border-bottom-left-radius: 6px;
-    -moz-border-radius-bottomleft:6px;
-    text-align: center;
-}
-
-#addUserMenu ul{
-    display: inline-block;
-}
-
-#addUserMenu li{
-    float: left;
-    display: inline-block;
-    height: 20px;
-    margin-right: 3px;
-}
-
-#addUserMenu a{
-    line-height: 20px;
-    display: inline-block;
-    padding: 0 6px;
-    outline: none;
-    background-image: url(../images/head_fade.png);
-    background-repeat: repeat-x;
-    background-position: 0 0;
-    color: #fff;
-    font-weight: bold;
-}
-
-#addUserMenu a:hover{
-    color: #fd0000;
-}
+*/
